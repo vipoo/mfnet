@@ -22,9 +22,9 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #endregion
 
-// This entire file only exists to work around bugs in Media Foundation.  The core problem 
-// is that there are some objects in MF that don't correctly support QueryInterface.  In c++ 
-// this isn't a problem, since if you tell c++ that something is a pointer to an interface, 
+// This entire file only exists to work around bugs in Media Foundation.  The core problem
+// is that there are some objects in MF that don't correctly support QueryInterface.  In c++
+// this isn't a problem, since if you tell c++ that something is a pointer to an interface,
 // it just believes you.  In fact, that's one of the places where c++ gets its performance:
 // it doesn't check anything.
 
@@ -33,12 +33,12 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 // Second it does a QI for the specific interface it is supposed to be (ie IMFMediaSink or
 // whatever).
 
-// Since c++ *doesn't* check, oftentimes the first people to even try to call QI on some of 
-// MF's objects are c# programmers.  And, not surprisingly, sometimes the first time code is 
+// Since c++ *doesn't* check, oftentimes the first people to even try to call QI on some of
+// MF's objects are c# programmers.  And, not surprisingly, sometimes the first time code is
 // run, it doesn't work correctly.
 
-// The only way you can work around it is to change the definition of the method from 
-// IMFMediaSink (or whatever interface MF is trying to pass you) to IntPtr.  Of course, 
+// The only way you can work around it is to change the definition of the method from
+// IMFMediaSink (or whatever interface MF is trying to pass you) to IntPtr.  Of course,
 // that limits what you can do with it.  You can't call methods on an IntPtr.
 
 // Something to keep in mind is that while the work-around involves changing the interface,
@@ -47,8 +47,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 // correctly on another object.  If you are unclear on the differences between an interface
 // and an object, it's time to hit the books.
 
-// In W7, MS has fixed a few of these issues that were reported in Vista.  The problem 
-// is that even if they are fixed in W7, if your program also needs to run on Vista, you 
+// In W7, MS has fixed a few of these issues that were reported in Vista.  The problem
+// is that even if they are fixed in W7, if your program also needs to run on Vista, you
 // still have to use the work-arounds.
 
 using System;
@@ -108,8 +108,8 @@ namespace MediaFoundation.Alt
     // interface, why should they?  They already called a function specifying what interface they wanted.  It is not
     // unreasonable for them to expect that that's what they got.
     //
-    // Were I starting from scratch, I would name this interface IMFGetServiceImpl, indicating that you should use this 
-    // interface (with the IntPtr) if you are implementing IMFGetService, while still having IMFGetService (with 
+    // Were I starting from scratch, I would name this interface IMFGetServiceImpl, indicating that you should use this
+    // interface (with the IntPtr) if you are implementing IMFGetService, while still having IMFGetService (with
     // UnmanagedType.IUnknown) for the people who just want to call it.
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,

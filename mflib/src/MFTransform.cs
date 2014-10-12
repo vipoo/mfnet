@@ -56,7 +56,7 @@ namespace MediaFoundation.Transform
         Hardware = 0x00000004,   // Enumerates V2 hardware async MFTs
         FieldOfUse = 0x00000008,   // Enumerates MFTs that require unlocking
         LocalMFT = 0x00000010,   // Enumerates Locally (in-process) registered MFTs
-        TranscodeOnly = 0x00000020,   // Enumerates decoder MFTs used by transcode only    
+        TranscodeOnly = 0x00000020,   // Enumerates decoder MFTs used by transcode only
         SortAndFilter = 0x00000040,   // Apply system local, do not use and preferred sorting and filtering
         SortAndFilterApprovedOnly = 0x000000C0,   // Similar to MFT_ENUM_FLAG_SORTANDFILTER, but apply a local policy of: MF_PLUGIN_CONTROL_POLICY_USE_APPROVED_PLUGINS
         SortAndFilterWebOnly = 0x00000140,   // Similar to MFT_ENUM_FLAG_SORTANDFILTER, but apply a local policy of: MF_PLUGIN_CONTROL_POLICY_USE_WEB_PLUGINS
@@ -252,7 +252,7 @@ namespace MediaFoundation.Transform
         [PreserveSig]
         int GetStreamIDs(
             int dwInputIDArraySize,
-            [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex=0)] int [] pdwInputIDs,
+            [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] int[] pdwInputIDs,
             int dwOutputIDArraySize,
             [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] int[] pdwOutputIDs
         );
@@ -294,7 +294,7 @@ namespace MediaFoundation.Transform
         [PreserveSig]
         int AddInputStreams(
             int cStreams,
-            [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex=0)] int[] adwStreamIDs
+            [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] int[] adwStreamIDs
         );
 
         [PreserveSig]
@@ -377,7 +377,7 @@ namespace MediaFoundation.Transform
         int ProcessOutput(
             MFTProcessOutputFlags dwFlags,
             int cOutputBufferCount,
-            [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex=1)] MFTOutputDataBuffer [] pOutputSamples,
+            [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] MFTOutputDataBuffer[] pOutputSamples,
             out ProcessOutputStatus pdwStatus
         );
     }

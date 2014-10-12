@@ -22,7 +22,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #endregion
 
-// This file is a mess.  While technically part of MF, I'm in no hurry 
+// This file is a mess.  While technically part of MF, I'm in no hurry
 // to try to get this to work.
 
 using System;
@@ -469,7 +469,7 @@ namespace MediaFoundation.dxvahd
         int CreateVideoSurface(
             int Width,
             int Height,
-            int Format, // D3DFORMAT 
+            int Format, // D3DFORMAT
             int Pool, // D3DPOOL
             int Usage,
             DXVAHD_SURFACE_TYPE Type,
@@ -486,13 +486,13 @@ namespace MediaFoundation.dxvahd
         [PreserveSig]
         int GetVideoProcessorOutputFormats(
             int Count,
-            out int[] pFormats // D3DFORMAT 
+            out int[] pFormats // D3DFORMAT
             );
 
         [PreserveSig]
         int GetVideoProcessorInputFormats(
             int Count,
-            out int[] pFormats // D3DFORMAT 
+            out int[] pFormats // D3DFORMAT
             );
 
         [PreserveSig]
@@ -693,7 +693,7 @@ namespace MediaFoundation.dxvahd
         IntPtr[] pCallbacks
         );
 
-    //DEFINE_GUID(DXVAHDControlGuid, 0xa0386e75,0xf70c,0x464c,0xa9,0xce,0x33,0xc4,0x4e,0x09,0x16,0x23); 
+    //DEFINE_GUID(DXVAHDControlGuid, 0xa0386e75,0xf70c,0x464c,0xa9,0xce,0x33,0xc4,0x4e,0x09,0x16,0x23);
 
     public static class DXVAHDETWGUID
     {
@@ -703,7 +703,7 @@ namespace MediaFoundation.dxvahd
         public static readonly Guid VIDEOPROCESSBLTHD = new Guid(0xbef3d435, 0x78c7, 0x4de3, 0x97, 0x07, 0xcd, 0x1b, 0x08, 0x3b, 0x16, 0x0a);
         public static readonly Guid VIDEOPROCESSBLTHD_STREAM = new Guid(0x27ae473e, 0xa5fc, 0x4be5, 0xb4, 0xe3, 0xf2, 0x49, 0x94, 0xd3, 0xc4, 0x95);
         public static readonly Guid DESTROYVIDEOPROCESSOR = new Guid(0xf943f0a0, 0x3f16, 0x43e0, 0x80, 0x93, 0x10, 0x5a, 0x98, 0x6a, 0xa5, 0xf1);
-   }
+    }
 
     [StructLayout(LayoutKind.Sequential), UnmanagedName("DXVAHDETW_CREATEVIDEOPROCESSOR")]
     public struct DXVAHDETW_CREATEVIDEOPROCESSOR

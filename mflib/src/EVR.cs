@@ -34,8 +34,8 @@ namespace MediaFoundation.EVR
 {
     #region COM Class Objects
 
-    [UnmanagedName("CLSID_EnhancedVideoRenderer"), 
-    ComImport, 
+    [UnmanagedName("CLSID_EnhancedVideoRenderer"),
+    ComImport,
     Guid("FA10746C-9B63-4b6c-BC49-FC300EA5F256")]
     public class EnhancedVideoRenderer
     {
