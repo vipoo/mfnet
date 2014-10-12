@@ -43,7 +43,8 @@ namespace MediaFoundation
         Aborted = 1,
         Network = 2,
         Decode = 3,
-        SrcNotSupported = 4
+        SrcNotSupported = 4,
+        Encrypted = 5,
     }
 
     [UnmanagedName("MF_MEDIA_ENGINE_EVENT")]
@@ -80,7 +81,10 @@ namespace MediaFoundation
         BufferingStarted = 1005,
         BufferingEnded = 1006,
         FrameStepCompleted = 1007,
-        NotifyStableState = 1008
+        NotifyStableState = 1008,
+        FirstFrameReady = 1009,
+        TracksChange = 1010,
+        OpmInfo = 1011,
     }
 
     [UnmanagedName("MF_MEDIA_ENGINE_NETWORK")]
@@ -138,8 +142,10 @@ namespace MediaFoundation
         FramesDropped = 1,
         BytesDownloaded = 2,
         BufferProgress = 3,
-        FramesPerSecond = 4
-
+        FramesPerSecond = 4,
+        PlaybackJitter = 5,
+        FramesCorrupted = 6,
+        TotalFrameDelay = 7,
     }
 
     [UnmanagedName("MF_MEDIA_ENGINE_SEEK_MODE")]
@@ -183,6 +189,45 @@ namespace MediaFoundation
         UsePMPForAllContent = 2,
         UseUnprotectedPMP = 4
 
+    }
+
+    [UnmanagedName("MF_MSE_READY")]
+    public enum MF_MSE_READY
+    {
+        Closed = 1,
+        Open = 2,
+        Ended = 3,
+    }
+
+    [UnmanagedName("MF_MSE_ERROR")]
+    public enum MF_MSE_ERROR
+    {
+        NoError = 0,
+        Network = 1,
+        Decode = 2,
+        UnknownError = 3,
+    }
+
+    [UnmanagedName("MF_MEDIA_ENGINE_KEYERR")]
+    public enum MF_MEDIA_ENGINE_KEYERR
+    {
+        Unknown = 1,
+        Client = 2,
+        Service = 3,
+        Output = 4,
+        HardwareChange = 5,
+        Domain = 6,
+    }
+
+    [UnmanagedName("MF_MEDIA_ENGINE_OPM_STATUS")]
+    public enum MF_MEDIA_ENGINE_OPM_STATUS
+    {
+        NotRequested = 0,
+        Established = 1,
+        FailedVM = 2,
+        FailedBDA = 3,
+        FailedUnsignedDriver = 4,
+        Failed = 5,
     }
 
 #endif
@@ -947,6 +992,453 @@ namespace MediaFoundation
         [PreserveSig]
         int CreateError(
             out IMFMediaError ppError
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    Guid("a7901327-05dd-4469-a7b7-0e01979e361d"),
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IMFMediaSourceExtensionNotify
+    {
+        [PreserveSig]
+        void OnSourceOpen();
+
+        [PreserveSig]
+        void OnSourceEnded();
+
+        [PreserveSig]
+        void OnSourceClose();
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    Guid("24cd47f7-81d8-4785-adb2-af697a963cd2"),
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IMFBufferListNotify
+    {
+        [PreserveSig]
+        void OnAddSourceBuffer();
+
+        [PreserveSig]
+        void OnRemoveSourceBuffer();
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    Guid("87e47623-2ceb-45d6-9b88-d8520c4dcbbc"),
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IMFSourceBufferNotify
+    {
+        [PreserveSig]
+        void OnUpdateStart();
+
+        [PreserveSig]
+        void OnAbort();
+
+        [PreserveSig]
+        void OnError(int hr);
+
+        [PreserveSig]
+        void OnUpdate();
+
+        [PreserveSig]
+        void OnUpdateEnd();
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    Guid("e2cd3a4b-af25-4d3d-9110-da0e6f8ee877"),
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IMFSourceBuffer
+    {
+        [return: MarshalAs(UnmanagedType.Bool)]
+        bool GetUpdating();
+
+        [PreserveSig]
+        int GetBuffered(
+            out IMFMediaTimeRange ppBuffered
+            );
+
+        [PreserveSig]
+        double GetTimeStampOffset();
+
+        [PreserveSig]
+        int SetTimeStampOffset(
+            double offset
+            );
+
+        [PreserveSig]
+        double GetAppendWindowStart();
+
+        [PreserveSig]
+        int SetAppendWindowStart(
+            double time
+            );
+
+        [PreserveSig]
+        double GetAppendWindowEnd();
+
+        [PreserveSig]
+        int SetAppendWindowEnd(
+            double time
+            );
+
+        [PreserveSig]
+        int Append(
+            IntPtr pData,
+            int len
+            );
+
+        [PreserveSig]
+        int AppendByteStream(
+            IMFByteStream pStream,
+            long pMaxLen
+            );
+
+        [PreserveSig]
+        int Abort();
+
+        [PreserveSig]
+        int Remove(
+            double start,
+            double end
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    Guid("249981f8-8325-41f3-b80c-3b9e3aad0cbe"),
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IMFSourceBufferList
+    {
+        [PreserveSig]
+        int GetLength();
+
+        [PreserveSig]
+        IMFSourceBuffer GetSourceBuffer(
+            int index
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    Guid("e467b94e-a713-4562-a802-816a42e9008a"),
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IMFMediaSourceExtension
+    {
+        [PreserveSig]
+        IMFSourceBufferList GetSourceBuffers();
+
+        [PreserveSig]
+        IMFSourceBufferList GetActiveSourceBuffers();
+
+        [PreserveSig]
+        MF_MSE_READY GetReadyState();
+
+        [PreserveSig]
+        double GetDuration();
+
+        [PreserveSig]
+        int SetDuration(
+            double duration
+            );
+
+        [PreserveSig]
+        int AddSourceBuffer(
+            [MarshalAs(UnmanagedType.BStr)] string type,
+            IMFSourceBufferNotify pNotify,
+            out IMFSourceBuffer ppSourceBuffer
+            );
+
+        [PreserveSig]
+        int RemoveSourceBuffer(
+            IMFSourceBuffer pSourceBuffer
+            );
+
+        [PreserveSig]
+        int SetEndOfStream(
+            MF_MSE_ERROR error
+            );
+
+        [return: MarshalAs(UnmanagedType.Bool)]
+        bool IsTypeSupported(
+            [MarshalAs(UnmanagedType.BStr)] string type
+            );
+
+        [PreserveSig]
+        IMFSourceBuffer GetSourceBuffer(
+            int dwStreamIndex
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    Guid("50dc93e4-ba4f-4275-ae66-83e836e57469"),
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IMFMediaEngineEME
+    {
+        [PreserveSig]
+        int get_Keys(
+           out IMFMediaKeys keys // check null
+           );
+
+        [PreserveSig]
+        int SetMediaKeys(
+           IMFMediaKeys keys
+           );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    Guid("654a6bb3-e1a3-424a-9908-53a43a0dfda0"),
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IMFMediaEngineSrcElementsEx : IMFMediaEngineSrcElements
+    {
+        #region IMFMediaEngineSrcElements methods
+
+        [PreserveSig]
+        new int GetLength();
+
+        [PreserveSig]
+        new int GetURL(
+            int index,
+            [MarshalAs(UnmanagedType.BStr)] out string pURL
+            );
+
+        [PreserveSig]
+        new int GetType(
+            int index,
+            [MarshalAs(UnmanagedType.BStr)] out string pType
+            );
+
+        [PreserveSig]
+        new int GetMedia(
+            int index,
+            [MarshalAs(UnmanagedType.BStr)] out string pMedia
+            );
+
+        [PreserveSig]
+        new int AddElement(
+            [MarshalAs(UnmanagedType.BStr)] string pURL,
+            [MarshalAs(UnmanagedType.BStr)] string pType,
+            [MarshalAs(UnmanagedType.BStr)] string pMedia
+            );
+
+        [PreserveSig]
+        new int RemoveAllElements();
+
+        #endregion
+
+        [PreserveSig]
+        int AddElementEx(
+            [MarshalAs(UnmanagedType.BStr)] string pURL,
+            [MarshalAs(UnmanagedType.BStr)] string pType,
+            [MarshalAs(UnmanagedType.BStr)] string pMedia,
+            [MarshalAs(UnmanagedType.BStr)] string keySystem
+            );
+
+        [PreserveSig]
+        int GetKeySystem(
+            int index,
+            [MarshalAs(UnmanagedType.BStr)] out string pType
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    Guid("46a30204-a696-4b18-8804-246b8f031bb1"),
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IMFMediaEngineNeedKeyNotify
+    {
+        [PreserveSig]
+        void NeedKey(
+           IntPtr initData,
+           int cb
+           );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    Guid("5cb31c05-61ff-418f-afda-caaf41421a38"),
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IMFMediaKeys
+    {
+        [PreserveSig]
+        int CreateSession(
+           [MarshalAs(UnmanagedType.BStr)] string mimeType,
+           IntPtr initData,
+           int cb,
+           IntPtr customData,
+           int cbCustomData,
+           IMFMediaKeySessionNotify notify,
+           out IMFMediaKeySession ppSession
+           );
+
+        [PreserveSig]
+        int get_KeySystem(
+           [MarshalAs(UnmanagedType.BStr)] out string keySystem
+           );
+
+        [PreserveSig]
+        int Shutdown();
+
+        [PreserveSig]
+        int GetSuspendNotify(
+           out IMFCdmSuspendNotify notify
+           );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    Guid("24fa67d5-d1d0-4dc5-995c-c0efdc191fb5"),
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IMFMediaKeySession
+    {
+        [PreserveSig]
+        int GetError(
+           out short code,
+           out int systemCode);
+
+        [PreserveSig]
+        int get_KeySystem(
+           [MarshalAs(UnmanagedType.BStr)] out string keySystem
+           );
+
+        [PreserveSig]
+        int get_SessionId(
+           [MarshalAs(UnmanagedType.BStr)] out string sessionId
+           );
+
+        [PreserveSig]
+        int Update(
+           IntPtr key,
+           int cb
+           );
+
+        [PreserveSig]
+        int Close();
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    Guid("6a0083f9-8947-4c1d-9ce0-cdee22b23135"),
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IMFMediaKeySessionNotify
+    {
+        [PreserveSig]
+        void KeyMessage(
+           [MarshalAs(UnmanagedType.BStr)] string destinationURL,
+           IntPtr message,
+           int cb
+           );
+
+        [PreserveSig]
+        void KeyAdded();
+
+        [PreserveSig]
+        void KeyError(
+           short code,
+           int systemCode
+           );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    Guid("7a5645d2-43bd-47fd-87b7-dcd24cc7d692"),
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IMFCdmSuspendNotify
+    {
+        [PreserveSig]
+        int Begin();
+
+        [PreserveSig]
+        int End();
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    Guid("765763e6-6c01-4b01-bb0f-b829f60ed28c"),
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IMFMediaEngineOPMInfo
+    {
+        [PreserveSig]
+        int GetOPMInfo(
+            out MF_MEDIA_ENGINE_OPM_STATUS pStatus,
+            [MarshalAs(UnmanagedType.Bool)] out bool pConstricted
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    Guid("c56156c6-ea5b-48a5-9df8-fbe035d0929e"),
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IMFMediaEngineClassFactoryEx : IMFMediaEngineClassFactory
+    {
+        #region IMFMediaEngineClassFactory methods
+
+        [PreserveSig]
+        new int CreateInstance(
+            MF_MEDIA_ENGINE_CREATEFLAGS dwFlags,
+            IMFAttributes pAttr,
+            out IMFMediaEngine ppPlayer
+            );
+
+        [PreserveSig]
+        new int CreateTimeRange(
+            out IMFMediaTimeRange ppTimeRange
+            );
+
+        [PreserveSig]
+        new int CreateError(
+            out IMFMediaError ppError
+            );
+
+        #endregion
+
+        [PreserveSig]
+        int CreateMediaSourceExtension(
+            int dwFlags,
+            IMFAttributes pAttr,
+            out IMFMediaSourceExtension ppMSE
+            );
+
+        [PreserveSig]
+        int CreateMediaKeys(
+            [MarshalAs(UnmanagedType.BStr)] string keySystem,
+            [MarshalAs(UnmanagedType.BStr)] string cdmStorePath,
+            out IMFMediaKeys ppKeys
+            );
+
+        [PreserveSig]
+        int IsTypeSupported(
+            [MarshalAs(UnmanagedType.BStr)] string type,
+            [MarshalAs(UnmanagedType.BStr)] string keySystem,
+            [MarshalAs(UnmanagedType.Bool)] out bool isSupported
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    Guid("09083cef-867f-4bf6-8776-dee3a7b42fca"),
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IMFMediaEngineClassFactory2
+    {
+        [PreserveSig]
+        int CreateMediaKeys2(
+            [MarshalAs(UnmanagedType.BStr)] string keySystem,
+            [MarshalAs(UnmanagedType.BStr)] string defaultCdmStorePath,
+            [MarshalAs(UnmanagedType.BStr)] string inprivateCdmStorePath,
+            out IMFMediaKeys ppKeys
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    Guid("a724b056-1b2e-4642-a6f3-db9420c52908"),
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IMFMediaEngineSupportsSourceTransfer
+    {
+        [PreserveSig]
+        int ShouldTransferSource(
+          [MarshalAs(UnmanagedType.Bool)] out bool pfShouldTransfer
+          );
+
+        [PreserveSig]
+        int DetachMediaSource(
+            out IMFByteStream ppByteStream,
+            out IMFMediaSource ppMediaSource,
+            out IMFMediaSourceExtension ppMSE
+            );
+
+        [PreserveSig]
+        int AttachMediaSource(
+            IMFByteStream pByteStream,
+            IMFMediaSource pMediaSource,
+            IMFMediaSourceExtension pMSE
             );
     }
 

@@ -40,7 +40,8 @@ namespace MediaFoundation
     {
         Disconnect = 2000,
         LocalRenderingStarted = 2001,
-        LocalRenderingEnded = 2002
+        LocalRenderingEnded = 2002,
+        Stopped = 2003,
     }
 
     [UnmanagedName("MF_MEDIA_SHARING_ENGINE_EVENT")]
@@ -55,7 +56,8 @@ namespace MediaFoundation
         None = 0x0,
         Image = 0x1,
         Audio = 0x2,
-        Video = 0x4
+        Video = 0x4,
+        Protected = 0x8,
     }
 
     [StructLayout(LayoutKind.Sequential), UnmanagedName("DEVICE_INFO")]
@@ -177,6 +179,28 @@ namespace MediaFoundation
             );
     }
 
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    Guid("AA9DD80F-C50A-4220-91C1-332287F82A34"),
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IPlayToControlWithCapabilities : IPlayToControl
+    {
+        #region IPlayToControl methods
+
+        [PreserveSig]
+        new int Connect(
+            IMFSharingEngineClassFactory pFactory
+            );
+
+        [PreserveSig]
+        new int Disconnect();
+
+        #endregion
+
+        [PreserveSig]
+        int GetCapabilities(
+            out PLAYTO_SOURCE_CREATEFLAGS pCapabilities
+            );
+    }
     #endregion
 
 #endif

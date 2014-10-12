@@ -112,7 +112,7 @@ namespace MediaFoundation
     {
     }
 
-    [UnmanagedName("CLSID_MFByteStreamProxyClassFactory"), 
+    [UnmanagedName("CLSID_MFByteStreamProxyClassFactory"),
     ComImport,
     Guid("770e8e77-4916-441c-a9a7-b342d0eebc71")]
     public class MFByteStreamProxyClassFactory
@@ -176,8 +176,24 @@ namespace MediaFoundation
         // MF_MEDIA_ENGINE_BROWSER_COMPATIBILITY_MODE_IE10
         public static readonly Guid BROWSER_COMPATIBILITY_MODE_IE10 = new Guid(0x11a47afd, 0x6589, 0x4124, 0xb3, 0x12, 0x61, 0x58, 0xec, 0x51, 0x7f, 0xc3);
 
+        // MF_MEDIA_ENGINE_BROWSER_COMPATIBILITY_MODE_IE11
+        public static readonly Guid BROWSER_COMPATIBILITY_MODE_IE11 = new Guid(0x1cf1315f, 0xce3f, 0x4035, 0x93, 0x91, 0x16, 0x14, 0x2f, 0x77, 0x51, 0x89);
+
         // MF_MEDIA_ENGINE_SOURCE_RESOLVER_CONFIG_STORE
         public static readonly Guid SOURCE_RESOLVER_CONFIG_STORE = new Guid(0x0ac0c497, 0xb3c4, 0x48c9, 0x9c, 0xde, 0xbb, 0x8c, 0xa2, 0x44, 0x2c, 0xa3);
+
+        // MF_MEDIA_ENGINE_NEEDKEY_CALLBACK
+        public static readonly Guid NEEDKEY_CALLBACK = new Guid(0x7ea80843, 0xb6e4, 0x432c, 0x8e, 0xa4, 0x78, 0x48, 0xff, 0xe4, 0x22, 0x0e);
+
+        // MF_MEDIA_ENGINE_TRACK_ID
+        public static readonly Guid TRACK_ID = new Guid(0x65bea312, 0x4043, 0x4815, 0x8e, 0xab, 0x44, 0xdc, 0xe2, 0xef, 0x8f, 0x2a);
+    }
+
+    public static class MF_MSE
+    {
+        public static readonly Guid MF_MSE_CALLBACK = new Guid(0x9063a7c0, 0x42c5, 0x4ffd, 0xa8, 0xa8, 0x6f, 0xcf, 0x9e, 0xa3, 0xd0, 0x0c);
+        public static readonly Guid MF_MSE_ACTIVELIST_CALLBACK = new Guid(0x949bda0f, 0x4549, 0x46d5, 0xad, 0x7f, 0xb8, 0x46, 0xe1, 0xab, 0x16, 0x52);
+        public static readonly Guid MF_MSE_BUFFERLIST_CALLBACK = new Guid(0x42e669b0, 0xd60e, 0x4afb, 0xa8, 0x5b, 0xd8, 0xe5, 0xfe, 0x6b, 0xda, 0xb5);
     }
 
     public static class MFAttributesClsid
@@ -214,7 +230,7 @@ namespace MediaFoundation
 
         // Event Attributes
 
-        public static readonly Guid MF_EVENT_FORMAT_CHANGE_REQUEST_SOURCE_SAR = new Guid(0xb26fbdfd, 0xc32c, 0x41fe, 0x9c, 0xf0, 0x8, 0x3c, 0xd5, 0xc7, 0xf8, 0xa4);
+        // removed by MS - public static readonly Guid MF_EVENT_FORMAT_CHANGE_REQUEST_SOURCE_SAR = new Guid(0xb26fbdfd, 0xc32c, 0x41fe, 0x9c, 0xf0, 0x8, 0x3c, 0xd5, 0xc7, 0xf8, 0xa4);
 
         // MF_EVENT_DO_THINNING {321EA6FB-DAD9-46e4-B31D-D2EAE7090E30}
         public static readonly Guid MF_EVENT_DO_THINNING = new Guid(0x321ea6fb, 0xdad9, 0x46e4, 0xb3, 0x1d, 0xd2, 0xea, 0xe7, 0x9, 0xe, 0x30);
@@ -267,6 +283,15 @@ namespace MediaFoundation
 
         // MF_EVENT_TOPOLOGY_STATUS {30C5018D-9A53-454b-AD9E-6D5F8FA7C43B}
         public static readonly Guid MF_EVENT_TOPOLOGY_STATUS = new Guid(0x30c5018d, 0x9a53, 0x454b, 0xad, 0x9e, 0x6d, 0x5f, 0x8f, 0xa7, 0xc4, 0x3b);
+
+        // MF_EVENT_STREAM_METADATA_KEYDATA {CD59A4A1-4A3B-4BBD-8665-72A40FBEA776}
+        public static readonly Guid MF_EVENT_STREAM_METADATA_KEYDATA = new Guid(0xcd59a4a1, 0x4a3b, 0x4bbd, 0x86, 0x65, 0x72, 0xa4, 0xf, 0xbe, 0xa7, 0x76);
+
+        // MF_EVENT_STREAM_METADATA_CONTENT_KEYIDS {5063449D-CC29-4FC6-A75A-D247B35AF85C}
+        public static readonly Guid MF_EVENT_STREAM_METADATA_CONTENT_KEYIDS = new Guid(0x5063449d, 0xcc29, 0x4fc6, 0xa7, 0x5a, 0xd2, 0x47, 0xb3, 0x5a, 0xf8, 0x5c);
+
+        // MF_EVENT_STREAM_METADATA_SYSTEMID {1EA2EF64-BA16-4A36-8719-FE7560BA32AD}
+        public static readonly Guid MF_EVENT_STREAM_METADATA_SYSTEMID = new Guid(0x1ea2ef64, 0xba16, 0x4a36, 0x87, 0x19, 0xfe, 0x75, 0x60, 0xba, 0x32, 0xad);
 
         public static readonly Guid MF_SESSION_APPROX_EVENT_OCCURRENCE_TIME = new Guid(0x190e852f, 0x6238, 0x42d1, 0xb5, 0xaf, 0x69, 0xea, 0x33, 0x8e, 0xf8, 0x50);
 
@@ -483,6 +508,12 @@ namespace MediaFoundation
         // {73d1072d-1870-4174-a063-29ff4ff6c11e}
         public static readonly Guid MF_MT_AM_FORMAT_TYPE = new Guid(0x73d1072d, 0x1870, 0x4174, 0xa0, 0x63, 0x29, 0xff, 0x4f, 0xf6, 0xc1, 0x1e);
 
+        // {ad76a80b-2d5c-4e0b-b375-64e520137036}   MF_MT_VIDEO_PROFILE             {UINT32}    This is an alias of  MF_MT_MPEG2_PROFILE
+        public static readonly Guid MF_MT_VIDEO_PROFILE = new Guid(0xad76a80b, 0x2d5c, 0x4e0b, 0xb3, 0x75, 0x64, 0xe5, 0x20, 0x13, 0x70, 0x36);
+
+        // {96f66574-11c5-4015-8666-bff516436da7}   MF_MT_VIDEO_LEVEL               {UINT32}    This is an alias of  MF_MT_MPEG2_LEVEL
+        public static readonly Guid MF_MT_VIDEO_LEVEL = new Guid(0x96f66574, 0x11c5, 0x4015, 0x86, 0x66, 0xbf, 0xf5, 0x16, 0x43, 0x6d, 0xa7);
+
         // {91f67885-4333-4280-97cd-bd5a6c03a06e}   MF_MT_MPEG_START_TIME_CODE      {UINT32}
         public static readonly Guid MF_MT_MPEG_START_TIME_CODE = new Guid(0x91f67885, 0x4333, 0x4280, 0x97, 0xcd, 0xbd, 0x5a, 0x6c, 0x03, 0xa0, 0x6e);
 
@@ -548,6 +579,26 @@ namespace MediaFoundation
 
         // {6852465a-ae1c-4553-8e9b-c3420fcb1637}   MFSampleExtension_DerivedFromTopField
         public static readonly Guid MFSampleExtension_DerivedFromTopField = new Guid(0x6852465a, 0xae1c, 0x4553, 0x8e, 0x9b, 0xc3, 0x42, 0x0f, 0xcb, 0x16, 0x37);
+
+        // MFSampleExtension_MeanAbsoluteDifference {1cdbde11-08b4-4311-a6dd-0f9f371907aa}
+        public static readonly Guid MFSampleExtension_MeanAbsoluteDifference = new Guid(0x1cdbde11, 0x08b4, 0x4311, 0xa6, 0xdd, 0x0f, 0x9f, 0x37, 0x19, 0x07, 0xaa);
+
+        // MFSampleExtension_LongTermReferenceFrameInfo {9154733f-e1bd-41bf-81d3-fcd918f71332}
+        public static readonly Guid MFSampleExtension_LongTermReferenceFrameInfo = new Guid(0x9154733f, 0xe1bd, 0x41bf, 0x81, 0xd3, 0xfc, 0xd9, 0x18, 0xf7, 0x13, 0x32);
+
+        // MFSampleExtension_ROIRectangle {3414a438-4998-4d2c-be82-be3ca0b24d43}
+        public static readonly Guid MFSampleExtension_ROIRectangle = new Guid(0x3414a438, 0x4998, 0x4d2c, 0xbe, 0x82, 0xbe, 0x3c, 0xa0, 0xb2, 0x4d, 0x43);
+
+        // MFSampleExtension_PhotoThumbnail {74BBC85C-C8BB-42DC-B586DA17FFD35DCC}
+        public static readonly Guid MFSampleExtension_PhotoThumbnail = new Guid(0x74BBC85C, 0xC8BB, 0x42DC, 0xB5, 0x86, 0xDA, 0x17, 0xFF, 0xD3, 0x5D, 0xCC);
+
+        // MFSampleExtension_PhotoThumbnailMediaType {61AD5420-EBF8-4143-89AF6BF25F672DEF}
+        public static readonly Guid MFSampleExtension_PhotoThumbnailMediaType = new Guid(0x61AD5420, 0xEBF8, 0x4143, 0x89, 0xAF, 0x6B, 0xF2, 0x5F, 0x67, 0x2D, 0xEF);
+
+        // MFSampleExtension_CaptureMetadata
+        public static readonly Guid MFSampleExtension_CaptureMetadata = new Guid(0x2EBE23A8, 0xFAF5, 0x444A, 0xA6, 0xA2, 0xEB, 0x81, 0x08, 0x80, 0xAB, 0x5D);
+
+        public static readonly Guid MF_CAPTURE_METADATA_PHOTO_FRAME_FLASH = new Guid(0x0F9DD6C6, 0x6003, 0x45D8, 0xBD, 0x59, 0xF1, 0xF5, 0x3E, 0x3D, 0x04, 0xE8);
 
         // MFSampleExtension_Discontinuity {9cdf01d9-a0f0-43ba-b077-eaa06cbd728a}
         public static readonly Guid MFSampleExtension_Discontinuity = new Guid(0x9cdf01d9, 0xa0f0, 0x43ba, 0xb0, 0x77, 0xea, 0xa0, 0x6c, 0xbd, 0x72, 0x8a);
@@ -622,6 +673,9 @@ namespace MediaFoundation
 
         // {53476A11-3F13-49fb-AC42-EE2733C96741} MFT_SUPPORT_DYNAMIC_FORMAT_CHANGE {UINT32 (BOOL)}
         public static readonly Guid MFT_SUPPORT_DYNAMIC_FORMAT_CHANGE = new Guid(0x53476a11, 0x3f13, 0x49fb, 0xac, 0x42, 0xee, 0x27, 0x33, 0xc9, 0x67, 0x41);
+
+        public static readonly Guid MFT_REMUX_MARK_I_PICTURE_AS_CLEAN_POINT = new Guid(0x364e8f85, 0x3f2e, 0x436c, 0xb2, 0xa2, 0x44, 0x40, 0xa0, 0x12, 0xa9, 0xe8);
+        public static readonly Guid MFT_ENCODER_SUPPORTS_CONFIG_EVENT = new Guid(0x86a355ae, 0x3a77, 0x4ec4, 0x9f, 0x31, 0x1, 0x14, 0x9a, 0x4e, 0x92, 0xde);
 
         // Presentation Descriptor Attributes
 
@@ -713,7 +767,13 @@ namespace MediaFoundation
 
         public static readonly Guid MF_LOW_LATENCY = new Guid(0x9c27891a, 0xed7a, 0x40e1, 0x88, 0xe8, 0xb2, 0x27, 0x27, 0xa0, 0x24, 0xee);
 
+        // {E3F2E203-D445-4B8C-9211-AE390D3BA017}  {UINT32} Maximum macroblocks per second that can be handled by MFT
+        public static readonly Guid MF_VIDEO_MAX_MB_PER_SEC = new Guid(0xe3f2e203, 0xd445, 0x4b8c, 0x92, 0x11, 0xae, 0x39, 0xd, 0x3b, 0xa0, 0x17);
+        public static readonly Guid MF_VIDEO_PROCESSOR_ALGORITHM = new Guid(0x4a0a1e1f, 0x272c, 0x4fb6, 0x9e, 0xb1, 0xdb, 0x33, 0xc, 0xbc, 0x97, 0xca);
+
         public static readonly Guid MF_TOPOLOGY_DXVA_MODE = new Guid(0x1e8d34f6, 0xf5ab, 0x4e23, 0xbb, 0x88, 0x87, 0x4a, 0xa3, 0xa1, 0xa7, 0x4d);
+        public static readonly Guid MF_TOPOLOGY_ENABLE_XVP_FOR_PLAYBACK = new Guid(0x1967731f, 0xcd78, 0x42fc, 0xb0, 0x26, 0x9, 0x92, 0xa5, 0x6e, 0x56, 0x93);
+
         public static readonly Guid MF_TOPOLOGY_STATIC_PLAYBACK_OPTIMIZATIONS = new Guid(0xb86cac42, 0x41a6, 0x4b79, 0x89, 0x7a, 0x1a, 0xb0, 0xe5, 0x2b, 0x4a, 0x1b);
         public static readonly Guid MF_TOPOLOGY_PLAYBACK_MAX_DIMS = new Guid(0x5715cf19, 0x5768, 0x44aa, 0xad, 0x6e, 0x87, 0x21, 0xf1, 0xb0, 0xf9, 0xbb);
 
@@ -810,10 +870,13 @@ namespace MediaFoundation
         public static readonly Guid MF_SA_D3D11_USAGE = new Guid(0xe85fe442, 0x2ca3, 0x486e, 0xa9, 0xc7, 0x10, 0x9d, 0xda, 0x60, 0x98, 0x80);
         public static readonly Guid MF_SA_D3D11_AWARE = new Guid(0x206b4fc8, 0xfcf9, 0x4c51, 0xaf, 0xe3, 0x97, 0x64, 0x36, 0x9e, 0x33, 0xa0);
         public static readonly Guid MF_SA_D3D11_SHARED = new Guid(0x7b8f32c3, 0x6d96, 0x4b89, 0x92, 0x3, 0xdd, 0x38, 0xb6, 0x14, 0x14, 0xf3);
+        public static readonly Guid MF_SA_D3D11_SHARED_WITHOUT_MUTEX = new Guid(0x39dbd44d, 0x2e44, 0x4931, 0xa4, 0xc8, 0x35, 0x2d, 0x3d, 0xc4, 0x21, 0x15);
         public static readonly Guid MF_SA_BUFFERS_PER_SAMPLE = new Guid(0x873c5171, 0x1e3d, 0x4e25, 0x98, 0x8d, 0xb4, 0x33, 0xce, 0x04, 0x19, 0x83);
         public static readonly Guid MFT_DECODER_EXPOSE_OUTPUT_TYPES_IN_NATIVE_ORDER = new Guid(0xef80833f, 0xf8fa, 0x44d9, 0x80, 0xd8, 0x41, 0xed, 0x62, 0x32, 0x67, 0xc);
         public static readonly Guid MFT_DECODER_FINAL_VIDEO_RESOLUTION_HINT = new Guid(0xdc2f8496, 0x15c4, 0x407a, 0xb6, 0xf0, 0x1b, 0x66, 0xab, 0x5f, 0xbf, 0x53);
         public static readonly Guid MFT_ENUM_HARDWARE_VENDOR_ID_Attribute = new Guid(0x3aecb0cc, 0x35b, 0x4bcc, 0x81, 0x85, 0x2b, 0x8d, 0x55, 0x1e, 0xf3, 0xaf);
+        public static readonly Guid MF_WVC1_PROG_SINGLE_SLICE_CONTENT = new Guid(0x67EC2559, 0x0F2F, 0x4420, 0xA4, 0xDD, 0x2F, 0x8E, 0xE7, 0xA5, 0x73, 0x8B);
+        public static readonly Guid MF_PROGRESSIVE_CODING_CONTENT = new Guid(0x8F020EEA, 0x1508, 0x471F, 0x9D, 0xA6, 0x50, 0x7D, 0x7C, 0xFA, 0x40, 0xDB);
         public static readonly Guid MF_NALU_LENGTH_SET = new Guid(0xA7911D53, 0x12A4, 0x4965, 0xAE, 0x70, 0x6E, 0xAD, 0xD6, 0xFF, 0x05, 0x51);
         public static readonly Guid MF_NALU_LENGTH_INFORMATION = new Guid(0x19124E7C, 0xAD4B, 0x465F, 0xBB, 0x18, 0x20, 0x18, 0x62, 0x87, 0xB6, 0xAF);
         public static readonly Guid MF_USER_DATA_PAYLOAD = new Guid(0xd1d4985d, 0xdc92, 0x457a, 0xb3, 0xa0, 0x65, 0x1a, 0x33, 0xa3, 0x10, 0x47);
@@ -839,6 +902,8 @@ namespace MediaFoundation
         public static readonly Guid MFTranscodeContainerType_AC3 = new Guid(0x6d8d91c3, 0x8c91, 0x4ed1, 0x87, 0x42, 0x8c, 0x34, 0x7d, 0x5b, 0x44, 0xd0);
         public static readonly Guid MFTranscodeContainerType_ADTS = new Guid(0x132fd27d, 0x0f02, 0x43de, 0xa3, 0x01, 0x38, 0xfb, 0xbb, 0xb3, 0x83, 0x4e);
         public static readonly Guid MFTranscodeContainerType_MPEG2 = new Guid(0xbfc2dbf9, 0x7bb4, 0x4f8f, 0xaf, 0xde, 0xe1, 0x12, 0xc4, 0x4b, 0xa8, 0x82);
+        public static readonly Guid MFTranscodeContainerType_WAVE = new Guid(0x64c3453c, 0x0f26, 0x4741, 0xbe, 0x63, 0x87, 0xbd, 0xf8, 0xbb, 0x93, 0x5b);
+        public static readonly Guid MFTranscodeContainerType_AVI = new Guid(0x7edfe8af, 0x402f, 0x4d76, 0xa3, 0x3c, 0x61, 0x9f, 0xd1, 0x57, 0xd0, 0xf1);
         public static readonly Guid MFTranscodeContainerType_FMPEG4 = new Guid(0x9ba876f1, 0x419f, 0x4b77, 0xa1, 0xe0, 0x35, 0x95, 0x9d, 0x9d, 0x40, 0x4);
         public static readonly Guid MF_XVP_DISABLE_FRC = new Guid(0x2c0afa19, 0x7a97, 0x4d5a, 0x9e, 0xe8, 0x16, 0xd4, 0xfc, 0x51, 0x8d, 0x8c);
         public static readonly Guid MF_WRAPPED_OBJECT = new Guid(0x2b182c4c, 0xd6ac, 0x49f4, 0x89, 0x15, 0xf7, 0x18, 0x87, 0xdb, 0x70, 0xcd);
@@ -858,6 +923,7 @@ namespace MediaFoundation
     {
         public static readonly Guid DEVICE_NAME = new Guid(0x771e05d1, 0x862f, 0x4299, 0x95, 0xac, 0xae, 0x81, 0xfd, 0x14, 0xf3, 0xe7);
         public static readonly Guid DEVICE = new Guid(0xb461c58a, 0x7a08, 0x4b98, 0x99, 0xa8, 0x70, 0xfd, 0x5f, 0x3b, 0xad, 0xfd);
+        public static readonly Guid INITIAL_SEEK_TIME = new Guid(0x6f3497f5, 0xd528, 0x4a4f, 0x8d, 0xd7, 0xdb, 0x36, 0x65, 0x7e, 0xc4, 0xc9);
     }
 
     public static class MF_CAPTURE_ENGINE
@@ -875,7 +941,8 @@ namespace MediaFoundation
         public static readonly Guid D3D_MANAGER = new Guid(0x76e25e7b, 0xd595, 0x4283, 0x96, 0x2c, 0xc5, 0x94, 0xaf, 0xd7, 0x8d, 0xdf);
         public static readonly Guid RECORD_SINK_VIDEO_MAX_UNPROCESSED_SAMPLES = new Guid(0xb467f705, 0x7913, 0x4894, 0x9d, 0x42, 0xa2, 0x15, 0xfe, 0xa2, 0x3d, 0xa9);
         public static readonly Guid RECORD_SINK_AUDIO_MAX_UNPROCESSED_SAMPLES = new Guid(0x1cddb141, 0xa7f4, 0x4d58, 0x98, 0x96, 0x4d, 0x15, 0xa5, 0x3c, 0x4e, 0xfe);
-        public static readonly Guid RECORD_SINK_VIDEO_MAX_PROCESSED_SAMPLES = new Guid(0xe7b4a49e, 0x382c, 0x4aef, 0xa9, 0x46, 0xae, 0xd5, 0x49, 0xb, 0x71, 0x11);
+        // value changed by MS - public static readonly Guid RECORD_SINK_VIDEO_MAX_PROCESSED_SAMPLES = new Guid(0xe7b4a49e, 0x382c, 0x4aef, 0xa9, 0x46, 0xae, 0xd5, 0x49, 0xb, 0x71, 0x11);
+        public static readonly Guid RECORD_SINK_VIDEO_MAX_PROCESSED_SAMPLES = new Guid(0x9896e12a, 0xf707, 0x4500, 0xb6, 0xbd, 0xdb, 0x8e, 0xb8, 0x10, 0xb5, 0xf);
         public static readonly Guid RECORD_SINK_AUDIO_MAX_PROCESSED_SAMPLES = new Guid(0xe7b4a49e, 0x382c, 0x4aef, 0xa9, 0x46, 0xae, 0xd5, 0x49, 0xb, 0x71, 0x11);
         public static readonly Guid USE_AUDIO_DEVICE_ONLY = new Guid(0x1c8077da, 0x8466, 0x4dc4, 0x8b, 0x8e, 0x27, 0x6b, 0x3f, 0x85, 0x92, 0x3b);
         public static readonly Guid USE_VIDEO_DEVICE_ONLY = new Guid(0x7e025171, 0xcf32, 0x4f2e, 0x8f, 0x19, 0x41, 0x5, 0x77, 0xb7, 0x3a, 0x66);
@@ -884,12 +951,13 @@ namespace MediaFoundation
         public static readonly Guid MEDIASOURCE_CONFIG = new Guid(0xbc6989d2, 0x0fc1, 0x46e1, 0xa7, 0x4f, 0xef, 0xd3, 0x6b, 0xc7, 0x88, 0xde);
         public static readonly Guid DECODER_MFT_FIELDOFUSE_UNLOCK_Attribute = new Guid(0x2b8ad2e8, 0x7acb, 0x4321, 0xa6, 0x06, 0x32, 0x5c, 0x42, 0x49, 0xf4, 0xfc);
         public static readonly Guid ENCODER_MFT_FIELDOFUSE_UNLOCK_Attribute = new Guid(0x54c63a00, 0x78d5, 0x422f, 0xaa, 0x3e, 0x5e, 0x99, 0xac, 0x64, 0x92, 0x69);
-        public static readonly Guid DISABLE_LOW_LATENCY = new Guid(0xdab5a16d, 0x1f0f, 0x44da, 0xad, 0x48, 0x82, 0x27, 0x31, 0x89, 0x43, 0xb8);
+        // removed by MS - public static readonly Guid DISABLE_LOW_LATENCY = new Guid(0xdab5a16d, 0x1f0f, 0x44da, 0xad, 0x48, 0x82, 0x27, 0x31, 0x89, 0x43, 0xb8);
         public static readonly Guid EVENT_GENERATOR_GUID = new Guid(0xabfa8ad5, 0xfc6d, 0x4911, 0x87, 0xe0, 0x96, 0x19, 0x45, 0xf8, 0xf7, 0xce);
         public static readonly Guid EVENT_STREAM_INDEX = new Guid(0x82697f44, 0xb1cf, 0x42eb, 0x97, 0x53, 0xf8, 0x6d, 0x64, 0x9c, 0x88, 0x65);
 
         public static readonly Guid SOURCE_CURRENT_DEVICE_MEDIA_TYPE_SET = new Guid(0xe7e75e4c, 0x039c, 0x4410, 0x81, 0x5b, 0x87, 0x41, 0x30, 0x7b, 0x63, 0xaa);
         public static readonly Guid SINK_PREPARED = new Guid(0x7BFCE257, 0x12B1, 0x4409, 0x8C, 0x34, 0xD4, 0x45, 0xDA, 0xAB, 0x75, 0x78);
+        public static readonly Guid OUTPUT_MEDIA_TYPE_SET = new Guid(0xcaaad994, 0x83ec, 0x45e9, 0xa3, 0x0a, 0x1f, 0x20, 0xaa, 0xdb, 0x98, 0x31);
     }
 
     public static class MFTranscodeContainerType
@@ -917,6 +985,7 @@ namespace MediaFoundation
         public static readonly Guid MFCONNECTOR_SPDIF = new Guid(0xb94a712, 0xad3e, 0x4cee, 0x83, 0xce, 0xce, 0x32, 0xe3, 0xdb, 0x65, 0x22);
         public static readonly Guid MFCONNECTOR_SVIDEO = new Guid(0x57cd5969, 0xce47, 0x11d9, 0x92, 0xdb, 0x00, 0x0b, 0xdb, 0x28, 0xff, 0x98);
         public static readonly Guid MFCONNECTOR_UDI_EMBEDDED = new Guid(0x57cd5975, 0xce47, 0x11d9, 0x92, 0xdb, 0x00, 0x0b, 0xdb, 0x28, 0xff, 0x98);
+        public static readonly Guid MFCONNECTOR_MIRACAST = new Guid(0x57cd5977, 0xce47, 0x11d9, 0x92, 0xdb, 0x00, 0x0b, 0xdb, 0x28, 0xff, 0x98);
         public static readonly Guid MFCONNECTOR_UDI_EXTERNAL = new Guid(0x57cd5974, 0xce47, 0x11d9, 0x92, 0xdb, 0x00, 0x0b, 0xdb, 0x28, 0xff, 0x98);
         public static readonly Guid MFCONNECTOR_UNKNOWN = new Guid(0xac3aef5c, 0xce43, 0x11d9, 0x92, 0xdb, 0x00, 0x0b, 0xdb, 0x28, 0xff, 0x98);
         public static readonly Guid MFCONNECTOR_VGA = new Guid(0x57cd5968, 0xce47, 0x11d9, 0x92, 0xdb, 0x00, 0x0b, 0xdb, 0x28, 0xff, 0x98);
@@ -1055,6 +1124,12 @@ namespace MediaFoundation
         public static readonly Guid MR_BUFFER_SERVICE = new Guid(0xa562248c, 0x9ac6, 0x4ffc, 0x9f, 0xba, 0x3a, 0xf8, 0xf8, 0xad, 0x1a, 0x4d);
         public static readonly Guid MF_PMP_SERVICE = new Guid(0x2F00C90C, 0xD2CF, 0x4278, 0x8B, 0x6A, 0xD0, 0x77, 0xFA, 0xC3, 0xA2, 0x5F);
         public static readonly Guid MF_LOCAL_MFT_REGISTRATION_SERVICE = new Guid(0xddf5cf9c, 0x4506, 0x45aa, 0xab, 0xf0, 0x6d, 0x5d, 0x94, 0xdd, 0x1b, 0x4a);
+        public static readonly Guid MF_BYTESTREAM_SERVICE = new Guid(0xab025e2b, 0x16d9, 0x4180, 0xa1, 0x27, 0xba, 0x6c, 0x70, 0x15, 0x61, 0x61);
+        public static readonly Guid MF_WRAPPED_BUFFER_SERVICE = new Guid(0xab544072, 0xc269, 0x4ebc, 0xa5, 0x52, 0x1c, 0x3b, 0x32, 0xbe, 0xd5, 0xca);
+        public static readonly Guid MF_WRAPPED_SAMPLE_SERVICE = new Guid(0x31f52bf2, 0xd03e, 0x4048, 0x80, 0xd0, 0x9c, 0x10, 0x46, 0xd8, 0x7c, 0x61);
+        public static readonly Guid MF_MEDIASOURCE_SERVICE = new Guid(0xf09992f7, 0x9fba, 0x4c4a, 0xa3, 0x7f, 0x8c, 0x47, 0xb4, 0xe1, 0xdf, 0xe7);
+        public static readonly Guid GUID_PlayToService = new Guid(0xf6a8ff9d, 0x9e14, 0x41c9, 0xbf, 0x0f, 0x12, 0x0a, 0x2b, 0x3c, 0xe1, 0x20);
+        public static readonly Guid GUID_NativeDeviceService = new Guid(0xef71e53c, 0x52f4, 0x43c5, 0xb8, 0x6a, 0xad, 0x6c, 0xb2, 0x16, 0xa6, 0x1e);
     }
 
     public static class MFPKEY
@@ -1083,21 +1158,27 @@ namespace MediaFoundation
         public static readonly PropertyKey HTTP_ByteStream_Urlmon_Callback_QueryService = new PropertyKey(new Guid(0xeda8afdf, 0xc171, 0x417f, 0x8d, 0x17, 0x2e, 0x09, 0x18, 0x30, 0x32, 0x92), 0x05);
         public static readonly PropertyKey MediaProtectionSystemId = new PropertyKey(new Guid(0x636b271d, 0xddc7, 0x49e9, 0xa6, 0xc6, 0x47, 0x38, 0x59, 0x62, 0xe5, 0xbd), 0x01);
         public static readonly PropertyKey MediaProtectionSystemContext = new PropertyKey(new Guid(0x636b271d, 0xddc7, 0x49e9, 0xa6, 0xc6, 0x47, 0x38, 0x59, 0x62, 0xe5, 0xbd), 0x02);
+
+        public static readonly PropertyKey MediaProtectionSystemIdMapping = new PropertyKey(new Guid(0x636b271d, 0xddc7, 0x49e9, 0xa6, 0xc6, 0x47, 0x38, 0x59, 0x62, 0xe5, 0xbd), 0x03);
+        public static readonly PropertyKey MediaProtectionContainerGuid = new PropertyKey(new Guid(0x42af3d7c, 0xcf, 0x4a0f, 0x81, 0xf0, 0xad, 0xf5, 0x24, 0xa5, 0xa5, 0xb5), 0x1);
+        public static readonly PropertyKey MediaProtectionSystemContextsPerTrack = new PropertyKey(new Guid(0x4454b092, 0xd3da, 0x49b0, 0x84, 0x52, 0x68, 0x50, 0xc7, 0xdb, 0x76, 0x4d), 0x03);
+        public static readonly PropertyKey HTTP_ByteStream_Download_Mode = new PropertyKey(new Guid(0x817f11b7, 0xa982, 0x46ec, 0xa4, 0x49, 0xef, 0x58, 0xae, 0xd5, 0x3c, 0xa8), 0x01);
     }
 
     public static class CLSID
     {
         // Unknown
-        public static readonly Guid MFASFINDEXER_TYPE_TIMECODE = new Guid(0x49815231, 0x6bad, 0x44fd, 0x81, 0xa, 0x3f, 0x60, 0x98, 0x4e, 0xc7, 0xfd );
+        public static readonly Guid MFASFINDEXER_TYPE_TIMECODE = new Guid(0x49815231, 0x6bad, 0x44fd, 0x81, 0xa, 0x3f, 0x60, 0x98, 0x4e, 0xc7, 0xfd);
 
         public static readonly Guid MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE_AUDCAP_GUID = new Guid(0x14dd9a1c, 0x7cff, 0x41be, 0xb1, 0xb9, 0xba, 0x1a, 0xc6, 0xec, 0xb5, 0x71);
-        public static readonly Guid MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE_VIDCAP_GUID= new Guid( 0x8ac3587a, 0x4ae7, 0x42d8, 0x99, 0xe0, 0x0a, 0x60, 0x13, 0xee, 0xf9, 0x0f);
+        public static readonly Guid MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE_VIDCAP_GUID = new Guid(0x8ac3587a, 0x4ae7, 0x42d8, 0x99, 0xe0, 0x0a, 0x60, 0x13, 0xee, 0xf9, 0x0f);
 
         public static readonly Guid MFCONNECTOR_SDI = new Guid(0x57cd5971, 0xce47, 0x11d9, 0x92, 0xdb, 0x00, 0x0b, 0xdb, 0x28, 0xff, 0x98);
         public static readonly Guid MFPROTECTION_ACP = new Guid(0xc3fd11c6, 0xf8b7, 0x4d20, 0xb0, 0x08, 0x1d, 0xb1, 0x7d, 0x61, 0xf2, 0xda);
         public static readonly Guid MFPROTECTION_CGMSA = new Guid(0xE57E69E9, 0x226B, 0x4d31, 0xB4, 0xE3, 0xD3, 0xDB, 0x00, 0x87, 0x36, 0xDD);
         public static readonly Guid MFPROTECTION_CONSTRICTAUDIO = new Guid(0xffc99b44, 0xdf48, 0x4e16, 0x8e, 0x66, 0x09, 0x68, 0x92, 0xc1, 0x57, 0x8a);
         public static readonly Guid MFPROTECTION_CONSTRICTVIDEO = new Guid(0x193370ce, 0xc5e4, 0x4c3a, 0x8a, 0x66, 0x69, 0x59, 0xb4, 0xda, 0x44, 0x42);
+        public static readonly Guid MFPROTECTION_CONSTRICTVIDEO_NOOPM = new Guid(0xa580e8cd, 0xc247, 0x4957, 0xb9, 0x83, 0x3c, 0x2e, 0xeb, 0xd1, 0xff, 0x59);
         public static readonly Guid MFPROTECTION_DISABLE = new Guid(0x8cc6d81b, 0xfec6, 0x4d8f, 0x96, 0x4b, 0xcf, 0xba, 0x0b, 0x0d, 0xad, 0x0d);
         public static readonly Guid MFPROTECTION_FFT = new Guid(0x462a56b2, 0x2866, 0x4bb6, 0x98, 0x0d, 0x6d, 0x8d, 0x9e, 0xdb, 0x1a, 0x8c);
         public static readonly Guid MFPROTECTION_HDCP = new Guid(0xAE7CC03D, 0xC828, 0x4021, 0xac, 0xb7, 0xd5, 0x78, 0xd2, 0x7a, 0xaf, 0x13);
@@ -1110,6 +1191,10 @@ namespace MediaFoundation
         public static readonly Guid MFSampleExtension_GenKeyFunc = new Guid(0x441ca1ee, 0x6b1f, 0x4501, 0x90, 0x3a, 0xde, 0x87, 0xdf, 0x42, 0xf6, 0xed);
         public static readonly Guid MFSampleExtension_GenKeyCtx = new Guid(0x188120cb, 0xd7da, 0x4b59, 0x9b, 0x3e, 0x92, 0x52, 0xfd, 0x37, 0x30, 0x1c);
         public static readonly Guid MFSampleExtension_PacketCrossOffsets = new Guid(0x2789671d, 0x389f, 0x40bb, 0x90, 0xd9, 0xc2, 0x82, 0xf7, 0x7f, 0x9a, 0xbd);
+        public static readonly Guid MFSampleExtension_Encryption_SampleID = new Guid(0x6698b84e, 0x0afa, 0x4330, 0xae, 0xb2, 0x1c, 0x0a, 0x98, 0xd7, 0xa4, 0x4d);
+        public static readonly Guid MFSampleExtension_Encryption_KeyID = new Guid(0x76376591, 0x795f, 0x4da1, 0x86, 0xed, 0x9d, 0x46, 0xec, 0xa1, 0x09, 0xa9);
+        public static readonly Guid MFSampleExtension_Content_KeyID = new Guid(0xc6c7f5b0, 0xacca, 0x415b, 0x87, 0xd9, 0x10, 0x44, 0x14, 0x69, 0xef, 0xc6);
+        public static readonly Guid MFSampleExtension_Encryption_SubSampleMappingSplit = new Guid(0xfe0254b9, 0x2aa5, 0x4edc, 0x99, 0xf7, 0x17, 0xe8, 0x9d, 0xbf, 0x91, 0x74);
         public static readonly Guid MF_SampleProtectionSalt = new Guid(0x5403deee, 0xb9ee, 0x438f, 0xaa, 0x83, 0x38, 0x4, 0x99, 0x7e, 0x56, 0x9d);
         public static readonly Guid CLSID_MFSourceResolver = new Guid(0x90eab60f, 0xe43a, 0x4188, 0xbc, 0xc4, 0xe4, 0x7f, 0xdf, 0x04, 0x86, 0x8c);
 
@@ -1123,6 +1208,8 @@ namespace MediaFoundation
         public static readonly Guid MF_TIME_FORMAT_SEGMENT_OFFSET = new Guid(0xc8b8be77, 0x869c, 0x431d, 0x81, 0x2e, 0x16, 0x96, 0x93, 0xf6, 0x5a, 0x39);
         public static readonly Guid MF_TIME_FORMAT_ENTRY_RELATIVE = new Guid(0x4399f178, 0x46d3, 0x4504, 0xaf, 0xda, 0x20, 0xd3, 0x2e, 0x9b, 0xa3, 0x60);
         public static readonly Guid MFP_POSITIONTYPE_100NS = Guid.Empty;
+        // 
+        public static readonly Guid CLSID_MFMediaEngineClassFactory = new Guid(0xb44392da, 0x499b, 0x446b, 0xa4, 0xcb, 0x0, 0x5f, 0xea, 0xd0, 0xe6, 0xd5);
     }
 
     public static class MFMediaType
@@ -1165,6 +1252,9 @@ namespace MediaFoundation
         public static readonly Guid MPEG = new Guid(0x0050, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
         public static readonly Guid AAC = new Guid(0x1610, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
         public static readonly Guid ADTS = new Guid(0x1600, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
+        public static readonly Guid AMR_NB = new Guid(0x7361, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
+        public static readonly Guid AMR_WB = new Guid(0x7362, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
+        public static readonly Guid AMR_WP = new Guid(0x7363, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
 
         // {00000000-767a-494d-b478-f29d25dc9037}       MFMPEG4Format_Base
         public static readonly Guid MFMPEG4Format = new Guid(0x00000000, 0x767a, 0x494d, 0xb4, 0x78, 0xf2, 0x9d, 0x25, 0xdc, 0x90, 0x37);
@@ -1221,12 +1311,14 @@ namespace MediaFoundation
         public static readonly Guid H264 = new FourCC("H264").ToMediaSubtype();
         public static readonly Guid MJPG = new FourCC("MJPG").ToMediaSubtype();
         public static readonly Guid O420 = new FourCC("420O").ToMediaSubtype();
+        public static readonly Guid HEVC = new FourCC("HEVC").ToMediaSubtype();
+        public static readonly Guid HEVC_ES = new FourCC("HEVS").ToMediaSubtype();
 
         public static readonly Guid MPEG2 = new Guid(0xe06d8026, 0xdb46, 0x11cf, 0xb4, 0xd1, 0x00, 0x80, 0x5f, 0x6c, 0xbb, 0xea);
         public static readonly Guid MFVideoFormat_H264_ES = new Guid(0x3f40f4f0, 0x5622, 0x4ff8, 0xb6, 0xd8, 0xa1, 0x7a, 0x58, 0x4b, 0xee, 0x5e);
         public static readonly Guid MFAudioFormat_Dolby_AC3 = new Guid(0xe06d802c, 0xdb46, 0x11cf, 0xb4, 0xd1, 0x00, 0x80, 0x05f, 0x6c, 0xbb, 0xea);
         public static readonly Guid MFAudioFormat_Dolby_DDPlus = new Guid(0xa7fb87af, 0x2d02, 0x42fb, 0xa4, 0xd4, 0x5, 0xcd, 0x93, 0x84, 0x3b, 0xdd);
-        public static readonly Guid MFAudioFormat_QCELP = new Guid(0x5E7F6D41, 0xB115, 0x11D0, 0xBA, 0x91, 0x00, 0x80, 0x5F, 0xB4, 0xB9, 0x7E);
+        // removed by MS - public static readonly Guid MFAudioFormat_QCELP = new Guid(0x5E7F6D41, 0xB115, 0x11D0, 0xBA, 0x91, 0x00, 0x80, 0x5F, 0xB4, 0xB9, 0x7E);
         public static readonly Guid MF_MT_VIDEO_3D = new Guid(0xcb5e88cf, 0x7b5b, 0x476b, 0x85, 0xaa, 0x1c, 0xa5, 0xae, 0x18, 0x75, 0x55);
     }
 
@@ -1504,6 +1596,7 @@ namespace MediaFoundation
     {
         SoftwareOnly = 0,
         UseHardware = 1,
+        UseOnlyHardware = 2,
     }
 
     [Flags, UnmanagedName("MF_QUALITY_ADVISE_FLAGS")]
@@ -1519,6 +1612,34 @@ namespace MediaFoundation
         StandardWorkqueue = 0,
         WindowWorkqueue = 1,
         MultiThreadedWorkqueue = 2
+    }
+
+    [UnmanagedName("MF_OPM_CGMSA_PROTECTION_LEVEL")]
+    public enum MF_OPM_CGMSA_PROTECTION_LEVEL
+    {
+        Off = 0x00,
+        CopyFreely = 0x01,
+        CopyNoMore = 0x02,
+        CopyOneGeneration = 0x03,
+        CopyNever = 0x04,
+        RedistributionControlRequired = 0x08,
+    }
+
+    [UnmanagedName("MF_OPM_ACP_PROTECTION_LEVEL")]
+    public enum MF_OPM_ACP_PROTECTION_LEVEL
+    {
+        Off = 0,
+        LevelOne = 1,
+        LevelTwo = 2,
+        LevelThree = 3,
+        ForceULong = 0x7fffffff
+    }
+
+    [UnmanagedName("MF_VIDEO_PROCESSOR_ALGORITHM_TYPE")]
+    public enum MF_VIDEO_PROCESSOR_ALGORITHM_TYPE
+    {
+        Default = 0,
+        MrfCrf444 = 1
     }
 
     [StructLayout(LayoutKind.Sequential), UnmanagedName("MPEG2VIDEOINFO")]
@@ -1635,6 +1756,13 @@ namespace MediaFoundation
         public Guid formattype;
     }
 
+    [StructLayout(LayoutKind.Sequential), UnmanagedName("ROI_AREA")]
+    public struct ROI_AREA
+    {
+        public MFRect rect;
+        public int QPDelta;
+    }
+
 #endif
 
     [UnmanagedName("MFRATE_DIRECTION")]
@@ -1675,7 +1803,8 @@ namespace MediaFoundation
         Seek = 0x00000002,
         Pause = 0x00000004,
         RateForward = 0x00000010,
-        RateReverse = 0x00000020
+        RateReverse = 0x00000020,
+        DoesNotUseNetwork = 0x00000040
     }
 
     [Flags, UnmanagedName("MFSESSION_SETTOPOLOGY_FLAGS")]
@@ -1794,7 +1923,8 @@ namespace MediaFoundation
         HasSlowSeek = 0x8,
         HasMultiplePresentations = 0x10,
         CanSkipForward = 0x20,
-        CanSkipBackward = 0x40
+        CanSkipBackward = 0x40,
+        DoesNotUseNetwork = 0x80
     }
 
     [Flags, UnmanagedName("MEDIASINK_ defines")]
@@ -1989,18 +2119,18 @@ namespace MediaFoundation
         #endregion
 
         [PreserveSig]
-        int GetSourceAttributes( 
+        int GetSourceAttributes(
             out IMFAttributes ppAttributes
         );
-        
+
         [PreserveSig]
-        int GetStreamAttributes( 
+        int GetStreamAttributes(
             int dwStreamIdentifier,
             out IMFAttributes ppAttributes
         );
-        
+
         [PreserveSig]
-        int SetD3DManager( 
+        int SetD3DManager(
             [MarshalAs(UnmanagedType.IUnknown)] object pManager
         );
     }
@@ -2034,12 +2164,23 @@ namespace MediaFoundation
         #endregion
 
         [PreserveSig]
-        int InitializeSampleAllocatorEx( 
+        int InitializeSampleAllocatorEx(
             int cInitialSamples,
             int cMaximumSamples,
             IMFAttributes pAttributes,
             IMFMediaType pMediaType
-        );        
+        );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("20bc074b-7a8d-4609-8c3b-64a0a3b5d7ce")]
+    public interface IMFDXGIDeviceManagerSource
+    {
+        [PreserveSig]
+        int GetManager(
+            out IMFDXGIDeviceManager ppManager
+            );
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -2048,30 +2189,30 @@ namespace MediaFoundation
     public interface IMFVideoProcessorControl
     {
         [PreserveSig]
-        int SetBorderColor( 
+        int SetBorderColor(
             MFARGB pBorderColor
         );
-        
+
         [PreserveSig]
-        int SetSourceRectangle( 
+        int SetSourceRectangle(
             Rectangle pSrcRect
         );
-        
+
         [PreserveSig]
-        int SetDestinationRectangle( 
+        int SetDestinationRectangle(
             Rectangle pDstRect
         );
-        
+
         [PreserveSig]
-        int SetMirror( 
+        int SetMirror(
             MF_VIDEO_PROCESSOR_MIRROR eMirror
         );
-        
+
         [PreserveSig]
-        int SetRotation( 
+        int SetRotation(
             MF_VIDEO_PROCESSOR_ROTATION eRotation
         );
-        
+
         [PreserveSig]
         int SetConstrictionSize(
             MFSize pConstrictionSize
@@ -2084,12 +2225,12 @@ namespace MediaFoundation
     public interface IMFSeekInfo
     {
         [PreserveSig]
-        int GetNearestKeyFrames( 
+        int GetNearestKeyFrames(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid pguidTimeFormat,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant pvarStartPosition,
             [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant pvarPreviousKeyFrame,
             [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant pvarNextKeyFrame
-        );        
+        );
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -2177,13 +2318,13 @@ namespace MediaFoundation
         #endregion
 
         [PreserveSig]
-        int GetTopologyWorkQueueMMCSSPriority( 
+        int GetTopologyWorkQueueMMCSSPriority(
             int dwTopologyWorkQueueId,
             out int plPriority
         );
-        
+
         [PreserveSig]
-        int BeginRegisterPlatformWorkQueueWithMMCSSEx( 
+        int BeginRegisterPlatformWorkQueueWithMMCSSEx(
             int dwPlatformWorkQueue,
             [Out, MarshalAs(UnmanagedType.LPWStr)] string wszClass,
             int dwTaskId,
@@ -2191,12 +2332,12 @@ namespace MediaFoundation
             IMFAsyncCallback pCallback,
             [MarshalAs(UnmanagedType.IUnknown)] object pState
         );
-        
+
         [PreserveSig]
-        int GetPlatformWorkQueueMMCSSPriority( 
+        int GetPlatformWorkQueueMMCSSPriority(
             int dwPlatformWorkQueueId,
             out int plPriority
-        );        
+        );
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -2205,20 +2346,20 @@ namespace MediaFoundation
     public interface IMFRealTimeClientEx
     {
         [PreserveSig]
-        int RegisterThreadsEx( 
+        int RegisterThreadsEx(
             ref int pdwTaskIndex,
             [In, MarshalAs(UnmanagedType.LPWStr)] string wszClassName,
             int lBasePriority
         );
-        
+
         [PreserveSig]
-        int UnregisterThreads( );
-        
+        int UnregisterThreads();
+
         [PreserveSig]
-        int SetWorkQueueEx( 
+        int SetWorkQueueEx(
             int dwMultithreadedWorkQueueId,
             int lWorkItemBasePriority
-        );        
+        );
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -2227,21 +2368,21 @@ namespace MediaFoundation
     public interface IMFByteStreamTimeSeek
     {
         [PreserveSig]
-        int IsTimeSeekSupported( 
+        int IsTimeSeekSupported(
             out bool pfTimeSeekIsSupported
         );
-        
+
         [PreserveSig]
-        int TimeSeek( 
+        int TimeSeek(
             long qwTimePosition
         );
-        
+
         [PreserveSig]
-        int GetTimeSeekResult( 
+        int GetTimeSeekResult(
             out long pqwStartTime,
             out long pqwStopTime,
             out long pqwDuration
-        );        
+        );
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -2257,18 +2398,18 @@ namespace MediaFoundation
         #endregion
 
         [PreserveSig]
-        int GetByteRanges( 
+        int GetByteRanges(
             out int pcRanges,
-            [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex=0)] MF_BYTE_STREAM_CACHE_RANGE[] ppRanges
+            [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] MF_BYTE_STREAM_CACHE_RANGE[] ppRanges
         );
-        
+
         [PreserveSig]
-        int SetCacheLimit( 
+        int SetCacheLimit(
             long qwBytes
         );
-        
+
         [PreserveSig]
-        int IsBackgroundTransferActive( 
+        int IsBackgroundTransferActive(
             out bool pfActive
         );
     }
@@ -2279,13 +2420,13 @@ namespace MediaFoundation
     public interface IMFNetResourceFilter
     {
         [PreserveSig]
-        int OnRedirect( 
+        int OnRedirect(
             [In, MarshalAs(UnmanagedType.LPWStr)] string pszUrl,
             [MarshalAs(UnmanagedType.VariantBool)] out bool pvbCancel
         );
-        
+
         [PreserveSig]
-        int OnSendingRequest( 
+        int OnSendingRequest(
             [In, MarshalAs(UnmanagedType.LPWStr)] string pszUrl
         );
     }
@@ -2297,17 +2438,17 @@ namespace MediaFoundation
     {
         [PreserveSig]
         int LockProcess();
-        
+
         [PreserveSig]
         int UnlockProcess();
-        
+
         [PreserveSig]
-        int ActivateClassById( 
+        int ActivateClassById(
             [In, MarshalAs(UnmanagedType.LPWStr)] string id,
             IStream pStream,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
             [MarshalAs(UnmanagedType.IUnknown)] out object ppv
-        );        
+        );
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -2316,9 +2457,9 @@ namespace MediaFoundation
     public interface IMFPMPClientApp
     {
         [PreserveSig]
-        int SetPMPHost( 
+        int SetPMPHost(
             IMFPMPHostApp pPMPHost
-        );        
+        );
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -2327,12 +2468,18 @@ namespace MediaFoundation
     public interface IMFProtectedEnvironmentAccess
     {
         [PreserveSig]
-        int Call( 
+        int Call(
             int inputLength,
             IntPtr input,
             int outputLength,
             IntPtr output
-        );        
+        );
+
+        [PreserveSig]
+        int ReadGRL(
+            out int outputLength,
+            out IntPtr output
+            );
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -2341,31 +2488,31 @@ namespace MediaFoundation
     public interface IMFSignedLibrary
     {
         [PreserveSig]
-        int GetProcedureAddress( 
+        int GetProcedureAddress(
             [In, MarshalAs(UnmanagedType.LPWStr)] string name,
             out IntPtr address
-        );        
+        );
     }
-    
+
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
     InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
     Guid("fff4af3a-1fc1-4ef9-a29b-d26c49e2f31a")]
     public interface IMFSystemId
     {
         [PreserveSig]
-        int GetData( 
+        int GetData(
             out int size,
             out IntPtr data
         );
-        
+
         [PreserveSig]
-        int Setup( 
+        int Setup(
             int stage,
             int cbIn,
             IntPtr pbIn,
             out int pcbOut,
             out IntPtr ppbOut
-        );        
+        );
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -3998,7 +4145,17 @@ namespace MediaFoundation
         int NotifyRelease();
     }
 
-    #endif
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("380b9af9-a85b-4e78-a2af-ea5ce645c6b4")]
+    public interface IMFMediaStreamSourceSampleRequest
+    {
+        [PreserveSig]
+        int SetSample(
+            IMFSample value
+            );
+    }
+#endif
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
     InterfaceType(ComInterfaceType.InterfaceIsIUnknown),

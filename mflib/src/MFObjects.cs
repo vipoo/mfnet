@@ -187,7 +187,8 @@ namespace MediaFoundation
         IsDirectory = 0x00000080,
         HasSlowSeek = 0x00000100,
         IsPartiallyDownloaded = 0x00000200,
-        ShareWrite = 0x00000400
+        ShareWrite = 0x00000400,
+        DoesNotUseNetwork = 0x00000800,
     }
 
     [Flags, UnmanagedName("MF_MEDIATYPE_EQUAL_* defines")]
@@ -221,7 +222,8 @@ namespace MediaFoundation
         FastIOProcessingCallback = 0x00000001,
         SignalCallback = 0x00000002,
         BlockingCallback = 0x00000004,
-        ReplyCallback = 0x00000008
+        ReplyCallback = 0x00000008,
+        LocalizeRemoteCallback = 0x00000010,
     }
 
     [UnmanagedName("MF_ATTRIBUTES_MATCH_TYPE")]
@@ -376,6 +378,9 @@ namespace MediaFoundation
         MEByteStreamCharacteristicsChanged = 700,
         MEVideoCaptureDeviceRemoved = 800,
         MEVideoCaptureDevicePreempted = 801,
+        MEStreamSinkFormatInvalidated = 802,
+        MEEncodingParameters = 803,
+        MEContentProtectionMetadata = 900,
         MEReservedMax = 10000
     }
 
@@ -463,7 +468,7 @@ namespace MediaFoundation
         public void MakeOffset(float v)
         {
             Value = (short)v;
-            fract = (short)(65536 * (v-Value));
+            fract = (short)(65536 * (v - Value));
         }
 
         public float GetOffset()
@@ -679,7 +684,7 @@ namespace MediaFoundation
             [In] int cbSrcBuffer
             );
 
-#endregion
+        #endregion
 
         [PreserveSig]
         int Lock2DSize(
@@ -1307,7 +1312,7 @@ namespace MediaFoundation
         [PreserveSig]
         int GetItem(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
-            [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef=typeof(PVMarshaler))] PropVariant pValue
+            [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant pValue
             );
 
         [PreserveSig]
@@ -1476,7 +1481,7 @@ namespace MediaFoundation
         int GetItemByIndex(
             int unIndex,
             out Guid pguidKey,
-            [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef=typeof(PVMarshaler))] PropVariant pValue
+            [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant pValue
             );
 
         [PreserveSig]

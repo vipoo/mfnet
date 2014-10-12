@@ -38,8 +38,8 @@ namespace MediaFoundation.ReadWrite
 {
     #region COM Class Objects
 
-    [UnmanagedName("CLSID_MFReadWriteClassFactory"), 
-    ComImport, 
+    [UnmanagedName("CLSID_MFReadWriteClassFactory"),
+    ComImport,
     Guid("48e2ed0f-98c2-4a37-bed5-166312ddd83f")]
     public class MFReadWriteClassFactory
     {
@@ -74,7 +74,7 @@ namespace MediaFoundation.ReadWrite
         NewStream = 0x00000004,
         NativeMediaTypeChanged = 0x00000010,
         CurrentMediaTypeChanged = 0x00000020,
-        AllEffectsRemoved       = 0x00000200,
+        AllEffectsRemoved = 0x00000200,
         StreamTick = 0x00000100
     }
 
@@ -86,6 +86,13 @@ namespace MediaFoundation.ReadWrite
         AnyStream = unchecked((int)0xFFFFFFFE),
         FirstAudioStream = unchecked((int)0xFFFFFFFD),
         FirstVideoStream = unchecked((int)0xFFFFFFFC),
+        FirstSourcePhotoStream = unchecked((int)0xFFFFFFFB),
+        PreferredSourceVideoStreamForPreview = unchecked((int)0xFFFFFFFA),
+        PreferredSourceVideoStreamForRecord = unchecked((int)0xFFFFFFF9),
+        FirstSourceIndependentPhotoStream = unchecked((int)0xFFFFFFF8),
+        PreferredSourceStreamForVideoRecord = unchecked((int)0xFFFFFFF9),
+        PreferredSourceStreamForPhoto = unchecked((int)0xFFFFFFF8),
+        PreferredSourceStreamForAudio = unchecked((int)0xFFFFFFF7),
         MediaSource = unchecked((int)0xFFFFFFFF),
     }
 
@@ -413,7 +420,7 @@ namespace MediaFoundation.ReadWrite
             [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant pvarAttribute
         );
 
-#endregion
+        #endregion
 
         [PreserveSig]
         int SetNativeMediaType(
@@ -515,6 +522,25 @@ namespace MediaFoundation.ReadWrite
             int dwTransformIndex,
             out Guid pGuidCategory,
             out IMFTransform ppTransform);
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("17C3779E-3CDE-4EDE-8C60-3899F5F53AD6")]
+    public interface IMFSinkWriterEncoderConfig
+    {
+        [PreserveSig]
+        int SetTargetMediaType(
+            int dwStreamIndex,
+            IMFMediaType pTargetMediaType,
+            IMFAttributes pEncodingParameters
+            );
+
+        [PreserveSig]
+        int PlaceEncodingParameters(
+            int dwStreamIndex,
+            IMFAttributes pEncodingParameters
+            );
     }
 
 #endif

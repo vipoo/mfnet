@@ -644,7 +644,7 @@ namespace MediaFoundation
             IMFMediaType pAudioMediaType,
             out IMFMediaSink ppMediaSink
         );
-        
+
         [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFCreateMuxSink(
         [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidOutputSubType,
@@ -1371,6 +1371,28 @@ namespace MediaFoundation
         [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFTUnregisterLocalByCLSID(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid clsidMFT
+        );
+
+        [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        public static extern int MFCreateAVIMediaSink(
+            [In] IMFByteStream pIByteStream,
+            [In] IMFMediaType pVideoMediaType,
+            [In] IMFMediaType pAudioMediaType,
+            out IMFMediaSink ppIMediaSink
+        );
+
+        [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        public static extern int MFCreateWAVEMediaSink(
+            [In] IMFByteStream pTargetByteStream,
+            [In] IMFMediaType pAudioMediaType,
+            out IMFMediaSink ppMediaSink
+        );
+
+        [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        public static extern int MFGetLocalId(
+            [In] IntPtr verifier,
+            [In] int size,
+            out IntPtr id
         );
 
         #region Untestable

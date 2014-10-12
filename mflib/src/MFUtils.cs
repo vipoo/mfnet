@@ -877,16 +877,19 @@ namespace MediaFoundation.Misc
 
         #endregion
 
-        public PropVariant() : base(VariantType.None)
+        public PropVariant()
+            : base(VariantType.None)
         {
         }
 
-        public PropVariant(string value) : base(VariantType.String)
+        public PropVariant(string value)
+            : base(VariantType.String)
         {
             ptr = Marshal.StringToCoTaskMemUni(value);
         }
 
-        public PropVariant(string[] value) : base(VariantType.StringArray)
+        public PropVariant(string[] value)
+            : base(VariantType.StringArray)
         {
             calpwstrVal.cElems = value.Length;
             calpwstrVal.pElems = Marshal.AllocCoTaskMem(IntPtr.Size * value.Length);
@@ -897,68 +900,80 @@ namespace MediaFoundation.Misc
             }
         }
 
-        public PropVariant(byte value) : base(VariantType.UByte)
+        public PropVariant(byte value)
+            : base(VariantType.UByte)
         {
             bVal = value;
         }
 
-        public PropVariant(short value) : base(VariantType.Short)
+        public PropVariant(short value)
+            : base(VariantType.Short)
         {
             iVal = value;
         }
 
         [CLSCompliant(false)]
-        public PropVariant(ushort value) : base(VariantType.UShort)
+        public PropVariant(ushort value)
+            : base(VariantType.UShort)
         {
             uiVal = value;
         }
 
-        public PropVariant(int value) : base(VariantType.Int32)
+        public PropVariant(int value)
+            : base(VariantType.Int32)
         {
             intValue = value;
         }
 
         [CLSCompliant(false)]
-        public PropVariant(uint value) : base(VariantType.UInt32)
+        public PropVariant(uint value)
+            : base(VariantType.UInt32)
         {
             uintVal = value;
         }
 
-        public PropVariant(float value) : base(VariantType.Float)
+        public PropVariant(float value)
+            : base(VariantType.Float)
         {
             fltVal = value;
         }
 
-        public PropVariant(double value) : base(VariantType.Double)
+        public PropVariant(double value)
+            : base(VariantType.Double)
         {
             doubleValue = value;
         }
 
-        public PropVariant(long value) : base(VariantType.Int64)
+        public PropVariant(long value)
+            : base(VariantType.Int64)
         {
             longValue = value;
         }
 
         [CLSCompliant(false)]
-        public PropVariant(ulong value) : base(VariantType.UInt64)
+        public PropVariant(ulong value)
+            : base(VariantType.UInt64)
         {
             ulongValue = value;
         }
 
-        public PropVariant(Guid value) : base(VariantType.Guid)
+        public PropVariant(Guid value)
+            : base(VariantType.Guid)
         {
             ptr = Marshal.AllocCoTaskMem(Marshal.SizeOf(value));
             Marshal.StructureToPtr(value, ptr, false);
         }
 
-        public PropVariant(byte[] value) : base(VariantType.Blob)
+        public PropVariant(byte[] value)
+            : base(VariantType.Blob)
         {
             blobValue.cbSize = value.Length;
             blobValue.pBlobData = Marshal.AllocCoTaskMem(value.Length);
             Marshal.Copy(value, 0, blobValue.pBlobData, value.Length);
         }
 
-        public PropVariant(object value) : base(VariantType.IUnknown)
+        public PropVariant(object value)
+            : base(VariantType.IUnknown)
         {
             ptr = Marshal.GetIUnknownForObject(value);
         }
@@ -1943,7 +1958,7 @@ namespace MediaFoundation.Misc
         public static readonly MFGuid Empty = Guid.Empty;
 
         /// <summary>
-        /// Empty constructor. 
+        /// Empty constructor.
         /// Initialize it with System.Guid.Empty
         /// </summary>
         public MFGuid()
@@ -2178,6 +2193,7 @@ namespace MediaFoundation.Misc
         public const int MF_E_OUT_OF_RANGE = unchecked((int)0xC00D3702);
         public const int MF_E_INVALID_CODEC_MERIT = unchecked((int)0xC00D3703);
         public const int MF_E_HW_MFT_FAILED_START_STREAMING = unchecked((int)0xC00D3704);
+        public const int MF_E_OPERATION_IN_PROGRESS = unchecked((int)0xC00D3705);
         public const int MF_S_ASF_PARSEINPROGRESS = unchecked((int)0x400D3A98);
         public const int MF_E_ASF_PARSINGINCOMPLETE = unchecked((int)0xC00D3A98);
         public const int MF_E_ASF_MISSINGDATA = unchecked((int)0xC00D3A99);
@@ -2211,7 +2227,7 @@ namespace MediaFoundation.Misc
         public const int MF_E_CANNOT_FIND_KEYFRAME_SAMPLE = unchecked((int)0xC00D3E9D);
 
         public const int MF_E_UNSUPPORTED_CHARACTERISTICS = unchecked((int)0xC00D3E9E);
-        public const int MF_E_NO_AUDIO_RECORDING_DEVICE   = unchecked((int)0xC00D3E9F);
+        public const int MF_E_NO_AUDIO_RECORDING_DEVICE = unchecked((int)0xC00D3E9F);
         public const int MF_E_AUDIO_RECORDING_DEVICE_IN_USE = unchecked((int)0xC00D3EA0);
         public const int MF_E_AUDIO_RECORDING_DEVICE_INVALIDATED = unchecked((int)0xC00D3EA1);
         public const int MF_E_VIDEO_RECORDING_DEVICE_INVALIDATED = unchecked((int)0xC00D3EA2);
@@ -2283,6 +2299,7 @@ namespace MediaFoundation.Misc
         public const int MF_S_SINK_NOT_FINALIZED = unchecked((int)0x000D4A42);
         public const int MF_E_METADATA_TOO_LONG = unchecked((int)0xC00D4A43);
         public const int MF_E_SINK_NO_SAMPLES_PROCESSED = unchecked((int)0xC00D4A44);
+        public const int MF_E_SINK_HEADERS_NOT_FOUND = unchecked((int)0xC00D4A45);
         public const int MF_E_VIDEO_REN_NO_PROCAMP_HW = unchecked((int)0xC00D4E20);
         public const int MF_E_VIDEO_REN_NO_DEINTERLACE_HW = unchecked((int)0xC00D4E21);
         public const int MF_E_VIDEO_REN_COPYPROT_FAILED = unchecked((int)0xC00D4E22);
@@ -2425,6 +2442,24 @@ namespace MediaFoundation.Misc
         public const int MF_E_CAPTURE_SINK_MIRROR_ERROR = unchecked((int)0xC00DABE2);
         public const int MF_E_CAPTURE_SINK_ROTATE_ERROR = unchecked((int)0xC00DABE3);
         public const int MF_E_CAPTURE_ENGINE_INVALID_OP = unchecked((int)0xC00DABE4);
+
+        public const int MF_E_CAPTURE_ENGINE_ALL_EFFECTS_REMOVED = unchecked((int)0xC00DABE5);
+        public const int MF_E_CAPTURE_SOURCE_NO_INDEPENDENT_PHOTO_STREAM_PRESENT = unchecked((int)0xC00DABE6);
+        public const int MF_E_CAPTURE_SOURCE_NO_VIDEO_STREAM_PRESENT = unchecked((int)0xC00DABE7);
+        public const int MF_E_CAPTURE_SOURCE_NO_AUDIO_STREAM_PRESENT = unchecked((int)0xC00DABE8);
+        public const int MF_E_CAPTURE_SOURCE_DEVICE_EXTENDEDPROP_OP_IN_PROGRESS = unchecked((int)0xC00DABE9);
+        public const int MF_E_CAPTURE_PROPERTY_SET_DURING_PHOTO = unchecked((int)0xC00DABEA);
+        public const int MF_E_CAPTURE_NO_SAMPLES_IN_QUEUE = unchecked((int)0xC00DABEB);
+        public const int MF_E_HW_ACCELERATED_THUMBNAIL_NOT_SUPPORTED = unchecked((int)0xC00DABEC);
+
+        public const int MF_INDEX_SIZE_ERR = unchecked((int)0x80700001);
+        public const int MF_NOT_FOUND_ERR = unchecked((int)0x80700008);
+        public const int MF_NOT_SUPPORTED_ERR = unchecked((int)0x80700009);
+        public const int MF_INVALID_STATE_ERR = unchecked((int)0x8070000B);
+        public const int MF_SYNTAX_ERR = unchecked((int)0x8070000C);
+        public const int MF_INVALID_ACCESS_ERR = unchecked((int)0x8070000F);
+        public const int MF_QUOTA_EXCEEDED_ERR = unchecked((int)0x80700016);
+        public const int MF_PARSE_ERR = unchecked((int)0x80700051);
 
         public const int MF_E_DXGI_DEVICE_NOT_INITIALIZED = unchecked((int)0x80041000);
         public const int MF_E_DXGI_NEW_VIDEO_DEVICE = unchecked((int)0x80041001);
@@ -3153,7 +3188,7 @@ namespace MediaFoundation.Misc
             else
             {
                 // Return the value to native
-                Guid [] mo = (Guid [])managedObj;
+                Guid[] mo = (Guid[])managedObj;
 
                 IntPtr ip = Marshal.AllocCoTaskMem(16 * mo.Length);
                 Marshal.WriteIntPtr(m_ip, ip);
