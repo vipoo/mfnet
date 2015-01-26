@@ -194,22 +194,22 @@ namespace MediaFoundation.ReadWrite
         [PreserveSig]
         int SetCurrentMediaType(
             int dwStreamIndex,
-            ref int pdwReserved,
+            MFInt pdwReserved,
             IMFMediaType pMediaType
         );
 
         [PreserveSig]
         int SetCurrentPosition(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidTimeFormat,
-            [In] PropVariant varPosition
+            [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant varPosition
         );
 
         [PreserveSig]
         int ReadSample(
             int dwStreamIndex,
-            int dwControlFlags,
+            MF_SOURCE_READER_CONTROL_FLAG dwControlFlags,
             out int pdwActualStreamIndex,
-            out int pdwStreamFlags,
+            out  MF_SOURCE_READER_FLAG pdwStreamFlags,
             out long pllTimestamp,
             out IMFSample ppSample
         );

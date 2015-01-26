@@ -33,12 +33,16 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="TestExterns.cs" />
     <Compile Include="IEVRFilterConfigExTest.cs" />
     <Compile Include="IMFByteStreamCacheControlTest.cs" />
     <Compile Include="IMFDLNASinkInitTest.cs" />

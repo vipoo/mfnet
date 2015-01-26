@@ -17,6 +17,9 @@ namespace Testv21
                 MFExtern.MFStartup(0x20070, MFStartup.Full);
                 MFExtern.MFLockPlatform();
 
+                //TestExterns t0 = new TestExterns();
+                //t0.DoTests();
+
                 //IEVRFilterConfigExTest t1 = new IEVRFilterConfigExTest();
                 //t1.DoTests();
 
