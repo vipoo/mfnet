@@ -175,7 +175,7 @@ namespace MediaFoundation.ReadWrite
         [PreserveSig]
         int SetStreamSelection(
             int dwStreamIndex,
-            bool fSelected
+            [MarshalAs(UnmanagedType.Bool)] bool fSelected
         );
 
         [PreserveSig]
@@ -194,7 +194,7 @@ namespace MediaFoundation.ReadWrite
         [PreserveSig]
         int SetCurrentMediaType(
             int dwStreamIndex,
-            MFInt pdwReserved,
+            IntPtr pdwReserved,
             IMFMediaType pMediaType
         );
 
