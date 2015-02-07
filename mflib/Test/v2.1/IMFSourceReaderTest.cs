@@ -60,7 +60,7 @@ namespace Testv21
 
             Debug.Assert(c != 0);
 
-            hr = rdr.SetCurrentMediaType(i, null, mt);
+            hr = rdr.SetCurrentMediaType(i, IntPtr.Zero, mt);
             MFError.ThrowExceptionForHR(hr);
 
             IMFMediaType mt2;
@@ -146,7 +146,7 @@ namespace Testv21
             MFError.ThrowExceptionForHR(hr);
 
             hr = sr.CreateObjectFromURL(
-                @"file://c:/sourceforge/mflib/test/media/AspectRatio4x3.wmv",
+                @"file://C:/Users/Public/Videos/Sample Videos/Wildlife.wmv",
                 MFResolution.MediaSource,
                 null,
                 out pObjectType,
