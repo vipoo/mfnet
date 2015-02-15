@@ -38,6 +38,7 @@ namespace Testv21
                 int deviceNameLength;
 
                 hr = audioDevices[i].GetStringLength(MFAttributesClsid.MF_DEVSOURCE_ATTRIBUTE_FRIENDLY_NAME, out deviceNameLength);
+                MFError.ThrowExceptionForHR(hr);
 
                 StringBuilder sb = new StringBuilder(deviceNameLength);
 
