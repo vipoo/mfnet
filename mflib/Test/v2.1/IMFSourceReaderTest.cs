@@ -60,7 +60,7 @@ namespace Testv21
 
             Debug.Assert(c != 0);
 
-            hr = rdr.SetCurrentMediaType(i, IntPtr.Zero, mt);
+            hr = rdr.SetCurrentMediaType(i, null, mt);
             MFError.ThrowExceptionForHR(hr);
 
             IMFMediaType mt2;
