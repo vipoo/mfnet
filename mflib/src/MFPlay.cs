@@ -493,18 +493,18 @@ namespace MediaFoundation.MFPlayer
 
         [PreserveSig]
         int GetStartStopPosition(
-            out Guid pguidStartPositionType,
+            [In, Out, MarshalAs(UnmanagedType.LPStruct)] MFGuid pguidStartPositionType,
             [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant pvStartValue,
-            out Guid pguidStopPositionType,
+            [In, Out, MarshalAs(UnmanagedType.LPStruct)] MFGuid pguidStopPositionType,
             [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant pvStopValue
         );
 
         [PreserveSig]
         int SetStartStopPosition(
-            [In, MarshalAs(UnmanagedType.LPStruct)] Guid pguidStartPositionType,
-            [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant pvStartValue,
-            [In, MarshalAs(UnmanagedType.LPStruct)] Guid pguidStopPositionType,
-            [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant pvStopValue
+            [In, MarshalAs(UnmanagedType.LPStruct)] MFGuid pguidStartPositionType,
+            [In,Out, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant pvStartValue,
+            [In, MarshalAs(UnmanagedType.LPStruct)] MFGuid pguidStopPositionType,
+            [In, Out, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant pvStopValue
         );
 
         [PreserveSig]
