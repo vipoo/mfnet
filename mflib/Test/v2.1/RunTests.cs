@@ -53,8 +53,8 @@ namespace Testv21
                 //IMFQualityAdviseLimitsTest t11 = new IMFQualityAdviseLimitsTest();
                 //t11.DoTests();
 
-                IMFReadWriteClassFactoryTest t12 = new IMFReadWriteClassFactoryTest();
-                t12.DoTests();
+                //IMFReadWriteClassFactoryTest t12 = new IMFReadWriteClassFactoryTest();
+                //t12.DoTests();
 
                 //IMFSampleGrabberSinkCallback2Test t13 = new IMFSampleGrabberSinkCallback2Test();
                 //t13.DoTests();

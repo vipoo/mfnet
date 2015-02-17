@@ -1,4 +1,12 @@
-﻿using System;
+﻿/* https://msdn.microsoft.com/en-us/library/windows/desktop/ee663577%28v=vs.85%29.aspx
+ * For presentation time-to-time code translation, the ASF file must 
+ * contain a Simple Index Object; for time code-to-presentation time 
+ * translation, the ASF file must have an Index Object. 
+ * https://msdn.microsoft.com/en-us/library/windows/desktop/dd757932%28v=vs.85%29.aspx
+ * asf spec: http://drang.s4.xrea.com/program/tips/id3tag/wmp/10_asf_guids.html
+ */
+
+using System;
 using System.Text;
 using System.Threading;
 using MediaFoundation;
@@ -24,7 +32,8 @@ namespace Testv21
 
         public void DoTests()
         {
-            TestBeginConvertHNSToTimecode(@"C:\Users\Public\Videos\Sample Videos\Wildlife.wmv");
+            //TestBeginConvertHNSToTimecode(@"C:\Users\Public\Videos\Sample Videos\Wildlife.wmv");
+            TestBeginConvertHNSToTimecode(@"C:\sourceforge\mflib\test\media\smpte.wmv");
         }
 
         public void TestBeginConvertHNSToTimecode(string sFileName)
@@ -46,7 +55,16 @@ namespace Testv21
 
             translate = (IMFTimecodeTranslate)timecode;
             bDone = false;
-            hr = translate.BeginConvertHNSToTimecode(0, this, null);
+            hr = translate.BeginConvertHNSToTimecode(1990000, this, null);
+            MFError.ThrowExceptionForHR(hr);
+
+            while (!bDone)
+                Thread.Sleep(100);
+
+            bDone = false;
+
+            PropVariant pv = new PropVariant((Int64)3);
+            hr = translate.BeginConvertTimecodeToHNS(pv, this, this);
             MFError.ThrowExceptionForHR(hr);
 
             while (!bDone)
@@ -66,12 +84,33 @@ namespace Testv21
 
         int IMFAsyncCallback.Invoke(IMFAsyncResult pAsyncResult)
         {
-            PropVariant var = new PropVariant();
-            int hr = translate.EndConvertHNSToTimecode(pAsyncResult, var);
-            string s = MFError.GetErrorText(hr);
+            object o;
+            int hr;
 
-            if (hr != MFError.MF_E_NO_INDEX)
-                Debug.WriteLine("Works!");
+            hr = pAsyncResult.GetState(out o);
+            //MFError.ThrowExceptionForHR(hr);
+
+            if (o == null)
+            {
+                PropVariant var = new PropVariant();
+
+                hr = translate.EndConvertHNSToTimecode(pAsyncResult, var);
+                MFError.ThrowExceptionForHR(hr);
+
+                Debug.Assert(var.GetVariantType() == ConstPropVariant.VariantType.Int64 && var.GetLong() == 3);
+            }
+            else
+            {
+                long t;
+
+                hr = translate.EndConvertTimecodeToHNS(pAsyncResult, out t);
+                MFError.ThrowExceptionForHR(hr);
+
+                Debug.Assert(t == 1990000);
+            }
+
+
+            bDone = true;
 
             return hr;
         }
