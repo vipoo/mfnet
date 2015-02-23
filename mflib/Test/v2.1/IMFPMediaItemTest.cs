@@ -225,6 +225,25 @@ namespace Testv21
             MFError.ThrowExceptionForHR(hr);
             Debug.Assert(returnedStopPosType.ToGuid() == CLSID.MFP_POSITIONTYPE_100NS);
             Debug.Assert(returnedStopPos.GetLong() == tickStop);
+
+            PropVariant startPos = new PropVariant((Int64)1);
+
+            // Make sur that method accept null values
+            hr = mediaItemWildLife.SetStartStopPosition(CLSID.MFP_POSITIONTYPE_100NS, startPos, CLSID.MFP_POSITIONTYPE_100NS, stopPos);
+            MFError.ThrowExceptionForHR(hr);
+
+            returnedStopPosType = new MFGuid(Guid.NewGuid()); //Everything but Guid.Empty == MFP_POSITIONTYPE_100NS
+            returnedStopPos = new PropVariant();
+            PropVariant returnedStartPos = new PropVariant();
+            MFGuid returnedStartPosType = new MFGuid(Guid.NewGuid());
+
+            // Make sur that method accept null values too
+            hr = mediaItemWildLife.GetStartStopPosition(returnedStartPosType, returnedStartPos, returnedStopPosType, returnedStopPos);
+            MFError.ThrowExceptionForHR(hr);
+            Debug.Assert(returnedStopPosType.ToGuid() == CLSID.MFP_POSITIONTYPE_100NS);
+            Debug.Assert(returnedStopPos.GetLong() == tickStop);
+            Debug.Assert(returnedStartPosType.ToGuid() == CLSID.MFP_POSITIONTYPE_100NS);
+            Debug.Assert(returnedStartPos.GetLong() == 1);
         }
 
         private void TestSetStreamSink()
