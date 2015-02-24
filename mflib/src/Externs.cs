@@ -1325,11 +1325,11 @@ namespace MediaFoundation
 
         [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFTEnumEx(
-            [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidCategory,
-            int Flags,
-            MFTRegisterTypeInfo pInputType,
-            MFTRegisterTypeInfo pOutputType,
-            out IMFActivate[] pppMFTActivate,
+            [In] Guid guidCategory,
+            MFT_EnumFlag Flags,
+            [In, MarshalAs(UnmanagedType.LPStruct)] MFTRegisterTypeInfo pInputType,
+            [In, MarshalAs(UnmanagedType.LPStruct)] MFTRegisterTypeInfo pOutputType,
+            out IntPtr pppMFTActivate,
             out int pnumMFTActivate
         );
 
