@@ -59,6 +59,7 @@ using System.Security;
 
 using MediaFoundation.Misc;
 using MediaFoundation.EVR;
+using MediaFoundation.ReadWrite;
 
 namespace MediaFoundation.Alt
 {
@@ -142,7 +143,7 @@ namespace MediaFoundation.Alt
         [PreserveSig]
         int SetStreamSelection(
             int dwStreamIndex,
-            bool fSelected
+            [MarshalAs(UnmanagedType.Bool)] bool fSelected
         );
 
         [PreserveSig]
@@ -161,20 +162,20 @@ namespace MediaFoundation.Alt
         [PreserveSig]
         int SetCurrentMediaType(
             int dwStreamIndex,
-            IntPtr pdwReserved,
+            [In, Out] MFInt pdwReserved,
             IMFMediaType pMediaType
         );
 
         [PreserveSig]
         int SetCurrentPosition(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidTimeFormat,
-            [In] PropVariant varPosition
+            [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant varPosition
         );
 
         [PreserveSig]
         int ReadSample(
             int dwStreamIndex,
-            int dwControlFlags,
+            MF_SOURCE_READER_CONTROL_FLAG dwControlFlags,
             IntPtr pdwActualStreamIndex,
             IntPtr pdwStreamFlags,
             IntPtr pllTimestamp,
