@@ -7,7 +7,8 @@ using System.Diagnostics;
 
 namespace Testv21
 {
-    class IMFSinkWriterCallback
+    // See IMFSinkWriterTest
+    class IMFSinkWriterCallbackTest
     {
         public void DoTests()
         {

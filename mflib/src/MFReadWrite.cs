@@ -104,29 +104,29 @@ namespace MediaFoundation.ReadWrite
     }
 
     [StructLayout(LayoutKind.Sequential), UnmanagedName("MF_SINK_WRITER_STATISTICS")]
-    public class MF_SINK_WRITER_STATISTICS
+    public struct MF_SINK_WRITER_STATISTICS
     {
-        int cb;
+        public int cb;
 
-        long llLastTimestampReceived;
-        long llLastTimestampEncoded;
-        long llLastTimestampProcessed;
-        long llLastStreamTickReceived;
-        long llLastSinkSampleRequest;
+        public long llLastTimestampReceived;
+        public long llLastTimestampEncoded;
+        public long llLastTimestampProcessed;
+        public long llLastStreamTickReceived;
+        public long llLastSinkSampleRequest;
 
-        long qwNumSamplesReceived;
-        long qwNumSamplesEncoded;
-        long qwNumSamplesProcessed;
-        long qwNumStreamTicksReceived;
+        public long qwNumSamplesReceived;
+        public long qwNumSamplesEncoded;
+        public long qwNumSamplesProcessed;
+        public long qwNumStreamTicksReceived;
 
-        int dwByteCountQueued;
-        long qwByteCountProcessed;
+        public int dwByteCountQueued;
+        public long qwByteCountProcessed;
 
-        int dwNumOutstandingSinkSampleRequests;
+        public int dwNumOutstandingSinkSampleRequests;
 
-        int dwAverageSampleRateReceived;
-        int dwAverageSampleRateEncoded;
-        int dwAverageSampleRateProcessed;
+        public int dwAverageSampleRateReceived;
+        public int dwAverageSampleRateEncoded;
+        public int dwAverageSampleRateProcessed;
     }
 
 #endif
