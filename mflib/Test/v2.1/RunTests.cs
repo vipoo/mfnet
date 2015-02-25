@@ -59,6 +59,9 @@ namespace Testv21
                 //IMFSampleGrabberSinkCallback2Test t13 = new IMFSampleGrabberSinkCallback2Test();
                 //t13.DoTests();
 
+                //IMFSampleGrabberSinkCallbackTest t13a = new IMFSampleGrabberSinkCallbackTest();
+                //t13a.DoTests();
+
                 //IMFSinkWriterTest t14 = new IMFSinkWriterTest();
                 //t14.DoTests();
 

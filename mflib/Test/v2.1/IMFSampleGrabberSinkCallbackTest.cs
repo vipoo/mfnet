@@ -9,14 +9,14 @@ using System.Diagnostics;
 
 namespace Testv21
 {
-    class IMFSampleGrabberSinkCallback2Test : COMBase, IMFSampleGrabberSinkCallback2
+    class IMFSampleGrabberSinkCallbackTest : COMBase, IMFSampleGrabberSinkCallback
     {
         int m_stat = 0;
 
         public void DoTests()
         {
             RunSampleGrabber(@"c:\sourceforge\mflib\test\media\AspectRatio4x3.wmv");
-            Debug.Assert(m_stat == 0xd);
+            Debug.Assert(m_stat == 0x7);
         }
 
         // Create a media source from a URL.
@@ -410,17 +410,6 @@ namespace Testv21
         public int OnShutdown()
         {
             m_stat |= 4;
-            return S_Ok;
-        }
-
-        public int OnProcessSampleEx(Guid guidMajorMediaType, int dwSampleFlags, long llSampleTime, long llSampleDuration, IntPtr pSampleBuffer, int dwSampleSize, IMFAttributes pAttributes)
-        {
-            int hr;
-            int i;
-            hr = pAttributes.GetCount(out i);
-            MFError.ThrowExceptionForHR(hr);
-
-            m_stat |= 8;
             return S_Ok;
         }
     }

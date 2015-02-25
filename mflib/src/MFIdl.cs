@@ -3537,7 +3537,7 @@ namespace MediaFoundation
             [In] int dwSampleFlags, // must be zero
             [In] long llSampleTime,
             [In] long llSampleDuration,
-            [In] ref byte pSampleBuffer,
+            [In] IntPtr pSampleBuffer,
             [In] int dwSampleSize
             );
 
@@ -3951,7 +3951,7 @@ namespace MediaFoundation
             [In] int dwSampleFlags, // must be zero
             [In] long llSampleTime,
             [In] long llSampleDuration,
-            [In] ref byte pSampleBuffer,
+            [In] IntPtr pSampleBuffer,
             [In] int dwSampleSize
             );
 
