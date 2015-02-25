@@ -1340,21 +1340,6 @@ namespace MediaFoundation
 
 #if ALLOW_UNTESTED_INTERFACES
 
-    [Flags, UnmanagedName("Unnamed enum")]
-    public enum MF_RESOLUTION
-    {
-        None = 0,
-        MediaSource = 0x1,
-        ByteStream = 0x2,
-        ContentDoesNotHaveToMatchExtensionOrMimeType = 0x10,
-        KeepByteStreamAliveOnFail = 0x20,
-        DisableLocalPlugins = 0x40,
-        PluginControlPolicyApprovedOnly = 0x80,
-        PluginControlPolicyWebOnly = 0x100,
-        Read = 0x10000,
-        Write = 0x20000
-    }
-
     [UnmanagedName("MF_VIDEO_PROCESSOR_ROTATION")]
     public enum MF_VIDEO_PROCESSOR_ROTATION
     {
@@ -1831,7 +1816,7 @@ namespace MediaFoundation
         Invalid
     }
 
-    [Flags, UnmanagedName("unnamed enum")]
+    [Flags, UnmanagedName("MF_RESOLUTION_* defines")]
     public enum MFResolution
     {
         None = 0x0,
@@ -1839,6 +1824,9 @@ namespace MediaFoundation
         ByteStream = 0x00000002,
         ContentDoesNotHaveToMatchExtensionOrMimeType = 0x00000010,
         KeepByteStreamAliveOnFail = 0x00000020,
+        DisableLocalPlugins = 0x40,
+        PluginControlPolicyApprovedOnly = 0x80,
+        PluginControlPolicyWebOnly = 0x100,
         Read = 0x00010000,
         Write = 0x00020000
     }
