@@ -7,6 +7,7 @@ using System.Diagnostics;
 
 namespace Testv21
 {
+    // See IMFVideoSampleAllocatorCallbackTest
     class IMFVideoSampleAllocatorNotifyTest
     {
         public void DoTests()
