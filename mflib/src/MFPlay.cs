@@ -395,14 +395,14 @@ namespace MediaFoundation.MFPlayer
 
         [PreserveSig]
         int GetNativeVideoSize(
-            out MFSize pszVideo,
-            out MFSize pszARVideo
+            [Out, MarshalAs(UnmanagedType.LPStruct)] MFSize pszVideo,
+            [Out, MarshalAs(UnmanagedType.LPStruct)] MFSize pszARVideo
         );
 
         [PreserveSig]
         int GetIdealVideoSize(
-            out MFSize pszMin,
-            out MFSize pszMax
+            [Out, MarshalAs(UnmanagedType.LPStruct)] MFSize pszMin,
+            [Out, MarshalAs(UnmanagedType.LPStruct)] MFSize pszMax
         );
 
         [PreserveSig]
@@ -412,7 +412,7 @@ namespace MediaFoundation.MFPlayer
 
         [PreserveSig]
         int GetVideoSourceRect(
-            out MFVideoNormalizedRect pnrcSource
+            [Out, MarshalAs(UnmanagedType.LPStruct)] MFVideoNormalizedRect pnrcSource
         );
 
         [PreserveSig]
