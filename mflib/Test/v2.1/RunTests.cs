@@ -98,6 +98,9 @@ namespace Testv21
                 //IMFVideoSampleAllocatorNotifyTest t25 = new IMFVideoSampleAllocatorNotifyTest();
                 //t25.DoTests();
 
+                //IMFVideoSampleAllocatorTest t25a = new IMFVideoSampleAllocatorTest();
+                //t25a.DoTests();
+
                 //MFEnumDeviceSourcesTest t26 = new MFEnumDeviceSourcesTest();
                 //t26.DoTests();
             }

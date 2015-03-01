@@ -812,8 +812,7 @@ namespace MediaFoundation
         );
 
         [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
-        public static extern int
-        MFCreateDXGISurfaceBuffer(
+        public static extern int MFCreateDXGISurfaceBuffer(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
             [MarshalAs(UnmanagedType.Interface)] object punkSurface,
             int uSubresourceIndex,

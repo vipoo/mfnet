@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IMFSampleGrabberSinkCallbackTest.cs" />
+    <Compile Include="IMFVideoSampleAllocatorTest.cs" />
     <Compile Include="MFEnumDeviceSourcesTest.cs" />
     <Compile Include="TestExterns.cs" />
     <Compile Include="IEVRFilterConfigExTest.cs" />
