@@ -39,6 +39,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
@@ -54,7 +55,9 @@
     <Compile Include="IMFPluginControlTest.cs" />
     <Compile Include="IMFPMediaItemTest.cs" />
     <Compile Include="IMFPMediaPlayerCallbackTest.cs" />
-    <Compile Include="IMFPMediaPlayerTest.cs" />
+    <Compile Include="IMFPMediaPlayerTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="IMFQualityAdvise2Test.cs" />
     <Compile Include="IMFQualityAdviseLimitsTest.cs" />
     <Compile Include="IMFReadWriteClassFactoryTest.cs" />
