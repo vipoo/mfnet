@@ -1329,7 +1329,7 @@ namespace MediaFoundation
             MFT_EnumFlag Flags,
             [In, MarshalAs(UnmanagedType.LPStruct)] MFTRegisterTypeInfo pInputType,
             [In, MarshalAs(UnmanagedType.LPStruct)] MFTRegisterTypeInfo pOutputType,
-            out IntPtr pppMFTActivate,
+            [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.IUnknown, SizeParamIndex = 5)] out IMFActivate[] pppMFTActivate,
             out int pnumMFTActivate
         );
 
