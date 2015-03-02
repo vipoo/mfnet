@@ -407,7 +407,7 @@ namespace MediaFoundation.MFPlayer
 
         [PreserveSig]
         int SetVideoSourceRect(
-            [In] MFVideoNormalizedRect pnrcSource
+            [In, MarshalAs(UnmanagedType.LPStruct)] MFVideoNormalizedRect pnrcSource
         );
 
         [PreserveSig]
