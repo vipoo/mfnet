@@ -3968,7 +3968,7 @@ namespace MediaFoundation
         [PreserveSig]
         int GetClientCertificate(
             [In, MarshalAs(UnmanagedType.LPWStr)] string pszUrl,
-            [Out] IntPtr ppbData,
+            [Out] out IntPtr ppbData,
             out int pcbData
         );
 
