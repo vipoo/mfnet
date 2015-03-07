@@ -65,6 +65,8 @@ namespace MediaFoundation.ReadWrite
         MediaSink = unchecked((int)0xFFFFFFFF)
     }
 
+#endif
+
     [Flags, UnmanagedName("MF_SOURCE_READER_FLAG")]
     public enum MF_SOURCE_READER_FLAG
     {
@@ -129,13 +131,295 @@ namespace MediaFoundation.ReadWrite
         public int dwAverageSampleRateProcessed;
     }
 
-#endif
-
     #endregion
 
     #region Interfaces
 
 #if ALLOW_UNTESTED_INTERFACES
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("7b981cf0-560e-4116-9875-b099895f23d7")]
+    public interface IMFSourceReaderEx : IMFSourceReader
+    {
+        #region IMFSourceReader Methods
+
+        [PreserveSig]
+        new int GetStreamSelection(
+            int dwStreamIndex,
+            [MarshalAs(UnmanagedType.Bool)] out bool pfSelected
+        );
+
+        [PreserveSig]
+        new int SetStreamSelection(
+            int dwStreamIndex,
+            [MarshalAs(UnmanagedType.Bool)] bool fSelected
+        );
+
+        [PreserveSig]
+        new int GetNativeMediaType(
+            int dwStreamIndex,
+            int dwMediaTypeIndex,
+            out IMFMediaType ppMediaType
+        );
+
+        [PreserveSig]
+        new int GetCurrentMediaType(
+            int dwStreamIndex,
+            out IMFMediaType ppMediaType
+        );
+
+        [PreserveSig]
+        new int SetCurrentMediaType(
+            int dwStreamIndex,
+            [In, Out] MFInt pdwReserved,
+            IMFMediaType pMediaType
+        );
+
+        [PreserveSig]
+        new int SetCurrentPosition(
+            [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidTimeFormat,
+            [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant varPosition
+        );
+
+        [PreserveSig]
+        new int ReadSample(
+            int dwStreamIndex,
+            MF_SOURCE_READER_CONTROL_FLAG dwControlFlags,
+            out int pdwActualStreamIndex,
+            out  MF_SOURCE_READER_FLAG pdwStreamFlags,
+            out long pllTimestamp,
+            out IMFSample ppSample
+        );
+
+        [PreserveSig]
+        new int Flush(
+            int dwStreamIndex
+        );
+
+        [PreserveSig]
+        new int GetServiceForStream(
+            int dwStreamIndex,
+            [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidService,
+            [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
+            [MarshalAs(UnmanagedType.IUnknown)] out object ppvObject
+        );
+
+        [PreserveSig]
+        new int GetPresentationAttribute(
+            int dwStreamIndex,
+            [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidAttribute,
+            [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant pvarAttribute
+        );
+
+        #endregion
+
+        [PreserveSig]
+        int SetNativeMediaType(
+            int dwStreamIndex,
+            IMFMediaType pMediaType,
+            out MF_SOURCE_READER_FLAG pdwStreamFlags);
+
+        [PreserveSig]
+        int AddTransformForStream(
+            int dwStreamIndex,
+            [MarshalAs(UnmanagedType.IUnknown)] out object pTransformOrActivate);
+
+        [PreserveSig]
+        int RemoveAllTransformsForStream(
+            int dwStreamIndex);
+
+        [PreserveSig]
+        int GetTransformForStream(
+            int dwStreamIndex,
+            int dwTransformIndex,
+            out Guid pGuidCategory,
+            out IMFTransform ppTransform);
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("588d72ab-5Bc1-496a-8714-b70617141b25")]
+    public interface IMFSinkWriterEx : IMFSinkWriter
+    {
+
+    #region IMFSinkWriter methods
+
+        [PreserveSig]
+        new int AddStream(
+            IMFMediaType pTargetMediaType,
+            out int pdwStreamIndex
+        );
+
+        [PreserveSig]
+        new int SetInputMediaType(
+            int dwStreamIndex,
+            IMFMediaType pInputMediaType,
+            IMFAttributes pEncodingParameters
+        );
+
+        [PreserveSig]
+        new int BeginWriting();
+
+        [PreserveSig]
+        new int WriteSample(
+            int dwStreamIndex,
+            IMFSample pSample
+        );
+
+        [PreserveSig]
+        new int SendStreamTick(
+            int dwStreamIndex,
+            long llTimestamp
+        );
+
+        [PreserveSig]
+        new int PlaceMarker(
+            int dwStreamIndex,
+            IntPtr pvContext
+        );
+
+        [PreserveSig]
+        new int NotifyEndOfSegment(
+            int dwStreamIndex
+        );
+
+        [PreserveSig]
+        new int Flush(
+            int dwStreamIndex
+        );
+
+        [PreserveSig]
+        new int Finalize_();
+
+        [PreserveSig]
+        new int GetServiceForStream(
+            int dwStreamIndex,
+            [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidService,
+            [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
+            [MarshalAs(UnmanagedType.IUnknown)] out object ppvObject
+        );
+
+        [PreserveSig]
+        new int GetStatistics(
+            int dwStreamIndex,
+            out MF_SINK_WRITER_STATISTICS pStats
+        );
+
+        #endregion
+
+        [PreserveSig]
+        int GetTransformForStream(
+            int dwStreamIndex,
+            int dwTransformIndex,
+            out Guid pGuidCategory,
+            out IMFTransform ppTransform);
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("17C3779E-3CDE-4EDE-8C60-3899F5F53AD6")]
+    public interface IMFSinkWriterEncoderConfig
+    {
+        [PreserveSig]
+        int SetTargetMediaType(
+            int dwStreamIndex,
+            IMFMediaType pTargetMediaType,
+            IMFAttributes pEncodingParameters
+            );
+
+        [PreserveSig]
+        int PlaceEncodingParameters(
+            int dwStreamIndex,
+            IMFAttributes pEncodingParameters
+            );
+    }
+
+#endif
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("3137f1cd-fe5e-4805-a5d8-fb477448cb3d")]
+    public interface IMFSinkWriter
+    {
+        [PreserveSig]
+        int AddStream(
+            IMFMediaType pTargetMediaType,
+            out int pdwStreamIndex
+        );
+
+        [PreserveSig]
+        int SetInputMediaType(
+            int dwStreamIndex,
+            IMFMediaType pInputMediaType,
+            IMFAttributes pEncodingParameters
+        );
+
+        [PreserveSig]
+        int BeginWriting();
+
+        [PreserveSig]
+        int WriteSample(
+            int dwStreamIndex,
+            IMFSample pSample
+        );
+
+        [PreserveSig]
+        int SendStreamTick(
+            int dwStreamIndex,
+            long llTimestamp
+        );
+
+        [PreserveSig]
+        int PlaceMarker(
+            int dwStreamIndex,
+            IntPtr pvContext
+        );
+
+        [PreserveSig]
+        int NotifyEndOfSegment(
+            int dwStreamIndex
+        );
+
+        [PreserveSig]
+        int Flush(
+            int dwStreamIndex
+        );
+
+        [PreserveSig]
+        int Finalize_();
+
+        [PreserveSig]
+        int GetServiceForStream(
+            int dwStreamIndex,
+            [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidService,
+            [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
+            [MarshalAs(UnmanagedType.IUnknown)] out object ppvObject
+        );
+
+        [PreserveSig]
+        int GetStatistics(
+            int dwStreamIndex,
+            out MF_SINK_WRITER_STATISTICS pStats
+        );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("666f76de-33d2-41b9-a458-29ed0a972c58")]
+    public interface IMFSinkWriterCallback
+    {
+        [PreserveSig]
+        int OnFinalize(
+            int hrStatus
+        );
+
+        [PreserveSig]
+        int OnMarker(
+            int dwStreamIndex,
+            IntPtr pvContext
+        );
+    }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
     InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
@@ -260,290 +544,6 @@ namespace MediaFoundation.ReadWrite
             IMFMediaEvent pEvent
         );
     }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    Guid("3137f1cd-fe5e-4805-a5d8-fb477448cb3d")]
-    public interface IMFSinkWriter
-    {
-        [PreserveSig]
-        int AddStream(
-            IMFMediaType pTargetMediaType,
-            out int pdwStreamIndex
-        );
-
-        [PreserveSig]
-        int SetInputMediaType(
-            int dwStreamIndex,
-            IMFMediaType pInputMediaType,
-            IMFAttributes pEncodingParameters
-        );
-
-        [PreserveSig]
-        int BeginWriting();
-
-        [PreserveSig]
-        int WriteSample(
-            int dwStreamIndex,
-            IMFSample pSample
-        );
-
-        [PreserveSig]
-        int SendStreamTick(
-            int dwStreamIndex,
-            long llTimestamp
-        );
-
-        [PreserveSig]
-        int PlaceMarker(
-            int dwStreamIndex,
-            IntPtr pvContext
-        );
-
-        [PreserveSig]
-        int NotifyEndOfSegment(
-            int dwStreamIndex
-        );
-
-        [PreserveSig]
-        int Flush(
-            int dwStreamIndex
-        );
-
-        [PreserveSig]
-        int Finalize_();
-
-        [PreserveSig]
-        int GetServiceForStream(
-            int dwStreamIndex,
-            [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidService,
-            [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
-            [MarshalAs(UnmanagedType.IUnknown)] out object ppvObject
-        );
-
-        [PreserveSig]
-        int GetStatistics(
-            int dwStreamIndex,
-            out MF_SINK_WRITER_STATISTICS pStats
-        );
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    Guid("666f76de-33d2-41b9-a458-29ed0a972c58")]
-    public interface IMFSinkWriterCallback
-    {
-        [PreserveSig]
-        int OnFinalize(
-            int hrStatus
-        );
-
-        [PreserveSig]
-        int OnMarker(
-            int dwStreamIndex,
-            IntPtr pvContext
-        );
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    Guid("7b981cf0-560e-4116-9875-b099895f23d7")]
-    public interface IMFSourceReaderEx : IMFSourceReader
-    {
-        #region IMFSourceReader Methods
-
-        [PreserveSig]
-        new int GetStreamSelection(
-            int dwStreamIndex,
-            [MarshalAs(UnmanagedType.Bool)] out bool pfSelected
-        );
-
-        [PreserveSig]
-        new int SetStreamSelection(
-            int dwStreamIndex,
-            bool fSelected
-        );
-
-        [PreserveSig]
-        new int GetNativeMediaType(
-            int dwStreamIndex,
-            int dwMediaTypeIndex,
-            out IMFMediaType ppMediaType
-        );
-
-        [PreserveSig]
-        new int GetCurrentMediaType(
-            int dwStreamIndex,
-            out IMFMediaType ppMediaType
-        );
-
-        [PreserveSig]
-        new int SetCurrentMediaType(
-            int dwStreamIndex,
-            [In, Out] MFInt pdwReserved,
-            IMFMediaType pMediaType
-        );
-
-        [PreserveSig]
-        new int SetCurrentPosition(
-            [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidTimeFormat,
-            [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant varPosition
-        );
-
-        [PreserveSig]
-        new int ReadSample(
-            int dwStreamIndex,
-            MF_SOURCE_READER_CONTROL_FLAG dwControlFlags,
-            out int pdwActualStreamIndex,
-            out  MF_SOURCE_READER_FLAG pdwStreamFlags,
-            out long pllTimestamp,
-            out IMFSample ppSample
-        );
-
-        [PreserveSig]
-        new int Flush(
-            int dwStreamIndex
-        );
-
-        [PreserveSig]
-        new int GetServiceForStream(
-            int dwStreamIndex,
-            [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidService,
-            [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
-            [MarshalAs(UnmanagedType.IUnknown)] out object ppvObject
-        );
-
-        [PreserveSig]
-        new int GetPresentationAttribute(
-            int dwStreamIndex,
-            [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidAttribute,
-            [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant pvarAttribute
-        );
-
-        #endregion
-
-        [PreserveSig]
-        int SetNativeMediaType(
-            int dwStreamIndex,
-            IMFMediaType pMediaType,
-            out MF_SOURCE_READER_FLAG pdwStreamFlags);
-
-        [PreserveSig]
-        int AddTransformForStream(
-            int dwStreamIndex,
-            [MarshalAs(UnmanagedType.IUnknown)] out object pTransformOrActivate);
-
-        [PreserveSig]
-        int RemoveAllTransformsForStream(
-            int dwStreamIndex);
-
-        [PreserveSig]
-        int GetTransformForStream(
-            int dwStreamIndex,
-            int dwTransformIndex,
-            out Guid pGuidCategory,
-            out IMFTransform ppTransform);
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    Guid("588d72ab-5Bc1-496a-8714-b70617141b25")]
-    public interface IMFSinkWriterEx : IMFSinkWriter
-    {
-
-        #region IMFSinkWriter methods
-
-        [PreserveSig]
-        new int AddStream(
-            IMFMediaType pTargetMediaType,
-            out int pdwStreamIndex
-        );
-
-        [PreserveSig]
-        new int SetInputMediaType(
-            int dwStreamIndex,
-            IMFMediaType pInputMediaType,
-            IMFAttributes pEncodingParameters
-        );
-
-        [PreserveSig]
-        new int BeginWriting();
-
-        [PreserveSig]
-        new int WriteSample(
-            int dwStreamIndex,
-            IMFSample pSample
-        );
-
-        [PreserveSig]
-        new int SendStreamTick(
-            int dwStreamIndex,
-            long llTimestamp
-        );
-
-        [PreserveSig]
-        new int PlaceMarker(
-            int dwStreamIndex,
-            IntPtr pvContext
-        );
-
-        [PreserveSig]
-        new int NotifyEndOfSegment(
-            int dwStreamIndex
-        );
-
-        [PreserveSig]
-        new int Flush(
-            int dwStreamIndex
-        );
-
-        [PreserveSig]
-        new int Finalize_();
-
-        [PreserveSig]
-        new int GetServiceForStream(
-            int dwStreamIndex,
-            [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidService,
-            [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
-            [MarshalAs(UnmanagedType.IUnknown)] out object ppvObject
-        );
-
-        [PreserveSig]
-        new int GetStatistics(
-            int dwStreamIndex,
-            out MF_SINK_WRITER_STATISTICS pStats
-        );
-
-        #endregion
-
-        [PreserveSig]
-        int GetTransformForStream(
-            int dwStreamIndex,
-            int dwTransformIndex,
-            out Guid pGuidCategory,
-            out IMFTransform ppTransform);
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    Guid("17C3779E-3CDE-4EDE-8C60-3899F5F53AD6")]
-    public interface IMFSinkWriterEncoderConfig
-    {
-        [PreserveSig]
-        int SetTargetMediaType(
-            int dwStreamIndex,
-            IMFMediaType pTargetMediaType,
-            IMFAttributes pEncodingParameters
-            );
-
-        [PreserveSig]
-        int PlaceEncodingParameters(
-            int dwStreamIndex,
-            IMFAttributes pEncodingParameters
-            );
-    }
-
-#endif
 
     #endregion
 }

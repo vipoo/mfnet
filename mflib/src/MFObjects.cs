@@ -36,6 +36,7 @@ namespace MediaFoundation
     [Flags, UnmanagedName("MFVideoFlags")]
     public enum MFVideoFlags : long
     {
+        None = 0,
         PAD_TO_Mask = 0x0001 | 0x0002,
         PAD_TO_None = 0 * 0x0001,
         PAD_TO_4x3 = 1 * 0x0001,
@@ -388,7 +389,9 @@ namespace MediaFoundation
     public enum MFPluginType
     {
         MFT = 0,
-        MediaSource = 1
+        MediaSource = 1,
+        MFT_MatchOutputType = 2,
+        Other = unchecked((int)0xffffffff),
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 8), UnmanagedName("MFVideoCompressedInfo")]
@@ -519,15 +522,6 @@ namespace MediaFoundation
         ReadWrite = 0x3,
 
         ForceDWORD = 0x7FFFFFFF
-    }
-
-    [UnmanagedName("MF_Plugin_Type")]
-    public enum MF_Plugin_Type
-    {
-        MFT = 0,
-        MediaSource = 1,
-        MFT_MatchOutputType = 2,
-        Other = unchecked((int)0xffffffff),
     }
 
     [UnmanagedName("MF_PLUGIN_CONTROL_POLICY")]
@@ -994,54 +988,6 @@ namespace MediaFoundation
 
         [PreserveSig, Obsolete("To get the properties of the audio format, applications should use the media type attributes. If you need to convert the media type into a WAVEFORMATEX structure, call MFCreateWaveFormatExFromMFMediaType")]
         IntPtr GetAudioFormat();
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    Guid("5C6C44BF-1DB6-435B-9249-E8CD10FDEC96")]
-    public interface IMFPluginControl
-    {
-        [PreserveSig]
-        int GetPreferredClsid(
-            MFPluginType pluginType,
-            [MarshalAs(UnmanagedType.LPWStr)] string selector,
-            out Guid clsid
-        );
-
-        [PreserveSig]
-        int GetPreferredClsidByIndex(
-            MFPluginType pluginType,
-            int index,
-            [MarshalAs(UnmanagedType.LPWStr)] out string selector,
-            out Guid clsid
-        );
-
-        [PreserveSig]
-        int SetPreferredClsid(
-            MFPluginType pluginType,
-            [MarshalAs(UnmanagedType.LPWStr)] string selector,
-            [MarshalAs(UnmanagedType.LPStruct)] MFGuid clsid
-        );
-
-        [PreserveSig]
-        int IsDisabled(
-            MFPluginType pluginType,
-            [MarshalAs(UnmanagedType.LPStruct)] Guid clsid
-        );
-
-        [PreserveSig]
-        int GetDisabledByIndex(
-            MFPluginType pluginType,
-            int index,
-            out Guid clsid
-        );
-
-        [PreserveSig]
-        int SetDisabled(
-            MFPluginType pluginType,
-            [MarshalAs(UnmanagedType.LPStruct)] Guid clsid,
-            [MarshalAs(UnmanagedType.Bool)] bool disabled
-        );
     }
 
 #endif
@@ -2479,6 +2425,54 @@ namespace MediaFoundation
             out IntPtr ppvRepresentation,
             [In] int lStride
             );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("5C6C44BF-1DB6-435B-9249-E8CD10FDEC96")]
+    public interface IMFPluginControl
+    {
+        [PreserveSig]
+        int GetPreferredClsid(
+            MFPluginType pluginType,
+            [MarshalAs(UnmanagedType.LPWStr)] string selector,
+            out Guid clsid
+        );
+
+        [PreserveSig]
+        int GetPreferredClsidByIndex(
+            MFPluginType pluginType,
+            int index,
+            [MarshalAs(UnmanagedType.LPWStr)] out string selector,
+            out Guid clsid
+        );
+
+        [PreserveSig]
+        int SetPreferredClsid(
+            MFPluginType pluginType,
+            [MarshalAs(UnmanagedType.LPWStr)] string selector,
+            [MarshalAs(UnmanagedType.LPStruct)] MFGuid clsid
+        );
+
+        [PreserveSig]
+        int IsDisabled(
+            MFPluginType pluginType,
+            [MarshalAs(UnmanagedType.LPStruct)] Guid clsid
+        );
+
+        [PreserveSig]
+        int GetDisabledByIndex(
+            MFPluginType pluginType,
+            int index,
+            out Guid clsid
+        );
+
+        [PreserveSig]
+        int SetDisabled(
+            MFPluginType pluginType,
+            [MarshalAs(UnmanagedType.LPStruct)] Guid clsid,
+            [MarshalAs(UnmanagedType.Bool)] bool disabled
+        );
     }
 
     #endregion

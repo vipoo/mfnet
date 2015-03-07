@@ -291,8 +291,6 @@ namespace MediaFoundation.EVR
 
     #region Interfaces
 
-#if ALLOW_UNTESTED_INTERFACES
-
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
     InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
     Guid("83A4CE40-7710-494b-A893-A472049AF630")]
@@ -392,8 +390,6 @@ namespace MediaFoundation.EVR
             out MFVideoMixPrefs pdwMixFlags
         );
     }
-
-#endif
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
     Guid("A490B1E4-AB84-4D31-A1B2-181E03B1077A"),

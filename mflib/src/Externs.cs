@@ -33,6 +33,7 @@ using MediaFoundation.Transform;
 using MediaFoundation.ReadWrite;
 using MediaFoundation.MFPlayer;
 using MediaFoundation.EVR;
+using System.Text;
 
 namespace MediaFoundation
 {
@@ -523,7 +524,302 @@ namespace MediaFoundation
             out IMFMediaType ppOrig
             );
 
+        [DllImport("mfplay.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        public static extern int MFPCreateMediaPlayer(
+            [In, MarshalAs(UnmanagedType.LPWStr)] string pwszURL,
+            [MarshalAs(UnmanagedType.Bool)] bool fStartPlayback,
+            MFP_CREATION_OPTIONS creationOptions,
+            IMFPMediaPlayerCallback pCallback,
+            IntPtr hWnd,
+            out IMFPMediaPlayer ppMediaPlayer);
+
+        [DllImport("Mfreadwrite.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        public static extern int MFCreateSourceReaderFromMediaSource(
+            IMFMediaSource pMediaSource,
+            IMFAttributes pAttributes,
+            out IMFSourceReader ppSourceReader
+        );
+
+        [DllImport("Mfreadwrite.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        public static extern int MFCreateSinkWriterFromURL(
+            [In, MarshalAs(UnmanagedType.LPWStr)] string pwszOutputURL,
+            IMFByteStream pByteStream,
+            IMFAttributes pAttributes,
+            out IMFSinkWriter ppSinkWriter
+        );
+
+        [DllImport("evr.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        public static extern int MFCopyImage(
+            IntPtr pDest,
+            int lDestStride,
+            IntPtr pSrc,
+            int lSrcStride,
+            int dwWidthInBytes,
+            int dwLines
+            );
+
+        [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        public static extern int MFGetPluginControl(
+            out IMFPluginControl ppPluginControl
+        );
+
+        [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        public static extern int MFCreateTranscodeSinkActivate(
+            out IMFActivate ppActivate
+        );
+
+        [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        public static extern int MFCreateTranscodeProfile(
+            out IMFTranscodeProfile ppTranscodeProfile
+        );
+
+        [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        public static extern int MFCreateMFByteStreamOnStream(
+            IStream pStream,
+            out IMFByteStream ppByteStream
+        );
+
+        [DllImport("Mfreadwrite.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        public static extern int MFCreateSourceReaderFromByteStream(
+            IMFByteStream pByteStream,
+            IMFAttributes pAttributes,
+            out IMFSourceReader ppSourceReader
+        );
+
+        [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        public static extern int MFCreateMP3MediaSink(
+            IMFByteStream pTargetByteStream,
+            out IMFMediaSink ppMediaSink
+        );
+
+        [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        public static extern int MFCreateTransformActivate(
+            out IMFActivate ppActivate
+        );
+
+        [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        public static extern int MFCreateSampleGrabberSinkActivate(
+            IMFMediaType pIMFMediaType,
+            IMFSampleGrabberSinkCallback pIMFSampleGrabberSinkCallback,
+            out IMFActivate ppIActivate
+        );
+
+        [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        public static extern int MFCreateASFStreamSelector(
+            [In] IMFASFProfile pIASFProfile,
+            out IMFASFStreamSelector ppSelector);
+
+        [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        public static extern int MFTEnumEx(
+            [In] Guid guidCategory,
+            MFT_EnumFlag Flags,
+            [In, MarshalAs(UnmanagedType.LPStruct)] MFTRegisterTypeInfo pInputType,
+            [In, MarshalAs(UnmanagedType.LPStruct)] MFTRegisterTypeInfo pOutputType,
+            [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.IUnknown, SizeParamIndex = 5)] out IMFActivate[] pppMFTActivate,
+            out int pnumMFTActivate
+        );
+
 #if ALLOW_UNTESTED_INTERFACES
+
+        [DllImport("evr.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        public static extern int MFCreateVideoSampleAllocator(
+            [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
+            [MarshalAs(UnmanagedType.IUnknown)] out object ppSampleAllocator
+            );
+
+        [DllImport("Mfplat.dll", ExactSpelling = true, CallingConvention = CallingConvention.Winapi), SuppressUnmanagedCodeSecurity]
+        public static extern long MFllMulDiv(
+            long a,
+            long b,
+            long c,
+            long d
+            );
+
+        public static int MFGetAttributeString(
+            IMFAttributes pAttributes,
+            Guid guidKey,
+            out string ppsz
+            )
+        {
+            int length;
+            StringBuilder sb = null;
+
+            int hr = pAttributes.GetStringLength(guidKey, out length);
+            if (hr >= 0)
+            {
+                // add NULL to length, ignoring potential overflow
+                length++;
+
+                sb = new StringBuilder(length);
+                hr = pAttributes.GetString(guidKey, sb, length, out length);
+            }
+            if (hr >= 0)
+            {
+                ppsz = sb.ToString();
+            }
+            else
+            {
+                ppsz = null;
+            }
+
+            return hr;
+        }
+
+        public static void Unpack2UINT32AsUINT64(
+            long unPacked,
+            out int punHigh,
+            out int punLow
+            )
+        {
+            ulong ul = (ulong)unPacked;
+            punHigh = (int)(ul >> 32);
+            punLow = (int)(ul & 0xffffffff);
+        }
+
+        public static int MFGetAttribute2UINT32asUINT64(
+            IMFAttributes pAttributes,
+            Guid guidKey,
+            out int punHigh32,
+            out int punLow32
+            )
+        {
+            long unPacked;
+            int hr;
+
+            hr = pAttributes.GetUINT64(guidKey, out unPacked);
+            if (hr < 0)
+            {
+                punHigh32 = punLow32 = 0;
+                return hr;
+            }
+            Unpack2UINT32AsUINT64(unPacked, out punHigh32, out punLow32);
+
+            return hr;
+        }
+
+        public static int MFGetAttributeUINT32(
+            IMFAttributes pAttributes,
+            Guid guidKey,
+            int unDefault
+            )
+        {
+            int unRet;
+            if (pAttributes.GetUINT32(guidKey, out unRet) < 0)
+            {
+                unRet = unDefault;
+            }
+            return unRet;
+        }
+
+        public static long MFGetAttributeUINT64(
+            IMFAttributes pAttributes,
+            Guid guidKey,
+            long unDefault
+            )
+        {
+            long unRet;
+            if (pAttributes.GetUINT64(guidKey, out unRet) < 0)
+            {
+                unRet = unDefault;
+            }
+            return unRet;
+        }
+
+        public static double MFGetAttributeDouble(
+            IMFAttributes pAttributes,
+            Guid guidKey,
+            double fDefault
+            )
+        {
+            double fRet;
+            if (pAttributes.GetDouble(guidKey, out fRet) < 0)
+            {
+                fRet = fDefault;
+            }
+            return fRet;
+        }
+
+        public static int MFGetAttributeRatio(
+            IMFAttributes pAttributes,
+            Guid guidKey,
+            out int punNumerator,
+            out int punDenominator
+            )
+        {
+            return MFGetAttribute2UINT32asUINT64(pAttributes, guidKey, out punNumerator, out punDenominator);
+        }
+
+        public static int MFGetAttributeSize(
+            IMFAttributes pAttributes,
+            Guid guidKey,
+            out int punWidth,
+            out int punHeight
+            )
+        {
+            return MFGetAttribute2UINT32asUINT64(pAttributes, guidKey, out punWidth, out punHeight);
+        }
+
+        public static long Pack2UINT32AsUINT64(int unHigh, int unLow)
+        {
+            uint low = (uint)unLow;
+            uint high = (uint)unHigh;
+
+            ulong ul = (high);
+            ul <<= 32;
+            ul |= low;
+
+            return (long)ul;
+        }
+
+        public static int MFSetAttribute2UINT32asUINT64(
+            IMFAttributes pAttributes,
+            Guid guidKey,
+            int unHigh32,
+            int unLow32
+            )
+        {
+            return pAttributes.SetUINT64(guidKey, Pack2UINT32AsUINT64(unHigh32, unLow32));
+        }
+
+        public static int MFSetAttributeRatio(
+            IMFAttributes pAttributes,
+            Guid guidKey,
+            int unNumerator,
+            int unDenominator
+            )
+        {
+            return MFSetAttribute2UINT32asUINT64(pAttributes, guidKey, unNumerator, unDenominator);
+        }
+
+        public static int MFSetAttributeSize(
+            IMFAttributes pAttributes,
+            Guid guidKey,
+            int unWidth,
+            int unHeight
+            )
+        {
+            return MFSetAttribute2UINT32asUINT64(pAttributes, guidKey, unWidth, unHeight);
+        }
+
+        public static long PackSize(int unWidth, int unHeight)
+        {
+            return Pack2UINT32AsUINT64(unWidth, unHeight);
+        }
+
+        public static void UnpackSize(long unPacked, out int punWidth, out int punHeight)
+        {
+            Unpack2UINT32AsUINT64(unPacked, out punWidth, out punHeight);
+        }
+
+        public static long PackRatio(int nNumerator, int unDenominator)
+        {
+            return Pack2UINT32AsUINT64(nNumerator, unDenominator);
+        }
+
+        public static void UnpackRatio(long unPacked, out int pnNumerator, out int punDenominator)
+        {
+            Unpack2UINT32AsUINT64(unPacked, out pnNumerator, out punDenominator);
+        }
 
         #region Tested
         // While these methods are tested, the interfaces they use are not
@@ -562,21 +858,23 @@ namespace MediaFoundation
             IMFAsyncCallback pCallback,
             [MarshalAs(UnmanagedType.IUnknown)] object pState,
             long Timeout,
-            long pKey);
+            out long pKey);
 
         [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFScheduleWorkItemEx(
             IMFAsyncResult pResult,
             long Timeout,
-            long pKey);
+            out long pKey);
 
         [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFCancelWorkItem(
             long Key);
 
+        public delegate void MFPERIODICCALLBACK([MarshalAs(UnmanagedType.IUnknown)] object asdf);
+
         [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFAddPeriodicCallback(
-            IntPtr Callback,
+            MFPERIODICCALLBACK Callback,
             [MarshalAs(UnmanagedType.IUnknown)] object pContext,
             out int pdwKey);
 
@@ -611,7 +909,7 @@ namespace MediaFoundation
         public static extern int MFEndUnregisterWorkQueueWithMMCSS(
             [In] IMFAsyncResult pResult);
 
-        [DllImport("mf.dll", CharSet = CharSet.Unicode, ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        [DllImport("mf.dll", CharSet = CharSet.Unicode, ExactSpelling = true), Obsolete("MS has deleted this method", true), SuppressUnmanagedCodeSecurity]
         public static extern int MFSetWorkQueueClass(
             int dwWorkQueueId,
             [MarshalAs(UnmanagedType.LPWStr)] string szClass);
@@ -619,8 +917,8 @@ namespace MediaFoundation
         [DllImport("mfplat.dll", CharSet = CharSet.Unicode, ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFGetWorkQueueMMCSSClass(
             int dwWorkQueueId,
-            [MarshalAs(UnmanagedType.LPWStr)] out string pwszClass,
-            out int pcchClass);
+            [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszClass,
+            [In, Out] MFInt pcchClass);
 
         [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFGetWorkQueueMMCSSTaskId(
@@ -695,7 +993,7 @@ namespace MediaFoundation
 
         [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFCreateMediaTypeFromProperties(
-        [MarshalAs(UnmanagedType.IUnknown)] object punkStream,
+            [MarshalAs(UnmanagedType.IUnknown)] object punkStream,
             out IMFMediaType ppMediaType
         );
 
@@ -713,7 +1011,7 @@ namespace MediaFoundation
 
         [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFLoadSignedLibrary(
-        [In, MarshalAs(UnmanagedType.LPWStr)] string pszName,
+            [In, MarshalAs(UnmanagedType.LPWStr)] string pszName,
             out IMFSignedLibrary ppLib
         );
 
@@ -816,7 +1114,7 @@ namespace MediaFoundation
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
             [MarshalAs(UnmanagedType.Interface)] object punkSurface,
             int uSubresourceIndex,
-            bool fBottomUpWhenLinear,
+            [MarshalAs(UnmanagedType.Bool)] bool fBottomUpWhenLinear,
             out IMFMediaBuffer ppBuffer
         );
 
@@ -864,7 +1162,7 @@ namespace MediaFoundation
             int dwWidth,
             int dwHeight,
             int dwFourCC,
-            bool fBottomUp,
+            [MarshalAs(UnmanagedType.Bool)] bool fBottomUp,
             out IMFMediaBuffer ppBuffer
         );
 
@@ -891,14 +1189,6 @@ namespace MediaFoundation
         );
 
         [DllImport("Mfreadwrite.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
-        public static extern int MFCreateSinkWriterFromURL(
-            [In, MarshalAs(UnmanagedType.LPWStr)] string pwszOutputURL,
-            IMFByteStream pByteStream,
-            IMFAttributes pAttributes,
-            out IMFSinkWriter ppSinkWriter
-        );
-
-        [DllImport("Mfreadwrite.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFCreateSinkWriterFromMediaSink(
             IMFMediaSink pMediaSink,
             IMFAttributes pAttributes,
@@ -912,29 +1202,6 @@ namespace MediaFoundation
             out IMFSourceReader ppSourceReader
         );
 
-        [DllImport("Mfreadwrite.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
-        public static extern int MFCreateSourceReaderFromByteStream(
-            IMFByteStream pByteStream,
-            IMFAttributes pAttributes,
-            out IMFSourceReader ppSourceReader
-        );
-
-        [DllImport("Mfreadwrite.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
-        public static extern int MFCreateSourceReaderFromMediaSource(
-            IMFMediaSource pMediaSource,
-            IMFAttributes pAttributes,
-            out IMFSourceReader ppSourceReader
-        );
-
-        [DllImport("mfplay.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
-        public static extern int MFPCreateMediaPlayer(
-            [In, MarshalAs(UnmanagedType.LPWStr)] string pwszURL,
-            [MarshalAs(UnmanagedType.Bool)] bool fStartPlayback,
-            MFP_CREATION_OPTIONS creationOptions,
-            IMFPMediaPlayerCallback pCallback,
-            IntPtr hWnd,
-            out IMFPMediaPlayer ppMediaPlayer);
-
         [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFCreateRemoteDesktopPlugin(
             out IMFRemoteDesktopPlugin ppPlugin
@@ -944,30 +1211,30 @@ namespace MediaFoundation
         public static extern int MFCreateDXSurfaceBuffer(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
             [In] [MarshalAs(UnmanagedType.IUnknown)] object punkSurface,
-            [In] bool fBottomUpWhenLinear,
+            [In, MarshalAs(UnmanagedType.Bool)] bool fBottomUpWhenLinear,
             out IMFMediaBuffer ppBuffer);
 
         // --------------------------------------------------
 
         [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFValidateMediaTypeSize(
-            [In, MarshalAs(UnmanagedType.Struct)] Guid FormatType,
+            Guid FormatType,
             IntPtr pBlock,
-            [In] int cbSize
+            int cbSize
             );
 
         [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFInitMediaTypeFromMPEG1VideoInfo(
-            [In] IMFMediaType pMFType,
-            MPEG1VideoInfo pMP1VI,
-            [In] int cbBufSize,
+            IMFMediaType pMFType,
+            [In, MarshalAs(UnmanagedType.LPStruct)] Mpeg1VideoInfo pMP1VI,
+            int cbBufSize,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid pSubtype
             );
 
         [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFInitMediaTypeFromMPEG2VideoInfo(
             [In] IMFMediaType pMFType,
-            Mpeg2VideoInfo pMP2VI,
+            [In, MarshalAs(UnmanagedType.LPStruct)] Mpeg2VideoInfo pMP2VI,
             [In] int cbBufSize,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid pSubtype
             );
@@ -975,27 +1242,28 @@ namespace MediaFoundation
         [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFCalculateImageSize(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidSubtype,
-            [In] int unWidth,
-            [In] int unHeight,
+            int unWidth,
+            int unHeight,
             out int pcbImageSize
             );
 
         [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFAverageTimePerFrameToFrameRate(
-            [In] long unAverageTimePerFrame,
+            long unAverageTimePerFrame,
             out int punNumerator,
             out int punDenominator
             );
 
         [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
-        public static extern int MFCompareFullToPartialMediaType(
-            [In] IMFMediaType pMFTypeFull,
-            [In] IMFMediaType pMFTypePartial
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool MFCompareFullToPartialMediaType(
+            IMFMediaType pMFTypeFull,
+            IMFMediaType pMFTypePartial
             );
 
         [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFWrapMediaType(
-            [In] IMFMediaType pOrig,
+            IMFMediaType pOrig,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid MajorType,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid SubType,
             out IMFMediaType ppWrap
@@ -1020,13 +1288,13 @@ namespace MediaFoundation
             out int pdwPlaneSize
             );
 
-        [DllImport("evr.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        [DllImport("evr.dll", ExactSpelling = true), Obsolete("Not supported by MS", true), SuppressUnmanagedCodeSecurity]
         public static extern int MFInitVideoFormat(
             [In] MFVideoFormat pVideoFormat,
             [In] MFStandardVideoFormat type
             );
 
-        [DllImport("evr.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        [DllImport("evr.dll", ExactSpelling = true), Obsolete("Not supported by MS", true), SuppressUnmanagedCodeSecurity]
         public static extern int MFInitVideoFormat_RGB(
             [In] MFVideoFormat pVideoFormat,
             [In] int dwWidth,
@@ -1034,26 +1302,16 @@ namespace MediaFoundation
             [In] int D3Dfmt
             );
 
-        [DllImport("evr.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        [DllImport("evr.dll", ExactSpelling = true), Obsolete("Not supported by MS", true), SuppressUnmanagedCodeSecurity]
         public static extern int MFConvertColorInfoToDXVA(
             out int pdwToDXVA,
             MFVideoFormat pFromFormat
             );
 
-        [DllImport("evr.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        [DllImport("evr.dll", ExactSpelling = true), Obsolete("Not supported by MS", true), SuppressUnmanagedCodeSecurity]
         public static extern int MFConvertColorInfoFromDXVA(
             MFVideoFormat pToFormat,
             int dwFromDXVA
-            );
-
-        [DllImport("evr.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
-        public static extern int MFCopyImage(
-            IntPtr pDest,
-            int lDestStride,
-            IntPtr pSrc,
-            int lSrcStride,
-            int dwWidthInBytes,
-            int dwLines
             );
 
         [DllImport("evr.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
@@ -1086,7 +1344,7 @@ namespace MediaFoundation
         public static extern int MFSerializePresentationDescriptor(
             IMFPresentationDescriptor pPD,
             out int pcbData,
-            IntPtr ppbData
+            out IntPtr ppbData
         );
 
         [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
@@ -1098,14 +1356,7 @@ namespace MediaFoundation
 
         [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFShutdownObject(
-            object pUnk
-        );
-
-        [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
-        public static extern int MFCreateSampleGrabberSinkActivate(
-            IMFMediaType pIMFMediaType,
-            IMFSampleGrabberSinkCallback pIMFSampleGrabberSinkCallback,
-            out IMFActivate ppIActivate
+            [MarshalAs(UnmanagedType.IUnknown)] object pUnk
         );
 
         [DllImport("mf.dll", CharSet = CharSet.Unicode, ExactSpelling = true), SuppressUnmanagedCodeSecurity]
@@ -1117,25 +1368,20 @@ namespace MediaFoundation
 
         [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFCreateNetSchemePlugin(
-            [MarshalAs(UnmanagedType.LPStruct)] Guid riid,
-            [MarshalAs(UnmanagedType.IUnknown)] object ppvHandler
+            [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
+            [MarshalAs(UnmanagedType.IUnknown)] out object ppvHandler
         );
 
         [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFCreateASFProfileFromPresentationDescriptor(
-            [In] IMFPresentationDescriptor pIPD,
+            IMFPresentationDescriptor pIPD,
             out IMFASFProfile ppIProfile);
 
         [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFCreateASFIndexerByteStream(
-            [In] IMFByteStream pIContentByteStream,
-            [In] long cbIndexStartOffset,
+            IMFByteStream pIContentByteStream,
+            long cbIndexStartOffset,
             out IMFByteStream pIIndexByteStream);
-
-        [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
-        public static extern int MFCreateASFStreamSelector(
-            [In] IMFASFProfile pIASFProfile,
-            out IMFASFStreamSelector ppSelector);
 
         [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFCreateASFMediaSink(
@@ -1166,7 +1412,7 @@ namespace MediaFoundation
 
         [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFCreatePresentationDescriptorFromASFProfile(
-            [In] IMFASFProfile pIProfile,
+            IMFASFProfile pIProfile,
             out IMFPresentationDescriptor ppIPD);
 
         [DllImport("evr.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
@@ -1174,7 +1420,7 @@ namespace MediaFoundation
             [In, MarshalAs(UnmanagedType.IUnknown)] object pOwner,
             [MarshalAs(UnmanagedType.LPStruct)] Guid riidDevice,
             [MarshalAs(UnmanagedType.LPStruct)] Guid riid,
-            out IntPtr ppVideoPresenter
+            [MarshalAs(UnmanagedType.IUnknown)] out object ppVideoPresenter
             );
 
         [DllImport("evr.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
@@ -1190,9 +1436,9 @@ namespace MediaFoundation
             [In, MarshalAs(UnmanagedType.IUnknown)] object pMixerOwner,
             [In, MarshalAs(UnmanagedType.IUnknown)] object pPresenterOwner,
             [MarshalAs(UnmanagedType.LPStruct)] Guid riidMixer,
-            out IntPtr ppvVideoMixer,
+            [MarshalAs(UnmanagedType.IUnknown)] out object ppvVideoMixer,
             [MarshalAs(UnmanagedType.LPStruct)] Guid riidPresenter,
-            out IntPtr ppvVideoPresenter
+            [MarshalAs(UnmanagedType.IUnknown)] out object ppvVideoPresenter
             );
 
         [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
@@ -1208,11 +1454,6 @@ namespace MediaFoundation
             out IMFActivate ppIActivate
         );
 
-        [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
-        public static extern int MFCreateTransformActivate(
-            out IMFActivate ppActivate
-        );
-
         [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFCreateDeviceSource(
             IMFAttributes pAttributes,
@@ -1226,12 +1467,8 @@ namespace MediaFoundation
         );
 
         [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
-        public static extern int MFCreateSampleCopierMFT(out IMFTransform ppCopierMFT);
-
-        [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
-        public static extern int MFCreateTranscodeProfile(
-            out IMFTranscodeProfile ppTranscodeProfile
-        );
+        public static extern int MFCreateSampleCopierMFT(
+            out IMFTransform ppCopierMFT);
 
         [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFCreateTranscodeTopology(
@@ -1244,20 +1481,9 @@ namespace MediaFoundation
         [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFTranscodeGetAudioOutputAvailableTypes(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidSubType,
-            int dwMFTFlags,
+            MFT_EnumFlag dwMFTFlags,
             IMFAttributes pCodecConfig,
             out IMFCollection ppAvailableTypes
-        );
-
-        [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
-        public static extern int MFCreateTranscodeSinkActivate(
-            out IMFActivate ppActivate
-        );
-
-        [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
-        public static extern int MFCreateMFByteStreamOnStream(
-            IStream pStream,
-            out IMFByteStream ppByteStream
         );
 
         [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
@@ -1289,29 +1515,18 @@ namespace MediaFoundation
             out IMFMediaSink ppIMediaSink
             );
 
-        [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
-        public static extern int MFCreateMP3MediaSink(
-            IMFByteStream pTargetByteStream,
-            out IMFMediaSink ppMediaSink
-        );
-
         [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFCreateVideoMediaTypeFromBitMapInfoHeaderEx(
-            BitmapInfoHeader[] pbmihBitMapInfoHeader,
+            [In, MarshalAs(UnmanagedType.LPStruct)] BitmapInfoHeader pbmihBitMapInfoHeader,
             int cbBitMapInfoHeader,
             int dwPixelAspectRatioX,
             int dwPixelAspectRatioY,
             MFVideoInterlaceMode InterlaceMode,
-            long VideoFlags,
+            MFVideoFlags VideoFlags,
             int dwFramesPerSecondNumerator,
             int dwFramesPerSecondDenominator,
             int dwMaxBitRate,
             out IMFVideoMediaType ppIVideoMediaType
-        );
-
-        [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
-        public static extern int MFGetPluginControl(
-            out IMFPluginControl ppPluginControl
         );
 
         [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
@@ -1320,16 +1535,6 @@ namespace MediaFoundation
             int cbVerifier,
             IntPtr verifier,
             out int merit
-        );
-
-        [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
-        public static extern int MFTEnumEx(
-            [In] Guid guidCategory,
-            MFT_EnumFlag Flags,
-            [In, MarshalAs(UnmanagedType.LPStruct)] MFTRegisterTypeInfo pInputType,
-            [In, MarshalAs(UnmanagedType.LPStruct)] MFTRegisterTypeInfo pOutputType,
-            [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.IUnknown, SizeParamIndex = 5)] out IMFActivate[] pppMFTActivate,
-            out int pnumMFTActivate
         );
 
         [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
@@ -1343,7 +1548,7 @@ namespace MediaFoundation
             [MarshalAs(UnmanagedType.IUnknown)] object pClassFactory,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidCategory,
             [MarshalAs(UnmanagedType.LPWStr)] string pszName,
-            int Flags,
+            MFT_EnumFlag Flags,
             int cInputTypes,
             MFTRegisterTypeInfo[] pInputTypes,
             int cOutputTypes,
@@ -1369,7 +1574,7 @@ namespace MediaFoundation
 
         [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFTUnregisterLocalByCLSID(
-            [In, MarshalAs(UnmanagedType.LPStruct)] Guid clsidMFT
+            Guid clsidMFT
         );
 
         [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
@@ -1402,10 +1607,10 @@ namespace MediaFoundation
             out IMFAudioMediaType ppIAudioMediaType
             );
 
-        [DllImport("mf.dll", ExactSpelling = true), Obsolete("The returned object doesn't support QI"), SuppressUnmanagedCodeSecurity]
+        [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFCreateCredentialCache(
             out IMFNetCredentialCache ppCache
-        );
+            );
 
         [DllImport("evr.dll", ExactSpelling = true), Obsolete("Not implemented"), SuppressUnmanagedCodeSecurity]
         public static extern int MFCreateVideoMediaTypeFromBitMapInfoHeader(
@@ -1420,31 +1625,29 @@ namespace MediaFoundation
             out IMFVideoMediaType ppIVideoMediaType
             );
 
-        [DllImport("mf.dll", ExactSpelling = true), Obsolete("Interface doesn't exist"), SuppressUnmanagedCodeSecurity]
+        [DllImport("mf.dll", ExactSpelling = true), Obsolete("MS has deleted this method", true), SuppressUnmanagedCodeSecurity]
         public static extern int MFCreateQualityManager(
             out IMFQualityManager ppQualityManager
-        );
+            );
 
-        [DllImport("evr.dll", ExactSpelling = true), Obsolete("Undoc'ed"), SuppressUnmanagedCodeSecurity]
+        [DllImport("evr.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFCreateVideoMediaTypeFromVideoInfoHeader(
             VideoInfoHeader pVideoInfoHeader,
             int cbVideoInfoHeader,
             int dwPixelAspectRatioX,
             int dwPixelAspectRatioY,
             MFVideoInterlaceMode InterlaceMode,
-            long VideoFlags,
+            MFVideoFlags VideoFlags,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid pSubtype,
-            out IMFVideoMediaType ppIVideoMediaType
-            );
+            out IMFVideoMediaType ppIVideoMediaType);
 
-        [DllImport("evr.dll", ExactSpelling = true), Obsolete("Undoc'ed"), SuppressUnmanagedCodeSecurity]
+        [DllImport("evr.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFCreateVideoMediaTypeFromVideoInfoHeader2(
             VideoInfoHeader2 pVideoInfoHeader,
             int cbVideoInfoHeader,
-            long AdditionalVideoFlags,
+            MFVideoFlags AdditionalVideoFlags,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid pSubtype,
-            out IMFVideoMediaType ppIVideoMediaType
-            );
+            out IMFVideoMediaType ppIVideoMediaType);
 
         #endregion
 #endif

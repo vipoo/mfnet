@@ -36,8 +36,6 @@ namespace MediaFoundation.MFPlayer
 {
     #region Declarations
 
-#if ALLOW_UNTESTED_INTERFACES
-
     [Flags, UnmanagedName("MFP_CREATION_OPTIONS")]
     public enum MFP_CREATION_OPTIONS
     {
@@ -161,9 +159,13 @@ namespace MediaFoundation.MFPlayer
                 case MFP_EVENT_TYPE.PlaybackEnded:
                     mce = Marshal.PtrToStructure(pNativeData, typeof(MFP_PLAYBACK_ENDED_EVENT));
                     break;
+
+#if ALLOW_UNTESTED_INTERFACES
                 case MFP_EVENT_TYPE.AcquireUserCredential:
                     mce = Marshal.PtrToStructure(pNativeData, typeof(MFP_ACQUIRE_USER_CREDENTIAL_EVENT));
                     break;
+#endif
+
                 default:
                     // Don't know what it is.  Send back the header.
                     mce = Marshal.PtrToStructure(pNativeData, typeof(MFP_EVENT_HEADER));
@@ -249,6 +251,8 @@ namespace MediaFoundation.MFPlayer
         public IMFPMediaItem pMediaItem;
     }
 
+#if ALLOW_UNTESTED_INTERFACES
+
     [StructLayout(LayoutKind.Sequential), UnmanagedName("MFP_ACQUIRE_USER_CREDENTIAL_EVENT")]
     public class MFP_ACQUIRE_USER_CREDENTIAL_EVENT : MFP_EVENT_HEADER
     {
@@ -274,8 +278,6 @@ namespace MediaFoundation.MFPlayer
     #endregion
 
     #region Interfaces
-
-#if ALLOW_UNTESTED_INTERFACES
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
     InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
@@ -631,8 +633,6 @@ namespace MediaFoundation.MFPlayer
             return new EHMarshaler();
         }
     }
-
-#endif
 
     #endregion
 }

@@ -35,13 +35,6 @@ namespace MediaFoundation
 {
 #if ALLOW_UNTESTED_INTERFACES
 
-    [UnmanagedName("CLSID_MPEG2DLNASink"),
-    ComImport,
-    Guid("fa5fe7c5-6a1d-4b11-b41f-f959d6c76500")]
-    public class MPEG2DLNASink
-    {
-    }
-
     [StructLayout(LayoutKind.Sequential), UnmanagedName("MFMPEG2DLNASINKSTATS")]
     public struct MFMPEG2DLNASINKSTATS
     {
@@ -61,6 +54,15 @@ namespace MediaFoundation
         long cAudioFramesEncoded;
     }
 
+#endif
+
+    [UnmanagedName("CLSID_MPEG2DLNASink"),
+    ComImport,
+    Guid("fa5fe7c5-6a1d-4b11-b41f-f959d6c76500")]
+    public class MPEG2DLNASink
+    {
+    }
+
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
     InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
     Guid("0C012799-1B61-4C10-BDA9-04445BE5F561")]
@@ -72,7 +74,5 @@ namespace MediaFoundation
             [MarshalAs(UnmanagedType.Bool)] bool fPal
         );
     }
-
-#endif
 
 }

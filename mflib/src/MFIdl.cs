@@ -49,13 +49,6 @@ namespace MediaFoundation
     {
     }
 
-    [UnmanagedName("CLSID_MFCaptureEngineClassFactory"),
-    ComImport,
-    Guid("efce38d3-8914-4674-a7df-ae1b3d654b8a")]
-    public class MFCaptureEngineClassFactory
-    {
-    }
-
     [UnmanagedName("CLSID_PlayToSourceClassFactory"),
     ComImport,
     Guid("DA17539A-3DC3-42C1-A749-A183B51F085E")]
@@ -899,12 +892,6 @@ namespace MediaFoundation
         public static readonly Guid MFPROTECTIONATTRIBUTE_BEST_EFFORT = new Guid(0xc8e06331, 0x75f0, 0x4ec1, 0x8e, 0x77, 0x17, 0x57, 0x8f, 0x77, 0x3b, 0x46);
         public static readonly Guid MFPROTECTIONATTRIBUTE_FAIL_OVER = new Guid(0x8536abc5, 0x38f1, 0x4151, 0x9c, 0xce, 0xf5, 0x5d, 0x94, 0x12, 0x29, 0xac);
         public static readonly Guid MFPROTECTION_GRAPHICS_TRANSFER_AES_ENCRYPTION = new Guid(0xc873de64, 0xd8a5, 0x49e6, 0x88, 0xbb, 0xfb, 0x96, 0x3f, 0xd3, 0xd4, 0xce);
-        public static readonly Guid MFTranscodeContainerType_AC3 = new Guid(0x6d8d91c3, 0x8c91, 0x4ed1, 0x87, 0x42, 0x8c, 0x34, 0x7d, 0x5b, 0x44, 0xd0);
-        public static readonly Guid MFTranscodeContainerType_ADTS = new Guid(0x132fd27d, 0x0f02, 0x43de, 0xa3, 0x01, 0x38, 0xfb, 0xbb, 0xb3, 0x83, 0x4e);
-        public static readonly Guid MFTranscodeContainerType_MPEG2 = new Guid(0xbfc2dbf9, 0x7bb4, 0x4f8f, 0xaf, 0xde, 0xe1, 0x12, 0xc4, 0x4b, 0xa8, 0x82);
-        public static readonly Guid MFTranscodeContainerType_WAVE = new Guid(0x64c3453c, 0x0f26, 0x4741, 0xbe, 0x63, 0x87, 0xbd, 0xf8, 0xbb, 0x93, 0x5b);
-        public static readonly Guid MFTranscodeContainerType_AVI = new Guid(0x7edfe8af, 0x402f, 0x4d76, 0xa3, 0x3c, 0x61, 0x9f, 0xd1, 0x57, 0xd0, 0xf1);
-        public static readonly Guid MFTranscodeContainerType_FMPEG4 = new Guid(0x9ba876f1, 0x419f, 0x4b77, 0xa1, 0xe0, 0x35, 0x95, 0x9d, 0x9d, 0x40, 0x4);
         public static readonly Guid MF_XVP_DISABLE_FRC = new Guid(0x2c0afa19, 0x7a97, 0x4d5a, 0x9e, 0xe8, 0x16, 0xd4, 0xfc, 0x51, 0x8d, 0x8c);
         public static readonly Guid MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE_AUDCAP_SYMBOLIC_LINK = new Guid(0x98d24b5e, 0x5930, 0x4614, 0xb5, 0xa1, 0xf6, 0x0, 0xf9, 0x35, 0x5a, 0x78);
         public static readonly Guid MF_DEVICESTREAM_IMAGE_STREAM = new Guid(0xa7ffb865, 0xe7b2, 0x43b0, 0x9f, 0x6f, 0x9a, 0xf2, 0xa0, 0xe5, 0xf, 0xc0);
@@ -965,6 +952,12 @@ namespace MediaFoundation
         public static readonly Guid MPEG4 = new Guid(0xdc6cd05d, 0xb9d0, 0x40ef, 0xbd, 0x35, 0xfa, 0x62, 0x2c, 0x1a, 0xb2, 0x8a);
         public static readonly Guid MP3 = new Guid(0xe438b912, 0x83f1, 0x4de6, 0x9e, 0x3a, 0x9f, 0xfb, 0xc6, 0xdd, 0x24, 0xd1);
         public static readonly Guid x3GP = new Guid(0x34c50167, 0x4472, 0x4f34, 0x9e, 0xa0, 0xc4, 0x9f, 0xba, 0xcf, 0x03, 0x7d);
+        public static readonly Guid AC3 = new Guid(0x6d8d91c3, 0x8c91, 0x4ed1, 0x87, 0x42, 0x8c, 0x34, 0x7d, 0x5b, 0x44, 0xd0);
+        public static readonly Guid ADTS = new Guid(0x132fd27d, 0x0f02, 0x43de, 0xa3, 0x01, 0x38, 0xfb, 0xbb, 0xb3, 0x83, 0x4e);
+        public static readonly Guid MPEG2 = new Guid(0xbfc2dbf9, 0x7bb4, 0x4f8f, 0xaf, 0xde, 0xe1, 0x12, 0xc4, 0x4b, 0xa8, 0x82);
+        public static readonly Guid WAVE = new Guid(0x64c3453c, 0x0f26, 0x4741, 0xbe, 0x63, 0x87, 0xbd, 0xf8, 0xbb, 0x93, 0x5b);
+        public static readonly Guid AVI = new Guid(0x7edfe8af, 0x402f, 0x4d76, 0xa3, 0x3c, 0x61, 0x9f, 0xd1, 0x57, 0xd0, 0xf1);
+        public static readonly Guid FMPEG4 = new Guid(0x9ba876f1, 0x419f, 0x4b77, 0xa1, 0xe0, 0x35, 0x95, 0x9d, 0x9d, 0x40, 0x4);
     }
 
     public static class MFConnector
@@ -1036,15 +1029,24 @@ namespace MediaFoundation
 
     public static class MFRepresentation
     {
-        /// <summary> AM_MEDIA_TYPE_REPRESENTATION </summary>
-        public static readonly Guid AMMediaType = new Guid(0xe2e42ad2, 0x132c, 0x491e, 0xa2, 0x68, 0x3c, 0x7c, 0x2d, 0xca, 0x18, 0x1f);
+        /// <summary> FORMAT_DvInfo </summary>
+        public static readonly Guid DvInfo = new Guid(0x05589f84, 0xc356, 0x11ce, 0xbf, 0x01, 0x00, 0xaa, 0x00, 0x55, 0x59, 0x5a);
         /// <summary> FORMAT_MFVideoFormat </summary>
         public static readonly Guid MFVideoFormat = new Guid(0xaed4ab2d, 0x7326, 0x43cb, 0x94, 0x64, 0xc8, 0x79, 0xca, 0xb9, 0xc4, 0x3d);
+        /// <summary> FORMAT_MPEG2Video </summary>
+        public static readonly Guid MPEG2Video = new Guid(0xe06d80e3, 0xdb46, 0x11cf, 0xb4, 0xd1, 0x00, 0x80, 0x05f, 0x6c, 0xbb, 0xea);
+        /// <summary> FORMAT_MPEGStreams </summary>
+        public static readonly Guid MPEGStreams = new Guid(0x05589f83, 0xc356, 0x11ce, 0xbf, 0x01, 0x00, 0xaa, 0x00, 0x55, 0x59, 0x5a);
+        /// <summary> FORMAT_MPEGVideo </summary>
+        public static readonly Guid MPEGVideo = new Guid(0x05589f82, 0xc356, 0x11ce, 0xbf, 0x01, 0x00, 0xaa, 0x00, 0x55, 0x59, 0x5a);
         /// <summary> FORMAT_VideoInfo </summary>
         public static readonly Guid VideoInfo = new Guid(0x05589f80, 0xc356, 0x11ce, 0xbf, 0x01, 0x00, 0xaa, 0x00, 0x55, 0x59, 0x5a);
         /// <summary> FORMAT_VideoInfo2 </summary>
         public static readonly Guid VideoInfo2 = new Guid(0xf72a76A0, 0xeb0a, 0x11d0, 0xac, 0xe4, 0x00, 0x00, 0xc0, 0xcc, 0x16, 0xba);
-
+        /// <summary> FORMAT_WaveFormatEx </summary>
+        public static readonly Guid WaveFormatEx = new Guid(0x05589f81, 0xc356, 0x11ce, 0xbf, 0x01, 0x00, 0xaa, 0x00, 0x55, 0x59, 0x5a);
+        /// <summary> AM_MEDIA_TYPE_REPRESENTATION </summary>
+        public static readonly Guid AMMediaType = new Guid(0xe2e42ad2, 0x132c, 0x491e, 0xa2, 0x68, 0x3c, 0x7c, 0x2d, 0xca, 0x18, 0x1f);
     }
 
     public static class MFProperties
@@ -1208,8 +1210,6 @@ namespace MediaFoundation
         public static readonly Guid MF_TIME_FORMAT_SEGMENT_OFFSET = new Guid(0xc8b8be77, 0x869c, 0x431d, 0x81, 0x2e, 0x16, 0x96, 0x93, 0xf6, 0x5a, 0x39);
         public static readonly Guid MF_TIME_FORMAT_ENTRY_RELATIVE = new Guid(0x4399f178, 0x46d3, 0x4504, 0xaf, 0xda, 0x20, 0xd3, 0x2e, 0x9b, 0xa3, 0x60);
         public static readonly Guid MFP_POSITIONTYPE_100NS = Guid.Empty;
-        // 
-        public static readonly Guid CLSID_MFMediaEngineClassFactory = new Guid(0xb44392da, 0x499b, 0x446b, 0xa4, 0xcb, 0x0, 0x5f, 0xea, 0xd0, 0xe6, 0xd5);
     }
 
     public static class MFMediaType
@@ -1486,30 +1486,6 @@ namespace MediaFoundation
         RequireSaveSelected = 0x00000002
     }
 
-    [UnmanagedName("MF_QUALITY_DROP_MODE")]
-    public enum MFQualityDropMode
-    {
-        None,
-        Mode1,
-        Mode2,
-        Mode3,
-        Mode4,
-        Mode5,
-        NumDropModes
-    }
-
-    [UnmanagedName("MF_QUALITY_LEVEL")]
-    public enum MFQualityLevel
-    {
-        Normal,
-        NormalMinus1,
-        NormalMinus2,
-        NormalMinus3,
-        NormalMinus4,
-        NormalMinus5,
-        NumQualityLevels
-    }
-
     [UnmanagedName("MFNETSOURCE_PROTOCOL_TYPE")]
     public enum MFNetSourceProtocolType
     {
@@ -1568,27 +1544,12 @@ namespace MediaFoundation
         HardwareAllowed = 1
     }
 
-    [Flags, UnmanagedName("MFTOPOLOGY_DXVA_MODE")]
-    public enum MFTOPOLOGY_DXVA_MODE
-    {
-        Default = 0,
-        None = 1,
-        Full = 2
-    }
-
     [UnmanagedName("MFTOPOLOGY_HARDWARE_MODE")]
     public enum MFTOPOLOGY_HARDWARE_MODE
     {
         SoftwareOnly = 0,
         UseHardware = 1,
         UseOnlyHardware = 2,
-    }
-
-    [Flags, UnmanagedName("MF_QUALITY_ADVISE_FLAGS")]
-    public enum MFQualityAdviseFlags
-    {
-        None = 0,
-        CannotKeepUp = 0x1
     }
 
     [UnmanagedName("MFASYNC_WORKQUEUE_TYPE")]
@@ -1627,18 +1588,52 @@ namespace MediaFoundation
         MrfCrf444 = 1
     }
 
-    [StructLayout(LayoutKind.Sequential), UnmanagedName("MPEG2VIDEOINFO")]
-    public struct Mpeg2VideoInfo
+    [UnmanagedName("AM_MPEG2Level")]
+    public enum AM_MPEG2Level
     {
-        VideoInfoHeader2 hdr;
-        int dwStartTimeCode;        //  ?? not used for DVD ??
-        int cbSequenceHeader;       // is 0 for DVD (no sequence header)
-        int dwProfile;              // use enum MPEG2Profile
-        int dwLevel;                // use enum MPEG2Level
-        int dwFlags;                // use AMMPEG2_* defines.  Reject connection if undefined bits are not 0
-        int[] dwSequenceHeader;     // DWORD instead of Byte for alignment purposes
-        //   For MPEG-2, if a sequence_header is included, the sequence_extension
-        //   should also be included
+        None = 0,
+        Low = 1,
+        Main = 2,
+        High1440 = 3,
+        High = 4
+    };
+
+    [UnmanagedName("AM_MPEG2Profile")]
+    public enum AM_MPEG2Profile
+    {
+        None = 0,
+        Simple = 1,
+        Main = 2,
+        SNRScalable = 3,
+        SpatiallyScalable = 4,
+        High = 5
+    };
+
+    [Flags, UnmanagedName("AMMPEG2_* defines")]
+    public enum AMMPEG2_Flags
+    {
+        DoPanScan = 0x00000001,
+        DVDLine21Field1 = 0x00000002,
+        DVDLine21Field2 = 0x00000004,
+        SourceIsLetterboxed = 0x00000008,
+        FilmCameraMode = 0x00000010,
+        LetterboxAnalogOut = 0x00000020,
+        DSS_UserData = 0x00000040,
+        DVB_UserData = 0x00000080,
+        x27MhzTimebase = 0x00000100,
+        WidescreenAnalogOut = 0x00000200
+    }
+
+    [StructLayout(LayoutKind.Sequential), UnmanagedName("MPEG2VIDEOINFO")]
+    public class Mpeg2VideoInfo
+    {
+        public VideoInfoHeader2 hdr;
+        public int dwStartTimeCode;
+        public int cbSequenceHeader;
+        public AM_MPEG2Profile dwProfile;
+        public AM_MPEG2Level dwLevel;
+        public AMMPEG2_Flags dwFlags;
+        public int[] dwSequenceHeader;
     }
 
     [StructLayout(LayoutKind.Explicit, Pack = 8), UnmanagedName("unnamed internal struct")]
@@ -1719,15 +1714,6 @@ namespace MediaFoundation
         public Guid guidAttributeKey;
         public MFAttributeType attrType;
         public Unnamed1 u1;
-    }
-
-    [StructLayout(LayoutKind.Sequential), UnmanagedName("MF_TRANSCODE_SINK_INFO")]
-    public struct MFTranscodeSinkInfo
-    {
-        public int dwVideoStreamID;
-        public IMFMediaType pVideoMediaType;
-        public int dwAudioStreamID;
-        public IMFMediaType pAudioMediaType;
     }
 
     [StructLayout(LayoutKind.Sequential), UnmanagedName("MT_ARBITRARY_HEADER")]
@@ -1997,6 +1983,45 @@ namespace MediaFoundation
         Relative = 0x00000001
     }
 
+    [UnmanagedName("MF_QUALITY_DROP_MODE")]
+    public enum MFQualityDropMode
+    {
+        None,
+        Mode1,
+        Mode2,
+        Mode3,
+        Mode4,
+        Mode5,
+        NumDropModes
+    }
+
+    [UnmanagedName("MF_QUALITY_LEVEL")]
+    public enum MFQualityLevel
+    {
+        Normal,
+        NormalMinus1,
+        NormalMinus2,
+        NormalMinus3,
+        NormalMinus4,
+        NormalMinus5,
+        NumQualityLevels
+    }
+
+    [Flags, UnmanagedName("MF_QUALITY_ADVISE_FLAGS")]
+    public enum MFQualityAdviseFlags
+    {
+        None = 0,
+        CannotKeepUp = 0x1
+    }
+
+    [Flags, UnmanagedName("MFTOPOLOGY_DXVA_MODE")]
+    public enum MFTOPOLOGY_DXVA_MODE
+    {
+        Default = 0,
+        None = 1,
+        Full = 2
+    }
+
     [StructLayout(LayoutKind.Sequential, Pack = 1), UnmanagedName("MFAYUVSample")]
     public struct MFAYUVSample
     {
@@ -2033,6 +2058,15 @@ namespace MediaFoundation
         public long qwClockFrequency;
         public int dwClockTolerance;
         public int dwClockJitter;
+    }
+
+    [StructLayout(LayoutKind.Sequential), UnmanagedName("MF_TRANSCODE_SINK_INFO")]
+    public struct MFTranscodeSinkInfo
+    {
+        public int dwVideoStreamID;
+        public IMFMediaType pVideoMediaType;
+        public int dwAudioStreamID;
+        public IMFMediaType pAudioMediaType;
     }
 
     #endregion
@@ -2357,7 +2391,7 @@ namespace MediaFoundation
     {
         [PreserveSig]
         int IsTimeSeekSupported(
-            out bool pfTimeSeekIsSupported
+            [Out, MarshalAs(UnmanagedType.Bool)] out bool pfTimeSeekIsSupported
         );
 
         [PreserveSig]
@@ -2378,7 +2412,7 @@ namespace MediaFoundation
     Guid("71CE469C-F34B-49EA-A56B-2D2A10E51149")]
     public interface IMFByteStreamCacheControl2 : IMFByteStreamCacheControl
     {
-        #region IMFByteStreamCacheControl methods
+    #region IMFByteStreamCacheControl methods
 
         [PreserveSig]
         new int StopBackgroundTransfer();
@@ -2398,7 +2432,7 @@ namespace MediaFoundation
 
         [PreserveSig]
         int IsBackgroundTransferActive(
-            out bool pfActive
+            [Out, MarshalAs(UnmanagedType.Bool)] out bool pfActive
         );
     }
 
@@ -2501,31 +2535,6 @@ namespace MediaFoundation
             out int pcbOut,
             out IntPtr ppbOut
         );
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    Guid("86CBC910-E533-4751-8E3B-F19B5B806A03"),
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IMFVideoSampleAllocator
-    {
-        [PreserveSig]
-        int SetDirectXManager(
-            [In, MarshalAs(UnmanagedType.IUnknown)] object pManager
-            );
-
-        [PreserveSig]
-        int UninitializeSampleAllocator();
-
-        [PreserveSig]
-        int InitializeSampleAllocator(
-            [In] int cRequestedFrames,
-            [In, MarshalAs(UnmanagedType.Interface)] IMFMediaType pMediaType
-            );
-
-        [PreserveSig]
-        int AllocateSample(
-            [MarshalAs(UnmanagedType.Interface)] out IMFSample ppSample
-            );
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -2684,29 +2693,29 @@ namespace MediaFoundation
     {
         [PreserveSig]
         int SetUser(
-            [In] ref byte pbData,
+            [In, MarshalAs(UnmanagedType.LPArray)] byte[] pbData,
             [In] int cbData,
-            [In] int fDataIsEncrypted
+            [In, MarshalAs(UnmanagedType.Bool)] bool fDataIsEncrypted
             );
 
         [PreserveSig]
         int SetPassword(
-            [In] ref byte pbData,
+            [In, MarshalAs(UnmanagedType.LPArray)] byte[] pbData,
             [In] int cbData,
-            [In] int fDataIsEncrypted
+            [In, MarshalAs(UnmanagedType.Bool)] bool fDataIsEncrypted
             );
 
         [PreserveSig]
         int GetUser(
-            out byte pbData,
-            [In, Out] ref int pcbData,
-            [In] int fEncryptData
+            [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex=1)] byte [] pbData,
+            [In, Out] MFInt pcbData,
+            [In, MarshalAs(UnmanagedType.Bool)] bool fEncryptData
             );
 
         [PreserveSig]
         int GetPassword(
-            out byte pbData,
-            [In, Out] ref int pcbData,
+            [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] pbData,
+            [In, Out] MFInt pcbData,
             [In, MarshalAs(UnmanagedType.Bool)] bool fEncryptData
             );
 
@@ -2733,7 +2742,7 @@ namespace MediaFoundation
         [PreserveSig]
         int SetGood(
             [In, MarshalAs(UnmanagedType.Interface)] IMFNetCredential pCred,
-            [In] bool fGood
+            [In, MarshalAs(UnmanagedType.Bool)] bool fGood
             );
 
         [PreserveSig]
@@ -2764,7 +2773,7 @@ namespace MediaFoundation
         [PreserveSig]
         int SetGood(
             [In, MarshalAs(UnmanagedType.Interface)] IMFNetCredential pCred,
-            [In] bool fGood
+            [In, MarshalAs(UnmanagedType.Bool)] bool fGood
             );
     }
 
@@ -2785,18 +2794,18 @@ namespace MediaFoundation
 
         [PreserveSig]
         int RegisterProxyResult(
-            [In, MarshalAs(UnmanagedType.Error)] int hrOp
+            int hrOp
             );
 
         [PreserveSig]
         int GetCurrentProxy(
-            [Out, MarshalAs(UnmanagedType.LPWStr)] string pszStr,
-            [In, Out] ref int pcchStr
+            [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszStr,
+            [In, Out] MFInt pcchStr
             );
 
         [PreserveSig]
         int Clone(
-            [MarshalAs(UnmanagedType.Interface)] out IMFNetProxyLocator ppProxyLocator
+            out IMFNetProxyLocator ppProxyLocator
             );
     }
 
@@ -2855,7 +2864,7 @@ namespace MediaFoundation
     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IMFOutputPolicy : IMFAttributes
     {
-        #region IMFAttributes methods
+    #region IMFAttributes methods
 
         [PreserveSig]
         new int GetItem(
@@ -3037,7 +3046,7 @@ namespace MediaFoundation
             [In, MarshalAs(UnmanagedType.Interface)] IMFAttributes pDest
             );
 
-        #endregion
+    #endregion
 
         [PreserveSig]
         int GenerateRequiredSchemas(
@@ -3064,7 +3073,7 @@ namespace MediaFoundation
     Guid("7BE0FC5B-ABD9-44FB-A5C8-F50136E71599")]
     public interface IMFOutputSchema : IMFAttributes
     {
-        #region IMFAttributes methods
+    #region IMFAttributes methods
 
         [PreserveSig]
         new int GetItem(
@@ -3246,7 +3255,7 @@ namespace MediaFoundation
             [In, MarshalAs(UnmanagedType.Interface)] IMFAttributes pDest
             );
 
-        #endregion
+    #endregion
 
         [PreserveSig]
         int GetSchemaType(
@@ -3335,68 +3344,37 @@ namespace MediaFoundation
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
     InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    Guid("EC15E2E9-E36B-4F7C-8758-77D452EF4CE7")]
-    public interface IMFQualityAdvise
-    {
-        [PreserveSig]
-        int SetDropMode(
-            [In] MFQualityDropMode eDropMode
-            );
-
-        [PreserveSig]
-        int SetQualityLevel(
-            [In] MFQualityLevel eQualityLevel
-            );
-
-        [PreserveSig]
-        int GetDropMode(
-            out MFQualityDropMode peDropMode
-            );
-
-        [PreserveSig]
-        int GetQualityLevel(
-            out MFQualityLevel peQualityLevel
-            );
-
-        [PreserveSig]
-        int DropTime(
-            [In] long hnsAmountToDrop
-            );
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
     Guid("8D009D86-5B9F-4115-B1FC-9F80D52AB8AB")]
     public interface IMFQualityManager
     {
         [PreserveSig]
         int NotifyTopology(
-            [In, MarshalAs(UnmanagedType.Interface)] IMFTopology pTopology
+            IMFTopology pTopology
             );
 
         [PreserveSig]
         int NotifyPresentationClock(
-            [In, MarshalAs(UnmanagedType.Interface)] IMFPresentationClock pClock
+            IMFPresentationClock pClock
             );
 
         [PreserveSig]
         int NotifyProcessInput(
-            [In, MarshalAs(UnmanagedType.Interface)] IMFTopologyNode pNode,
-            [In] int lInputIndex,
-            [In, MarshalAs(UnmanagedType.Interface)] IMFSample pSample
+            IMFTopologyNode pNode,
+            int lInputIndex,
+            IMFSample pSample
             );
 
         [PreserveSig]
         int NotifyProcessOutput(
-            [In, MarshalAs(UnmanagedType.Interface)] IMFTopologyNode pNode,
-            [In] int lOutputIndex,
-            [In, MarshalAs(UnmanagedType.Interface)] IMFSample pSample
+            IMFTopologyNode pNode,
+            int lOutputIndex,
+            IMFSample pSample
             );
 
         [PreserveSig]
         int NotifyQualityEvent(
             [In, MarshalAs(UnmanagedType.IUnknown)] object pObject,
-            [In, MarshalAs(UnmanagedType.Interface)] IMFMediaEvent pEvent
+            IMFMediaEvent pEvent
             );
 
         [PreserveSig]
@@ -3430,7 +3408,7 @@ namespace MediaFoundation
     {
         [PreserveSig]
         int UpdateTopology(
-            [In, Out, MarshalAs(UnmanagedType.Interface)] IMFTopology pTopology
+            IMFTopology pTopology
             );
     }
 
@@ -3476,61 +3454,6 @@ namespace MediaFoundation
         int GetSelectedStyle(
             [MarshalAs(UnmanagedType.LPWStr)] out string ppwszStyle
             );
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    Guid("8C7B80BF-EE42-4B59-B1DF-55668E1BDCA8")]
-    public interface IMFSampleGrabberSinkCallback : IMFClockStateSink
-    {
-        #region IMFClockStateSink methods
-
-        [PreserveSig]
-        new int OnClockStart(
-            [In] long hnsSystemTime,
-            [In] long llClockStartOffset
-            );
-
-        [PreserveSig]
-        new int OnClockStop(
-            [In] long hnsSystemTime
-            );
-
-        [PreserveSig]
-        new int OnClockPause(
-            [In] long hnsSystemTime
-            );
-
-        [PreserveSig]
-        new int OnClockRestart(
-            [In] long hnsSystemTime
-            );
-
-        [PreserveSig]
-        new int OnClockSetRate(
-            [In] long hnsSystemTime,
-            [In] float flRate
-            );
-
-        #endregion
-
-        [PreserveSig]
-        int OnSetPresentationClock(
-            [In, MarshalAs(UnmanagedType.Interface)] IMFPresentationClock pPresentationClock
-            );
-
-        [PreserveSig]
-        int OnProcessSample(
-            [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidMajorMediaType,
-            [In] int dwSampleFlags, // must be zero
-            [In] long llSampleTime,
-            [In] long llSampleDuration,
-            [In] IntPtr pSampleBuffer,
-            [In] int dwSampleSize
-            );
-
-        [PreserveSig]
-        int OnShutdown();
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -3609,22 +3532,22 @@ namespace MediaFoundation
         int BeginCreateObject(
             [In, MarshalAs(UnmanagedType.LPWStr)] string pwszURL,
             [In] MFResolution dwFlags,
-            [In, MarshalAs(UnmanagedType.Interface)] IPropertyStore pProps,
-            [MarshalAs(UnmanagedType.IUnknown)] out object ppIUnknownCancelCookie,
-            [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
+            IPropertyStore pProps,
+            out IntPtr ppIUnknownCancelCookie,
+            IMFAsyncCallback pCallback,
             [In, MarshalAs(UnmanagedType.IUnknown)] object pUnkState
             );
 
         [PreserveSig]
         int EndCreateObject(
-            [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncResult pResult,
+            IMFAsyncResult pResult,
             out MFObjectType pObjectType,
             [MarshalAs(UnmanagedType.IUnknown)] out object ppObject
             );
 
         [PreserveSig]
         int CancelObjectCreation(
-            [In, MarshalAs(UnmanagedType.IUnknown)] object pIUnknownCancelCookie
+            IntPtr pIUnknownCancelCookie
             );
     }
 
@@ -3815,153 +3738,6 @@ namespace MediaFoundation
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
     InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    Guid("F5042EA4-7A96-4A75-AA7B-2BE1EF7F88D5")]
-    public interface IMFByteStreamCacheControl
-    {
-        [PreserveSig]
-        int StopBackgroundTransfer();
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    Guid("508E71D3-EC66-4FC3-8775-B4B9ED6BA847")]
-    public interface IMFFieldOfUseMFTUnlock
-    {
-        [PreserveSig]
-        int Unlock(
-            [In, MarshalAs(UnmanagedType.IUnknown)] object pUnkMFT
-        );
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    Guid("F3706F0D-8EA2-4886-8000-7155E9EC2EAE")]
-    public interface IMFQualityAdvise2 : IMFQualityAdvise
-    {
-        #region IMFQualityAdvise methods
-
-        [PreserveSig]
-        new int SetDropMode(
-            [In] MFQualityDropMode eDropMode
-            );
-
-        [PreserveSig]
-        new int SetQualityLevel(
-            [In] MFQualityLevel eQualityLevel
-            );
-
-        [PreserveSig]
-        new int GetDropMode(
-            out MFQualityDropMode peDropMode
-            );
-
-        [PreserveSig]
-        new int GetQualityLevel(
-            out MFQualityLevel peQualityLevel
-            );
-
-        [PreserveSig]
-        new int DropTime(
-            [In] long hnsAmountToDrop
-            );
-
-        #endregion
-
-        [PreserveSig]
-        int NotifyQualityEvent(
-            IMFMediaEvent pEvent,
-            out MFQualityAdviseFlags pdwFlags
-        );
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    Guid("DFCD8E4D-30B5-4567-ACAA-8EB5B7853DC9")]
-    public interface IMFQualityAdviseLimits
-    {
-        [PreserveSig]
-        int GetMaximumDropMode(
-            out MFQualityDropMode peDropMode
-        );
-
-        [PreserveSig]
-        int GetMinimumQualityLevel(
-            out MFQualityLevel peQualityLevel
-        );
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    Guid("CA86AA50-C46E-429E-AB27-16D6AC6844CB")]
-    public interface IMFSampleGrabberSinkCallback2 : IMFSampleGrabberSinkCallback
-    {
-        #region IMFClockStateSink methods
-
-        [PreserveSig]
-        new int OnClockStart(
-            [In] long hnsSystemTime,
-            [In] long llClockStartOffset
-            );
-
-        [PreserveSig]
-        new int OnClockStop(
-            [In] long hnsSystemTime
-            );
-
-        [PreserveSig]
-        new int OnClockPause(
-            [In] long hnsSystemTime
-            );
-
-        [PreserveSig]
-        new int OnClockRestart(
-            [In] long hnsSystemTime
-            );
-
-        [PreserveSig]
-        new int OnClockSetRate(
-            [In] long hnsSystemTime,
-            [In] float flRate
-            );
-
-        #endregion
-
-        #region IMFSampleGrabberSinkCallback methods
-
-        [PreserveSig]
-        new int OnSetPresentationClock(
-            [In, MarshalAs(UnmanagedType.Interface)] IMFPresentationClock pPresentationClock
-            );
-
-        [PreserveSig]
-        new int OnProcessSample(
-            [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidMajorMediaType,
-            [In] int dwSampleFlags, // must be zero
-            [In] long llSampleTime,
-            [In] long llSampleDuration,
-            [In] IntPtr pSampleBuffer,
-            [In] int dwSampleSize
-            );
-
-        [PreserveSig]
-        new int OnShutdown();
-
-        #endregion
-
-        [PreserveSig]
-        int OnProcessSampleEx(
-            [MarshalAs(UnmanagedType.LPStruct)] Guid guidMajorMediaType,
-            [In] int dwSampleFlags, // No flags are defined
-            [In] long llSampleTime,
-            [In] long llSampleDuration,
-            [In] IntPtr pSampleBuffer,
-            [In] int dwSampleSize,
-            IMFAttributes pAttributes
-        );
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
     Guid("61F7D887-1230-4A8B-AEBA-8AD434D1A64D")]
     public interface IMFSSLCertificateManager
     {
@@ -4004,137 +3780,6 @@ namespace MediaFoundation
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
     InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    Guid("9DB7AA41-3CC5-40D4-8509-555804AD34CC")]
-    public interface IMFStreamingSinkConfig
-    {
-        [PreserveSig]
-        int StartStreaming(
-            [MarshalAs(UnmanagedType.Bool)] bool fSeekOffsetIsByteOffset,
-            [In] long qwSeekOffset
-        );
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    Guid("AB9D8661-F7E8-4EF4-9861-89F334F94E74")]
-    public interface IMFTimecodeTranslate
-    {
-        [PreserveSig]
-        int BeginConvertTimecodeToHNS(
-            [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant pPropVarTimecode,
-            IMFAsyncCallback pCallback,
-            [In, MarshalAs(UnmanagedType.IUnknown)] object punkState
-        );
-
-        [PreserveSig]
-        int EndConvertTimecodeToHNS(
-            IMFAsyncResult pResult,
-            out long phnsTime
-        );
-
-        [PreserveSig]
-        int BeginConvertHNSToTimecode(
-            [In] long hnsTime,
-            IMFAsyncCallback pCallback,
-            [In, MarshalAs(UnmanagedType.IUnknown)] object punkState
-        );
-
-        [PreserveSig]
-        int EndConvertHNSToTimecode(
-            IMFAsyncResult pResult,
-            [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant pPropVarTimecode
-        );
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    Guid("4ADFDBA3-7AB0-4953-A62B-461E7FF3DA1E")]
-    public interface IMFTranscodeProfile
-    {
-        [PreserveSig]
-        int SetAudioAttributes(
-            IMFAttributes pAttrs
-        );
-
-        [PreserveSig]
-        int GetAudioAttributes(
-            out IMFAttributes ppAttrs
-        );
-
-        [PreserveSig]
-        int SetVideoAttributes(
-            IMFAttributes pAttrs
-        );
-
-        [PreserveSig]
-        int GetVideoAttributes(
-            out IMFAttributes ppAttrs
-        );
-
-        [PreserveSig]
-        int SetContainerAttributes(
-            IMFAttributes pAttrs
-        );
-
-        [PreserveSig]
-        int GetContainerAttributes(
-            out IMFAttributes ppAttrs
-        );
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    Guid("8CFFCD2E-5A03-4A3A-AFF7-EDCD107C620E")]
-    public interface IMFTranscodeSinkInfoProvider
-    {
-        [PreserveSig]
-        int SetOutputFile(
-            [In, MarshalAs(UnmanagedType.LPWStr)] string pwszFileName
-        );
-
-        [PreserveSig]
-        int SetOutputByteStream(
-            IMFActivate pByteStreamActivate
-        );
-
-        [PreserveSig]
-        int SetProfile(
-            IMFTranscodeProfile pProfile
-        );
-
-        [PreserveSig]
-        int GetSinkInfo(
-            out MFTranscodeSinkInfo pSinkInfo
-        );
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    Guid("992388B4-3372-4F67-8B6F-C84C071F4751")]
-    public interface IMFVideoSampleAllocatorCallback
-    {
-        [PreserveSig]
-        int SetCallback(
-            IMFVideoSampleAllocatorNotify pNotify
-        );
-
-        [PreserveSig]
-        int GetFreeSampleCount(
-            out int plSamples
-        );
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    Guid("A792CDBE-C374-4E89-8335-278E7B9956A4")]
-    public interface IMFVideoSampleAllocatorNotify
-    {
-        [PreserveSig]
-        int NotifyRelease();
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
     Guid("380b9af9-a85b-4e78-a2af-ea5ce645c6b4")]
     public interface IMFMediaStreamSourceSampleRequest
     {
@@ -4143,6 +3788,7 @@ namespace MediaFoundation
             IMFSample value
             );
     }
+
 #endif
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -6241,6 +5887,395 @@ namespace MediaFoundation
             [In] int dwStreamIdentifier,
             [In] int dwFlags, // must be zero
             [MarshalAs(UnmanagedType.Interface)] out IMFMetadata ppMFMetadata
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("F5042EA4-7A96-4A75-AA7B-2BE1EF7F88D5")]
+    public interface IMFByteStreamCacheControl
+    {
+        [PreserveSig]
+        int StopBackgroundTransfer();
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("508E71D3-EC66-4FC3-8775-B4B9ED6BA847")]
+    public interface IMFFieldOfUseMFTUnlock
+    {
+        [PreserveSig]
+        int Unlock(
+            [In, MarshalAs(UnmanagedType.IUnknown)] object pUnkMFT
+        );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("F3706F0D-8EA2-4886-8000-7155E9EC2EAE")]
+    public interface IMFQualityAdvise2 : IMFQualityAdvise
+    {
+        #region IMFQualityAdvise methods
+
+        [PreserveSig]
+        new int SetDropMode(
+            [In] MFQualityDropMode eDropMode
+            );
+
+        [PreserveSig]
+        new int SetQualityLevel(
+            [In] MFQualityLevel eQualityLevel
+            );
+
+        [PreserveSig]
+        new int GetDropMode(
+            out MFQualityDropMode peDropMode
+            );
+
+        [PreserveSig]
+        new int GetQualityLevel(
+            out MFQualityLevel peQualityLevel
+            );
+
+        [PreserveSig]
+        new int DropTime(
+            [In] long hnsAmountToDrop
+            );
+
+        #endregion
+
+        [PreserveSig]
+        int NotifyQualityEvent(
+            IMFMediaEvent pEvent,
+            out MFQualityAdviseFlags pdwFlags
+        );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("DFCD8E4D-30B5-4567-ACAA-8EB5B7853DC9")]
+    public interface IMFQualityAdviseLimits
+    {
+        [PreserveSig]
+        int GetMaximumDropMode(
+            out MFQualityDropMode peDropMode
+        );
+
+        [PreserveSig]
+        int GetMinimumQualityLevel(
+            out MFQualityLevel peQualityLevel
+        );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("CA86AA50-C46E-429E-AB27-16D6AC6844CB")]
+    public interface IMFSampleGrabberSinkCallback2 : IMFSampleGrabberSinkCallback
+    {
+        #region IMFClockStateSink methods
+
+        [PreserveSig]
+        new int OnClockStart(
+            [In] long hnsSystemTime,
+            [In] long llClockStartOffset
+            );
+
+        [PreserveSig]
+        new int OnClockStop(
+            [In] long hnsSystemTime
+            );
+
+        [PreserveSig]
+        new int OnClockPause(
+            [In] long hnsSystemTime
+            );
+
+        [PreserveSig]
+        new int OnClockRestart(
+            [In] long hnsSystemTime
+            );
+
+        [PreserveSig]
+        new int OnClockSetRate(
+            [In] long hnsSystemTime,
+            [In] float flRate
+            );
+
+        #endregion
+
+        #region IMFSampleGrabberSinkCallback methods
+
+        [PreserveSig]
+        new int OnSetPresentationClock(
+            [In, MarshalAs(UnmanagedType.Interface)] IMFPresentationClock pPresentationClock
+            );
+
+        [PreserveSig]
+        new int OnProcessSample(
+            [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidMajorMediaType,
+            [In] int dwSampleFlags, // must be zero
+            [In] long llSampleTime,
+            [In] long llSampleDuration,
+            [In] IntPtr pSampleBuffer,
+            [In] int dwSampleSize
+            );
+
+        [PreserveSig]
+        new int OnShutdown();
+
+        #endregion
+
+        [PreserveSig]
+        int OnProcessSampleEx(
+            [MarshalAs(UnmanagedType.LPStruct)] Guid guidMajorMediaType,
+            [In] int dwSampleFlags, // No flags are defined
+            [In] long llSampleTime,
+            [In] long llSampleDuration,
+            [In] IntPtr pSampleBuffer,
+            [In] int dwSampleSize,
+            IMFAttributes pAttributes
+        );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("9DB7AA41-3CC5-40D4-8509-555804AD34CC")]
+    public interface IMFStreamingSinkConfig
+    {
+        [PreserveSig]
+        int StartStreaming(
+            [MarshalAs(UnmanagedType.Bool)] bool fSeekOffsetIsByteOffset,
+            [In] long qwSeekOffset
+        );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("AB9D8661-F7E8-4EF4-9861-89F334F94E74")]
+    public interface IMFTimecodeTranslate
+    {
+        [PreserveSig]
+        int BeginConvertTimecodeToHNS(
+            [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant pPropVarTimecode,
+            IMFAsyncCallback pCallback,
+            [In, MarshalAs(UnmanagedType.IUnknown)] object punkState
+        );
+
+        [PreserveSig]
+        int EndConvertTimecodeToHNS(
+            IMFAsyncResult pResult,
+            out long phnsTime
+        );
+
+        [PreserveSig]
+        int BeginConvertHNSToTimecode(
+            [In] long hnsTime,
+            IMFAsyncCallback pCallback,
+            [In, MarshalAs(UnmanagedType.IUnknown)] object punkState
+        );
+
+        [PreserveSig]
+        int EndConvertHNSToTimecode(
+            IMFAsyncResult pResult,
+            [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant pPropVarTimecode
+        );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("4ADFDBA3-7AB0-4953-A62B-461E7FF3DA1E")]
+    public interface IMFTranscodeProfile
+    {
+        [PreserveSig]
+        int SetAudioAttributes(
+            IMFAttributes pAttrs
+        );
+
+        [PreserveSig]
+        int GetAudioAttributes(
+            out IMFAttributes ppAttrs
+        );
+
+        [PreserveSig]
+        int SetVideoAttributes(
+            IMFAttributes pAttrs
+        );
+
+        [PreserveSig]
+        int GetVideoAttributes(
+            out IMFAttributes ppAttrs
+        );
+
+        [PreserveSig]
+        int SetContainerAttributes(
+            IMFAttributes pAttrs
+        );
+
+        [PreserveSig]
+        int GetContainerAttributes(
+            out IMFAttributes ppAttrs
+        );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("8CFFCD2E-5A03-4A3A-AFF7-EDCD107C620E")]
+    public interface IMFTranscodeSinkInfoProvider
+    {
+        [PreserveSig]
+        int SetOutputFile(
+            [In, MarshalAs(UnmanagedType.LPWStr)] string pwszFileName
+        );
+
+        [PreserveSig]
+        int SetOutputByteStream(
+            IMFActivate pByteStreamActivate
+        );
+
+        [PreserveSig]
+        int SetProfile(
+            IMFTranscodeProfile pProfile
+        );
+
+        [PreserveSig]
+        int GetSinkInfo(
+            out MFTranscodeSinkInfo pSinkInfo
+        );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("992388B4-3372-4F67-8B6F-C84C071F4751")]
+    public interface IMFVideoSampleAllocatorCallback
+    {
+        [PreserveSig]
+        int SetCallback(
+            IMFVideoSampleAllocatorNotify pNotify
+        );
+
+        [PreserveSig]
+        int GetFreeSampleCount(
+            out int plSamples
+        );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("A792CDBE-C374-4E89-8335-278E7B9956A4")]
+    public interface IMFVideoSampleAllocatorNotify
+    {
+        [PreserveSig]
+        int NotifyRelease();
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("EC15E2E9-E36B-4F7C-8758-77D452EF4CE7")]
+    public interface IMFQualityAdvise
+    {
+        [PreserveSig]
+        int SetDropMode(
+            [In] MFQualityDropMode eDropMode
+            );
+
+        [PreserveSig]
+        int SetQualityLevel(
+            [In] MFQualityLevel eQualityLevel
+            );
+
+        [PreserveSig]
+        int GetDropMode(
+            out MFQualityDropMode peDropMode
+            );
+
+        [PreserveSig]
+        int GetQualityLevel(
+            out MFQualityLevel peQualityLevel
+            );
+
+        [PreserveSig]
+        int DropTime(
+            [In] long hnsAmountToDrop
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("8C7B80BF-EE42-4B59-B1DF-55668E1BDCA8")]
+    public interface IMFSampleGrabberSinkCallback : IMFClockStateSink
+    {
+        #region IMFClockStateSink methods
+
+        [PreserveSig]
+        new int OnClockStart(
+            [In] long hnsSystemTime,
+            [In] long llClockStartOffset
+            );
+
+        [PreserveSig]
+        new int OnClockStop(
+            [In] long hnsSystemTime
+            );
+
+        [PreserveSig]
+        new int OnClockPause(
+            [In] long hnsSystemTime
+            );
+
+        [PreserveSig]
+        new int OnClockRestart(
+            [In] long hnsSystemTime
+            );
+
+        [PreserveSig]
+        new int OnClockSetRate(
+            [In] long hnsSystemTime,
+            [In] float flRate
+            );
+
+        #endregion
+
+        [PreserveSig]
+        int OnSetPresentationClock(
+            [In, MarshalAs(UnmanagedType.Interface)] IMFPresentationClock pPresentationClock
+            );
+
+        [PreserveSig]
+        int OnProcessSample(
+            [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidMajorMediaType,
+            [In] int dwSampleFlags, // must be zero
+            [In] long llSampleTime,
+            [In] long llSampleDuration,
+            [In] IntPtr pSampleBuffer,
+            [In] int dwSampleSize
+            );
+
+        [PreserveSig]
+        int OnShutdown();
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    Guid("86CBC910-E533-4751-8E3B-F19B5B806A03"),
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IMFVideoSampleAllocator
+    {
+        [PreserveSig]
+        int SetDirectXManager(
+            [In, MarshalAs(UnmanagedType.IUnknown)] object pManager
+            );
+
+        [PreserveSig]
+        int UninitializeSampleAllocator();
+
+        [PreserveSig]
+        int InitializeSampleAllocator(
+            [In] int cRequestedFrames,
+            [In, MarshalAs(UnmanagedType.Interface)] IMFMediaType pMediaType
+            );
+
+        [PreserveSig]
+        int AllocateSample(
+            [MarshalAs(UnmanagedType.Interface)] out IMFSample ppSample
             );
     }
 

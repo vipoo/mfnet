@@ -258,7 +258,7 @@ namespace MediaFoundation
 
         [PreserveSig]
         int SetMirrorState(
-            bool fMirrorState
+            [MarshalAs(UnmanagedType.Bool)] bool fMirrorState
             );
 
         [PreserveSig]
@@ -380,7 +380,7 @@ namespace MediaFoundation
         [PreserveSig]
         int SetMirrorState(
             int dwStreamIndex,
-            bool fMirrorState
+            [MarshalAs(UnmanagedType.Bool)] bool fMirrorState
             );
 
         [PreserveSig]
@@ -414,8 +414,8 @@ namespace MediaFoundation
 
         [PreserveSig]
         int StopRecord(
-            bool bFinalize,
-            bool bFlushUnprocessedSamples
+            [MarshalAs(UnmanagedType.Bool)] bool bFinalize,
+            [MarshalAs(UnmanagedType.Bool)] bool bFlushUnprocessedSamples
             );
 
         [PreserveSig]
@@ -452,14 +452,14 @@ namespace MediaFoundation
     Guid("e37ceed7-340f-4514-9f4d-9c2ae026100b")]
     public interface IMFCaptureEngineOnSampleCallback2 : IMFCaptureEngineOnSampleCallback
     {
-        #region IMFCaptureEngineOnSampleCallback methods
+    #region IMFCaptureEngineOnSampleCallback methods
 
         [PreserveSig]
         new int OnSample(
             IMFSample pSample
             );
 
-        #endregion
+    #endregion
 
         [PreserveSig]
         int OnSynchronizedEvent(
@@ -472,7 +472,7 @@ namespace MediaFoundation
     Guid("f9e4219e-6197-4b5e-b888-bee310ab2c59")]
     public interface IMFCaptureSink2 : IMFCaptureSink
     {
-        #region IMFCaptureEngineOnSampleCallback methods
+    #region IMFCaptureEngineOnSampleCallback methods
 
         [PreserveSig]
         new int GetOutputMediaType(
@@ -502,7 +502,7 @@ namespace MediaFoundation
         [PreserveSig]
         new int RemoveAllStreams();
 
-        #endregion
+    #endregion
 
         [PreserveSig]
         int SetOutputMediaType(

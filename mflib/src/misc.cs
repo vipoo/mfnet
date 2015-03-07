@@ -32,7 +32,7 @@ namespace MediaFoundation.Misc
 #if ALLOW_UNTESTED_INTERFACES
 
     [UnmanagedName("MPEG1VIDEOINFO"), StructLayout(LayoutKind.Sequential)]
-    public struct MPEG1VideoInfo
+    public class Mpeg1VideoInfo
     {
         public VideoInfoHeader hdr;
         public int dwStartTimeCode;
