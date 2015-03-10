@@ -33,7 +33,12 @@ using MediaFoundation.Misc;
 
 namespace MediaFoundation
 {
-#if ALLOW_UNTESTED_INTERFACES
+    [UnmanagedName("CLSID_MPEG2DLNASink"),
+    ComImport,
+    Guid("fa5fe7c5-6a1d-4b11-b41f-f959d6c76500")]
+    public class MPEG2DLNASink
+    {
+    }
 
     [StructLayout(LayoutKind.Sequential), UnmanagedName("MFMPEG2DLNASINKSTATS")]
     public struct MFMPEG2DLNASINKSTATS
@@ -52,15 +57,6 @@ namespace MediaFoundation
         int cAudioChannels;
         long cAudioBytesReceived;
         long cAudioFramesEncoded;
-    }
-
-#endif
-
-    [UnmanagedName("CLSID_MPEG2DLNASink"),
-    ComImport,
-    Guid("fa5fe7c5-6a1d-4b11-b41f-f959d6c76500")]
-    public class MPEG2DLNASink
-    {
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,

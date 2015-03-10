@@ -36,15 +36,8 @@ namespace MediaFoundation.Transform
     [Flags, UnmanagedName("MF3DVideoOutputType")]
     public enum MF3DVideoOutputType
     {
-        MF3DVideoOutputType_BaseView = 0,
-        MF3DVideoOutputType_Stereo = 1
-    }
-
-    [StructLayout(LayoutKind.Sequential), UnmanagedName("STREAM_MEDIUM")]
-    public struct STREAM_MEDIUM
-    {
-        Guid gidMedium;
-        int unMediumInstance;
+        BaseView = 0,
+        Stereo = 1
     }
 
 #endif
@@ -187,6 +180,13 @@ namespace MediaFoundation.Transform
         public MFTOutputStreamInfoFlags dwFlags;
         public int cbSize;
         public int cbAlignment;
+    }
+
+    [StructLayout(LayoutKind.Sequential), UnmanagedName("STREAM_MEDIUM")]
+    public struct STREAM_MEDIUM
+    {
+        Guid gidMedium;
+        int unMediumInstance;
     }
 
     [StructLayout(LayoutKind.Sequential), UnmanagedName("MFT_REGISTER_TYPE_INFO")]

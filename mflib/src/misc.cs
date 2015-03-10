@@ -29,18 +29,14 @@ namespace MediaFoundation.Misc
 {
     #region Declarations
 
-#if ALLOW_UNTESTED_INTERFACES
-
     [UnmanagedName("MPEG1VIDEOINFO"), StructLayout(LayoutKind.Sequential)]
     public class Mpeg1VideoInfo
     {
         public VideoInfoHeader hdr;
         public int dwStartTimeCode;
         public int cbSequenceHeader;
-        public byte [] bSequenceHeader; // Needs marshaler
+        public byte [] bSequenceHeader;
     }
-
-#endif
 
     [UnmanagedName("AMINTERLACE_*"), Flags]
     public enum AMInterlace

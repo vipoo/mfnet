@@ -160,11 +160,9 @@ namespace MediaFoundation.MFPlayer
                     mce = Marshal.PtrToStructure(pNativeData, typeof(MFP_PLAYBACK_ENDED_EVENT));
                     break;
 
-#if ALLOW_UNTESTED_INTERFACES
                 case MFP_EVENT_TYPE.AcquireUserCredential:
                     mce = Marshal.PtrToStructure(pNativeData, typeof(MFP_ACQUIRE_USER_CREDENTIAL_EVENT));
                     break;
-#endif
 
                 default:
                     // Don't know what it is.  Send back the header.
@@ -251,8 +249,6 @@ namespace MediaFoundation.MFPlayer
         public IMFPMediaItem pMediaItem;
     }
 
-#if ALLOW_UNTESTED_INTERFACES
-
     [StructLayout(LayoutKind.Sequential), UnmanagedName("MFP_ACQUIRE_USER_CREDENTIAL_EVENT")]
     public class MFP_ACQUIRE_USER_CREDENTIAL_EVENT : MFP_EVENT_HEADER
     {
@@ -272,8 +268,6 @@ namespace MediaFoundation.MFPlayer
         public MFP_CREDENTIAL_FLAGS flags;
         public IMFNetCredential pCredential;
     }
-
-#endif
 
     #endregion
 

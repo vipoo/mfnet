@@ -1445,24 +1445,6 @@ namespace MediaFoundation
         BusImplementation = 0x0000FF00
     }
 
-    [Flags, UnmanagedName("MFNetAuthenticationFlags")]
-    public enum MFNetAuthenticationFlags
-    {
-        None = 0,
-        Proxy = 0x00000001,
-        ClearText = 0x00000002,
-        LoggedOnUser = 0x00000004
-    }
-
-    [Flags, UnmanagedName("MFNetCredentialOptions")]
-    public enum MFNetCredentialOptions
-    {
-        None = 0,
-        Save = 0x00000001,
-        DontCache = 0x00000002,
-        AllowClearText = 0x00000004,
-    }
-
     [UnmanagedName("MFStandardVideoFormat")]
     public enum MFStandardVideoFormat
     {
@@ -1476,14 +1458,6 @@ namespace MediaFoundation
         ATSC_SD480i = (DV_NTSC + 1),
         ATSC_HD1080i = (ATSC_SD480i + 1),
         ATSC_HD720p = (ATSC_HD1080i + 1)
-    }
-
-    [UnmanagedName("MFNetCredentialRequirements")]
-    public enum MFNetCredentialRequirements
-    {
-        None = 0,
-        RequirePrompt = 0x00000001,
-        RequireSaveSelected = 0x00000002
     }
 
     [UnmanagedName("MFNETSOURCE_PROTOCOL_TYPE")]
@@ -1552,14 +1526,6 @@ namespace MediaFoundation
         UseOnlyHardware = 2,
     }
 
-    [UnmanagedName("MFASYNC_WORKQUEUE_TYPE")]
-    public enum MFASYNC_WORKQUEUE_TYPE
-    {
-        StandardWorkqueue = 0,
-        WindowWorkqueue = 1,
-        MultiThreadedWorkqueue = 2
-    }
-
     [UnmanagedName("MF_OPM_CGMSA_PROTECTION_LEVEL")]
     public enum MF_OPM_CGMSA_PROTECTION_LEVEL
     {
@@ -1586,54 +1552,6 @@ namespace MediaFoundation
     {
         Default = 0,
         MrfCrf444 = 1
-    }
-
-    [UnmanagedName("AM_MPEG2Level")]
-    public enum AM_MPEG2Level
-    {
-        None = 0,
-        Low = 1,
-        Main = 2,
-        High1440 = 3,
-        High = 4
-    };
-
-    [UnmanagedName("AM_MPEG2Profile")]
-    public enum AM_MPEG2Profile
-    {
-        None = 0,
-        Simple = 1,
-        Main = 2,
-        SNRScalable = 3,
-        SpatiallyScalable = 4,
-        High = 5
-    };
-
-    [Flags, UnmanagedName("AMMPEG2_* defines")]
-    public enum AMMPEG2_Flags
-    {
-        DoPanScan = 0x00000001,
-        DVDLine21Field1 = 0x00000002,
-        DVDLine21Field2 = 0x00000004,
-        SourceIsLetterboxed = 0x00000008,
-        FilmCameraMode = 0x00000010,
-        LetterboxAnalogOut = 0x00000020,
-        DSS_UserData = 0x00000040,
-        DVB_UserData = 0x00000080,
-        x27MhzTimebase = 0x00000100,
-        WidescreenAnalogOut = 0x00000200
-    }
-
-    [StructLayout(LayoutKind.Sequential), UnmanagedName("MPEG2VIDEOINFO")]
-    public class Mpeg2VideoInfo
-    {
-        public VideoInfoHeader2 hdr;
-        public int dwStartTimeCode;
-        public int cbSequenceHeader;
-        public AM_MPEG2Profile dwProfile;
-        public AM_MPEG2Level dwLevel;
-        public AMMPEG2_Flags dwFlags;
-        public int[] dwSequenceHeader;
     }
 
     [StructLayout(LayoutKind.Explicit, Pack = 8), UnmanagedName("unnamed internal struct")]
@@ -2022,6 +1940,76 @@ namespace MediaFoundation
         Full = 2
     }
 
+    [UnmanagedName("MFASYNC_WORKQUEUE_TYPE")]
+    public enum MFASYNC_WORKQUEUE_TYPE
+    {
+        StandardWorkqueue = 0,
+        WindowWorkqueue = 1,
+        MultiThreadedWorkqueue = 2
+    }
+
+    [UnmanagedName("AM_MPEG2Level")]
+    public enum AM_MPEG2Level
+    {
+        None = 0,
+        Low = 1,
+        Main = 2,
+        High1440 = 3,
+        High = 4
+    };
+
+    [UnmanagedName("AM_MPEG2Profile")]
+    public enum AM_MPEG2Profile
+    {
+        None = 0,
+        Simple = 1,
+        Main = 2,
+        SNRScalable = 3,
+        SpatiallyScalable = 4,
+        High = 5
+    };
+
+    [Flags, UnmanagedName("AMMPEG2_* defines")]
+    public enum AMMPEG2_Flags
+    {
+        DoPanScan = 0x00000001,
+        DVDLine21Field1 = 0x00000002,
+        DVDLine21Field2 = 0x00000004,
+        SourceIsLetterboxed = 0x00000008,
+        FilmCameraMode = 0x00000010,
+        LetterboxAnalogOut = 0x00000020,
+        DSS_UserData = 0x00000040,
+        DVB_UserData = 0x00000080,
+        x27MhzTimebase = 0x00000100,
+        WidescreenAnalogOut = 0x00000200
+    }
+
+    [Flags, UnmanagedName("MFNetAuthenticationFlags")]
+    public enum MFNetAuthenticationFlags
+    {
+        None = 0,
+        Proxy = 0x00000001,
+        ClearText = 0x00000002,
+        LoggedOnUser = 0x00000004
+    }
+
+    [UnmanagedName("MFNetCredentialRequirements")]
+    public enum MFNetCredentialRequirements
+    {
+        None = 0,
+        RequirePrompt = 0x00000001,
+        RequireSaveSelected = 0x00000002
+    }
+
+    [Flags, UnmanagedName("MFNetCredentialOptions")]
+    public enum MFNetCredentialOptions
+    {
+        None = 0,
+        Save = 0x00000001,
+        DontCache = 0x00000002,
+        AllowClearText = 0x00000004,
+    }
+
     [StructLayout(LayoutKind.Sequential, Pack = 1), UnmanagedName("MFAYUVSample")]
     public struct MFAYUVSample
     {
@@ -2067,6 +2055,18 @@ namespace MediaFoundation
         public IMFMediaType pVideoMediaType;
         public int dwAudioStreamID;
         public IMFMediaType pAudioMediaType;
+    }
+
+    [StructLayout(LayoutKind.Sequential), UnmanagedName("MPEG2VIDEOINFO")]
+    public class Mpeg2VideoInfo
+    {
+        public VideoInfoHeader2 hdr;
+        public int dwStartTimeCode;
+        public int cbSequenceHeader;
+        public AM_MPEG2Profile dwProfile;
+        public AM_MPEG2Level dwLevel;
+        public AMMPEG2_Flags dwFlags;
+        public int[] dwSequenceHeader;
     }
 
     #endregion
@@ -2687,72 +2687,6 @@ namespace MediaFoundation
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    Guid("5B87EF6A-7ED8-434F-BA0E-184FAC1628D1")]
-    public interface IMFNetCredential
-    {
-        [PreserveSig]
-        int SetUser(
-            [In, MarshalAs(UnmanagedType.LPArray)] byte[] pbData,
-            [In] int cbData,
-            [In, MarshalAs(UnmanagedType.Bool)] bool fDataIsEncrypted
-            );
-
-        [PreserveSig]
-        int SetPassword(
-            [In, MarshalAs(UnmanagedType.LPArray)] byte[] pbData,
-            [In] int cbData,
-            [In, MarshalAs(UnmanagedType.Bool)] bool fDataIsEncrypted
-            );
-
-        [PreserveSig]
-        int GetUser(
-            [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex=1)] byte [] pbData,
-            [In, Out] MFInt pcbData,
-            [In, MarshalAs(UnmanagedType.Bool)] bool fEncryptData
-            );
-
-        [PreserveSig]
-        int GetPassword(
-            [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] pbData,
-            [In, Out] MFInt pcbData,
-            [In, MarshalAs(UnmanagedType.Bool)] bool fEncryptData
-            );
-
-        [PreserveSig]
-        int LoggedOnUser(
-            [MarshalAs(UnmanagedType.Bool)] out bool pfLoggedOnUser
-            );
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    Guid("5B87EF6C-7ED8-434F-BA0E-184FAC1628D1")]
-    public interface IMFNetCredentialCache
-    {
-        [PreserveSig]
-        int GetCredential(
-            [In, MarshalAs(UnmanagedType.LPWStr)] string pszUrl,
-            [In, MarshalAs(UnmanagedType.LPWStr)] string pszRealm,
-            [In] MFNetAuthenticationFlags dwAuthenticationFlags,
-            [MarshalAs(UnmanagedType.Interface)] out IMFNetCredential ppCred,
-            out MFNetCredentialRequirements pdwRequirementsFlags
-            );
-
-        [PreserveSig]
-        int SetGood(
-            [In, MarshalAs(UnmanagedType.Interface)] IMFNetCredential pCred,
-            [In, MarshalAs(UnmanagedType.Bool)] bool fGood
-            );
-
-        [PreserveSig]
-        int SetUserOptions(
-            [In, MarshalAs(UnmanagedType.Interface)] IMFNetCredential pCred,
-            [In] MFNetCredentialOptions dwOptionsFlags
-            );
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
     Guid("5B87EF6B-7ED8-434F-BA0E-184FAC1628D1"),
     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IMFNetCredentialManager
@@ -2774,38 +2708,6 @@ namespace MediaFoundation
         int SetGood(
             [In, MarshalAs(UnmanagedType.Interface)] IMFNetCredential pCred,
             [In, MarshalAs(UnmanagedType.Bool)] bool fGood
-            );
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    Guid("E9CD0383-A268-4BB4-82DE-658D53574D41")]
-    public interface IMFNetProxyLocator
-    {
-        [PreserveSig]
-        int FindFirstProxy(
-            [In, MarshalAs(UnmanagedType.LPWStr)] string pszHost,
-            [In, MarshalAs(UnmanagedType.LPWStr)] string pszUrl,
-            [In, MarshalAs(UnmanagedType.Bool)] bool fReserved
-            );
-
-        [PreserveSig]
-        int FindNextProxy();
-
-        [PreserveSig]
-        int RegisterProxyResult(
-            int hrOp
-            );
-
-        [PreserveSig]
-        int GetCurrentProxy(
-            [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszStr,
-            [In, Out] MFInt pcchStr
-            );
-
-        [PreserveSig]
-        int Clone(
-            out IMFNetProxyLocator ppProxyLocator
             );
     }
 
@@ -3325,25 +3227,6 @@ namespace MediaFoundation
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
     InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    Guid("994E23AF-1CC2-493C-B9FA-46F1CB040FA4")]
-    public interface IMFPMPServer
-    {
-        [PreserveSig]
-        int LockProcess();
-
-        [PreserveSig]
-        int UnlockProcess();
-
-        [PreserveSig]
-        int CreateObjectByCLSID(
-            [In, MarshalAs(UnmanagedType.LPStruct)] Guid clsid,
-            [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
-            [MarshalAs(UnmanagedType.Interface)] out object ppObject
-            );
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
     Guid("8D009D86-5B9F-4115-B1FC-9F80D52AB8AB")]
     public interface IMFQualityManager
     {
@@ -3398,17 +3281,6 @@ namespace MediaFoundation
         [PreserveSig]
         int SetWorkQueue(
             [In] int dwWorkQueueId
-            );
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    Guid("1CDE6309-CAE0-4940-907E-C1EC9C3D1D4A"),
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IMFRemoteDesktopPlugin
-    {
-        [PreserveSig]
-        int UpdateTopology(
-            IMFTopology pTopology
             );
     }
 
@@ -6276,6 +6148,134 @@ namespace MediaFoundation
         [PreserveSig]
         int AllocateSample(
             [MarshalAs(UnmanagedType.Interface)] out IMFSample ppSample
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("994E23AF-1CC2-493C-B9FA-46F1CB040FA4")]
+    public interface IMFPMPServer
+    {
+        [PreserveSig]
+        int LockProcess();
+
+        [PreserveSig]
+        int UnlockProcess();
+
+        [PreserveSig]
+        int CreateObjectByCLSID(
+            [In, MarshalAs(UnmanagedType.LPStruct)] Guid clsid,
+            [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
+            [MarshalAs(UnmanagedType.Interface)] out object ppObject
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("5B87EF6C-7ED8-434F-BA0E-184FAC1628D1")]
+    public interface IMFNetCredentialCache
+    {
+        [PreserveSig]
+        int GetCredential(
+            [In, MarshalAs(UnmanagedType.LPWStr)] string pszUrl,
+            [In, MarshalAs(UnmanagedType.LPWStr)] string pszRealm,
+            [In] MFNetAuthenticationFlags dwAuthenticationFlags,
+            [MarshalAs(UnmanagedType.Interface)] out IMFNetCredential ppCred,
+            out MFNetCredentialRequirements pdwRequirementsFlags
+            );
+
+        [PreserveSig]
+        int SetGood(
+            [In, MarshalAs(UnmanagedType.Interface)] IMFNetCredential pCred,
+            [In, MarshalAs(UnmanagedType.Bool)] bool fGood
+            );
+
+        [PreserveSig]
+        int SetUserOptions(
+            [In, MarshalAs(UnmanagedType.Interface)] IMFNetCredential pCred,
+            [In] MFNetCredentialOptions dwOptionsFlags
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("E9CD0383-A268-4BB4-82DE-658D53574D41")]
+    public interface IMFNetProxyLocator
+    {
+        [PreserveSig]
+        int FindFirstProxy(
+            [In, MarshalAs(UnmanagedType.LPWStr)] string pszHost,
+            [In, MarshalAs(UnmanagedType.LPWStr)] string pszUrl,
+            [In, MarshalAs(UnmanagedType.Bool)] bool fReserved
+            );
+
+        [PreserveSig]
+        int FindNextProxy();
+
+        [PreserveSig]
+        int RegisterProxyResult(
+            int hrOp
+            );
+
+        [PreserveSig]
+        int GetCurrentProxy(
+            [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszStr,
+            [In, Out] MFInt pcchStr
+            );
+
+        [PreserveSig]
+        int Clone(
+            out IMFNetProxyLocator ppProxyLocator
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    Guid("1CDE6309-CAE0-4940-907E-C1EC9C3D1D4A"),
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IMFRemoteDesktopPlugin
+    {
+        [PreserveSig]
+        int UpdateTopology(
+            IMFTopology pTopology
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("5B87EF6A-7ED8-434F-BA0E-184FAC1628D1")]
+    public interface IMFNetCredential
+    {
+        [PreserveSig]
+        int SetUser(
+            [In, MarshalAs(UnmanagedType.LPArray)] byte[] pbData,
+            [In] int cbData,
+            [In, MarshalAs(UnmanagedType.Bool)] bool fDataIsEncrypted
+            );
+
+        [PreserveSig]
+        int SetPassword(
+            [In, MarshalAs(UnmanagedType.LPArray)] byte[] pbData,
+            [In] int cbData,
+            [In, MarshalAs(UnmanagedType.Bool)] bool fDataIsEncrypted
+            );
+
+        [PreserveSig]
+        int GetUser(
+            [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] pbData,
+            [In, Out] MFInt pcbData,
+            [In, MarshalAs(UnmanagedType.Bool)] bool fEncryptData
+            );
+
+        [PreserveSig]
+        int GetPassword(
+            [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] pbData,
+            [In, Out] MFInt pcbData,
+            [In, MarshalAs(UnmanagedType.Bool)] bool fEncryptData
+            );
+
+        [PreserveSig]
+        int LoggedOnUser(
+            [MarshalAs(UnmanagedType.Bool)] out bool pfLoggedOnUser
             );
     }
 

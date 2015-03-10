@@ -49,24 +49,6 @@ namespace MediaFoundation.ReadWrite
 
     #region Declarations
 
-#if ALLOW_UNTESTED_INTERFACES
-
-    [UnmanagedName("Unnamed enum")]
-    public enum MF_SOURCE_READER_INDEX
-    {
-        CURRENT_TYPE_INDEX = unchecked((int)0xFFFFFFFF)
-    }
-
-    [UnmanagedName("Unnamed enum")]
-    public enum MF_SINK_WRITER
-    {
-        InvalidStreamIndex = unchecked((int)0xFFFFFFFF),
-        AllStreams = unchecked((int)0xFFFFFFFE),
-        MediaSink = unchecked((int)0xFFFFFFFF)
-    }
-
-#endif
-
     [Flags, UnmanagedName("MF_SOURCE_READER_FLAG")]
     public enum MF_SOURCE_READER_FLAG
     {
@@ -103,6 +85,14 @@ namespace MediaFoundation.ReadWrite
     {
         None = 0,
         Drain = 0x00000001
+    }
+
+    [UnmanagedName("Unnamed enum")]
+    public enum MF_SINK_WRITER
+    {
+        InvalidStreamIndex = unchecked((int)0xFFFFFFFF),
+        AllStreams = unchecked((int)0xFFFFFFFE),
+        MediaSink = unchecked((int)0xFFFFFFFF)
     }
 
     [StructLayout(LayoutKind.Sequential), UnmanagedName("MF_SINK_WRITER_STATISTICS")]
