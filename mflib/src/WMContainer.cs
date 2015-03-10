@@ -976,7 +976,7 @@ namespace MediaFoundation
         [PreserveSig]
         int GetIndexStatus(
             [In, MarshalAs(UnmanagedType.LPStruct)] ASFIndexIdentifier pIndexIdentifier,
-            out bool pfIsIndexed,
+            [Out, MarshalAs(UnmanagedType.Bool)] out bool pfIsIndexed,
             IntPtr pbIndexDescriptor,
             ref int pcbIndexDescriptor);
 
@@ -984,7 +984,7 @@ namespace MediaFoundation
         int SetIndexStatus(
             [In] IntPtr pbIndexDescriptor,
             [In] int cbIndexDescriptor,
-            [In] bool fGenerateIndex);
+            [In, MarshalAs(UnmanagedType.Bool)] bool fGenerateIndex);
 
         [PreserveSig]
         int GetSeekPositionForValue(

@@ -502,7 +502,7 @@ namespace MediaFoundation
             [In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(BMMarshaler))] BitmapInfoHeader pBMIH,
             [In] int cbBufSize,
             out int pcbImageSize,
-            out bool pbKnown
+            [Out, MarshalAs(UnmanagedType.Bool)] out bool pbKnown
             );
 
         [DllImport("evr.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
