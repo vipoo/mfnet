@@ -606,11 +606,12 @@ namespace Testv21
             hr = imfNetProxyLocator2.RegisterProxyResult(-1);
             MFError.ThrowExceptionForHR(hr);
 
-            object o;
-            hr = MFExtern.MFCreateNetSchemePlugin(typeof(IMFSchemeHandler).GUID, out o); // new
-            MFError.ThrowExceptionForHR(hr);
+            // IMFSchemeHandler is untestable
+            //object o;
+            //hr = MFExtern.MFCreateNetSchemePlugin(typeof(IMFSchemeHandler).GUID, out o); // new
+            //MFError.ThrowExceptionForHR(hr);
 
-            IsA(o, typeof(IMFSchemeHandler).GUID);
+            //IsA(o, typeof(IMFSchemeHandler).GUID);
 
 #if false // CancelObjectCreation and EndCreateObject cause .net to crash, presumably a bug in MF
             // MS describes IMFSchemeHandler as "Applications do not use this interface."
@@ -1154,7 +1155,7 @@ namespace Testv21
         int m_Hits2 = 0;
         int m_dwTaskId;
         int m_testno = 0;
-        IMFSchemeHandler m_imfSchemeHandler;
+        //IMFSchemeHandler m_imfSchemeHandler;
 
         #region Non-MF externs
 
@@ -1304,9 +1305,9 @@ namespace Testv21
                     hr = MFExtern.MFCreateAsyncResult(objState, null, objState, out imfAsyncResult);
                     MFError.ThrowExceptionForHR(hr);
 
-                    MFObjectType mf;
-                    object o;
-                    hr = m_imfSchemeHandler.EndCreateObject(imfAsyncResult, out mf, out o);
+                    //MFObjectType mf;
+                    //object o;
+                    //hr = m_imfSchemeHandler.EndCreateObject(imfAsyncResult, out mf, out o);
                     break;
             }
 
