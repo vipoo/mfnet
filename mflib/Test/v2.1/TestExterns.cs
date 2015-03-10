@@ -140,11 +140,12 @@ namespace Testv21
         {
             int hr;
 
-            IMFQualityManager imfQualityManager;
-            hr = MFExtern.MFCreateStandardQualityManager(out imfQualityManager); // new
-            MFError.ThrowExceptionForHR(hr);
+            // The interface is still untested
+            //IMFQualityManager imfQualityManager;
+            //hr = MFExtern.MFCreateStandardQualityManager(out imfQualityManager); // new
+            //MFError.ThrowExceptionForHR(hr);
 
-            IsA(imfQualityManager, typeof(IMFQualityManager).GUID);
+            //IsA(imfQualityManager, typeof(IMFQualityManager).GUID);
 
 #if false
             IMFTopology imfTopology = null;
@@ -184,11 +185,12 @@ namespace Testv21
             hr = imfPMPServer.UnlockProcess();
             MFError.ThrowExceptionForHR(hr);
 
-            IMFASFMultiplexer imfASFMultiplexer;
-            hr = MFExtern.MFCreateASFMultiplexer(out imfASFMultiplexer); // new
-            MFError.ThrowExceptionForHR(hr);
+            // The interface is still untested
+            //IMFASFMultiplexer imfASFMultiplexer;
+            //hr = MFExtern.MFCreateASFMultiplexer(out imfASFMultiplexer); // new
+            //MFError.ThrowExceptionForHR(hr);
 
-            IsA(imfASFMultiplexer, typeof(IMFASFMultiplexer).GUID);
+            //IsA(imfASFMultiplexer, typeof(IMFASFMultiplexer).GUID);
         }
 
         private void TestB()
@@ -407,15 +409,30 @@ namespace Testv21
         private void TestE()
         {
             int hr;
-            IMFTopoLoader imfTopoLoader;
+            //IMFTopoLoader imfTopoLoader;
 
-            hr = MFExtern.MFCreateTopoLoader(out imfTopoLoader); // new
-            MFError.ThrowExceptionForHR(hr);
+            // The interface is still untested
+            //hr = MFExtern.MFCreateTopoLoader(out imfTopoLoader); // new
+            //MFError.ThrowExceptionForHR(hr);
 
             //IMFTopology tp;
             //hr = imfTopoLoader.Load(null, out tp, null);
 
-            IsA(imfTopoLoader, typeof(IMFTopoLoader).GUID);
+            //IsA(imfTopoLoader, typeof(IMFTopoLoader).GUID);
+
+            BitmapInfoHeader bmh = new BitmapInfoHeader();
+            FillBMI(bmh);
+            int i;
+            bool b;
+            int j = Marshal.SizeOf(bmh);
+            hr = MFExtern.MFCalculateBitmapImageSize(bmh, j, out i, out b);
+            MFError.ThrowExceptionForHR(hr);
+            Debug.Assert(b);
+
+            bmh.Compression = 222;
+            hr = MFExtern.MFCalculateBitmapImageSize(bmh, j, out i, out b);
+            MFError.ThrowExceptionForHR(hr);
+            Debug.Assert(!b);
         }
 
         private void TestF()
