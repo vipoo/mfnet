@@ -13,7 +13,11 @@ Externs
 
 See interfaces.txt for details.
 
+There are also 3 new samples: MFCaptureAlt, MFCaptureD3D, 
+and MFCaptureToFile.  Make sure to download the lastest
+version.
 
+-----------------------------------------------------------------
 v2.0 (2012-03-05)
 
 Interfaces

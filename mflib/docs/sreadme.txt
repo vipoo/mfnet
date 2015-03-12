@@ -1,4 +1,4 @@
-Media Foundation Lib Samples 2012-02-14
+Media Foundation Lib Samples 2015-03-10
 
 http://mflib.SourceForge.net
 
@@ -13,7 +13,7 @@ public domain.  Use them as you like.  Every one of these samples needs the Medi
 library which is not included in this package.  Get the latest version of the library from 
 the SourceForge website.
 
-These samples have been updated to work with the v2.0 library.
+These samples have been updated to work with the v2.1 library.
 
 The people who wrote these samples usually hang out in 
 http://sourceforge.net/forum/forum.php?forum_id=711229.  If you have questions, 
@@ -41,52 +41,74 @@ A c# implementation of the WavSource sample that ships with the Vista PSDK.  It 
 Mediafoundation to include support for reading .wav files.
 
 
-MFT_Grayscale
+Samples\MFT_Grayscale
 --------------------
 A c# implementation of the MFT_Grayscale sample that ships with the Vista PSDK.  It allows
 you to modify data as it passes down the topology.
 
 
-PlaybackFX
+Samples\PlaybackFX
 --------------------
 A c# implementation of the PlaybackFX sample that ships with the Vista PSDK.  It is the
 same as the BasicPlayer sample, except that it loads the Grayscale MFT into the topology.
 
 
-Playlist
+Samples\Playlist
 --------------------
 A c# implementation of the PlaybackFX sample that ships with the Vista PSDK.  It plays a
 collection of media files, one after the other.
 
 
-ProtectedPlayback
+Samples\ProtectedPlayback
 --------------------
 A c# implementation of the ProtectedPlayback sample that ships with the Vista PSDK.  It is the
 same as the BasicPlayer sample, except that it allows for playing protected content.
 
 
-Splitter
+Samples\Splitter
 --------------------
 A c# implementation of the code on http://msdn2.microsoft.com/en-us/library/bb530124.aspx.  It
 shows how to parse/process data from WM files.
 
 
-WavSink
+Samples\WavSink
 --------------------
 A c# implementation of the WavSink sample that ships with the Vista PSDK.  Is the opposite
 of the WavSource sample: It writes audio output to a .wav file.
 
 
-EVRPresenter
+Samples\EVRPresenter
 --------------------
 A c# implementation of the EVRPresenter sample that ships with the Vista PSDK.  This code replaces
 the default renderer of the Enhanced Video Renderer (EVR).  To have any hope of understanding what
 this code does and how it works, read the readmes included with the project.
 
 
-Hack
+Samples\Hack
 --------------------
 This c++ project allows c# code to work around flaws in c++ COM objects that don't correctly implement 
 the IUnknown interface.  It is used by the EVRPresenter project, but is a general-purpose COM object
 that can be used to work around similar problems in other COM objects.
+
+
+Samples\MFCaptureToFile
+--------------------
+This sample is a c# version of the C++ MFCaptureToFile sample included in the
+Media Foundation SDK.  It allows you to select a capture device, and specify
+the file name to which to capture.
+
+
+Samples\MFCaptureD3D
+--------------------
+MFCaptureD3D is an example to demonstrates how to preview video from a capture device, using 
+Direct3D to draw the video frames.
+
+
+Samples\MFCaptureAlt
+--------------------
+MFCaptureAlt is a combination of MFCaptureD3D and MFCaptureToFile.  It previews the output from the
+capture device, and writes it to disk.
+
+It also shows how to modify the capture buffer to add a watermark.
+
 
