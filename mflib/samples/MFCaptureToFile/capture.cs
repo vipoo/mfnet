@@ -620,7 +620,7 @@ namespace MFCaptureToFile
                 {
                     hr = pReader.SetCurrentMediaType(
                         MF_SOURCE_READER_FIRST_VIDEO_STREAM,
-                        IntPtr.Zero,
+                        null,
                         pType
                         );
 
@@ -644,7 +644,7 @@ namespace MFCaptureToFile
 
                     hr = pReader.SetCurrentMediaType(
                         MF_SOURCE_READER_FIRST_VIDEO_STREAM,
-                        IntPtr.Zero,
+                        null,
                         pType
                         );
 

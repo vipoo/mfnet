@@ -959,7 +959,7 @@ namespace EVRPresenter
             }
         }
 
-        public int GetIdealVideoSize(Size pszMin, Size pszMax)
+        public int GetIdealVideoSize(MFSize a, MFSize b)
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -972,7 +972,7 @@ namespace EVRPresenter
             }
         }
 
-        public int GetNativeVideoSize(Size pszVideo, Size pszARVideo)
+        public int GetNativeVideoSize(MFSize pszVideo, MFSize pszARVideo)
         {
             // Make sure we *never* leave this entry point with an exception
             try

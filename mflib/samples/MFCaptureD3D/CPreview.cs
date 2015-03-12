@@ -309,7 +309,7 @@ namespace MFCaptureD3D
                     if (Failed(hr)) { break; }
 
                     // Try to set this type on the source reader.
-                    hr = m_pReader.SetCurrentMediaType((int)MF_SOURCE_READER.FirstVideoStream, IntPtr.Zero, pType);
+                    hr = m_pReader.SetCurrentMediaType((int)MF_SOURCE_READER.FirstVideoStream, null, pType);
                     if (Succeeded(hr))
                     {
                         bFound = true;
