@@ -242,7 +242,7 @@ IOPMVideoOutput
 
 ====================== Externs ===========================
 
-These 178 externs are tested
+These 180 externs are tested
 
 CreateNamedPropertyStore
 CreatePropertyStore
@@ -422,6 +422,8 @@ PackSize
 Unpack2UINT32AsUINT64
 UnpackRatio
 UnpackSize
+MFGetAttribute2UINT32asUINT64
+MFSetAttribute2UINT32asUINT64
 
 ------------------------------------------------------------------------------
 These 41 externs are defined in the library, but have not yet been tested.
@@ -483,7 +485,7 @@ MFCreateDXSurfaceBuffer
 
 ------------------------------------------------------------------------------
 
-These 30 externs are defined in the library, but are untestable:
+These 28 externs are defined in the library, but are untestable:
 
 MFConvertColorInfoFromDXVA
 MFConvertColorInfoToDXVA
@@ -491,8 +493,6 @@ MFCreateCaptureEngine
 MFCreateMP3ByteStreamPlugin
 MFCreateQualityManager
 MFCreateURLFromPath
-MFGetAttribute2UINT32asUINT64
-MFSetAttribute2UINT32asUINT64
 MFSetWorkQueueClass
 PDXVAHDSW_CreateDevice
 PDXVAHDSW_CreateVideoProcessor
