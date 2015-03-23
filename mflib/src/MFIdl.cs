@@ -1608,12 +1608,13 @@ namespace MediaFoundation
     }
 
     [StructLayout(LayoutKind.Sequential), UnmanagedName("MFNetCredentialManagerGetParam")]
-    public struct MFNetCredentialManagerGetParam
+    public class MFNetCredentialManagerGetParam
     {
-        [MarshalAs(UnmanagedType.Error)]
         public int hrOp;
-        public int fAllowLoggedOnUser;
-        public int fClearTextPackage;
+        [MarshalAs(UnmanagedType.Bool)]
+        public bool fAllowLoggedOnUser;
+        [MarshalAs(UnmanagedType.Bool)]
+        public bool fClearTextPackage;
         [MarshalAs(UnmanagedType.LPWStr)]
         public string pszUrl;
         [MarshalAs(UnmanagedType.LPWStr)]
@@ -2693,7 +2694,7 @@ namespace MediaFoundation
     {
         [PreserveSig]
         int BeginGetCredentials(
-            [In] ref MFNetCredentialManagerGetParam pParam,
+            [In] MFNetCredentialManagerGetParam pParam,
             [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
             [In, MarshalAs(UnmanagedType.IUnknown)] object pState
             );
