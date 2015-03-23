@@ -3202,7 +3202,7 @@ namespace MediaFoundation
     {
         [PreserveSig]
         int SetPMPHost(
-            [In, MarshalAs(UnmanagedType.Interface)] IMFPMPHost pPMPHost
+            IMFPMPHost pPMPHost
             );
     }
 
