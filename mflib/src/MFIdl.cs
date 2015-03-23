@@ -3377,14 +3377,14 @@ namespace MediaFoundation
     {
         [PreserveSig]
         int BeginSave(
-            [In, MarshalAs(UnmanagedType.Interface)] IMFByteStream pStream,
-            [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
+            [In] IMFByteStream pStream,
+            [In] IMFAsyncCallback pCallback,
             [In, MarshalAs(UnmanagedType.IUnknown)] object pState
             );
 
         [PreserveSig]
         int EndSave(
-            [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncResult pResult
+            [In] IMFAsyncResult pResult
             );
 
         [PreserveSig]
