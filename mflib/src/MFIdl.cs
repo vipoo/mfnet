@@ -1566,18 +1566,18 @@ namespace MediaFoundation
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 4), UnmanagedName("MF_LEAKY_BUCKET_PAIR")]
-    public struct MF_LeakyBucketPair
+    public class MF_LeakyBucketPair
     {
         public int dwBitrate;
         public int msBufferWindow;
     }
 
     [StructLayout(LayoutKind.Sequential), UnmanagedName("MFBYTESTREAM_BUFFERING_PARAMS")]
-    public struct MFByteStreamBufferingParams
+    public class MFByteStreamBufferingParams
     {
         public long cbTotalFileSize;
         public long cbPlayableDataSize;
-        public IntPtr prgBuckets;
+        public MF_LeakyBucketPair[] prgBuckets;
         public int cBuckets;
         public long qwNetBufferingTime;
         public long qwExtraBufferingTimeDuringSeek;
@@ -2615,12 +2615,12 @@ namespace MediaFoundation
     {
         [PreserveSig]
         int SetBufferingParams(
-            [In] ref MFByteStreamBufferingParams pParams
+            [In] MFByteStreamBufferingParams pParams
             );
 
         [PreserveSig]
         int EnableBuffering(
-            [In] int fEnable
+            [MarshalAs(UnmanagedType.Bool)] bool fEnable
             );
 
         [PreserveSig]
