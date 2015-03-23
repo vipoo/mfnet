@@ -2671,7 +2671,7 @@ namespace MediaFoundation
     {
         [PreserveSig]
         int NotifyPreroll(
-            [In] long hnsUpcomingStartTime
+            long hnsUpcomingStartTime
             );
     }
 
