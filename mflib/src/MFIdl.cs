@@ -2585,26 +2585,26 @@ namespace MediaFoundation
 
         [PreserveSig]
         int SetChannelVolume(
-            [In] int dwIndex,
-            [In] float fLevel
+            int dwIndex,
+            float fLevel
             );
 
         [PreserveSig]
         int GetChannelVolume(
-            [In] int dwIndex,
+            int dwIndex,
             out float pfLevel
             );
 
         [PreserveSig]
         int SetAllVolumes(
-            [In] int dwCount,
-            [In] ref float pfVolumes
+            int dwCount,
+            [In, MarshalAs(UnmanagedType.LPArray)] float[] pfVolumes
             );
 
         [PreserveSig]
         int GetAllVolumes(
-            [In] int dwCount,
-            out float pfVolumes
+            int dwCount,
+            [Out, MarshalAs(UnmanagedType.LPArray)] float[] pfVolumes
             );
     }
 
