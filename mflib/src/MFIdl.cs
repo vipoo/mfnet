@@ -3405,7 +3405,7 @@ namespace MediaFoundation
             [In, MarshalAs(UnmanagedType.LPWStr)] string pwszURL,
             [In] MFResolution dwFlags,
             IPropertyStore pProps,
-            out IntPtr ppIUnknownCancelCookie,
+            [MarshalAs(UnmanagedType.IUnknown)] out object ppIUnknownCancelCookie,
             IMFAsyncCallback pCallback,
             [In, MarshalAs(UnmanagedType.IUnknown)] object pUnkState
             );
@@ -3419,7 +3419,7 @@ namespace MediaFoundation
 
         [PreserveSig]
         int CancelObjectCreation(
-            IntPtr pIUnknownCancelCookie
+            [MarshalAs(UnmanagedType.IUnknown)] object pIUnknownCancelCookie
             );
     }
 
