@@ -209,7 +209,7 @@ namespace MediaFoundation.Transform
     {
         [PreserveSig]
         int RegisterMFTs(
-            [In] MFT_REGISTRATION_INFO[] pMFTs,
+            [In, MarshalAs(UnmanagedType.LPArray)] MFT_REGISTRATION_INFO[] pMFTs,
             int cMFTs
         );
     }
@@ -217,15 +217,15 @@ namespace MediaFoundation.Transform
     [StructLayout(LayoutKind.Sequential), UnmanagedName("MFT_REGISTRATION_INFO")]
     public struct MFT_REGISTRATION_INFO
     {
-        Guid clsid;
-        Guid guidCategory;
-        int uiFlags;
+        public Guid clsid;
+        public Guid guidCategory;
+        public MFT_EnumFlag uiFlags;
         [MarshalAs(UnmanagedType.LPWStr)]
-        string pszName;
-        int cInTypes;
-        MFTRegisterTypeInfo[] pInTypes;
-        int cOutTypes;
-        MFTRegisterTypeInfo[] pOutTypes;
+        public string pszName;
+        public int cInTypes;
+        public MFTRegisterTypeInfo[] pInTypes;
+        public int cOutTypes;
+        public MFTRegisterTypeInfo[] pOutTypes;
     }
 
 #endif
