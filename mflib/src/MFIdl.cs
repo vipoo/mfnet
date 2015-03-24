@@ -2720,7 +2720,7 @@ namespace MediaFoundation
         [PreserveSig]
         int CreateProxyLocator(
             [In, MarshalAs(UnmanagedType.LPWStr)] string pszProtocol,
-            [MarshalAs(UnmanagedType.Interface)] out IMFNetProxyLocator ppProxyLocator
+            out IMFNetProxyLocator ppProxyLocator
             );
     }
 
