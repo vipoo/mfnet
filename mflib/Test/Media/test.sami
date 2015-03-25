@@ -1,0 +1,34 @@
+<SAMI>
+<HEAD>
+    <STYLE TYPE="text/css">
+    <!--
+    P {
+        font-family: Arial;
+        background: #000000;
+        text-align: center;
+        }
+
+    #standard {Name: Standard; color: #FFFFFF; font-size: 14pt; } 
+    #hilite {Name: Youth; color: greenyellow; font-size: 18pt;}
+
+    .ENUSCC { Name: English; lang: EN-US-CC; }
+    .FRFRCC { Name: French; lang: fr-FR; } 
+
+    -->
+    </STYLE>
+</HEAD>
+<BODY>
+    <SYNC Start="0">
+        <P Class="ENUSCC">The <I>first</I> caption.</P>
+        <P Class="FRFRCC">Un</P>
+    </SYNC>
+    <SYNC Start="3000">
+        <P Class="ENUSCC">The <I>second</I> caption.</P>
+        <P Class="FRFRCC">Deux</P>
+    </SYNC>
+    <SYNC Start="5000">
+        <P Class="ENUSCC">The <I>third</I> caption.</P>
+        <P Class="FRFRCC">Trois</P>
+    </SYNC>
+</BODY>
+</SAMI>
