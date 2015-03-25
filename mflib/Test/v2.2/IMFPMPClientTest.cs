@@ -61,7 +61,7 @@ namespace Testv22
             throw new NotImplementedException();
         }
 
-        public int CreateObjectByCLSID(Guid clsid, System.Runtime.InteropServices.ComTypes.IStream pStream, Guid riid, object ppv)
+        public int CreateObjectByCLSID(Guid clsid, System.Runtime.InteropServices.ComTypes.IStream pStream, Guid riid, out object ppv)
         {
             throw new NotImplementedException();
         }

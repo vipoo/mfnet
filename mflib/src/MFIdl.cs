@@ -114,8 +114,15 @@ namespace MediaFoundation
 
     [UnmanagedName("CLSID_UrlmonSchemePlugin"),
     ComImport,
-    Guid("9ec4b4f9-3029-45ad-947b-344de2a249e2")]
+    Guid("90eab60f-e43a-4188-bcc4-e47fdf04868c")]
     public class UrlmonSchemePlugin
+    {
+    }
+
+    [UnmanagedName("CLSID_MFSourceResolver"),
+    ComImport,
+    Guid("9ec4b4f9-3029-45ad-947b-344de2a249e2")]
+    public class MFSourceResolver
     {
     }
 
@@ -1198,7 +1205,6 @@ namespace MediaFoundation
         public static readonly Guid MFSampleExtension_Content_KeyID = new Guid(0xc6c7f5b0, 0xacca, 0x415b, 0x87, 0xd9, 0x10, 0x44, 0x14, 0x69, 0xef, 0xc6);
         public static readonly Guid MFSampleExtension_Encryption_SubSampleMappingSplit = new Guid(0xfe0254b9, 0x2aa5, 0x4edc, 0x99, 0xf7, 0x17, 0xe8, 0x9d, 0xbf, 0x91, 0x74);
         public static readonly Guid MF_SampleProtectionSalt = new Guid(0x5403deee, 0xb9ee, 0x438f, 0xaa, 0x83, 0x38, 0x4, 0x99, 0x7e, 0x56, 0x9d);
-        public static readonly Guid CLSID_MFSourceResolver = new Guid(0x90eab60f, 0xe43a, 0x4188, 0xbc, 0xc4, 0xe4, 0x7f, 0xdf, 0x04, 0x86, 0x8c);
 
         // Generic
 
@@ -3222,7 +3228,7 @@ namespace MediaFoundation
             [MarshalAs(UnmanagedType.LPStruct)] Guid clsid,
             IStream pStream,
             [MarshalAs(UnmanagedType.LPStruct)] Guid riid,
-            [MarshalAs(UnmanagedType.Interface)] object ppv
+            [MarshalAs(UnmanagedType.IUnknown)] out object ppv
             );
     }
 
