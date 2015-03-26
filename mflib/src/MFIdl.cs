@@ -706,6 +706,7 @@ namespace MediaFoundation
         public static readonly Guid MF_PD_ASF_CONTENTENCRYPTION_LICENSE_URL = new Guid(0x8520fe40, 0x277e, 0x46ea, 0x99, 0xe4, 0xe3, 0xa, 0x86, 0xdb, 0x12, 0xbe);
         public static readonly Guid MF_PD_ASF_CONTENTENCRYPTIONEX_ENCRYPTION_DATA = new Guid(0x62508be5, 0xecdf, 0x4924, 0xa3, 0x59, 0x72, 0xba, 0xb3, 0x39, 0x7b, 0x9d);
         public static readonly Guid MF_PD_ASF_LANGLIST = new Guid(0xf23de43c, 0x9977, 0x460d, 0xa6, 0xec, 0x32, 0x93, 0x7f, 0x16, 0xf, 0x7d);
+        public static readonly Guid MF_PD_ASF_LANGLIST_LEGACYORDER = new Guid(0xf23de43d, 0x9977, 0x460d, 0xa6, 0xec, 0x32, 0x93, 0x7f, 0x16, 0xf, 0x7d);
         public static readonly Guid MF_PD_ASF_MARKER = new Guid(0x5134330e, 0x83a6, 0x475e, 0xa9, 0xd5, 0x4f, 0xb8, 0x75, 0xfb, 0x2e, 0x31);
         public static readonly Guid MF_PD_ASF_SCRIPT = new Guid(0xe29cd0d7, 0xd602, 0x4923, 0xa7, 0xfe, 0x73, 0xfd, 0x97, 0xec, 0xc6, 0x50);
         public static readonly Guid MF_PD_ASF_CODECLIST = new Guid(0xe4bb3509, 0xc18d, 0x4df1, 0xbb, 0x99, 0x7a, 0x36, 0xb3, 0xcc, 0x41, 0x19);
@@ -910,6 +911,21 @@ namespace MediaFoundation
         public static readonly Guid MF_DEVICESTREAM_EXTENSION_PLUGIN_CONNECTION_POINT = new Guid(0x37f9375c, 0xe664, 0x4ea4, 0xaa, 0xe4, 0xcb, 0x6d, 0x1d, 0xac, 0xa1, 0xf4);
         public static readonly Guid MF_DEVICESTREAM_TAKEPHOTO_TRIGGER = new Guid(0x1d180e34, 0x538c, 0x4fbb, 0xa7, 0x5a, 0x85, 0x9a, 0xf7, 0xd2, 0x61, 0xa6);
         public static readonly Guid MF_DEVICESTREAM_MAX_FRAME_BUFFERS = new Guid(0x1684cebe, 0x3175, 0x4985, 0x88, 0x2c, 0x0e, 0xfd, 0x3e, 0x8a, 0xc1, 0x1e);
+
+        // Get the attribute name for a guid
+        public static string LookupName(Guid gSeeking)
+        {
+            Type t = typeof(MFAttributesClsid);
+            System.Reflection.FieldInfo[] fia = t.GetFields(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
+
+            foreach (System.Reflection.FieldInfo fi in fia)
+            {
+                if (gSeeking.CompareTo(fi.GetValue(t)) == 0)
+                    return fi.Name;
+            }
+
+            return gSeeking.ToString();
+        }
     }
 
     public static class MF_MEDIA_SHARING_ENGINE
@@ -1560,17 +1576,6 @@ namespace MediaFoundation
         MrfCrf444 = 1
     }
 
-    [StructLayout(LayoutKind.Explicit, Pack = 8), UnmanagedName("unnamed internal struct")]
-    public struct Unnamed1
-    {
-        [FieldOffset(0)]
-        public double d;
-        [FieldOffset(0)]
-        public int u32;
-        [FieldOffset(0)]
-        public long u64;
-    }
-
     [StructLayout(LayoutKind.Sequential, Pack = 4), UnmanagedName("MF_LEAKY_BUCKET_PAIR")]
     public class MF_LeakyBucketPair
     {
@@ -1632,13 +1637,21 @@ namespace MediaFoundation
         public int nRetries;
     }
 
-    [StructLayout(LayoutKind.Sequential, Pack = 8), UnmanagedName("MFTOPONODE_ATTRIBUTE_UPDATE")]
+    [StructLayout(LayoutKind.Explicit, Pack = 8), UnmanagedName("MFTOPONODE_ATTRIBUTE_UPDATE")]
     public struct MFTopoNodeAttributeUpdate
     {
+        [FieldOffset(0)]
         public long NodeId;
+        [FieldOffset(8)]
         public Guid guidAttributeKey;
+        [FieldOffset(24)]
         public MFAttributeType attrType;
-        public Unnamed1 u1;
+        [FieldOffset(32)]
+        public int u32;
+        [FieldOffset(32)]
+        public long u64;
+        [FieldOffset(32)]
+        public double d;
     }
 
     [StructLayout(LayoutKind.Sequential), UnmanagedName("MT_ARBITRARY_HEADER")]
@@ -3496,7 +3509,7 @@ namespace MediaFoundation
         int UpdateNodeAttributes(
             [In] long TopoId,
             [In] int cUpdates,
-            [In] ref MFTopoNodeAttributeUpdate pUpdates
+            [In, MarshalAs(UnmanagedType.LPArray)] MFTopoNodeAttributeUpdate[] pUpdates
             );
     }
 
