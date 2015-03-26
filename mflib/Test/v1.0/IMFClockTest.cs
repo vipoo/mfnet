@@ -28,12 +28,18 @@ namespace Testv10
             MFClockState pState;
             MFClockProperties pProp;
 
-            m_pSession.GetClock(out m_c);
-            m_c.GetClockCharacteristics(out c);
-            m_c.GetCorrelatedTime(0, out l, out l2);
-            m_c.GetContinuityKey(out iKey);
-            m_c.GetState(0, out pState);
-            m_c.GetProperties(out pProp);
+            hr = m_pSession.GetClock(out m_c);
+            MFError.ThrowExceptionForHR(hr);
+            hr = m_c.GetClockCharacteristics(out c);
+            MFError.ThrowExceptionForHR(hr);
+            hr = m_c.GetCorrelatedTime(0, out l, out l2);
+            MFError.ThrowExceptionForHR(hr);
+            hr = m_c.GetContinuityKey(out iKey);
+            MFError.ThrowExceptionForHR(hr);
+            hr = m_c.GetState(0, out pState);
+            MFError.ThrowExceptionForHR(hr);
+            hr = m_c.GetProperties(out pProp);
+            MFError.ThrowExceptionForHR(hr);
 
             TestGetClockCharacteristics();
             TestGetCorrelatedTime();

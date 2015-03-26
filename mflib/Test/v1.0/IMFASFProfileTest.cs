@@ -119,31 +119,31 @@ namespace Testv10
         private void TestPrior()
         {
 #if false
-            // You cannot either create, not retrieve a prioritization object
+            int hr;
+
+            // You can neither create, nor retrieve a prioritization object
             IMFASFStreamPrioritization sp = null;
 
-            try
-            {
-                m_p.CreateStreamPrioritization(out sp);
-            }
-            catch
-            {
-                // E_NOTIMPL
-            }
+            hr = m_p.CreateStreamPrioritization(out sp);
+            Debug.Assert(hr == E_NotImplemented);
 
             Debug.Assert(sp == null);
 
-            m_p.GetStreamPrioritization(out sp);
+            hr = m_p.GetStreamPrioritization(out sp);
+            Debug.Assert(hr == E_NotImplemented);
 
             IMFASFStreamPrioritization sp2;
             // There doesn't appear to be any way to *get* an IMFASFStreamPrioritization
             Debug.Assert(sp != null);
 
-            sp.Clone(out sp2);
+            hr = sp.Clone(out sp2);
+            Debug.Assert(hr == E_NotImplemented);
 
-            m_p.RemoveMutualExclusion(0);
+            hr = m_p.RemoveMutualExclusion(0);
+            Debug.Assert(hr == E_NotImplemented);
 
-            m_p.AddStreamPrioritization(sp);
+            hr = m_p.AddStreamPrioritization(sp);
+            Debug.Assert(hr == E_NotImplemented);
 #endif
         }
 

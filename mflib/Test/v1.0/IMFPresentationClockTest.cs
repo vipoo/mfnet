@@ -14,18 +14,28 @@ namespace Testv10
             IMFPresentationTimeSource pts;
             IMFClockStateSink pSink = new Test();
             IMFClock m_c;
-            m_pSession.GetClock(out m_c);
+            hr = m_pSession.GetClock(out m_c);
+            MFError.ThrowExceptionForHR(hr);
 
             m_pc = m_c as IMFPresentationClock;
-            m_pc.AddClockStateSink(pSink);
-            m_pc.GetTime(out lTime);
-            m_pc.GetTimeSource(out pts);
-            m_pc.SetTimeSource(pts);
-            m_pc.Start(0x7fffffffffffffff);
-            m_pc.Pause();
-            m_pc.Start(lTime);
-            m_pc.Stop();
-            m_pc.RemoveClockStateSink(pSink);
+            hr = m_pc.AddClockStateSink(pSink);
+            MFError.ThrowExceptionForHR(hr);
+            hr = m_pc.GetTime(out lTime);
+            MFError.ThrowExceptionForHR(hr);
+            hr = m_pc.GetTimeSource(out pts);
+            MFError.ThrowExceptionForHR(hr);
+            hr = m_pc.SetTimeSource(pts);
+            MFError.ThrowExceptionForHR(hr);
+            hr = m_pc.Start(0x7fffffffffffffff);
+            MFError.ThrowExceptionForHR(hr);
+            hr = m_pc.Pause();
+            MFError.ThrowExceptionForHR(hr);
+            hr = m_pc.Start(lTime);
+            MFError.ThrowExceptionForHR(hr);
+            hr = m_pc.Stop();
+            MFError.ThrowExceptionForHR(hr);
+            hr = m_pc.RemoveClockStateSink(pSink);
+            MFError.ThrowExceptionForHR(hr);
 
             m_state = PlayerState.PausePending;
             NotifyState();

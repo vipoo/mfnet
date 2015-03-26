@@ -14,8 +14,11 @@ namespace Testv10
         {
             try
             {
-                MFExtern.MFStartup(0x10070, MFStartup.Full);
-                MFExtern.MFLockPlatform();
+                int hr;
+                hr = MFExtern.MFStartup(0x20070, MFStartup.Full);
+                MFError.ThrowExceptionForHR(hr);
+                hr = MFExtern.MFLockPlatform();
+                MFError.ThrowExceptionForHR(hr);
 
                 //TestPropVariant tpv = new TestPropVariant();
                 //tpv.DoTests();

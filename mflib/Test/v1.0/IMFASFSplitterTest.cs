@@ -5,9 +5,14 @@
             IMFPresentationDescriptor pd;
             IPropertyStore ps;
 
-            ppContentInfo.GenerateHeader(null, out i);
-            MFExtern.MFCreateMemoryBuffer(i, out pb);
-            ppContentInfo.GenerateHeader(pb, out i);
-            ppContentInfo.GeneratePresentationDescriptor(out pd);
-            ppContentInfo.GetEncodingConfigurationPropertyStore(1, out ps);
+            hr = ppContentInfo.GenerateHeader(null, out i);
+            MFError.ThrowExceptionForHR(hr);
+            hr = MFExtern.MFCreateMemoryBuffer(i, out pb);
+            MFError.ThrowExceptionForHR(hr);
+            hr = ppContentInfo.GenerateHeader(pb, out i);
+            MFError.ThrowExceptionForHR(hr);
+            hr = ppContentInfo.GeneratePresentationDescriptor(out pd);
+            MFError.ThrowExceptionForHR(hr);
+            hr = ppContentInfo.GetEncodingConfigurationPropertyStore(1, out ps);
+            MFError.ThrowExceptionForHR(hr);
 #endif

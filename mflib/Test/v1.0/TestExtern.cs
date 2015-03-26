@@ -93,39 +93,50 @@ namespace Testv10
             IMFAttributes pa;
             IMFMediaSink ps;
 
-            MFExtern.MFCreateAttributes(out pa, 10);
-            MFExtern.MFCreateAudioRenderer(pa, out ps);
+            int hr;
+            hr = MFExtern.MFCreateAttributes(out pa, 10);
+            MFError.ThrowExceptionForHR(hr);
+            hr = MFExtern.MFCreateAudioRenderer(pa, out ps);
+            MFError.ThrowExceptionForHR(hr);
             Debug.Assert(ps != null);
 
             IMFSequencerSource ss;
-            MFExtern.MFCreateSequencerSource(null, out ss);
+            hr = MFExtern.MFCreateSequencerSource(null, out ss);
+            MFError.ThrowExceptionForHR(hr);
             Debug.Assert(ss != null);
 
-            MFExtern.MFCreateTopoLoader(out tl);
+            hr = MFExtern.MFCreateTopoLoader(out tl);
+            MFError.ThrowExceptionForHR(hr);
             Debug.Assert(tl != null);
 
             IMFPMPServer pmps;
-            MFExtern.MFCreatePMPServer(MFPMPSessionCreationFlags.UnprotectedProcess, out pmps);
+            hr = MFExtern.MFCreatePMPServer(MFPMPSessionCreationFlags.UnprotectedProcess, out pmps);
+            MFError.ThrowExceptionForHR(hr);
             Debug.Assert(pmps != null);
 
             IMFASFContentInfo ci;
-            MFExtern.MFCreateASFContentInfo(out ci);
+            hr = MFExtern.MFCreateASFContentInfo(out ci);
+            MFError.ThrowExceptionForHR(hr);
             Debug.Assert(ci != null);
 
             IMFASFProfile iprof;
-            MFExtern.MFCreateASFProfile(out iprof);
+            hr = MFExtern.MFCreateASFProfile(out iprof);
+            MFError.ThrowExceptionForHR(hr);
             Debug.Assert(iprof != null);
 
             IMFASFSplitter split;
-            MFExtern.MFCreateASFSplitter(out split);
+            hr = MFExtern.MFCreateASFSplitter(out split);
+            MFError.ThrowExceptionForHR(hr);
             Debug.Assert(split != null);
 
             IMFASFMultiplexer mux;
-            MFExtern.MFCreateASFMultiplexer(out mux);
+            hr = MFExtern.MFCreateASFMultiplexer(out mux);
+            MFError.ThrowExceptionForHR(hr);
             Debug.Assert(mux != null);
 
             IMFASFIndexer index;
-            MFExtern.MFCreateASFIndexer(out index);
+            hr = MFExtern.MFCreateASFIndexer(out index);
+            MFError.ThrowExceptionForHR(hr);
             Debug.Assert(index != null);
 #endif
         }
@@ -238,14 +249,19 @@ namespace Testv10
 #if false
             IMFQualityManager pq;
             IMFPresentationClock pc;
+            int hr;
 
-            MFExtern.MFCreatePresentationClock(out pc);
+            hr = MFExtern.MFCreatePresentationClock(out pc);
+            MFError.ThrowExceptionForHR(hr);
 
-            MFExtern.MFCreateStandardQualityManager(out pq);
+            hr = MFExtern.MFCreateStandardQualityManager(out pq);
+            MFError.ThrowExceptionForHR(hr);
             Debug.Assert(pq != null);
 
-            pq.NotifyPresentationClock(pc);
-            pq.NotifyProcessInput(null, 0, null);
+            hr = pq.NotifyPresentationClock(pc);
+            MFError.ThrowExceptionForHR(hr);
+            hr = pq.NotifyProcessInput(null, 0, null);
+            MFError.ThrowExceptionForHR(hr);
 #endif
         }
 
