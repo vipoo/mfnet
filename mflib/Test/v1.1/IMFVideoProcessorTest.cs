@@ -67,6 +67,7 @@ namespace Testv11
             int hr = m_vp.SetBackgroundColor(33);
             MFError.ThrowExceptionForHR(hr);
             hr = m_vp.GetBackgroundColor(out c);
+            MFError.ThrowExceptionForHR(hr);
 
             Debug.Assert(c == 33, "GetBackgroundColor");
         }

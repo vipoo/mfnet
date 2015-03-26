@@ -93,6 +93,7 @@ namespace Testv11
                 null,
                 out pObjectType,
                 out pSource);
+            MFError.ThrowExceptionForHR(hr);
 
             IMFMetadataProvider mdp = pSource as IMFMetadataProvider;
 

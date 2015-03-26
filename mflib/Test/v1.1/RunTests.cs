@@ -14,8 +14,13 @@ namespace Testv11
         {
             try
             {
-                MFExtern.MFStartup(0x10070, MFStartup.Full);
-                MFExtern.MFLockPlatform();
+                int hr;
+
+                hr = MFExtern.MFStartup(0x20070, MFStartup.Full);
+                MFError.ThrowExceptionForHR(hr);
+
+                hr = MFExtern.MFLockPlatform();
+                MFError.ThrowExceptionForHR(hr);
 
                 //IMFASFMultiplexerTest t01 = new IMFASFMultiplexerTest();
                 //t01.DoTests();
