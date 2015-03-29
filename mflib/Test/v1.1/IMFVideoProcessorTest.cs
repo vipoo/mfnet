@@ -50,10 +50,7 @@ namespace Testv11
 
             int hr = m_vp.GetVideoProcessorMode(out g1);
             MFError.ThrowExceptionForHR(hr);
-            hr = m_vp.GetAvailableVideoProcessorModes(out i, null);
-            MFError.ThrowExceptionForHR(hr);
-            g3 = new Guid[i];
-            hr = m_vp.GetAvailableVideoProcessorModes(out i, g3);
+            hr = m_vp.GetAvailableVideoProcessorModes(out i, out g3);
             MFError.ThrowExceptionForHR(hr);
 
             hr = m_vp.SetVideoProcessorMode(g3[0]);

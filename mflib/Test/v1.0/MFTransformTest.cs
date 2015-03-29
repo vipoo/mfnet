@@ -25,11 +25,11 @@ namespace Testv10
 
             Guid g1 = new Guid("{ffa0d1f1-da7c-49cc-91ea-484dcf94a70a}");
             string s;
-            MFInt icnt = new MFInt(0);
-            MFInt ocnt = new MFInt(0);
+            int icnt;
+            int ocnt;
             IntPtr ip = IntPtr.Zero;
-            ArrayList it = new ArrayList();
-            ArrayList ot = new ArrayList();
+            MFTRegisterTypeInfo[] it;
+            MFTRegisterTypeInfo[] ot;
 
             int hr = MFExtern.MFTRegister(
                 g1,
@@ -44,8 +44,9 @@ namespace Testv10
             MFError.ThrowExceptionForHR(hr);
 
 
-            hr = MFExtern.MFTGetInfo(g1, out s, it, icnt, ot, ocnt, ip);
+            hr = MFExtern.MFTGetInfo(g1, out s, out it, out icnt, out ot, out ocnt, ip);
             MFError.ThrowExceptionForHR(hr);
+            Debug.Assert(icnt == 0 && ocnt == 0);
 
             hr = MFExtern.MFTUnregister(g1);
             // Always returns an error (http://social.msdn.microsoft.com/Forums/br/mediafoundationdevelopment/thread/7d3dc70f-8eae-4ad0-ad90-6c596cf78c80)
@@ -82,21 +83,21 @@ namespace Testv10
                 null);
             MFError.ThrowExceptionForHR(hr);
 
-            ArrayList it2 = new ArrayList();
-            ArrayList ot2 = new ArrayList();
-            hr = MFExtern.MFTGetInfo(g1, out s, it2, icnt, ot2, ocnt, IntPtr.Zero);
+            MFTRegisterTypeInfo[] it2;
+            MFTRegisterTypeInfo[] ot2;
+            hr = MFExtern.MFTGetInfo(g1, out s, out it2, out icnt, out ot2, out ocnt, IntPtr.Zero);
             MFError.ThrowExceptionForHR(hr);
 
             Debug.Assert(s == "fdsa");
             Debug.Assert(icnt == it1.Length && ocnt == ot1.Length);
-            Debug.Assert(it2.Count == icnt && 
+            Debug.Assert(it2.Length == icnt && 
                 it1[0].guidMajorType == ((MFTRegisterTypeInfo)it2[0]).guidMajorType &&
                 it1[0].guidSubtype == ((MFTRegisterTypeInfo)it2[0]).guidSubtype &&
                 it1[1].guidMajorType == ((MFTRegisterTypeInfo)it2[1]).guidMajorType &&
                 it1[1].guidSubtype == ((MFTRegisterTypeInfo)it2[1]).guidSubtype
                 );
 
-            Debug.Assert(ot2.Count == ocnt &&
+            Debug.Assert(ot2.Length == ocnt &&
                 ot1[0].guidMajorType == ((MFTRegisterTypeInfo)ot2[0]).guidMajorType &&
                 ot1[0].guidSubtype == ((MFTRegisterTypeInfo)ot2[0]).guidSubtype &&
                 ot1[1].guidMajorType == ((MFTRegisterTypeInfo)ot2[1]).guidMajorType &&
@@ -112,11 +113,11 @@ namespace Testv10
 
         private void TestEnum()
         {
-            ArrayList a1 = new ArrayList();
-            MFInt i1 = new MFInt(0);
-            MFInt i2 = new MFInt(0);
-            MFInt i3 = new MFInt(0);
-            MFInt i4 = new MFInt(0);
+            Guid[] a1;
+            int i1;
+            int i2;
+            int i3;
+            int i4;
             MFTRegisterTypeInfo rin = new MFTRegisterTypeInfo();
             MFTRegisterTypeInfo rout = new MFTRegisterTypeInfo();
 
@@ -126,36 +127,37 @@ namespace Testv10
             rout.guidMajorType = MFMediaType.Video;
             rout.guidSubtype = new FourCC("NV12").ToMediaSubtype();
 
-            int hr = MFExtern.MFTEnum(Guid.Empty, 0, null, null, null, a1, i1);
+            int hr = MFExtern.MFTEnum(Guid.Empty, 0, null, null, null, out a1, out i1);
             MFError.ThrowExceptionForHR(hr);
-            hr = MFExtern.MFTEnum(MFTransformCategory.MFT_CATEGORY_VIDEO_EFFECT, 0, null, null, null, a1, i2);
+            hr = MFExtern.MFTEnum(MFTransformCategory.MFT_CATEGORY_VIDEO_EFFECT, 0, null, null, null, out a1, out i2);
             MFError.ThrowExceptionForHR(hr);
-            hr = MFExtern.MFTEnum(MFTransformCategory.MFT_CATEGORY_VIDEO_EFFECT, 0, rin, null, null, a1, i3);
+            hr = MFExtern.MFTEnum(MFTransformCategory.MFT_CATEGORY_VIDEO_EFFECT, 0, rin, null, null, out a1, out i3);
             MFError.ThrowExceptionForHR(hr);
-            hr = MFExtern.MFTEnum(MFTransformCategory.MFT_CATEGORY_VIDEO_EFFECT, 0, rin, rout, null, a1, i4);
+            hr = MFExtern.MFTEnum(MFTransformCategory.MFT_CATEGORY_VIDEO_EFFECT, 0, rin, rout, null, out a1, out i4);
             MFError.ThrowExceptionForHR(hr);
 
             Debug.Assert(i1 > 0 && i1 > i2 && i2 >= i3 && i3 >= i4 && i4 > 0);
 
             for (int y = 0; y < i4; y++)
             {
-                MFInt itypescnt = new MFInt(0);
-                MFInt otypescnt = new MFInt(0);
-                ArrayList a = new ArrayList();
-                ArrayList b = new ArrayList();
+                int itypescnt;
+                int otypescnt;
+                MFTRegisterTypeInfo[] a;
+                MFTRegisterTypeInfo[] b;
                 Guid mft = (Guid)a1[y];
                 string s;
 
                 hr = MFExtern.MFTGetInfo(
                     mft,
                     out s,
-                    a,
-                    itypescnt,
-                    b,
-                    otypescnt,
+                    out a,
+                    out itypescnt,
+                    out b,
+                    out otypescnt,
                     IntPtr.Zero);
                 MFError.ThrowExceptionForHR(hr);
 
+#if false
                 hr = MFExtern.MFTGetInfo(
                     mft,
                     out s,
@@ -165,6 +167,7 @@ namespace Testv10
                     null,
                     IntPtr.Zero);
                 MFError.ThrowExceptionForHR(hr);
+#endif
 
                 for (int x = 0; x < itypescnt; x++)
                 {
