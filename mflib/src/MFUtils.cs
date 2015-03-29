@@ -2610,7 +2610,7 @@ namespace MediaFoundation.Misc
                     throw new COMException(s, hr);
                 }
                 else
-                {
+                 {
                     // No string, just use standard com error
                     Marshal.ThrowExceptionForHR(hr);
                 }
@@ -2901,16 +2901,11 @@ namespace MediaFoundation.Misc
     {
         public IntPtr MarshalManagedToNative(object managedObj)
         {
-            IntPtr p;
-
             int iSize = Marshal.SizeOf(typeof(MFTRegisterTypeInfo));
 
-            // Save off the object.  We'll be calling methods on this in
-            // MarshalNativeToManaged.
             MFTRegisterTypeInfo[] array = managedObj as MFTRegisterTypeInfo[];
 
-            // All we need is room for the pointer
-            p = Marshal.AllocCoTaskMem(array.Length * iSize);
+            IntPtr p = Marshal.AllocCoTaskMem(array.Length * iSize);
 
             for (int x = 0; x < array.Length; x++)
             {
@@ -2946,127 +2941,6 @@ namespace MediaFoundation.Misc
         public static ICustomMarshaler GetInstance(string cookie)
         {
             return new RTAMarshaler();
-        }
-    }
-
-    // Used by MFTEnum
-    internal class GAMarshaler : ICustomMarshaler
-    {
-        private ArrayList m_array;
-        private MFInt m_int;
-        private IntPtr m_MFIntPtr;
-        private IntPtr m_ArrayPtr;
-
-        public IntPtr MarshalManagedToNative(object managedObj)
-        {
-            IntPtr p;
-
-            // We get called twice: Once for the MFInt, and once for the array.
-            // Figure out which call this is.
-            if (managedObj is MFInt)
-            {
-                // Save off the object.  We'll need to use Assign() on this later.
-                m_int = managedObj as MFInt;
-
-                // Allocate room for the int
-                p = Marshal.AllocCoTaskMem(Marshal.SizeOf(typeof(MFInt)));
-                m_MFIntPtr = p;
-            }
-            else
-            {
-                // Save off the object.  We'll be calling methods on this in
-                // MarshalNativeToManaged.
-                m_array = managedObj as ArrayList;
-
-                if (m_array != null)
-                {
-                    m_array.Clear();
-                }
-
-                // All we need is room for the pointer
-                p = Marshal.AllocCoTaskMem(IntPtr.Size);
-
-                // Belt-and-suspenders.  Set this to null.
-                Marshal.WriteIntPtr(p, IntPtr.Zero);
-                m_ArrayPtr = p;
-            }
-
-            return p;
-        }
-
-        // Called just after invoking the COM method.  The IntPtr is the same one that just got returned
-        // from MarshalManagedToNative.  The return value is unused.
-        public object MarshalNativeToManaged(IntPtr pNativeData)
-        {
-            // When we are called with pNativeData == m_ArrayPtr, do nothing.  All the
-            // work is done when:
-            if (pNativeData == m_MFIntPtr)
-            {
-                // Read the count
-                int count = Marshal.ReadInt32(pNativeData);
-
-                // If we have an array to return things in (ie MFTGetInfo wasn't passed
-                // nulls)
-                if (m_array != null)
-                {
-                    IntPtr ip2 = Marshal.ReadIntPtr(m_ArrayPtr);
-
-                    // I don't know why this might happen, but it seems worth the check
-                    if (ip2 != IntPtr.Zero)
-                    {
-                        try
-                        {
-                            int iSize = Marshal.SizeOf(typeof(Guid));
-                            // Size the array
-                            m_array.Capacity = count;
-                            byte[] b = new byte[iSize];
-
-                            // Copy in the values
-                            for (int x = 0; x < count; x++)
-                            {
-                                Marshal.Copy(new IntPtr(ip2.ToInt64() + (x * iSize)), b, 0, iSize);
-                                m_array.Add(new Guid(b));
-                            }
-                        }
-                        finally
-                        {
-                            // Free the array we got back
-                            Marshal.FreeCoTaskMem(ip2);
-                        }
-                    }
-                }
-
-                // Don't forget to assign the value
-                m_int.Assign(count);
-
-                m_array = null;
-                m_int = null;
-            }
-
-            // This value isn't actually used
-            return null;
-        }
-
-        public void CleanUpManagedData(object ManagedObj)
-        {
-        }
-
-        public void CleanUpNativeData(IntPtr pNativeData)
-        {
-            Marshal.FreeCoTaskMem(pNativeData);
-        }
-
-        // The number of bytes to marshal out
-        public int GetNativeDataSize()
-        {
-            return -1;
-        }
-
-        // This method is called by interop to create the custom marshaler.  The (optional)
-        // cookie is the value specified in MarshalCookie="asdf", or "" is none is specified.
-        public static ICustomMarshaler GetInstance(string cookie)
-        {
-            return new GAMarshaler();
         }
     }
 
@@ -3166,90 +3040,6 @@ namespace MediaFoundation.Misc
         public static ICustomMarshaler GetInstance(string cookie)
         {
             return new BMMarshaler();
-        }
-    }
-
-    // Class to handle Array of Guid
-    internal class GMarshaler : ICustomMarshaler
-    {
-        protected Guid[] m_Obj;
-        protected IntPtr m_ip;
-
-        public IntPtr MarshalManagedToNative(object managedObj)
-        {
-            if (m_ip == IntPtr.Zero)
-            {
-                // If we are being called first from managed
-
-                m_Obj = (Guid[])managedObj;
-                // Freed in CleanUpManagedData
-                m_ip = Marshal.AllocCoTaskMem(IntPtr.Size);
-            }
-            else
-            {
-                // Return the value to native
-                Guid[] mo = (Guid[])managedObj;
-
-                IntPtr ip = Marshal.AllocCoTaskMem(16 * mo.Length);
-                Marshal.WriteIntPtr(m_ip, ip);
-
-                for (int x = 0; (mo[x] != Guid.Empty) && (x < mo.Length); x++)
-                {
-                    Marshal.StructureToPtr(mo[x], ip, false);
-                    ip = new IntPtr(ip.ToInt64() + 16);
-                }
-            }
-            return m_ip;
-        }
-
-        public object MarshalNativeToManaged(IntPtr pNativeData)
-        {
-            if (m_Obj != null)
-            {
-                // Return the value to managed
-                byte[] b = new byte[16];
-                IntPtr pBuff = Marshal.ReadIntPtr(pNativeData);
-                for (int x = 0; x < m_Obj.Length; x++)
-                {
-                    Marshal.Copy(pBuff, b, 0, 16);
-                    m_Obj[x] = new Guid(b);
-
-                    pBuff = new IntPtr(pBuff.ToInt64() + 16);
-                }
-
-                Marshal.FreeCoTaskMem(Marshal.ReadIntPtr(pNativeData));
-            }
-            else
-            {
-                // If we are being called first from native
-                m_ip = pNativeData;
-                return new Guid[30];
-            }
-
-            return null;
-        }
-
-        public void CleanUpManagedData(object ManagedObj)
-        {
-            m_Obj = null;
-        }
-
-        public void CleanUpNativeData(IntPtr pNativeData)
-        {
-            Marshal.FreeCoTaskMem(pNativeData);
-        }
-
-        // The number of bytes to marshal out - never called
-        public int GetNativeDataSize()
-        {
-            return -1;
-        }
-
-        // This method is called by interop to create the custom marshaler.  The (optional)
-        // cookie is the value specified in MarshalCookie="asdf", or "" is none is specified.
-        public static ICustomMarshaler GetInstance(string cookie)
-        {
-            return new GMarshaler();
         }
     }
 

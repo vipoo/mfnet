@@ -2257,7 +2257,7 @@ namespace MediaFoundation
 
         [PreserveSig]
         int SetConstrictionSize(
-            MFSize pConstrictionSize
+            [In] MFSize pConstrictionSize
         );
     }
 

@@ -200,13 +200,13 @@ namespace MediaFoundation
             [In, MarshalAs(UnmanagedType.Struct)] Guid clsidMFT,
             [In, MarshalAs(UnmanagedType.Struct)] Guid guidCategory,
             [In, MarshalAs(UnmanagedType.LPWStr)] string pszName,
-            [In] int Flags, // Must be zero
+            [In] MFT_EnumFlag Flags,
             [In] int cInputTypes,
             [In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(RTAMarshaler))]
-            object pInputTypes, // should be MFTRegisterTypeInfo[], but .Net bug prevents in x64
+            MFTRegisterTypeInfo[] pInputTypes,
             [In] int cOutputTypes,
             [In, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(RTAMarshaler))]
-            object pOutputTypes, // should be MFTRegisterTypeInfo[], but .Net bug prevents in x64
+            MFTRegisterTypeInfo[] pOutputTypes,
             [In] IMFAttributes pAttributes
             );
 
@@ -267,7 +267,7 @@ namespace MediaFoundation
             [In] MFFileFlags fFlags,
             [In, MarshalAs(UnmanagedType.LPWStr)] string pwszFilePath,
             [In] IMFAsyncCallback pCallback,
-            [In] [MarshalAs(UnmanagedType.IUnknown)] object pState,
+            [In, MarshalAs(UnmanagedType.IUnknown)] object pState,
             [MarshalAs(UnmanagedType.IUnknown)] out object ppCancelCookie);
 
         [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
@@ -277,7 +277,7 @@ namespace MediaFoundation
 
         [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFCancelCreateFile(
-            [In] [MarshalAs(UnmanagedType.IUnknown)] object pCancelCookie);
+            [In, MarshalAs(UnmanagedType.IUnknown)] object pCancelCookie);
 
         [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFCreateAlignedMemoryBuffer(
@@ -434,10 +434,9 @@ namespace MediaFoundation
             [In, MarshalAs(UnmanagedType.LPStruct)] MFTRegisterTypeInfo pInputType,
             [In, MarshalAs(UnmanagedType.LPStruct)] MFTRegisterTypeInfo pOutputType,
             [In] IMFAttributes pAttributes,
-            [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalCookie = "0", MarshalTypeRef = typeof(GAMarshaler))]
-            ArrayList ppclsidMFT,
-            [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalCookie = "0", MarshalTypeRef = typeof(GAMarshaler))]
-            MFInt pcMFTs
+            [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=6)]
+            out Guid[] ppclsidMFT,
+            out int pcMFTs
             );
 
         [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
@@ -669,7 +668,7 @@ namespace MediaFoundation
             [In, MarshalAs(UnmanagedType.LPWStr)] string wszClass,
             int dwTaskId,
             [In] IMFAsyncCallback pDoneCallback,
-            [In] [MarshalAs(UnmanagedType.IUnknown)] object pDoneState);
+            [In, MarshalAs(UnmanagedType.IUnknown)] object pDoneState);
 
         [DllImport("mfplat.dll", CharSet = CharSet.Unicode, ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFGetWorkQueueMMCSSClass(
@@ -686,7 +685,7 @@ namespace MediaFoundation
         public static extern int MFBeginUnregisterWorkQueueWithMMCSS(
             int dwWorkQueueId,
             [In] IMFAsyncCallback pDoneCallback,
-            [In] [MarshalAs(UnmanagedType.IUnknown)] object pDoneState);
+            [In, MarshalAs(UnmanagedType.IUnknown)] object pDoneState);
 
         [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFAllocateWorkQueueEx(
@@ -1596,7 +1595,7 @@ namespace MediaFoundation
         [DllImport("evr.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFCreateDXSurfaceBuffer(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
-            [In] [MarshalAs(UnmanagedType.IUnknown)] object punkSurface,
+            [In, MarshalAs(UnmanagedType.IUnknown)] object punkSurface,
             [In, MarshalAs(UnmanagedType.Bool)] bool fBottomUpWhenLinear,
             out IMFMediaBuffer ppBuffer);
 

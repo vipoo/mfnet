@@ -2225,7 +2225,7 @@ namespace MediaFoundation
         int SetPreferredClsid(
             MFPluginType pluginType,
             [MarshalAs(UnmanagedType.LPWStr)] string selector,
-            [MarshalAs(UnmanagedType.LPStruct)] MFGuid clsid
+            [In, MarshalAs(UnmanagedType.LPStruct)] MFGuid clsid
         );
 
         [PreserveSig]

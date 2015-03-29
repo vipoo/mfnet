@@ -686,7 +686,7 @@ namespace MediaFoundation.EVR
         [PreserveSig]
         int GetAvailableVideoProcessorModes(
             out int lpdwNumProcessingModes,
-            [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(GMarshaler))] Guid[] ppVideoProcessingModes);
+            [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=0)] out Guid[] ppVideoProcessingModes);
 
         [PreserveSig]
         int GetVideoProcessorCaps(

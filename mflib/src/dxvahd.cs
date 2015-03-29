@@ -503,7 +503,7 @@ namespace MediaFoundation.dxvahd
 
         [PreserveSig]
         int GetVideoProcessorCustomRates(
-            Guid pVPGuid,
+            [In, MarshalAs(UnmanagedType.LPStruct)] Guid pVPGuid,
             int Count,
             out DXVAHD_CUSTOM_RATE_DATA[] pRates
             );
@@ -516,7 +516,7 @@ namespace MediaFoundation.dxvahd
 
         [PreserveSig]
         int CreateVideoProcessor(
-            Guid pVPGuid,
+            [In, MarshalAs(UnmanagedType.LPStruct)] Guid pVPGuid,
             out IDXVAHD_VideoProcessor ppVideoProcessor
             );
     }
@@ -608,7 +608,7 @@ namespace MediaFoundation.dxvahd
 
     public delegate int PDXVAHDSW_GetVideoProcessorCustomRates(
         IntPtr hDevice,
-        Guid pVPGuid,
+        [In, MarshalAs(UnmanagedType.LPStruct)] Guid pVPGuid,
         int Count,
         DXVAHD_CUSTOM_RATE_DATA[] pRates
         );
@@ -625,7 +625,7 @@ namespace MediaFoundation.dxvahd
 
     public delegate int PDXVAHDSW_CreateVideoProcessor(
         IntPtr hDevice,
-        Guid pVPGuid,
+        [In, MarshalAs(UnmanagedType.LPStruct)] Guid pVPGuid,
         out IntPtr phVideoProcessor
         );
 
