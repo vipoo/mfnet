@@ -1000,16 +1000,17 @@ namespace MediaFoundation.Misc
             Clear();
         }
 
-        public void Copy(PropVariant pval)
+        public void Copy(PropVariant pdest)
         {
-            if (pval == null)
+            if (pdest == null)
             {
                 throw new Exception("Null PropVariant sent to Copy");
             }
 
-            pval.Clear();
+            // Copy doesn't clear the dest.
+            pdest.Clear();
 
-            PropVariantCopy(pval, this);
+            PropVariantCopy(pdest, this);
         }
 
         public void Clear()
@@ -2680,79 +2681,167 @@ namespace MediaFoundation.Misc
     // These classes are used internally and there is probably no reason you will ever
     // need to use them directly.
 
-    // Class to release PropVariants on parameters that output PropVariants.  There
-    // should be no reason for code to call this class directly.  It is invoked
-    // automatically when the appropriate methods are called.
+    // PVMarshaler - Class to marshal PropVariants on parameters that *output* PropVariants.
+
+    // When defining parameters that use this marshaller, you must always declare them
+    // as both [In] and [Out].  This will result in *both* MarshalManagedToNative and
+    // MarshalNativeToManaged being called.  Since the order they are called depends on
+    // exactly what's happening, m_InProcess lets us know which way things are being
+    // called.
+    //
+    // Managed calling unmanaged: 
+    // In this case, MarshalManagedToNative is called first.  
+    // When MarshalManagedToNative is called, we store the managed object (so we know
+    // where to copy it back to), then we clear the variant, allocate some COM memory
+    // and pass a pointer to the COM memory to the native code.  When the native code 
+    // is done, MarshalNativeToManaged gets called with the pointer to the COM memory.
+    // At that point, we copy the contents back into the (saved) managed object. After
+    // that, CleanUpNativeData gets called and we release the COM memory.
+    //
+    // Unmanaged calling managed:
+    // In this case, MarshalNativeToManaged is called first.  In it we store the native 
+    // pointer (so we know where to copy the result back to).  Then we create a managed 
+    // PropVariant and copy the native value into it.  When the managed code is done, 
+    // MarshalManagedToNative gets called with the managed PropVariant we created.  At that 
+    // point, we copy the contents of the managed PropVariant back into the (saved) native 
+    // pointer.
+
+    // Warning!  You cannot assume that both routines will always get called.  For example
+    // if calling from unmanaged to managed, MarshalNativeToManaged will get called, but
+    // if the managed code throws an exception, MarshalManagedToNative will not.  This
+    // can be a problem since .Net REUSES instances of the marshaller.  So it is essential
+    // that class members always get cleaned up in CleanUpManagedData & CleanUpNativeData.
     internal class PVMarshaler : ICustomMarshaler
     {
-        // The managed object passed in to MarshalManagedToNative
-        protected PropVariant m_prop;
+        // Inprocess means that the first of the 2 calls is complete.
+        protected bool m_InProcsss = false;
+        protected PropVariant m_prop = null;
+        protected IntPtr m_p = IntPtr.Zero;
 
         public IntPtr MarshalManagedToNative(object managedObj)
         {
             IntPtr p;
 
-            // Cast the object back to a PropVariant
-            m_prop = managedObj as PropVariant;
-
-            if (m_prop != null)
+            if (!m_InProcsss)
             {
-                // Release any memory currently allocated
+                // We are just starting a "Managed calling unmanaged" call.
+                m_InProcsss = true;
+
+                // Cast the object back to a PropVariant and save it for
+                // use in MarshalNativeToManaged.
+                m_prop = managedObj as PropVariant;
+
+                // This could happen if (somehow) managedObj isn't
+                // a PropVariant.  During normal marshaling, the
+                // custom marshaller doesn't get called if the
+                // parameter is null.
+                Debug.Assert(m_prop != null);
+
+                // Release any memory currently allocated in the
+                // PropVariant.  In theory, the (managed) caller should 
+                // have done this before making the call that got us 
+                // here, but .Net programmers don't generally think that 
+                // way.  To avoid any leaks, do it for them.
                 m_prop.Clear();
 
-                // Create an appropriately sized buffer, blank it, and send it to
-                // the marshaler to make the COM call with.
+                // Create an appropriately sized buffer (varies from
+                // x86 to x64).
                 int iSize = GetNativeDataSize();
                 p = Marshal.AllocCoTaskMem(iSize);
 
-                if (IntPtr.Size == 4)
-                {
-                    Marshal.WriteInt64(p, 0);
-                    Marshal.WriteInt64(p, 8, 0);
-                }
-                else
-                {
-                    Marshal.WriteInt64(p, 0);
-                    Marshal.WriteInt64(p, 8, 0);
-                    Marshal.WriteInt64(p, 16, 0);
-                }
+                // Copy in the (empty) PropVariant.  In theory we
+                // could just zero out the first 2 bytes (the 
+                // VariantType), but since PropVariantClear wipes 
+                // the whole struct, that's what we do here to be
+                // safe.
+                Marshal.StructureToPtr(m_prop, p, false);
             }
             else
             {
+                // This is the second half of "Unmanaged calling managed."
+
+                // Copy the data from the managed object into the native
+                // pointer that we received in MarshalNativeToManaged.
+                Marshal.StructureToPtr(managedObj, m_p, false);
+
+                // This return value won't be used, but still has to be set.
                 p = IntPtr.Zero;
             }
 
             return p;
         }
 
-        // Called just after invoking the COM method.  The IntPtr is the same one that just got returned
-        // from MarshalManagedToNative.  The return value is unused.
         public object MarshalNativeToManaged(IntPtr pNativeData)
         {
-            Marshal.PtrToStructure(pNativeData, m_prop);
-            m_prop = null;
+            object oret;
 
-            return m_prop;
+            if (!m_InProcsss)
+            {
+                // We are just starting a "Unmanaged calling managed" call.
+                m_InProcsss = true;
+
+#if DEBUG
+                // Caller should have cleared variant before
+                // calling us.  Might be acceptable for types
+                // *other* than IUnknown, String, Blob and
+                // StringArray (0xd, 0x1F, 0x1011, 0x101F),
+                // but it is still bad design.
+
+                // Read the 16bit VariantType.
+                PropVariant.VariantType vt = (PropVariant.VariantType)Marshal.ReadInt16(pNativeData);
+                Debug.Assert(vt == PropVariant.VariantType.None);
+#endif
+                // Create a managed PropVariant from the native data.
+                PropVariant pv = new PropVariant(pNativeData);
+
+                // Save the pointer for use in MarshalManagedToNative.
+                m_p = pNativeData;
+
+                // Return value is essential.
+                oret = pv;
+            }
+            else
+            {
+                // This is the second half of "Managed calling unmanaged."
+
+                // Copy the data from the native pointer into the managed
+                // object that we received in MarshalManagedToNative.
+                Marshal.PtrToStructure(pNativeData, m_prop);
+
+                // This return value won't be used, but still has to be set.
+                oret = null;
+            }
+
+            return oret;
         }
 
         public void CleanUpManagedData(object ManagedObj)
         {
+            // Must clear all members (see warning at top of class).
             m_prop = null;
+            m_p = IntPtr.Zero;
+            m_InProcsss = false;
         }
 
         public void CleanUpNativeData(IntPtr pNativeData)
         {
+            // Free the memory we allocated in MarshalManagedToNative.
             Marshal.FreeCoTaskMem(pNativeData);
+
+            // Must clear all members (see warning at top of class).
+            m_prop = null;
+            m_p = IntPtr.Zero;
+            m_InProcsss = false;
         }
 
-        // The number of bytes to marshal out
+        // The number of bytes to marshal.  Size varies between x86 and x64.
         public int GetNativeDataSize()
         {
             return Marshal.SizeOf(typeof(PropVariant));
         }
 
         // This method is called by interop to create the custom marshaler.  The (optional)
-        // cookie is the value specified in MarshalCookie="asdf", or "" is none is specified.
+        // cookie is the value specified in MarshalCookie="asdf", or "" if none is specified.
         public static ICustomMarshaler GetInstance(string cookie)
         {
             return new PVMarshaler();
@@ -2878,7 +2967,7 @@ namespace MediaFoundation.Misc
         static RTIMarshaler[] s_rti = new RTIMarshaler[2];
 
         // This method is called by interop to create the custom marshaler.  The (optional)
-        // cookie is the value specified in MarshalCookie="asdf", or "" is none is specified.
+        // cookie is the value specified in MarshalCookie="asdf", or "" if none is specified.
         public static ICustomMarshaler GetInstance(string cookie)
         {
             // Probably not an issue, but just to be safe
@@ -2937,7 +3026,7 @@ namespace MediaFoundation.Misc
         }
 
         // This method is called by interop to create the custom marshaler.  The (optional)
-        // cookie is the value specified in MarshalCookie="asdf", or "" is none is specified.
+        // cookie is the value specified in MarshalCookie="asdf", or "" if none is specified.
         public static ICustomMarshaler GetInstance(string cookie)
         {
             return new RTAMarshaler();
@@ -2981,7 +3070,7 @@ namespace MediaFoundation.Misc
         }
 
         // This method is called by interop to create the custom marshaler.  The (optional)
-        // cookie is the value specified in MarshalCookie="asdf", or "" is none is specified.
+        // cookie is the value specified in MarshalCookie="asdf", or "" if none is specified.
         public static ICustomMarshaler GetInstance(string cookie)
         {
             return new WEMarshaler();
@@ -3036,7 +3125,7 @@ namespace MediaFoundation.Misc
         }
 
         // This method is called by interop to create the custom marshaler.  The (optional)
-        // cookie is the value specified in MarshalCookie="asdf", or "" is none is specified.
+        // cookie is the value specified in MarshalCookie="asdf", or "" if none is specified.
         public static ICustomMarshaler GetInstance(string cookie)
         {
             return new BMMarshaler();
