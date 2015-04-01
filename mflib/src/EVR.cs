@@ -326,7 +326,7 @@ namespace MediaFoundation.EVR
 
         [PreserveSig]
         new int SetNumberOfStreams(
-            [In] int dwMaxStreams
+            int dwMaxStreams
         );
 
         [PreserveSig]

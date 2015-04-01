@@ -130,7 +130,8 @@ namespace MediaFoundation
 
         [PreserveSig]
         new int GetOutputMediaType(
-            int dwSinkStreamIndex, out IMFMediaType ppMediaType
+            int dwSinkStreamIndex,
+            out IMFMediaType ppMediaType
             );
 
         [PreserveSig]
@@ -201,7 +202,8 @@ namespace MediaFoundation
 
         [PreserveSig]
         new int GetOutputMediaType(
-            int dwSinkStreamIndex, out IMFMediaType ppMediaType
+            int dwSinkStreamIndex,
+            out IMFMediaType ppMediaType
             );
 
         [PreserveSig]
@@ -284,6 +286,38 @@ namespace MediaFoundation
     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IMFCapturePhotoSink : IMFCaptureSink
     {
+        #region IMFCaptureSink Methods
+
+        [PreserveSig]
+        new int GetOutputMediaType(
+            int dwSinkStreamIndex,
+            out IMFMediaType ppMediaType
+            );
+
+        [PreserveSig]
+        new int GetService(
+            int dwSinkStreamIndex,
+            [In, MarshalAs(UnmanagedType.LPStruct)] Guid rguidService,
+            [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
+            [MarshalAs(UnmanagedType.IUnknown)] out object ppUnknown
+            );
+
+        [PreserveSig]
+        new int AddStream(
+            int dwSourceStreamIndex,
+            IMFMediaType pMediaType,
+            IMFAttributes pAttributes,
+            out int pdwSinkStreamIndex
+            );
+
+        [PreserveSig]
+        new int Prepare();
+
+        [PreserveSig]
+        new int RemoveAllStreams();
+
+        #endregion
+
         [PreserveSig]
         int SetOutputFileName(
             [MarshalAs(UnmanagedType.LPWStr)] string fileName
@@ -452,14 +486,14 @@ namespace MediaFoundation
     Guid("e37ceed7-340f-4514-9f4d-9c2ae026100b")]
     public interface IMFCaptureEngineOnSampleCallback2 : IMFCaptureEngineOnSampleCallback
     {
-    #region IMFCaptureEngineOnSampleCallback methods
+        #region IMFCaptureEngineOnSampleCallback methods
 
         [PreserveSig]
         new int OnSample(
             IMFSample pSample
             );
 
-    #endregion
+        #endregion
 
         [PreserveSig]
         int OnSynchronizedEvent(
@@ -472,7 +506,7 @@ namespace MediaFoundation
     Guid("f9e4219e-6197-4b5e-b888-bee310ab2c59")]
     public interface IMFCaptureSink2 : IMFCaptureSink
     {
-    #region IMFCaptureEngineOnSampleCallback methods
+        #region IMFCaptureEngineOnSampleCallback methods
 
         [PreserveSig]
         new int GetOutputMediaType(
@@ -502,7 +536,7 @@ namespace MediaFoundation
         [PreserveSig]
         new int RemoveAllStreams();
 
-    #endregion
+        #endregion
 
         [PreserveSig]
         int SetOutputMediaType(

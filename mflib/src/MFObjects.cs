@@ -545,6 +545,52 @@ namespace MediaFoundation
     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IMFPluginControl2 : IMFPluginControl
     {
+        #region IMFPluginControl methods
+
+        [PreserveSig]
+        new int GetPreferredClsid(
+            MFPluginType pluginType,
+            [MarshalAs(UnmanagedType.LPWStr)] string selector,
+            out Guid clsid
+        );
+
+        [PreserveSig]
+        new int GetPreferredClsidByIndex(
+            MFPluginType pluginType,
+            int index,
+            [MarshalAs(UnmanagedType.LPWStr)] out string selector,
+            out Guid clsid
+        );
+
+        [PreserveSig]
+        new int SetPreferredClsid(
+            MFPluginType pluginType,
+            [MarshalAs(UnmanagedType.LPWStr)] string selector,
+            [In, MarshalAs(UnmanagedType.LPStruct)] MFGuid clsid
+        );
+
+        [PreserveSig]
+        new int IsDisabled(
+            MFPluginType pluginType,
+            [MarshalAs(UnmanagedType.LPStruct)] Guid clsid
+        );
+
+        [PreserveSig]
+        new int GetDisabledByIndex(
+            MFPluginType pluginType,
+            int index,
+            out Guid clsid
+        );
+
+        [PreserveSig]
+        new int SetDisabled(
+            MFPluginType pluginType,
+            [MarshalAs(UnmanagedType.LPStruct)] Guid clsid,
+            [MarshalAs(UnmanagedType.Bool)] bool disabled
+        );
+
+        #endregion
+
         [PreserveSig]
         int SetPolicy(
             MF_PLUGIN_CONTROL_POLICY policy
@@ -1224,14 +1270,12 @@ namespace MediaFoundation
         [PreserveSig]
         int BeginGetEvent(
             [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
-
             [In, MarshalAs(UnmanagedType.IUnknown)] object o
             );
 
         [PreserveSig]
         int EndGetEvent(
             IMFAsyncResult pResult,
-
             out IMFMediaEvent ppEvent
             );
 

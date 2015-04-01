@@ -530,7 +530,6 @@ namespace MediaFoundation
     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IMFMediaEngineEx : IMFMediaEngine
     {
-
         #region IMFMediaEngine methods
 
         [PreserveSig]

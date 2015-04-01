@@ -232,8 +232,7 @@ namespace MediaFoundation.ReadWrite
     Guid("588d72ab-5Bc1-496a-8714-b70617141b25")]
     public interface IMFSinkWriterEx : IMFSinkWriter
     {
-
-    #region IMFSinkWriter methods
+        #region IMFSinkWriter methods
 
         [PreserveSig]
         new int AddStream(

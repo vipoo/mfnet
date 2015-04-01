@@ -265,7 +265,7 @@ namespace MediaFoundation.Alt
         [PreserveSig]
         new int BeginGetEvent(
             //[In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
-            IntPtr p1,
+            IntPtr pCallback,
             [In, MarshalAs(UnmanagedType.IUnknown)] object o
             );
 

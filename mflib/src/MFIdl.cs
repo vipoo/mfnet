@@ -2432,7 +2432,7 @@ namespace MediaFoundation
     Guid("71CE469C-F34B-49EA-A56B-2D2A10E51149")]
     public interface IMFByteStreamCacheControl2 : IMFByteStreamCacheControl
     {
-    #region IMFByteStreamCacheControl methods
+        #region IMFByteStreamCacheControl methods
 
         [PreserveSig]
         new int StopBackgroundTransfer();
@@ -2786,7 +2786,7 @@ namespace MediaFoundation
     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IMFOutputPolicy : IMFAttributes
     {
-    #region IMFAttributes methods
+        #region IMFAttributes methods
 
         [PreserveSig]
         new int GetItem(
@@ -2968,7 +2968,7 @@ namespace MediaFoundation
             [In, MarshalAs(UnmanagedType.Interface)] IMFAttributes pDest
             );
 
-    #endregion
+        #endregion
 
         [PreserveSig]
         int GenerateRequiredSchemas(
@@ -2995,7 +2995,7 @@ namespace MediaFoundation
     Guid("7BE0FC5B-ABD9-44FB-A5C8-F50136E71599")]
     public interface IMFOutputSchema : IMFAttributes
     {
-    #region IMFAttributes methods
+        #region IMFAttributes methods
 
         [PreserveSig]
         new int GetItem(
@@ -3177,7 +3177,7 @@ namespace MediaFoundation
             [In, MarshalAs(UnmanagedType.Interface)] IMFAttributes pDest
             );
 
-    #endregion
+        #endregion
 
         [PreserveSig]
         int GetSchemaType(
@@ -3619,7 +3619,8 @@ namespace MediaFoundation
         int GetPlaftormWorkQueueMMCSSClass(
             [In] int dwPlatformWorkQueueId,
             [Out, MarshalAs(UnmanagedType.LPWStr)] string pwszClass,
-            [In, Out] ref int pcchClass);
+            [In, Out] ref int pcchClass
+            );
 
         [PreserveSig]
         int GetPlatformWorkQueueMMCSSTaskId(
@@ -4736,13 +4737,14 @@ namespace MediaFoundation
         [PreserveSig]
         new int BeginGetEvent(
             [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
-            [In, MarshalAs(UnmanagedType.IUnknown)] object o);
+            [In, MarshalAs(UnmanagedType.IUnknown)] object o
+            );
 
         [PreserveSig]
         new int EndGetEvent(
             IMFAsyncResult pResult,
-            out IMFMediaEvent ppEvent);
-
+            out IMFMediaEvent ppEvent
+            );
 
         [PreserveSig]
         new int QueueEvent(
@@ -4821,7 +4823,8 @@ namespace MediaFoundation
         [PreserveSig]
         new int EndGetEvent(
             IMFAsyncResult pResult,
-            out IMFMediaEvent ppEvent);
+            out IMFMediaEvent ppEvent
+            );
 
         [PreserveSig]
         new int QueueEvent(
@@ -5519,12 +5522,14 @@ namespace MediaFoundation
         [PreserveSig]
         new int BeginGetEvent(
             [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
-            [In, MarshalAs(UnmanagedType.IUnknown)] object o);
+            [In, MarshalAs(UnmanagedType.IUnknown)] object o
+            );
 
         [PreserveSig]
         new int EndGetEvent(
             IMFAsyncResult pResult,
-            out IMFMediaEvent ppEvent);
+            out IMFMediaEvent ppEvent
+            );
 
         [PreserveSig]
         new int QueueEvent(
@@ -5576,7 +5581,8 @@ namespace MediaFoundation
 
         [PreserveSig]
         new int GetCharacteristics(
-            out MFMediaSinkCharacteristics pdwCharacteristics);
+            out MFMediaSinkCharacteristics pdwCharacteristics
+            );
 
         [PreserveSig]
         new int AddStreamSink(
