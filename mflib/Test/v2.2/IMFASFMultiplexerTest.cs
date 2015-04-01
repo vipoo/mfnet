@@ -16,13 +16,16 @@ namespace Testv22
         private IMFASFContentInfo m_contentInfo;
         private IMFASFSplitter m_asfSplitter;
         private IMFSample m_sample;
+        private ASFStatusFlags m_status;
+        private short m_streamNumber;
+        private long m_dataOffset, m_dataLength, m_dataPosition = 0;
         private IMFASFMultiplexer m_asfMux;
-        private long m_dataOffset, m_dataLength;
+        private IMFSample m_nextPacket;
 
         public void DoTests()
         {
             int hr = 0;
-            IMFMediaBuffer buffer;
+            MFASFMultiplexerFlags readFlags;
 
             GetInterfaces();
 
@@ -33,8 +36,31 @@ namespace Testv22
             hr = m_asfMux.Initialize(m_contentInfo);
             MFError.ThrowExceptionForHR(hr);
 
+            hr = m_asfMux.SetSyncTolerance(1);
+            //MFError.ThrowExceptionForHR(hr);
+            Debug.Assert(hr == COMBase.E_NotImplemented); // Don't know why that error is returned...
 
+            hr = m_asfMux.SetFlags(MFASFMultiplexerFlags.AutoAdjustBitrate);
+            MFError.ThrowExceptionForHR(hr);
 
+            hr = m_asfMux.GetFlags(out readFlags);
+            MFError.ThrowExceptionForHR(hr);
+            Debug.Assert(readFlags == MFASFMultiplexerFlags.AutoAdjustBitrate);
+
+            this.GetSampleFromSplitter(out m_sample);
+
+            hr = m_asfMux.ProcessSample(m_streamNumber, m_sample, 0);
+            MFError.ThrowExceptionForHR(hr);
+
+            hr = m_asfMux.GetNextPacket(out m_status, out m_nextPacket);
+            MFError.ThrowExceptionForHR(hr);
+
+            hr = m_asfMux.Flush();
+            MFError.ThrowExceptionForHR(hr);
+
+            hr = m_asfMux.End(m_contentInfo);
+            //MFError.ThrowExceptionForHR(hr);
+            Debug.Assert(hr == MFError.MF_E_FLUSH_NEEDED); // Even if Flush is called before End, the method return MF_E_FLUSH_NEEDED...
         }
 
 
@@ -44,6 +70,7 @@ namespace Testv22
             IMFMediaBuffer buffer;
             long headerSize;
             IMFPresentationDescriptor pd;
+            
 
             hr = MFExtern.MFCreateFile(MFFileAccessMode.Read, MFFileOpenMode.FailIfNotExist , MFFileFlags.None, m_asfFile, out m_byteStream);
             MFError.ThrowExceptionForHR(hr);
@@ -80,11 +107,12 @@ namespace Testv22
 
             // Get stream IDs
             IMFASFProfile profile;
-            short[] streamsID;
-            int streamCount;
 
             hr = m_contentInfo.GetProfile(out profile);
             MFError.ThrowExceptionForHR(hr);
+/*
+            short[] streamsID;
+            int streamCount;
 
             hr = profile.GetStreamCount(out streamCount);
             MFError.ThrowExceptionForHR(hr);
@@ -98,7 +126,7 @@ namespace Testv22
                 hr = profile.GetStream(i, out streamsID[i], out streamConfig);
                 Marshal.ReleaseComObject(streamConfig);
             }
-
+*/
             // Get an IMFASFSplitter from the same file
             hr = MFExtern.MFCreateASFSplitter(out m_asfSplitter);
             MFError.ThrowExceptionForHR(hr);
@@ -107,23 +135,35 @@ namespace Testv22
             MFError.ThrowExceptionForHR(hr);
 
             //hr = m_asfSplitter.SelectStreams(streamsID, (short)streamsID.Length);
-            hr = m_asfSplitter.SelectStreams(new short[] { 2 }, 1);
-            MFError.ThrowExceptionForHR(hr);
-
-            // Get a sample from the splitter
-            hr = ReadDataIntoBuffer(m_byteStream, (int)m_dataOffset, 4 * 1024, out buffer);
-            MFError.ThrowExceptionForHR(hr);
-
-            hr = m_asfSplitter.ParseData(buffer, 0, 0);
-            MFError.ThrowExceptionForHR(hr);
-
-            ASFStatusFlags status;
-            short streamNumber;
-
-            hr = m_asfSplitter.GetNextSample(out status, out streamNumber, out m_sample);
+            hr = m_asfSplitter.SelectStreams(new short[] { 2 }, 1); // Don't know why the commented code don't works...
             MFError.ThrowExceptionForHR(hr);
         }
 
+        private void GetSampleFromSplitter(out IMFSample sample)
+        {
+            int hr = 0;
+            IMFMediaBuffer buffer;
+            const int BUFFER_SIZE = 4 * 1024;
+
+            sample = null;
+
+            do
+            {
+                hr = ReadDataIntoBuffer(m_byteStream, (int)(m_dataOffset + m_dataPosition), BUFFER_SIZE, out buffer);
+                MFError.ThrowExceptionForHR(hr);
+
+                m_dataPosition += BUFFER_SIZE;
+
+                hr = m_asfSplitter.ParseData(buffer, 0, 0);
+                MFError.ThrowExceptionForHR(hr);
+
+                hr = m_asfSplitter.GetNextSample(out m_status, out m_streamNumber, out sample);
+                MFError.ThrowExceptionForHR(hr);
+
+                Marshal.ReleaseComObject(buffer); buffer = null;
+            }
+            while (sample == null);
+        }
 
         private int ReadDataIntoBuffer(IMFByteStream stream, int offset, int bytesToRead, out IMFMediaBuffer buffer)
         {
