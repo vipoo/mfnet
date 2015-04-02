@@ -55,6 +55,14 @@ namespace Testv22
             hr = m_asfMux.GetNextPacket(out m_status, out m_nextPacket);
             MFError.ThrowExceptionForHR(hr);
 
+            ASFMuxStatistics ms;
+            ms.cFramesDropped = -1;
+            ms.cFramesWritten = -1;
+            hr = m_asfMux.GetStatistics(1, out ms);
+            MFError.ThrowExceptionForHR(hr);
+
+            Debug.Assert(ms.cFramesWritten == 0 && ms.cFramesDropped == 0);
+
             hr = m_asfMux.Flush();
             MFError.ThrowExceptionForHR(hr);
 
@@ -110,7 +118,7 @@ namespace Testv22
 
             hr = m_contentInfo.GetProfile(out profile);
             MFError.ThrowExceptionForHR(hr);
-/*
+
             short[] streamsID;
             int streamCount;
 
@@ -126,7 +134,7 @@ namespace Testv22
                 hr = profile.GetStream(i, out streamsID[i], out streamConfig);
                 Marshal.ReleaseComObject(streamConfig);
             }
-*/
+
             // Get an IMFASFSplitter from the same file
             hr = MFExtern.MFCreateASFSplitter(out m_asfSplitter);
             MFError.ThrowExceptionForHR(hr);
@@ -134,9 +142,41 @@ namespace Testv22
             hr = m_asfSplitter.Initialize(m_contentInfo);
             MFError.ThrowExceptionForHR(hr);
 
-            //hr = m_asfSplitter.SelectStreams(streamsID, (short)streamsID.Length);
-            hr = m_asfSplitter.SelectStreams(new short[] { 2 }, 1); // Don't know why the commented code don't works...
+            hr = m_asfSplitter.SelectStreams(streamsID, (short)streamsID.Length);
             MFError.ThrowExceptionForHR(hr);
+
+            short iCount = 0;
+            hr = m_asfSplitter.GetSelectedStreams(null, ref iCount);
+            Debug.Assert(hr == MFError.MF_E_BUFFERTOOSMALL);
+
+            short[] sout = new short[iCount];
+            hr = m_asfSplitter.GetSelectedStreams(sout, ref iCount);
+            MFError.ThrowExceptionForHR(hr);
+
+            for (int x = 0; x < iCount; x++)
+            {
+                Debug.Assert(sout[x] == streamsID[x]);
+            }
+
+            MFASFSplitterFlags sf;
+            hr = m_asfSplitter.SetFlags(MFASFSplitterFlags.Reverse);
+            MFError.ThrowExceptionForHR(hr);
+
+            hr = m_asfSplitter.GetFlags(out sf);
+            MFError.ThrowExceptionForHR(hr);
+            Debug.Assert(sf == MFASFSplitterFlags.Reverse);
+
+            hr = m_asfSplitter.SetFlags(MFASFSplitterFlags.None);
+            MFError.ThrowExceptionForHR(hr);
+
+            hr = m_asfSplitter.Flush();
+            MFError.ThrowExceptionForHR(hr);
+
+            int st;
+            hr = m_asfSplitter.GetLastSendTime(out st);
+            MFError.ThrowExceptionForHR(hr);
+
+            Debug.Assert(st == -1); // nothing has been sent yet.
         }
 
         private void GetSampleFromSplitter(out IMFSample sample)

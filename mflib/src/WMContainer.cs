@@ -876,12 +876,12 @@ namespace MediaFoundation
 
         [PreserveSig]
         int SelectStreams(
-            [In] short[] pwStreamNumbers,
+            [In, MarshalAs(UnmanagedType.LPArray)] short[] pwStreamNumbers,
             [In] short wNumStreams);
 
         [PreserveSig]
         int GetSelectedStreams(
-            [In, Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.I2)] short[] pwStreamNumbers,
+            [Out, MarshalAs(UnmanagedType.LPArray)] short[] pwStreamNumbers,
             ref short pwNumStreams);
 
         [PreserveSig]
