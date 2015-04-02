@@ -29,9 +29,7 @@ namespace Testv22
             hr = ph.LockProcess();
             MFError.ThrowExceptionForHR(hr);
 
-            // For cross-process, must be registered interface (like IUnknown)
-            Guid iunk = new Guid("00000000-0000-0000-C000-000000000046"); 
-            hr = ph.CreateObjectByCLSID(typeof(MFSourceResolver).GUID, null, iunk, out o);
+            hr = ph.CreateObjectByCLSID(CLSID.CLSID_MFSourceResolver, null, typeof(IMFSourceResolver).GUID, out o);
             MFError.ThrowExceptionForHR(hr);
 
             hr = ph.UnlockProcess();

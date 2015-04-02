@@ -63,13 +63,6 @@ namespace MediaFoundation
     {
     }
 
-    [UnmanagedName("CLSID_MFImageSharingEngineClassFactory"),
-    ComImport,
-    Guid("B22C3339-87F3-4059-A0C5-037AA9707EAF")]
-    public class MFImageSharingEngineClassFactory
-    {
-    }
-
     [UnmanagedName("CLSID_MFMediaEngineClassFactory"),
     ComImport,
     Guid("B44392DA-499B-446b-A4CB-005FEAD0E6D5")]
@@ -91,13 +84,6 @@ namespace MediaFoundation
     {
     }
 
-    [UnmanagedName("CLSID_CreateMediaExtensionObject"),
-    ComImport,
-    Guid("ef65a54d-0788-45b8-8b14-bc0f6a6b5137")]
-    public class CreateMediaExtensionObject
-    {
-    }
-
     [UnmanagedName("CLSID_MPEG2ByteStreamPlugin"),
     ComImport,
     Guid("40871C59-AB40-471F-8DC3-1F259D862479")]
@@ -114,15 +100,15 @@ namespace MediaFoundation
 
     [UnmanagedName("CLSID_UrlmonSchemePlugin"),
     ComImport,
-    Guid("90eab60f-e43a-4188-bcc4-e47fdf04868c")]
+    Guid("9EC4B4F9-3029-45ad-947B-344DE2A249E2")]
     public class UrlmonSchemePlugin
     {
     }
 
-    [UnmanagedName("CLSID_MFSourceResolver"),
+    [UnmanagedName("CLSID_MFCaptureEngineClassFactory"),
     ComImport,
-    Guid("9ec4b4f9-3029-45ad-947b-344de2a249e2")]
-    public class MFSourceResolver
+    Guid("efce38d3-8914-4674-a7df-ae1b3d654b8a")]
+    public class MFCaptureEngineClassFactory
     {
     }
 
@@ -1226,6 +1212,9 @@ namespace MediaFoundation
 
         public static readonly Guid CLSID_MFSinkWriter = new Guid(0xa3bbfb17, 0x8273, 0x4e52, 0x9e, 0x0e, 0x97, 0x39, 0xdc, 0x88, 0x79, 0x90);
         public static readonly Guid CLSID_MFSourceReader = new Guid(0x1777133c, 0x0881, 0x411b, 0xa5, 0x77, 0xad, 0x54, 0x5f, 0x07, 0x14, 0xc4);
+        public static readonly Guid CLSID_MFSourceResolver = new Guid(0x90eab60f, 0xe43a, 0x4188, 0xbc, 0xc4, 0xe4, 0x7f, 0xdf, 0x04, 0x86, 0x8c);
+        public static readonly Guid CLSID_CreateMediaExtensionObject = new Guid(0xef65a54d, 0x0788, 0x45b8, 0x8b, 0x14, 0xbc, 0x0f, 0x6a, 0x6b, 0x51, 0x37);
+        public static readonly Guid CLSID_MFImageSharingEngineClassFactory = new Guid(0xb22c3339, 0x87f3, 0x4059, 0xa0, 0xc5, 0x3, 0x7a, 0xa9, 0x70, 0x7e, 0xaf);
 
         public static readonly Guid MF_QUALITY_NOTIFY_PROCESSING_LATENCY = new Guid(0xf6b44af8, 0x604d, 0x46fe, 0xa9, 0x5d, 0x45, 0x47, 0x9b, 0x10, 0xc9, 0xbc);
         public static readonly Guid MF_QUALITY_NOTIFY_SAMPLE_LAG = new Guid(0x30d15206, 0xed2a, 0x4760, 0xbe, 0x17, 0xeb, 0x4a, 0x9f, 0x12, 0x29, 0x5c);
