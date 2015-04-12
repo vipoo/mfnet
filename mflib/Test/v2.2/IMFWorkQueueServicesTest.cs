@@ -10,39 +10,117 @@ using System.Diagnostics;
 namespace Testv22
 {
     [ComVisible(true)]
-    public class IMFWorkQueueServicesTest : IMFAsyncCallback
+    public class IMFWorkQueueServicesTest : COMBase, IMFSampleGrabberSinkCallback, IMFAsyncCallback
     {
-        const int WORKQUEUE_ID = 0x5a5a5a5a;
-        const string WORKQUEUE_MMCSS_CLASS = "Playback"; // See HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Task
-
-        IMFMediaSession m_mediaSession = null;
+        int m_didit = 0;
+        int WORKQUEUE_ID;
+        const string WORKQUEUE_MMCSS_CLASS = "audio"; // See HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Multimedia\SystemProfile\Task
         IMFWorkQueueServices m_workQueueServices;
-
         int m_platformWorkQueueTaskId = -1;
-
-        ManualResetEvent m_topologyReady = new ManualResetEvent(false);
         ManualResetEvent m_registerPlatformWorkQueue = new ManualResetEvent(false);
         ManualResetEvent m_unregisterPlatformWorkQueue = new ManualResetEvent(false);
         ManualResetEvent m_registerTopologyWorkQueues = new ManualResetEvent(false);
         ManualResetEvent m_unregisterTopologyWorkQueues = new ManualResetEvent(false);
 
-
         public void DoTests()
         {
-            GetInterface(@"..\..\..\Media\AspectRatio4x3.wmv");
+            GetInterface(@"c:\sourceforge\mflib\test\media\AspectRatio4x3.wmv");
 
-            //TestPlatformWorkQueueWithMMCSS();
+            TestPlatformWorkQueueWithMMCSS();
             TestTopologyWorkQueuesWithMMCSS();
+
+            Debug.Assert(m_didit == 4095);
+        }
+
+        // Create a media source from a URL.
+        private void CreateMediaSource(string pszURL, out IMFMediaSource ppSource)
+        {
+            IMFSourceResolver pSourceResolver = null;
+            object pSource;
+
+            int hr;
+            // Create the source resolver.
+            hr = MFExtern.MFCreateSourceResolver(out pSourceResolver);
+            MFError.ThrowExceptionForHR(hr);
+
+            MFObjectType ObjectType;
+            hr = pSourceResolver.CreateObjectFromURL(
+                pszURL,
+                MFResolution.MediaSource,
+                null,
+                out ObjectType,
+                out pSource);
+            MFError.ThrowExceptionForHR(hr);
+
+            ppSource = (IMFMediaSource)pSource;
+
+            //done:
+            //SafeRelease(&pSourceResolver);
+            //SafeRelease(&pSource);
+            //return hr;
+        }
+        private void GetInterface(string pszFileName)
+        {
+            IMFMediaSession pSession = null;
+            IMFMediaSource pSource = null;
+            IMFActivate pSinkActivate = null;
+            IMFTopology pTopology = null;
+            IMFMediaType pType = null;
+            int hr;
+
+            hr = MFExtern.MFAllocateWorkQueueEx(MFASYNC_WORKQUEUE_TYPE.WindowWorkqueue, out WORKQUEUE_ID);
+            MFError.ThrowExceptionForHR(hr);
+
+            // Configure the media type that the Sample Grabber will receive.
+            // Setting the major and subtype is usually enough for the topology loader
+            // to resolve the topology.
+
+            hr = MFExtern.MFCreateMediaType(out pType);
+            MFError.ThrowExceptionForHR(hr);
+            hr = pType.SetGUID(MFAttributesClsid.MF_MT_MAJOR_TYPE, MFMediaType.Audio);
+            MFError.ThrowExceptionForHR(hr);
+            hr = pType.SetGUID(MFAttributesClsid.MF_MT_SUBTYPE, MFMediaType.PCM);
+            MFError.ThrowExceptionForHR(hr);
+
+            // Create the sample grabber sink.
+            //pCallback = this;
+            hr = MFExtern.MFCreateSampleGrabberSinkActivate(pType, this, out pSinkActivate);
+            MFError.ThrowExceptionForHR(hr);
+
+            // To run as fast as possible, set this attribute (requires Windows 7):
+            hr = pSinkActivate.SetUINT32(MFAttributesClsid.MF_SAMPLEGRABBERSINK_IGNORE_CLOCK, 1);
+            MFError.ThrowExceptionForHR(hr);
+
+            // Create the Media Session.
+            hr = MFExtern.MFCreateMediaSession(null, out pSession);
+            MFError.ThrowExceptionForHR(hr);
+
+            // Create the media source.
+            CreateMediaSource(pszFileName, out pSource);
+            MFError.ThrowExceptionForHR(hr);
+
+            // Create the topology.
+            CreateTopology(pSource, pSinkActivate, out pTopology);
+
+            hr = pSession.SetTopology(0, pTopology);
+            MFError.ThrowExceptionForHR(hr);
+
+            object service;
+
+            hr = (pSession as IMFGetService).GetService(MFServices.MF_WORKQUEUE_SERVICES, typeof(IMFWorkQueueServices).GUID, out service);
+            MFError.ThrowExceptionForHR(hr);
+
+            m_workQueueServices = (IMFWorkQueueServices)service;
         }
 
         private void TestPlatformWorkQueueWithMMCSS()
         {
             int hr = 0;
-            string platformWorkQueueClassName = "MFLibTest1ClassName";
 
             // ***** Register Platform WorkQueue
-            hr = m_workQueueServices.BeginRegisterPlatformWorkQueueWithMMCSS(MFAsyncCallbackQueue.Standard, platformWorkQueueClassName, 0, this, new AsyncState("IMFWorkQueueServices.BeginRegisterPlatformWorkQueueWithMMCSS"));
+            hr = m_workQueueServices.BeginRegisterPlatformWorkQueueWithMMCSS((MFAsyncCallbackQueue)WORKQUEUE_ID, WORKQUEUE_MMCSS_CLASS, 0, this, new AsyncState("IMFWorkQueueServices.BeginRegisterPlatformWorkQueueWithMMCSS"));
             MFError.ThrowExceptionForHR(hr);
+            m_didit |= 1;
 
             // Wait for the end of the Async code (see Invoke method)
             bool registerDone = m_registerPlatformWorkQueue.WaitOne(TimeSpan.FromSeconds(5.0));
@@ -50,29 +128,33 @@ namespace Testv22
 
             // ***** Get Class Name
             int classNameSize = 0;
-            hr = m_workQueueServices.GetPlaftormWorkQueueMMCSSClass(MFAsyncCallbackQueue.Standard, null, ref classNameSize);
+            hr = m_workQueueServices.GetPlaftormWorkQueueMMCSSClass((MFAsyncCallbackQueue)WORKQUEUE_ID, null, ref classNameSize);
             if (hr == MFError.MF_E_BUFFERTOOSMALL || hr == COMBase.E_Pointer)
             {
                 // GetPlaftormWorkQueueMMCSSClass is documented to accept NULL pointer for the pwszClass parameter but that's not true.
                 if (classNameSize == 0) classNameSize = 255;
 
                 StringBuilder classNameBuilder = new StringBuilder(classNameSize);
-                hr = m_workQueueServices.GetPlaftormWorkQueueMMCSSClass(MFAsyncCallbackQueue.Standard, classNameBuilder, ref classNameSize);
+                hr = m_workQueueServices.GetPlaftormWorkQueueMMCSSClass((MFAsyncCallbackQueue)WORKQUEUE_ID, classNameBuilder, ref classNameSize);
                 MFError.ThrowExceptionForHR(hr);
 
-                Debug.Assert(platformWorkQueueClassName.Equals(classNameBuilder.ToString()));
+                m_didit |= 2;
+                Debug.Assert(WORKQUEUE_MMCSS_CLASS.Equals(classNameBuilder.ToString()));
             }
 
             // ***** Get TaskID
             int taskID;
-            hr = m_workQueueServices.GetPlatformWorkQueueMMCSSTaskId(MFAsyncCallbackQueue.Standard, out taskID);
+            hr = m_workQueueServices.GetPlatformWorkQueueMMCSSTaskId((MFAsyncCallbackQueue)WORKQUEUE_ID, out taskID);
             MFError.ThrowExceptionForHR(hr);
+            m_didit |= 4;
 
             Debug.Assert(m_platformWorkQueueTaskId == taskID);
 
             // ***** Unregister Platform WorkQueue
-            hr = m_workQueueServices.BeginUnregisterPlatformWorkQueueWithMMCSS(MFAsyncCallbackQueue.Standard, this, new AsyncState("IMFWorkQueueServices.BeginUnregisterPlatformWorkQueueWithMMCSS"));
+            hr = m_workQueueServices.BeginUnregisterPlatformWorkQueueWithMMCSS((MFAsyncCallbackQueue)WORKQUEUE_ID, this, new AsyncState("IMFWorkQueueServices.BeginUnregisterPlatformWorkQueueWithMMCSS"));
             MFError.ThrowExceptionForHR(hr);
+
+            m_didit |= 8;
 
             // Wait for the end of the Async code (see Invoke method)
             bool unregisterDone = m_unregisterPlatformWorkQueue.WaitOne(TimeSpan.FromSeconds(5.0));
@@ -86,188 +168,255 @@ namespace Testv22
             hr = m_workQueueServices.BeginRegisterTopologyWorkQueuesWithMMCSS(this, new AsyncState("IMFWorkQueueServices.BeginRegisterTopologyWorkQueuesWithMMCSS"));
             MFError.ThrowExceptionForHR(hr);
 
+            m_didit |= 16;
+
             // Wait for the end of the Async code (see Invoke method)
             bool registerDone = m_registerTopologyWorkQueues.WaitOne(TimeSpan.FromSeconds(5.0));
             Debug.Assert(registerDone, "RegisterTopologyWorkQueuesWithMMCSS not done !");
 
+            // ***** Get Class Name
+            int classNameSize = 0;
+            hr = m_workQueueServices.GetTopologyWorkQueueMMCSSClass((MFAsyncCallbackQueue)WORKQUEUE_ID, null, ref classNameSize);
+            if (hr == MFError.MF_E_BUFFERTOOSMALL || hr == COMBase.E_Pointer)
+            {
+                // GetPlaftormWorkQueueMMCSSClass is documented to accept NULL pointer for the pwszClass parameter but that's not true.
+                if (classNameSize == 0) classNameSize = 255;
+
+                StringBuilder classNameBuilder = new StringBuilder(classNameSize);
+                hr = m_workQueueServices.GetPlaftormWorkQueueMMCSSClass((MFAsyncCallbackQueue)WORKQUEUE_ID, classNameBuilder, ref classNameSize);
+                MFError.ThrowExceptionForHR(hr);
+
+                m_didit |= 32;
+
+                Debug.Assert(WORKQUEUE_MMCSS_CLASS.Equals(classNameBuilder.ToString()));
+            }
+
+            // ***** Get TaskID
+            int taskID;
+            hr = m_workQueueServices.GetTopologyWorkQueueMMCSSTaskId((MFAsyncCallbackQueue)WORKQUEUE_ID, out taskID);
+            MFError.ThrowExceptionForHR(hr);
+
+            m_didit |= 64;
+
+            Debug.Assert(m_platformWorkQueueTaskId + 1 == taskID);
+
             hr = m_workQueueServices.BeginUnregisterTopologyWorkQueuesWithMMCSS(this, new AsyncState("IMFWorkQueueServices.BeginUnregisterTopologyWorkQueuesWithMMCSS"));
             MFError.ThrowExceptionForHR(hr);
+
+            m_didit |= 128;
 
             // Wait for the end of the Async code (see Invoke method)
             bool unregisterDone = m_registerTopologyWorkQueues.WaitOne(TimeSpan.FromSeconds(5.0));
             Debug.Assert(unregisterDone, "UnregisterTopologyWorkQueuesWithMMCSS not done !");
         }
-
-
-        private void GetInterface(string fileName)
+        private void AddSourceNode(
+            IMFTopology pTopology,           // Topology.
+            IMFMediaSource pSource,          // Media source.
+            IMFPresentationDescriptor pPD,   // Presentation descriptor.
+            IMFStreamDescriptor pSD,         // Stream descriptor.
+            out IMFTopologyNode ppNode)         // Receives the node pointer.
         {
-            IMFSourceResolver sourceResolver = null;
-            IMFMediaSource mediaSource = null;
-            IMFPresentationDescriptor pd = null; 
-            IMFTopology topology = null;
+            IMFTopologyNode pNode = null;
 
-            int hr;
-
-            // Create the Media Session.
-            hr = MFExtern.MFCreateMediaSession(null, out m_mediaSession);
+            int hr = S_Ok;
+            hr = MFExtern.MFCreateTopologyNode(MFTopologyType.SourcestreamNode, out pNode);
             MFError.ThrowExceptionForHR(hr);
 
-            // Create the Media Source from the Source Resolver
-            hr = MFExtern.MFCreateSourceResolver(out sourceResolver);
+            hr = pNode.SetUnknown(MFAttributesClsid.MF_TOPONODE_SOURCE, pSource);
             MFError.ThrowExceptionForHR(hr);
 
-            MFObjectType objectType = MFObjectType.Invalid;
-            object tmp;
-
-            hr = sourceResolver.CreateObjectFromURL(fileName, MFResolution.MediaSource, null, out objectType, out tmp);
+            hr = pNode.SetUnknown(MFAttributesClsid.MF_TOPONODE_PRESENTATION_DESCRIPTOR, pPD);
             MFError.ThrowExceptionForHR(hr);
 
-            mediaSource = (IMFMediaSource)tmp;
-
-            hr = mediaSource.CreatePresentationDescriptor(out pd);
+            hr = pNode.SetUnknown(MFAttributesClsid.MF_TOPONODE_STREAM_DESCRIPTOR, pSD);
             MFError.ThrowExceptionForHR(hr);
 
-            // Create the Topography from the Media Source
-            hr = MFExtern.MFCreateTopology(out topology);
+            // Need to test IMFWorkQueueServices
+            hr = pNode.SetUINT32(MFAttributesClsid.MF_TOPONODE_WORKQUEUE_ID, WORKQUEUE_ID);
             MFError.ThrowExceptionForHR(hr);
 
-            int descriptorCount;
-
-            hr = pd.GetStreamDescriptorCount(out descriptorCount);
+            hr = pNode.SetString(MFAttributesClsid.MF_TOPONODE_WORKQUEUE_MMCSS_CLASS, WORKQUEUE_MMCSS_CLASS);
             MFError.ThrowExceptionForHR(hr);
 
-            for (int i = 0; i < descriptorCount; i++)
+            hr = pTopology.AddNode(pNode);
+            MFError.ThrowExceptionForHR(hr);
+
+            // Return the pointer to the caller.
+            ppNode = pNode;
+            //(ppNode).AddRef();
+
+            //done:
+            //SafeRelease(pNode);
+        }
+
+        // Add an output node to a topology.
+        void AddOutputNode(
+            IMFTopology pTopology,     // Topology.
+            IMFActivate pActivate,     // Media sink activation object.
+            int dwId,                 // Identifier of the stream sink.
+            out IMFTopologyNode ppNode)   // Receives the node pointer.
+        {
+            IMFTopologyNode pNode = null;
+
+            int hr = S_Ok;
+            hr = MFExtern.MFCreateTopologyNode(MFTopologyType.OutputNode, out pNode);
+            MFError.ThrowExceptionForHR(hr);
+
+            hr = pNode.SetObject(pActivate);
+            MFError.ThrowExceptionForHR(hr);
+
+            hr = pNode.SetUINT32(MFAttributesClsid.MF_TOPONODE_STREAMID, dwId);
+            MFError.ThrowExceptionForHR(hr);
+
+            hr = pNode.SetUINT32(MFAttributesClsid.MF_TOPONODE_NOSHUTDOWN_ON_REMOVE, 0);
+            MFError.ThrowExceptionForHR(hr);
+
+            hr = pTopology.AddNode(pNode);
+            MFError.ThrowExceptionForHR(hr);
+
+            // Return the pointer to the caller.
+            ppNode = pNode;
+            //(ppNode).AddRef();
+
+            //done:
+            //SafeRelease(pNode);
+        }
+        private void CreateTopology(IMFMediaSource pSource, IMFActivate pSinkActivate, out IMFTopology ppTopo)
+        {
+            IMFTopology pTopology = null;
+            IMFPresentationDescriptor pPD = null;
+            IMFStreamDescriptor pSD = null;
+            IMFMediaTypeHandler pHandler = null;
+            IMFTopologyNode pNode1 = null;
+            IMFTopologyNode pNode2 = null;
+
+            int hr = S_Ok;
+            int cStreams = 0;
+
+            hr = MFExtern.MFCreateTopology(out pTopology);
+            MFError.ThrowExceptionForHR(hr);
+
+            hr = pSource.CreatePresentationDescriptor(out pPD);
+            MFError.ThrowExceptionForHR(hr);
+
+            hr = pPD.GetStreamDescriptorCount(out cStreams);
+            MFError.ThrowExceptionForHR(hr);
+
+            for (int i = 0; i < cStreams; i++)
             {
-                bool selected;
-                IMFStreamDescriptor sd;
+                // In this example, we look for audio streams and connect them to the sink.
 
-                hr = pd.GetStreamDescriptorByIndex(i, out selected, out sd);
+                bool fSelected = false;
+                Guid majorType;
+
+                hr = pPD.GetStreamDescriptorByIndex(i, out fSelected, out pSD);
                 MFError.ThrowExceptionForHR(hr);
 
-                if (selected)
+                hr = pSD.GetMediaTypeHandler(out pHandler);
+                MFError.ThrowExceptionForHR(hr);
+
+                hr = pHandler.GetMajorType(out majorType);
+                MFError.ThrowExceptionForHR(hr);
+
+
+                if (majorType == MFMediaType.Audio && fSelected)
                 {
-                    hr = AddSourceNode(topology, mediaSource, pd, sd);
+                    AddSourceNode(pTopology, pSource, pPD, pSD, out pNode1);
+                    AddOutputNode(pTopology, pSinkActivate, 0, out pNode2);
+
+                    hr = pNode1.ConnectOutput(0, pNode2, 0);
                     MFError.ThrowExceptionForHR(hr);
 
-                    hr = AddOutputNode(topology, sd);
-                    MFError.ThrowExceptionForHR(hr);
-                }
-            }
-
-            hr = m_mediaSession.BeginGetEvent(this, new AsyncState("IMFMediaSession.BeginGetEvent"));
-            MFError.ThrowExceptionForHR(hr);
-
-            hr = m_mediaSession.SetTopology(MFSessionSetTopologyFlags.Immediate, topology);
-            MFError.ThrowExceptionForHR(hr);
-
-            // Wait the arrival of the MF_TOPOSTATUS_READY status (see the Invoke method)
-            //m_topologyReady.WaitOne();
-
-            object service;
-
-            hr = (m_mediaSession as IMFGetService).GetService(MFServices.MF_WORKQUEUE_SERVICES, typeof(IMFWorkQueueServices).GUID, out service);
-            MFError.ThrowExceptionForHR(hr);
-
-            m_workQueueServices = (IMFWorkQueueServices)service;
-        }
-
-        private int AddSourceNode(IMFTopology topology, IMFMediaSource mediaSource, IMFPresentationDescriptor pd, IMFStreamDescriptor sd)
-        {
-            int hr = 0;
-            IMFTopologyNode topoNode = null;
-
-            do
-            {
-                hr = MFExtern.MFCreateTopologyNode(MFTopologyType.SourcestreamNode, out topoNode);
-                if (hr < 0) break;
-
-                hr = topoNode.SetUnknown(MFAttributesClsid.MF_TOPONODE_SOURCE, mediaSource);
-                if (hr < 0) break;
-
-                hr = topoNode.SetUnknown(MFAttributesClsid.MF_TOPONODE_PRESENTATION_DESCRIPTOR, pd);
-                if (hr < 0) break;
-
-                hr = topoNode.SetUnknown(MFAttributesClsid.MF_TOPONODE_STREAM_DESCRIPTOR, sd);
-                if (hr < 0) break;
-
-                // Need to test IMFWorkQueueServices
-                hr = topoNode.SetUINT32(MFAttributesClsid.MF_TOPONODE_WORKQUEUE_ID, WORKQUEUE_ID);
-                if (hr < 0) break;
-
-                hr = topoNode.SetString(MFAttributesClsid.MF_TOPONODE_WORKQUEUE_MMCSS_CLASS, WORKQUEUE_MMCSS_CLASS);
-                if (hr < 0) break;
-
-                hr = topology.AddNode(topoNode);
-                if (hr < 0) break;
-            }
-            while (false);
-
-            if (topoNode != null) Marshal.ReleaseComObject(topoNode);
-
-            return hr;
-        }
-
-        private int AddOutputNode(IMFTopology topology, IMFStreamDescriptor sd)
-        {
-            int hr = 0;
-            Guid majorType;
-            IMFMediaTypeHandler mediaTypeHandler = null;
-            IMFMediaSink mediaSink = null;
-            IMFTopologyNode topoNode = null;
-
-            do
-            {
-                hr = sd.GetMediaTypeHandler(out mediaTypeHandler);
-                if (hr < 0) break;
-
-                hr = mediaTypeHandler.GetMajorType(out majorType);
-                if (hr < 0) break;
-
-                if (majorType == MFMediaType.Audio)
-                {
-                    hr = MFExtern.MFCreateAudioRenderer(null, out mediaSink);
-                    if (hr < 0) break;
-                }
-                else if (majorType == MFMediaType.Video)
-                {
-                    object tmp;
-
-                    hr = MFExtern.MFCreateVideoRenderer(typeof(IMFMediaSink).GUID, out tmp);
-                    if (hr < 0) break;
-
-                    mediaSink = (IMFMediaSink)tmp;
+                    break;
                 }
                 else
                 {
-                    hr = COMBase.E_Fail;
-                    break;
+                    hr = pPD.DeselectStream(i);
+                    MFError.ThrowExceptionForHR(hr);
+
                 }
-
-                hr = MFExtern.MFCreateTopologyNode(MFTopologyType.OutputNode, out topoNode);
-                if (hr < 0) break;
-
-                hr = topoNode.SetObject(mediaSink);
-                if (hr < 0) break;
-
-                hr = topology.AddNode(topoNode);
-                if (hr < 0) break;
+                //SafeRelease(pSD);
+                //SafeRelease(pHandler);
             }
-            while (false);
 
-            if (mediaTypeHandler != null) Marshal.ReleaseComObject(mediaTypeHandler);
-            if (mediaSink != null) Marshal.ReleaseComObject(mediaSink);
-            if (topoNode != null) Marshal.ReleaseComObject(topoNode);
+            ppTopo = pTopology;
 
-            return hr;
+            //done:
+            ;
+            //SafeRelease(pTopology);
+            //SafeRelease(pNode1);
+            //SafeRelease(pNode2);
+            //SafeRelease(pPD);
+            //SafeRelease(pSD);
+            //SafeRelease(pHandler);
+            //return hr;
         }
 
-        #region IMFAsyncCallback Members
+        #region IMFClockStateSink methods
+
+        public int OnClockStart(long hnsSystemTime, long llClockStartOffset)
+        {
+            return S_Ok;
+        }
+
+        public int OnClockStop(long hnsSystemTime)
+        {
+            return S_Ok;
+        }
+
+        public int OnClockPause(long hnsSystemTime)
+        {
+            return S_Ok;
+        }
+
+        public int OnClockRestart(long hnsSystemTime)
+        {
+            return S_Ok;
+        }
+
+        public int OnClockSetRate(long hnsSystemTime, float flRate)
+        {
+            return S_Ok;
+        }
+
+        #endregion
+
+        #region IMFSampleGrabberSinkCallback
+
+        public int OnSetPresentationClock(IMFPresentationClock pPresentationClock)
+        {
+            if (pPresentationClock != null)
+            {
+                long t;
+                int hr;
+
+                hr = pPresentationClock.GetTime(out t);
+                MFError.ThrowExceptionForHR(hr);
+            }
+
+            return S_Ok;
+        }
+
+        public int OnProcessSample(Guid guidMajorMediaType, int dwSampleFlags, long llSampleTime, long llSampleDuration, IntPtr pSampleBuffer, int dwSampleSize)
+        {
+            return S_Ok;
+        }
+
+        public int OnShutdown()
+        {
+            return S_Ok;
+        }
+
+        #endregion
+
+        #region IMFAsyncCallback
 
         public int GetParameters(out MFASync pdwFlags, out MFAsyncCallbackQueue pdwQueue)
         {
-            pdwFlags = default(MFASync);
-            pdwQueue = default(MFAsyncCallbackQueue);
-            return COMBase.E_NotImplemented;
+            pdwFlags = MFASync.None;
+            pdwQueue = MFAsyncCallbackQueue.Undefined;
+
+            return E_NotImplemented;
         }
 
         public int Invoke(IMFAsyncResult pAsyncResult)
@@ -285,32 +434,6 @@ namespace Testv22
                 #region Code piece used by GetInterface()
                 if (asyncState.Token == "IMFMediaSession.BeginGetEvent")
                 {
-                    IMFMediaEvent mediaEvent;
-
-                    hr = m_mediaSession.EndGetEvent(pAsyncResult, out mediaEvent);
-                    if (hr < 0) break;
-
-                    int status;
-
-                    hr = mediaEvent.GetUINT32(MFAttributesClsid.MF_EVENT_TOPOLOGY_STATUS, out status);
-                    if (hr == 0)
-                    {
-                        if (((MFTopoStatus)status) == MFTopoStatus.Ready)
-                        {
-                            Marshal.ReleaseComObject(mediaEvent);
-
-                            m_topologyReady.Set();
-                            hr = 0;
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        Marshal.ReleaseComObject(mediaEvent);
-
-                        hr = m_mediaSession.BeginGetEvent(this, asyncState);
-                        if (hr < 0) break;
-                    }
                 }
                 #endregion
 
@@ -318,6 +441,9 @@ namespace Testv22
                 else if (asyncState.Token == "IMFWorkQueueServices.BeginRegisterPlatformWorkQueueWithMMCSS")
                 {
                     hr = m_workQueueServices.EndRegisterPlatformWorkQueueWithMMCSS(pAsyncResult, out m_platformWorkQueueTaskId);
+                    if (hr == 0)
+                        m_didit |= 256;
+
                     m_registerPlatformWorkQueue.Set();
                 }
                 #endregion
@@ -326,6 +452,8 @@ namespace Testv22
                 else if (asyncState.Token == "IMFWorkQueueServices.BeginUnregisterPlatformWorkQueueWithMMCSS")
                 {
                     hr = m_workQueueServices.EndUnregisterPlatformWorkQueueWithMMCSS(pAsyncResult);
+                    if (hr == 0)
+                        m_didit |= 512;
                     m_unregisterPlatformWorkQueue.Set();
                 }
                 #endregion
@@ -334,6 +462,8 @@ namespace Testv22
                 else if (asyncState.Token == "IMFWorkQueueServices.BeginRegisterTopologyWorkQueuesWithMMCSS")
                 {
                     hr = m_workQueueServices.EndRegisterTopologyWorkQueuesWithMMCSS(pAsyncResult);
+                    if (hr == 0)
+                        m_didit |= 1024;
                     m_registerTopologyWorkQueues.Set();
                 }
                 #endregion
@@ -342,6 +472,8 @@ namespace Testv22
                 else if (asyncState.Token == "IMFWorkQueueServices.BeginUnregisterTopologyWorkQueuesWithMMCSS")
                 {
                     hr = m_workQueueServices.EndUnregisterTopologyWorkQueuesWithMMCSS(pAsyncResult);
+                    if (hr == 0)
+                        m_didit |= 2048;
                     m_registerTopologyWorkQueues.Set();
                 }
                 #endregion
@@ -357,66 +489,6 @@ namespace Testv22
             Marshal.ReleaseComObject(pAsyncResult);
 
             return hr;
-        }
-
-        #endregion
-    }
-
-
-
-    [ComVisible(true)]
-    public class AsyncCallback : IMFAsyncCallback
-    {
-        private Func<IMFAsyncResult, int> m_invokeFunction;
-        private ManualResetEvent m_syncEvent = new ManualResetEvent(false);
-        private int m_hr;
-
-        public AsyncCallback(Func<IMFAsyncResult, int> invokeFunction)
-        {
-            m_invokeFunction = invokeFunction;
-        }
-
-        /// <summary>
-        /// Use to wait the finalization of the Invoke method.
-        /// </summary>
-        /// <returns>the HRESULT of the Invoke method.</returns>
-        public int WaitForFinalization()
-        {
-            return WaitForFinalization(TimeSpan.FromMilliseconds(int.MaxValue));
-        }
-
-        /// <summary>
-        /// Use to wait the finalization of the Invoke method.
-        /// </summary>
-        /// <param name="timeout">A maximum wait time before returning even if the Invoke method don't complete.</param>
-        /// <returns>the HRESULT if the Invoke method or -1 if the timeout has been reached.</returns>
-        public int WaitForFinalization(TimeSpan timeout)
-        {
-            if (m_syncEvent.WaitOne(timeout) == true)
-                return m_hr;
-            else
-                return -1;
-        }
-
-        #region IMFAsyncCallback Members
-
-        public int GetParameters(out MFASync pdwFlags, out MFAsyncCallbackQueue pdwQueue)
-        {
-            Debug.WriteLine("AsyncCallback.GetParameters");
-            pdwFlags = default(MFASync);
-            pdwQueue = default(MFAsyncCallbackQueue);
-            return COMBase.E_NotImplemented;
-        }
-
-        public int Invoke(IMFAsyncResult pAsyncResult)
-        {
-            Debug.WriteLine("Entering AsyncCallback.Invoke");
-
-            m_hr = m_invokeFunction(pAsyncResult);
-            m_syncEvent.Set();
-
-            Debug.WriteLine(string.Format("Exiting AsyncCallback.Invoke (hr = 0x{0:X8})", m_hr));
-            return m_hr;
         }
 
         #endregion

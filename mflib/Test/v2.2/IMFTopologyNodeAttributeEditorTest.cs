@@ -81,59 +81,13 @@ namespace Testv22
             }
         }
 
-        int depth = 0;
-        void ShowNames(IMFAttributes ia)
-        {
-            int hr;
-
-            int c;
-            hr = ia.GetCount(out c);
-
-            PropVariant pv = new PropVariant();
-            Guid g;
-            for (int y = 0; y < c; y++)
-            {
-                hr = ia.GetItemByIndex(y, out g, pv);
-
-                for (int z = 0; z < depth; z++)
-                    Console.Write("   ");
-
-                if (pv.GetMFAttributeType() == MFAttributeType.IUnknown)
-                {
-                    Console.WriteLine(MFAttributesClsid.LookupName(g));
-
-                    IMFAttributes ia2 = pv.GetIUnknown() as IMFAttributes;
-                    if (ia2 != null)
-                    {
-                        depth++;
-                        ShowNames(ia2);
-                        depth--;
-                    }
-                }
-                else
-                {
-                    Console.WriteLine(string.Format("{0} ({1}): {2}", MFAttributesClsid.LookupName(g), pv.GetMFAttributeType(), pv.ToString()));
-                }
-            }
-        }
-
         // Create a media source from a URL.
         private void CreateMediaSource(string pszURL, out IMFMediaSource ppSource)
         {
             IMFSourceResolver pSourceResolver = null;
             object pSource;
 
-            IPropertyStore ps;
-
             int hr;
-            hr = MFExtern.CreatePropertyStore(out ps);
-            MFError.ThrowExceptionForHR(hr);
-
-            PropVariant pv = new PropVariant(this);
-            PropertyKey pk = new PropertyKey(MFProperties.MFNETSOURCE_SSLCERTIFICATE_MANAGER, 0);
-
-            hr = ps.SetValue(pk, pv);
-            MFError.ThrowExceptionForHR(hr);
 
             // Create the source resolver.
             hr = MFExtern.MFCreateSourceResolver(out pSourceResolver);
@@ -143,10 +97,10 @@ namespace Testv22
             hr = pSourceResolver.CreateObjectFromURL(
                 pszURL,
                 MFResolution.MediaSource,
-                ps, 
+                null, 
                 out ObjectType, 
                 out pSource);
-            MFError.ThrowExceptionForHR(hr); // 0x80092003
+            MFError.ThrowExceptionForHR(hr);
 
             ppSource = (IMFMediaSource)pSource;
 
@@ -203,77 +157,6 @@ namespace Testv22
             // Clean up.
             pSource.Shutdown();
             pSession.Shutdown();
-        }
-
-        private void CreateTopology(IMFMediaSource pSource, IMFActivate pSinkActivate, IMFTopology ppTopo)
-        {
-            IMFTopology pTopology = null;
-            IMFPresentationDescriptor pPD = null;
-            IMFStreamDescriptor pSD = null;
-            IMFMediaTypeHandler pHandler = null;
-            IMFTopologyNode pNode1 = null;
-            IMFTopologyNode pNode2 = null;
-
-            int hr = S_Ok;
-            int cStreams = 0;
-
-            hr = MFExtern.MFCreateTopology(out pTopology);
-            MFError.ThrowExceptionForHR(hr);
-
-            hr = pSource.CreatePresentationDescriptor(out pPD);
-            MFError.ThrowExceptionForHR(hr);
-
-            hr = pPD.GetStreamDescriptorCount(out cStreams);
-            MFError.ThrowExceptionForHR(hr);
-
-            for (int i = 0; i < cStreams; i++)
-            {
-                // In this example, we look for audio streams and connect them to the sink.
-
-                bool fSelected = false;
-                Guid majorType;
-
-                hr = pPD.GetStreamDescriptorByIndex(i, out fSelected, out pSD);
-                MFError.ThrowExceptionForHR(hr);
-
-                hr = pSD.GetMediaTypeHandler(out pHandler);
-                MFError.ThrowExceptionForHR(hr);
-
-                hr = pHandler.GetMajorType(out majorType);
-                MFError.ThrowExceptionForHR(hr);
-
-                if (majorType == MFMediaType.Audio && fSelected)
-                {
-                    AddSourceNode(pTopology, pSource, pPD, pSD, out pNode1);
-                    MFError.ThrowExceptionForHR(hr);
-
-                    AddOutputNode(pTopology, pSinkActivate, 0, out pNode2);
-                    MFError.ThrowExceptionForHR(hr);
-
-                    hr = pNode1.ConnectOutput(0, pNode2, 0);
-                    MFError.ThrowExceptionForHR(hr);
-
-                    break;
-                }
-                else
-                {
-                    hr = pPD.DeselectStream(i);
-                    MFError.ThrowExceptionForHR(hr);
-                }
-                //SafeRelease(pSD);
-                //SafeRelease(pHandler);
-            }
-
-            ppTopo = pTopology;
-            //(ppTopo).AddRef();
-
-            //done:
-            //SafeRelease(pTopology);
-            //SafeRelease(pNode1);
-            //SafeRelease(pNode2);
-            //SafeRelease(pPD);
-            //SafeRelease(pSD);
-            //SafeRelease(pHandler);
         }
 
         private void RunSession(IMFMediaSession pSession, IMFTopology pTopology)
@@ -486,6 +369,8 @@ namespace Testv22
 
         #endregion
 
+        #region IMFSampleGrabberSinkCallback
+
         public int OnSetPresentationClock(IMFPresentationClock pPresentationClock)
         {
             if (pPresentationClock != null)
@@ -512,58 +397,9 @@ namespace Testv22
             return S_Ok;
         }
 
-        public int GetClientCertificate(string pszUrl, out IntPtr ppbData, out int pcbData)
-        {
-            byte[] buff;
-            int l;
-            IntPtr t;
-#if false
-            //X509Certificate xc = new X509Certificate(@"c:\inetpub\client.p12.pfx", "a");
-            X509Certificate xc = new X509Certificate(@"c:\inetpub\tempClientcert.crt", "");
-            //X509Certificate xc = new X509Certificate(@"c:\inetpub\client.cer", "");
-            buff = xc.GetRawCertData();
-            l = buff.Length;
+        #endregion
 
-#else
-            //BinaryReader br = new BinaryReader(new FileStream(@"c:\inetpub\client.cer", FileMode.Open));
-            BinaryReader br = new BinaryReader(new FileStream(@"c:\inetpub\clientcertblob.txt", FileMode.Open));
-            l = (int)br.BaseStream.Length;
-
-            buff = new byte[l];
-            br.Read(buff, 0, l);
-#endif
-
-            t = Marshal.AllocCoTaskMem(l);
-            Marshal.Copy(buff, 0, t, l);
-
-            pcbData = l;
-            ppbData = t;
-
-            return S_Ok;
-        }
-
-        public int BeginGetClientCertificate(string pszUrl, IMFAsyncCallback pCallback, object pState)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int EndGetClientCertificate(IMFAsyncResult pResult, IntPtr ppbData, out int pcbData)
-        {
-            throw new NotImplementedException();
-        }
-
-        public int GetCertificatePolicy(string pszUrl, out bool pfOverrideAutomaticCheck, out bool pfClientCertificateAvailable)
-        {
-            pfOverrideAutomaticCheck = true;
-            pfClientCertificateAvailable = true;
-            return S_Ok;
-        }
-
-        public int OnServerCertificate(string pszUrl, IntPtr pbData, int cbData, out bool pfIsGood)
-        {
-            pfIsGood = true;
-            return S_Ok;
-        }
+        #region IMFAsyncCallback
 
         public int GetParameters(out MFASync pdwFlags, out MFAsyncCallbackQueue pdwQueue)
         {
@@ -574,5 +410,7 @@ namespace Testv22
         {
             throw new NotImplementedException();
         }
+
+        #endregion
     }
 }
