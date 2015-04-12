@@ -3545,41 +3545,41 @@ namespace MediaFoundation
         [PreserveSig]
         int BeginRegisterTopologyWorkQueuesWithMMCSS(
             [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
-            [MarshalAs(UnmanagedType.IUnknown)] object pState
+            [In, MarshalAs(UnmanagedType.IUnknown)] object pState
             );
 
         [PreserveSig]
         int EndRegisterTopologyWorkQueuesWithMMCSS(
-            IMFAsyncResult pResult
+            [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncResult pResult
             );
 
         [PreserveSig]
         int BeginUnregisterTopologyWorkQueuesWithMMCSS(
             [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
-            [MarshalAs(UnmanagedType.IUnknown)] object pState
+            [In, MarshalAs(UnmanagedType.IUnknown)] object pState
             );
 
         [PreserveSig]
         int EndUnregisterTopologyWorkQueuesWithMMCSS(
-            IMFAsyncResult pResult
+            [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncResult pResult
             );
 
         [PreserveSig]
         int GetTopologyWorkQueueMMCSSClass(
-            [In] int dwTopologyWorkQueueId,
-            [Out, MarshalAs(UnmanagedType.LPWStr)] string pwszClass,
+            [In] MFAsyncCallbackQueue dwTopologyWorkQueueId,
+            [In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszClass,
             [In, Out] ref int pcchClass
             );
 
         [PreserveSig]
         int GetTopologyWorkQueueMMCSSTaskId(
-            [In] int dwTopologyWorkQueueId,
+            [In] MFAsyncCallbackQueue dwTopologyWorkQueueId,
             out int pdwTaskId
             );
 
         [PreserveSig]
         int BeginRegisterPlatformWorkQueueWithMMCSS(
-            [In] int dwPlatformWorkQueue,
+            [In] MFAsyncCallbackQueue dwPlatformWorkQueue,
             [In, MarshalAs(UnmanagedType.LPWStr)] string wszClass,
             [In] int dwTaskId,
             [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
@@ -3594,7 +3594,7 @@ namespace MediaFoundation
 
         [PreserveSig]
         int BeginUnregisterPlatformWorkQueueWithMMCSS(
-            [In] int dwPlatformWorkQueue,
+            [In] MFAsyncCallbackQueue dwPlatformWorkQueue,
             [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
             [MarshalAs(UnmanagedType.IUnknown)] object pState
             );
@@ -3606,14 +3606,14 @@ namespace MediaFoundation
 
         [PreserveSig]
         int GetPlaftormWorkQueueMMCSSClass(
-            [In] int dwPlatformWorkQueueId,
-            [Out, MarshalAs(UnmanagedType.LPWStr)] string pwszClass,
+            [In] MFAsyncCallbackQueue dwPlatformWorkQueueId,
+            [In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszClass,
             [In, Out] ref int pcchClass
             );
 
         [PreserveSig]
         int GetPlatformWorkQueueMMCSSTaskId(
-            [In] int dwPlatformWorkQueueId,
+            [In] MFAsyncCallbackQueue dwPlatformWorkQueueId,
             out int pdwTaskId
             );
     }
