@@ -3567,7 +3567,7 @@ namespace MediaFoundation
         [PreserveSig]
         int GetTopologyWorkQueueMMCSSClass(
             [In] MFAsyncCallbackQueue dwTopologyWorkQueueId,
-            [In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszClass,
+            [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszClass,
             [In, Out] ref int pcchClass
             );
 
@@ -3607,7 +3607,7 @@ namespace MediaFoundation
         [PreserveSig]
         int GetPlaftormWorkQueueMMCSSClass(
             [In] MFAsyncCallbackQueue dwPlatformWorkQueueId,
-            [In, Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszClass,
+            [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszClass,
             [In, Out] ref int pcchClass
             );
 
