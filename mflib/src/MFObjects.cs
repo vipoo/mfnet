@@ -210,7 +210,7 @@ namespace MediaFoundation
         RT = 0x00000002,
         IO = 0x00000003,
         Timer = 0x00000004,
-        QueueMultiThreaded = 0x00000005,
+        MultiThreaded = 0x00000005,
         LongFunction = 0x00000007,
         PrivateMask = unchecked((int)0xFFFF0000),
         All = unchecked((int)0xFFFFFFFF)
