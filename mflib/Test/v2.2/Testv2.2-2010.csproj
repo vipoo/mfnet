@@ -89,6 +89,7 @@
     <Compile Include="IMFTrustedOutputTest.cs" />
     <Compile Include="IMFWorkQueueServicesTest.cs" />
     <Compile Include="RunTests.cs" />
+    <Compile Include="TestExterns.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="v2-2-Interfaces.htm" />
