@@ -196,24 +196,6 @@ namespace MediaFoundation.Transform
         public Guid guidSubtype;
     }
 
-    #endregion
-
-    #region Interfaces
-
-#if ALLOW_UNTESTED_INTERFACES
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    Guid("149c4d73-b4be-4f8d-8b87-079e926b6add")]
-    public interface IMFLocalMFTRegistration
-    {
-        [PreserveSig]
-        int RegisterMFTs(
-            [In, MarshalAs(UnmanagedType.LPArray)] MFT_REGISTRATION_INFO[] pMFTs,
-            int cMFTs
-        );
-    }
-
     [StructLayout(LayoutKind.Sequential), UnmanagedName("MFT_REGISTRATION_INFO")]
     public struct MFT_REGISTRATION_INFO
     {
@@ -228,7 +210,21 @@ namespace MediaFoundation.Transform
         public MFTRegisterTypeInfo[] pOutTypes;
     }
 
-#endif
+    #endregion
+
+    #region Interfaces
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("149c4d73-b4be-4f8d-8b87-079e926b6add")]
+    public interface IMFLocalMFTRegistration
+    {
+        [PreserveSig]
+        int RegisterMFTs(
+            [In, MarshalAs(UnmanagedType.LPArray)] MFT_REGISTRATION_INFO[] pMFTs,
+            int cMFTs
+        );
+    }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
     InterfaceType(ComInterfaceType.InterfaceIsIUnknown),

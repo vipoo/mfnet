@@ -34,20 +34,6 @@ namespace MediaFoundation
 
 #if ALLOW_UNTESTED_INTERFACES
 
-    [Flags, UnmanagedName("MFASF_MULTIPLEXERFLAGS")]
-    public enum MFASFMultiplexerFlags
-    {
-        None = 0,
-        AutoAdjustBitrate = 0x00000001
-    }
-
-    [StructLayout(LayoutKind.Sequential), UnmanagedName("ASF_MUX_STATISTICS")]
-    public struct ASFMuxStatistics
-    {
-        public int cFramesWritten;
-        public int cFramesDropped;
-    }
-
     [UnmanagedName("MFSINK_WMDRMACTION")]
     public enum MFSinkWMDRMAction
     {
@@ -101,11 +87,25 @@ namespace MediaFoundation
         WriteForLiveRead = 0x00000008
     }
 
+    [Flags, UnmanagedName("MFASF_MULTIPLEXERFLAGS")]
+    public enum MFASFMultiplexerFlags
+    {
+        None = 0,
+        AutoAdjustBitrate = 0x00000001
+    }
+
     [StructLayout(LayoutKind.Sequential), UnmanagedName("ASF_INDEX_IDENTIFIER")]
     public class ASFIndexIdentifier
     {
         public Guid guidIndexType;
         public short wStreamNumber;
+    }
+
+    [StructLayout(LayoutKind.Sequential), UnmanagedName("ASF_MUX_STATISTICS")]
+    public struct ASFMuxStatistics
+    {
+        public int cFramesWritten;
+        public int cFramesDropped;
     }
 
     public static class MFPKEY_ASFMEDIASINK
@@ -160,51 +160,6 @@ namespace MediaFoundation
         [PreserveSig]
         int Clone(
             out IMFASFStreamPrioritization ppIStreamPrioritization);
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    Guid("57BDD80A-9B38-4838-B737-C58F670D7D4F"),
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IMFASFMultiplexer
-    {
-        [PreserveSig]
-        int Initialize(
-            [In] IMFASFContentInfo pIContentInfo);
-
-        [PreserveSig]
-        int SetFlags(
-            [In] MFASFMultiplexerFlags dwFlags);
-
-        [PreserveSig]
-        int GetFlags(
-            out MFASFMultiplexerFlags pdwFlags);
-
-        [PreserveSig]
-        int ProcessSample(
-            [In] short wStreamNumber,
-            [In] IMFSample pISample,
-            [In] long hnsTimestampAdjust);
-
-        [PreserveSig]
-        int GetNextPacket(
-            out ASFStatusFlags pdwStatusFlags,
-            out IMFSample ppIPacket);
-
-        [PreserveSig]
-        int Flush();
-
-        [PreserveSig]
-        int End(
-            [In] IMFASFContentInfo pIContentInfo);
-
-        [PreserveSig]
-        int GetStatistics(
-            [In] short wStreamNumber,
-            out ASFMuxStatistics pMuxStats);
-
-        [PreserveSig]
-        int SetSyncTolerance(
-            [In] int msSyncTolerance);
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -1010,6 +965,51 @@ namespace MediaFoundation
         int GetCompletedIndex(
             [In] IMFMediaBuffer pIIndexBuffer,
             [In] long cbOffsetWithinIndex);
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    Guid("57BDD80A-9B38-4838-B737-C58F670D7D4F"),
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IMFASFMultiplexer
+    {
+        [PreserveSig]
+        int Initialize(
+            [In] IMFASFContentInfo pIContentInfo);
+
+        [PreserveSig]
+        int SetFlags(
+            [In] MFASFMultiplexerFlags dwFlags);
+
+        [PreserveSig]
+        int GetFlags(
+            out MFASFMultiplexerFlags pdwFlags);
+
+        [PreserveSig]
+        int ProcessSample(
+            [In] short wStreamNumber,
+            [In] IMFSample pISample,
+            [In] long hnsTimestampAdjust);
+
+        [PreserveSig]
+        int GetNextPacket(
+            out ASFStatusFlags pdwStatusFlags,
+            out IMFSample ppIPacket);
+
+        [PreserveSig]
+        int Flush();
+
+        [PreserveSig]
+        int End(
+            [In] IMFASFContentInfo pIContentInfo);
+
+        [PreserveSig]
+        int GetStatistics(
+            [In] short wStreamNumber,
+            out ASFMuxStatistics pMuxStats);
+
+        [PreserveSig]
+        int SetSyncTolerance(
+            [In] int msSyncTolerance);
     }
 
     #endregion

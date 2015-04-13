@@ -1471,16 +1471,6 @@ namespace MediaFoundation
         ATSC_HD720p = (ATSC_HD1080i + 1)
     }
 
-    [UnmanagedName("MFNETSOURCE_PROTOCOL_TYPE")]
-    public enum MFNetSourceProtocolType
-    {
-        Undefined,
-        Http,
-        Rtsp,
-        File,
-        MultiCast
-    }
-
     [UnmanagedName("MFPolicyManagerAction")]
     public enum MFPolicyManagerAction
     {
@@ -1565,26 +1555,6 @@ namespace MediaFoundation
         MrfCrf444 = 1
     }
 
-    [StructLayout(LayoutKind.Sequential, Pack = 4), UnmanagedName("MF_LEAKY_BUCKET_PAIR")]
-    public class MF_LeakyBucketPair
-    {
-        public int dwBitrate;
-        public int msBufferWindow;
-    }
-
-    [StructLayout(LayoutKind.Sequential), UnmanagedName("MFBYTESTREAM_BUFFERING_PARAMS")]
-    public class MFByteStreamBufferingParams
-    {
-        public long cbTotalFileSize;
-        public long cbPlayableDataSize;
-        public MF_LeakyBucketPair[] prgBuckets;
-        public int cBuckets;
-        public long qwNetBufferingTime;
-        public long qwExtraBufferingTimeDuringSeek;
-        public long qwPlayDuration;
-        public float dRate;
-    }
-
     [StructLayout(LayoutKind.Sequential, Pack = 4), UnmanagedName("MFINPUTTRUSTAUTHORITY_ACCESS_PARAMS")]
     public struct MFInputTrustAuthorityAccessParams
     {
@@ -1605,42 +1575,6 @@ namespace MediaFoundation
         public MFPolicyManagerAction Action;
         public IntPtr pbTicket;
         public int cbTicket;
-    }
-
-    [StructLayout(LayoutKind.Sequential), UnmanagedName("MFNetCredentialManagerGetParam")]
-    public class MFNetCredentialManagerGetParam
-    {
-        public int hrOp;
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool fAllowLoggedOnUser;
-        [MarshalAs(UnmanagedType.Bool)]
-        public bool fClearTextPackage;
-        [MarshalAs(UnmanagedType.LPWStr)]
-        public string pszUrl;
-        [MarshalAs(UnmanagedType.LPWStr)]
-        public string pszSite;
-        [MarshalAs(UnmanagedType.LPWStr)]
-        public string pszRealm;
-        [MarshalAs(UnmanagedType.LPWStr)]
-        public string pszPackage;
-        public int nRetries;
-    }
-
-    [StructLayout(LayoutKind.Explicit, Pack = 8), UnmanagedName("MFTOPONODE_ATTRIBUTE_UPDATE")]
-    public struct MFTopoNodeAttributeUpdate
-    {
-        [FieldOffset(0)]
-        public long NodeId;
-        [FieldOffset(8)]
-        public Guid guidAttributeKey;
-        [FieldOffset(24)]
-        public MFAttributeType attrType;
-        [FieldOffset(32)]
-        public int u32;
-        [FieldOffset(32)]
-        public long u64;
-        [FieldOffset(32)]
-        public double d;
     }
 
     [StructLayout(LayoutKind.Sequential), UnmanagedName("MT_ARBITRARY_HEADER")]
@@ -2019,6 +1953,16 @@ namespace MediaFoundation
         AllowClearText = 0x00000004,
     }
 
+    [UnmanagedName("MFNETSOURCE_PROTOCOL_TYPE")]
+    public enum MFNetSourceProtocolType
+    {
+        Undefined,
+        Http,
+        Rtsp,
+        File,
+        MultiCast
+    }
+
     [StructLayout(LayoutKind.Sequential, Pack = 1), UnmanagedName("MFAYUVSample")]
     public struct MFAYUVSample
     {
@@ -2076,6 +2020,62 @@ namespace MediaFoundation
         public AM_MPEG2Level dwLevel;
         public AMMPEG2_Flags dwFlags;
         public int[] dwSequenceHeader;
+    }
+
+    [StructLayout(LayoutKind.Sequential), UnmanagedName("MFNetCredentialManagerGetParam")]
+    public class MFNetCredentialManagerGetParam
+    {
+        public int hrOp;
+        [MarshalAs(UnmanagedType.Bool)]
+        public bool fAllowLoggedOnUser;
+        [MarshalAs(UnmanagedType.Bool)]
+        public bool fClearTextPackage;
+        [MarshalAs(UnmanagedType.LPWStr)]
+        public string pszUrl;
+        [MarshalAs(UnmanagedType.LPWStr)]
+        public string pszSite;
+        [MarshalAs(UnmanagedType.LPWStr)]
+        public string pszRealm;
+        [MarshalAs(UnmanagedType.LPWStr)]
+        public string pszPackage;
+        public int nRetries;
+    }
+
+    [StructLayout(LayoutKind.Sequential), UnmanagedName("MFBYTESTREAM_BUFFERING_PARAMS")]
+    public class MFByteStreamBufferingParams
+    {
+        public long cbTotalFileSize;
+        public long cbPlayableDataSize;
+        public MF_LeakyBucketPair[] prgBuckets;
+        public int cBuckets;
+        public long qwNetBufferingTime;
+        public long qwExtraBufferingTimeDuringSeek;
+        public long qwPlayDuration;
+        public float dRate;
+    }
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4), UnmanagedName("MF_LEAKY_BUCKET_PAIR")]
+    public class MF_LeakyBucketPair
+    {
+        public int dwBitrate;
+        public int msBufferWindow;
+    }
+
+    [StructLayout(LayoutKind.Explicit, Pack = 8), UnmanagedName("MFTOPONODE_ATTRIBUTE_UPDATE")]
+    public struct MFTopoNodeAttributeUpdate
+    {
+        [FieldOffset(0)]
+        public long NodeId;
+        [FieldOffset(8)]
+        public Guid guidAttributeKey;
+        [FieldOffset(24)]
+        public MFAttributeType attrType;
+        [FieldOffset(32)]
+        public int u32;
+        [FieldOffset(32)]
+        public long u64;
+        [FieldOffset(32)]
+        public double d;
     }
 
     #endregion
@@ -2547,96 +2547,6 @@ namespace MediaFoundation
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    Guid("A0638C2B-6465-4395-9AE7-A321A9FD2856")]
-    public interface IMFAudioPolicy
-    {
-        [PreserveSig]
-        int SetGroupingParam(
-            [In, MarshalAs(UnmanagedType.LPStruct)] Guid rguidClass
-            );
-
-        [PreserveSig]
-        int GetGroupingParam(
-            out Guid pguidClass
-            );
-
-        [PreserveSig]
-        int SetDisplayName(
-            [In, MarshalAs(UnmanagedType.LPWStr)] string pszName
-            );
-
-        [PreserveSig]
-        int GetDisplayName(
-            [MarshalAs(UnmanagedType.LPWStr)] out string pszName
-            );
-
-        [PreserveSig]
-        int SetIconPath(
-            [In, MarshalAs(UnmanagedType.LPWStr)] string pszPath
-            );
-
-        [PreserveSig]
-        int GetIconPath(
-            [MarshalAs(UnmanagedType.LPWStr)] out string pszPath
-            );
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    Guid("76B1BBDB-4EC8-4F36-B106-70A9316DF593")]
-    public interface IMFAudioStreamVolume
-    {
-        [PreserveSig]
-        int GetChannelCount(
-            out int pdwCount
-            );
-
-        [PreserveSig]
-        int SetChannelVolume(
-            int dwIndex,
-            float fLevel
-            );
-
-        [PreserveSig]
-        int GetChannelVolume(
-            int dwIndex,
-            out float pfLevel
-            );
-
-        [PreserveSig]
-        int SetAllVolumes(
-            int dwCount,
-            [In, MarshalAs(UnmanagedType.LPArray)] float[] pfVolumes
-            );
-
-        [PreserveSig]
-        int GetAllVolumes(
-            int dwCount,
-            [Out, MarshalAs(UnmanagedType.LPArray)] float[] pfVolumes
-            );
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    Guid("6D66D782-1D4F-4DB7-8C63-CB8C77F1EF5E"),
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IMFByteStreamBuffering
-    {
-        [PreserveSig]
-        int SetBufferingParams(
-            [In] MFByteStreamBufferingParams pParams
-            );
-
-        [PreserveSig]
-        int EnableBuffering(
-            [MarshalAs(UnmanagedType.Bool)] bool fEnable
-            );
-
-        [PreserveSig]
-        int StopBuffering();
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
     Guid("D19F8E98-B126-4446-890C-5DCB7AD71453"),
     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IMFInputTrustAuthority
@@ -2674,17 +2584,6 @@ namespace MediaFoundation
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    Guid("5DFD4B2A-7674-4110-A4E6-8A68FD5F3688"),
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IMFMediaSinkPreroll
-    {
-        [PreserveSig]
-        int NotifyPreroll(
-            long hnsUpcomingStartTime
-            );
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
     Guid("0E1D600A-C9F3-442D-8C51-A42D2D49452F"),
     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IMFMediaSourcePresentationProvider
@@ -2692,81 +2591,6 @@ namespace MediaFoundation
         [PreserveSig]
         int ForceEndOfPresentation(
             [In, MarshalAs(UnmanagedType.Interface)] IMFPresentationDescriptor pPresentationDescriptor
-            );
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    Guid("5B87EF6B-7ED8-434F-BA0E-184FAC1628D1"),
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IMFNetCredentialManager
-    {
-        [PreserveSig]
-        int BeginGetCredentials(
-            [In] MFNetCredentialManagerGetParam pParam,
-            [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
-            [In, MarshalAs(UnmanagedType.IUnknown)] object pState
-            );
-
-        [PreserveSig]
-        int EndGetCredentials(
-            [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncResult pResult,
-            [MarshalAs(UnmanagedType.Interface)] out IMFNetCredential ppCred
-            );
-
-        [PreserveSig]
-        int SetGood(
-            [In, MarshalAs(UnmanagedType.Interface)] IMFNetCredential pCred,
-            [In, MarshalAs(UnmanagedType.Bool)] bool fGood
-            );
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    Guid("E9CD0384-A268-4BB4-82DE-658D53574D41"),
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IMFNetProxyLocatorFactory
-    {
-        [PreserveSig]
-        int CreateProxyLocator(
-            [In, MarshalAs(UnmanagedType.LPWStr)] string pszProtocol,
-            out IMFNetProxyLocator ppProxyLocator
-            );
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    Guid("7BE19E73-C9BF-468A-AC5A-A5E8653BEC87")]
-    public interface IMFNetSchemeHandlerConfig
-    {
-        [PreserveSig]
-        int GetNumberOfSupportedProtocols(
-            out int pcProtocols
-            );
-
-        [PreserveSig]
-        int GetSupportedProtocolType(
-            [In] int nProtocolIndex,
-            out MFNetSourceProtocolType pnProtocolType
-            );
-
-        [PreserveSig]
-        int ResetProtocolRolloverSettings();
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    Guid("09EF5BE3-C8A7-469E-8B70-73BF25BB193F"),
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IMFObjectReferenceStream
-    {
-        [PreserveSig]
-        int SaveReference(
-            [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
-            [In, MarshalAs(UnmanagedType.IUnknown)] object pUnk
-            );
-
-        [PreserveSig]
-        int LoadReference(
-            [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
-            [MarshalAs(UnmanagedType.Interface)] out object ppv
             );
     }
 
@@ -3205,96 +3029,6 @@ namespace MediaFoundation
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
     InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    Guid("6C4E655D-EAD8-4421-B6B9-54DCDBBDF820")]
-    public interface IMFPMPClient
-    {
-        [PreserveSig]
-        int SetPMPHost(
-            IMFPMPHost pPMPHost
-            );
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    Guid("F70CA1A9-FDC7-4782-B994-ADFFB1C98606"),
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IMFPMPHost
-    {
-        [PreserveSig]
-        int LockProcess();
-
-        [PreserveSig]
-        int UnlockProcess();
-
-        [PreserveSig]
-        int CreateObjectByCLSID(
-            [MarshalAs(UnmanagedType.LPStruct)] Guid clsid,
-            IStream pStream,
-            [MarshalAs(UnmanagedType.LPStruct)] Guid riid,
-            [MarshalAs(UnmanagedType.IUnknown)] out object ppv
-            );
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    Guid("8D009D86-5B9F-4115-B1FC-9F80D52AB8AB")]
-    public interface IMFQualityManager
-    {
-        [PreserveSig]
-        int NotifyTopology(
-            IMFTopology pTopology
-            );
-
-        [PreserveSig]
-        int NotifyPresentationClock(
-            IMFPresentationClock pClock
-            );
-
-        [PreserveSig]
-        int NotifyProcessInput(
-            IMFTopologyNode pNode,
-            int lInputIndex,
-            IMFSample pSample
-            );
-
-        [PreserveSig]
-        int NotifyProcessOutput(
-            IMFTopologyNode pNode,
-            int lOutputIndex,
-            IMFSample pSample
-            );
-
-        [PreserveSig]
-        int NotifyQualityEvent(
-            [In, MarshalAs(UnmanagedType.IUnknown)] object pObject,
-            IMFMediaEvent pEvent
-            );
-
-        [PreserveSig]
-        int Shutdown();
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    Guid("2347D60B-3FB5-480C-8803-8DF3ADCD3EF0")]
-    public interface IMFRealTimeClient
-    {
-        [PreserveSig]
-        int RegisterThreads(
-            [In] int dwTaskIndex,
-            [In, MarshalAs(UnmanagedType.LPWStr)] string wszClass
-            );
-
-        [PreserveSig]
-        int UnregisterThreads();
-
-        [PreserveSig]
-        int SetWorkQueue(
-            [In] MFAsyncCallbackQueue dwWorkQueueId
-            );
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
     Guid("994E23AD-1CC2-493C-B9FA-46F1CB040FA4")]
     public interface IMFRemoteProxy
     {
@@ -3308,32 +3042,6 @@ namespace MediaFoundation
         int GetRemoteHost(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
             [MarshalAs(UnmanagedType.Interface)] out object ppv
-            );
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    Guid("A7E025DD-5303-4A62-89D6-E747E1EFAC73"),
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IMFSAMIStyle
-    {
-        [PreserveSig]
-        int GetStyleCount(
-            out int pdwCount
-            );
-
-        [PreserveSig]
-        int GetStyles(
-            [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant pPropVarStyleArray
-            );
-
-        [PreserveSig]
-        int SetSelectedStyle(
-            [In, MarshalAs(UnmanagedType.LPWStr)] string pwszStyle
-            );
-
-        [PreserveSig]
-        int GetSelectedStyle(
-            [MarshalAs(UnmanagedType.LPWStr)] out string ppwszStyle
             );
     }
 
@@ -3375,60 +3083,6 @@ namespace MediaFoundation
             [In] int dwInputId,
             [In] ref byte pbSeed,
             [In] int cbSeed
-            );
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    Guid("E9931663-80BF-4C6E-98AF-5DCF58747D1F")]
-    public interface IMFSaveJob
-    {
-        [PreserveSig]
-        int BeginSave(
-            [In] IMFByteStream pStream,
-            [In] IMFAsyncCallback pCallback,
-            [In, MarshalAs(UnmanagedType.IUnknown)] object pState
-            );
-
-        [PreserveSig]
-        int EndSave(
-            [In] IMFAsyncResult pResult
-            );
-
-        [PreserveSig]
-        int CancelSave();
-
-        [PreserveSig]
-        int GetProgress(
-            out int pdwPercentComplete
-            );
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    Guid("6D4C7B74-52A0-4BB7-B0DB-55F29F47A668")]
-    public interface IMFSchemeHandler
-    {
-        [PreserveSig]
-        int BeginCreateObject(
-            [In, MarshalAs(UnmanagedType.LPWStr)] string pwszURL,
-            [In] MFResolution dwFlags,
-            IPropertyStore pProps,
-            [MarshalAs(UnmanagedType.IUnknown)] out object ppIUnknownCancelCookie,
-            IMFAsyncCallback pCallback,
-            [In, MarshalAs(UnmanagedType.IUnknown)] object pUnkState
-            );
-
-        [PreserveSig]
-        int EndCreateObject(
-            IMFAsyncResult pResult,
-            out MFObjectType pObjectType,
-            [MarshalAs(UnmanagedType.IUnknown)] out object ppObject
-            );
-
-        [PreserveSig]
-        int CancelObjectCreation(
-            [MarshalAs(UnmanagedType.IUnknown)] object pIUnknownCancelCookie
             );
     }
 
@@ -3478,32 +3132,6 @@ namespace MediaFoundation
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
     InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    Guid("DE9A6157-F660-4643-B56A-DF9F7998C7CD")]
-    public interface IMFTopoLoader
-    {
-        [PreserveSig]
-        int Load(
-            [In, MarshalAs(UnmanagedType.Interface)] IMFTopology pInputTopo,
-            [MarshalAs(UnmanagedType.Interface)] out IMFTopology ppOutputTopo,
-            [In, MarshalAs(UnmanagedType.Interface)] IMFTopology pCurrentTopo
-            );
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    Guid("676AA6DD-238A-410D-BB99-65668D01605A"),
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IMFTopologyNodeAttributeEditor
-    {
-        [PreserveSig]
-        int UpdateNodeAttributes(
-            [In] long TopoId,
-            [In] int cUpdates,
-            [In, MarshalAs(UnmanagedType.LPArray)] MFTopoNodeAttributeUpdate[] pUpdates
-            );
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
     Guid("542612C4-A1B8-4632-B521-DE11EA64A0B0")]
     public interface IMFTrustedInput
     {
@@ -3534,87 +3162,6 @@ namespace MediaFoundation
         [PreserveSig]
         int IsFinal(
             [MarshalAs(UnmanagedType.Bool)] out bool pfIsFinal
-            );
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    Guid("35FE1BB8-A3A9-40FE-BBEC-EB569C9CCCA3"),
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IMFWorkQueueServices
-    {
-        [PreserveSig]
-        int BeginRegisterTopologyWorkQueuesWithMMCSS(
-            [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
-            [In, MarshalAs(UnmanagedType.IUnknown)] object pState
-            );
-
-        [PreserveSig]
-        int EndRegisterTopologyWorkQueuesWithMMCSS(
-            [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncResult pResult
-            );
-
-        [PreserveSig]
-        int BeginUnregisterTopologyWorkQueuesWithMMCSS(
-            [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
-            [In, MarshalAs(UnmanagedType.IUnknown)] object pState
-            );
-
-        [PreserveSig]
-        int EndUnregisterTopologyWorkQueuesWithMMCSS(
-            [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncResult pResult
-            );
-
-        [PreserveSig]
-        int GetTopologyWorkQueueMMCSSClass(
-            [In] MFAsyncCallbackQueue dwTopologyWorkQueueId,
-            [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszClass,
-            [In, Out] ref int pcchClass
-            );
-
-        [PreserveSig]
-        int GetTopologyWorkQueueMMCSSTaskId(
-            [In] MFAsyncCallbackQueue dwTopologyWorkQueueId,
-            out int pdwTaskId
-            );
-
-        [PreserveSig]
-        int BeginRegisterPlatformWorkQueueWithMMCSS(
-            [In] MFAsyncCallbackQueue dwPlatformWorkQueue,
-            [In, MarshalAs(UnmanagedType.LPWStr)] string wszClass,
-            [In] int dwTaskId,
-            [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
-            [MarshalAs(UnmanagedType.IUnknown)] object pState
-            );
-
-        [PreserveSig]
-        int EndRegisterPlatformWorkQueueWithMMCSS(
-            IMFAsyncResult pResult,
-            out int pdwTaskId
-            );
-
-        [PreserveSig]
-        int BeginUnregisterPlatformWorkQueueWithMMCSS(
-            [In] MFAsyncCallbackQueue dwPlatformWorkQueue,
-            [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
-            [MarshalAs(UnmanagedType.IUnknown)] object pState
-            );
-
-        [PreserveSig]
-        int EndUnregisterPlatformWorkQueueWithMMCSS(
-            IMFAsyncResult pResult
-            );
-
-        [PreserveSig]
-        int GetPlaftormWorkQueueMMCSSClass(
-            [In] MFAsyncCallbackQueue dwPlatformWorkQueueId,
-            [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszClass,
-            [In, Out] ref int pcchClass
-            );
-
-        [PreserveSig]
-        int GetPlatformWorkQueueMMCSSTaskId(
-            [In] MFAsyncCallbackQueue dwPlatformWorkQueueId,
-            out int pdwTaskId
             );
     }
 
@@ -6291,6 +5838,459 @@ namespace MediaFoundation
         [PreserveSig]
         int LoggedOnUser(
             [MarshalAs(UnmanagedType.Bool)] out bool pfLoggedOnUser
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    Guid("E9CD0384-A268-4BB4-82DE-658D53574D41"),
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IMFNetProxyLocatorFactory
+    {
+        [PreserveSig]
+        int CreateProxyLocator(
+            [In, MarshalAs(UnmanagedType.LPWStr)] string pszProtocol,
+            out IMFNetProxyLocator ppProxyLocator
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    Guid("F70CA1A9-FDC7-4782-B994-ADFFB1C98606"),
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IMFPMPHost
+    {
+        [PreserveSig]
+        int LockProcess();
+
+        [PreserveSig]
+        int UnlockProcess();
+
+        [PreserveSig]
+        int CreateObjectByCLSID(
+            [MarshalAs(UnmanagedType.LPStruct)] Guid clsid,
+            IStream pStream,
+            [MarshalAs(UnmanagedType.LPStruct)] Guid riid,
+            [MarshalAs(UnmanagedType.IUnknown)] out object ppv
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    Guid("5B87EF6B-7ED8-434F-BA0E-184FAC1628D1"),
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IMFNetCredentialManager
+    {
+        [PreserveSig]
+        int BeginGetCredentials(
+            [In] MFNetCredentialManagerGetParam pParam,
+            [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
+            [In, MarshalAs(UnmanagedType.IUnknown)] object pState
+            );
+
+        [PreserveSig]
+        int EndGetCredentials(
+            [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncResult pResult,
+            [MarshalAs(UnmanagedType.Interface)] out IMFNetCredential ppCred
+            );
+
+        [PreserveSig]
+        int SetGood(
+            [In, MarshalAs(UnmanagedType.Interface)] IMFNetCredential pCred,
+            [In, MarshalAs(UnmanagedType.Bool)] bool fGood
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    Guid("5DFD4B2A-7674-4110-A4E6-8A68FD5F3688"),
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IMFMediaSinkPreroll
+    {
+        [PreserveSig]
+        int NotifyPreroll(
+            long hnsUpcomingStartTime
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("E9931663-80BF-4C6E-98AF-5DCF58747D1F")]
+    public interface IMFSaveJob
+    {
+        [PreserveSig]
+        int BeginSave(
+            [In] IMFByteStream pStream,
+            [In] IMFAsyncCallback pCallback,
+            [In, MarshalAs(UnmanagedType.IUnknown)] object pState
+            );
+
+        [PreserveSig]
+        int EndSave(
+            [In] IMFAsyncResult pResult
+            );
+
+        [PreserveSig]
+        int CancelSave();
+
+        [PreserveSig]
+        int GetProgress(
+            out int pdwPercentComplete
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("76B1BBDB-4EC8-4F36-B106-70A9316DF593")]
+    public interface IMFAudioStreamVolume
+    {
+        [PreserveSig]
+        int GetChannelCount(
+            out int pdwCount
+            );
+
+        [PreserveSig]
+        int SetChannelVolume(
+            int dwIndex,
+            float fLevel
+            );
+
+        [PreserveSig]
+        int GetChannelVolume(
+            int dwIndex,
+            out float pfLevel
+            );
+
+        [PreserveSig]
+        int SetAllVolumes(
+            int dwCount,
+            [In, MarshalAs(UnmanagedType.LPArray)] float[] pfVolumes
+            );
+
+        [PreserveSig]
+        int GetAllVolumes(
+            int dwCount,
+            [Out, MarshalAs(UnmanagedType.LPArray)] float[] pfVolumes
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("A0638C2B-6465-4395-9AE7-A321A9FD2856")]
+    public interface IMFAudioPolicy
+    {
+        [PreserveSig]
+        int SetGroupingParam(
+            [In, MarshalAs(UnmanagedType.LPStruct)] Guid rguidClass
+            );
+
+        [PreserveSig]
+        int GetGroupingParam(
+            out Guid pguidClass
+            );
+
+        [PreserveSig]
+        int SetDisplayName(
+            [In, MarshalAs(UnmanagedType.LPWStr)] string pszName
+            );
+
+        [PreserveSig]
+        int GetDisplayName(
+            [MarshalAs(UnmanagedType.LPWStr)] out string pszName
+            );
+
+        [PreserveSig]
+        int SetIconPath(
+            [In, MarshalAs(UnmanagedType.LPWStr)] string pszPath
+            );
+
+        [PreserveSig]
+        int GetIconPath(
+            [MarshalAs(UnmanagedType.LPWStr)] out string pszPath
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    Guid("6D66D782-1D4F-4DB7-8C63-CB8C77F1EF5E"),
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IMFByteStreamBuffering
+    {
+        [PreserveSig]
+        int SetBufferingParams(
+            [In] MFByteStreamBufferingParams pParams
+            );
+
+        [PreserveSig]
+        int EnableBuffering(
+            [MarshalAs(UnmanagedType.Bool)] bool fEnable
+            );
+
+        [PreserveSig]
+        int StopBuffering();
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("6D4C7B74-52A0-4BB7-B0DB-55F29F47A668")]
+    public interface IMFSchemeHandler
+    {
+        [PreserveSig]
+        int BeginCreateObject(
+            [In, MarshalAs(UnmanagedType.LPWStr)] string pwszURL,
+            [In] MFResolution dwFlags,
+            IPropertyStore pProps,
+            [MarshalAs(UnmanagedType.IUnknown)] out object ppIUnknownCancelCookie,
+            IMFAsyncCallback pCallback,
+            [In, MarshalAs(UnmanagedType.IUnknown)] object pUnkState
+            );
+
+        [PreserveSig]
+        int EndCreateObject(
+            IMFAsyncResult pResult,
+            out MFObjectType pObjectType,
+            [MarshalAs(UnmanagedType.IUnknown)] out object ppObject
+            );
+
+        [PreserveSig]
+        int CancelObjectCreation(
+            [MarshalAs(UnmanagedType.IUnknown)] object pIUnknownCancelCookie
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    Guid("35FE1BB8-A3A9-40FE-BBEC-EB569C9CCCA3"),
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IMFWorkQueueServices
+    {
+        [PreserveSig]
+        int BeginRegisterTopologyWorkQueuesWithMMCSS(
+            [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
+            [In, MarshalAs(UnmanagedType.IUnknown)] object pState
+            );
+
+        [PreserveSig]
+        int EndRegisterTopologyWorkQueuesWithMMCSS(
+            [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncResult pResult
+            );
+
+        [PreserveSig]
+        int BeginUnregisterTopologyWorkQueuesWithMMCSS(
+            [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
+            [In, MarshalAs(UnmanagedType.IUnknown)] object pState
+            );
+
+        [PreserveSig]
+        int EndUnregisterTopologyWorkQueuesWithMMCSS(
+            [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncResult pResult
+            );
+
+        [PreserveSig]
+        int GetTopologyWorkQueueMMCSSClass(
+            [In] MFAsyncCallbackQueue dwTopologyWorkQueueId,
+            [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszClass,
+            [In, Out] ref int pcchClass
+            );
+
+        [PreserveSig]
+        int GetTopologyWorkQueueMMCSSTaskId(
+            [In] MFAsyncCallbackQueue dwTopologyWorkQueueId,
+            out int pdwTaskId
+            );
+
+        [PreserveSig]
+        int BeginRegisterPlatformWorkQueueWithMMCSS(
+            [In] MFAsyncCallbackQueue dwPlatformWorkQueue,
+            [In, MarshalAs(UnmanagedType.LPWStr)] string wszClass,
+            [In] int dwTaskId,
+            [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
+            [MarshalAs(UnmanagedType.IUnknown)] object pState
+            );
+
+        [PreserveSig]
+        int EndRegisterPlatformWorkQueueWithMMCSS(
+            IMFAsyncResult pResult,
+            out int pdwTaskId
+            );
+
+        [PreserveSig]
+        int BeginUnregisterPlatformWorkQueueWithMMCSS(
+            [In] MFAsyncCallbackQueue dwPlatformWorkQueue,
+            [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
+            [MarshalAs(UnmanagedType.IUnknown)] object pState
+            );
+
+        [PreserveSig]
+        int EndUnregisterPlatformWorkQueueWithMMCSS(
+            IMFAsyncResult pResult
+            );
+
+        [PreserveSig]
+        int GetPlaftormWorkQueueMMCSSClass(
+            [In] MFAsyncCallbackQueue dwPlatformWorkQueueId,
+            [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszClass,
+            [In, Out] ref int pcchClass
+            );
+
+        [PreserveSig]
+        int GetPlatformWorkQueueMMCSSTaskId(
+            [In] MFAsyncCallbackQueue dwPlatformWorkQueueId,
+            out int pdwTaskId
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    Guid("09EF5BE3-C8A7-469E-8B70-73BF25BB193F"),
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IMFObjectReferenceStream
+    {
+        [PreserveSig]
+        int SaveReference(
+            [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
+            [In, MarshalAs(UnmanagedType.IUnknown)] object pUnk
+            );
+
+        [PreserveSig]
+        int LoadReference(
+            [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
+            [MarshalAs(UnmanagedType.Interface)] out object ppv
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("2347D60B-3FB5-480C-8803-8DF3ADCD3EF0")]
+    public interface IMFRealTimeClient
+    {
+        [PreserveSig]
+        int RegisterThreads(
+            [In] int dwTaskIndex,
+            [In, MarshalAs(UnmanagedType.LPWStr)] string wszClass
+            );
+
+        [PreserveSig]
+        int UnregisterThreads();
+
+        [PreserveSig]
+        int SetWorkQueue(
+            [In] MFAsyncCallbackQueue dwWorkQueueId
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("8D009D86-5B9F-4115-B1FC-9F80D52AB8AB")]
+    public interface IMFQualityManager
+    {
+        [PreserveSig]
+        int NotifyTopology(
+            IMFTopology pTopology
+            );
+
+        [PreserveSig]
+        int NotifyPresentationClock(
+            IMFPresentationClock pClock
+            );
+
+        [PreserveSig]
+        int NotifyProcessInput(
+            IMFTopologyNode pNode,
+            int lInputIndex,
+            IMFSample pSample
+            );
+
+        [PreserveSig]
+        int NotifyProcessOutput(
+            IMFTopologyNode pNode,
+            int lOutputIndex,
+            IMFSample pSample
+            );
+
+        [PreserveSig]
+        int NotifyQualityEvent(
+            [In, MarshalAs(UnmanagedType.IUnknown)] object pObject,
+            IMFMediaEvent pEvent
+            );
+
+        [PreserveSig]
+        int Shutdown();
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("7BE19E73-C9BF-468A-AC5A-A5E8653BEC87")]
+    public interface IMFNetSchemeHandlerConfig
+    {
+        [PreserveSig]
+        int GetNumberOfSupportedProtocols(
+            out int pcProtocols
+            );
+
+        [PreserveSig]
+        int GetSupportedProtocolType(
+            [In] int nProtocolIndex,
+            out MFNetSourceProtocolType pnProtocolType
+            );
+
+        [PreserveSig]
+        int ResetProtocolRolloverSettings();
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    Guid("A7E025DD-5303-4A62-89D6-E747E1EFAC73"),
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IMFSAMIStyle
+    {
+        [PreserveSig]
+        int GetStyleCount(
+            out int pdwCount
+            );
+
+        [PreserveSig]
+        int GetStyles(
+            [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant pPropVarStyleArray
+            );
+
+        [PreserveSig]
+        int SetSelectedStyle(
+            [In, MarshalAs(UnmanagedType.LPWStr)] string pwszStyle
+            );
+
+        [PreserveSig]
+        int GetSelectedStyle(
+            [MarshalAs(UnmanagedType.LPWStr)] out string ppwszStyle
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("6C4E655D-EAD8-4421-B6B9-54DCDBBDF820")]
+    public interface IMFPMPClient
+    {
+        [PreserveSig]
+        int SetPMPHost(
+            IMFPMPHost pPMPHost
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    Guid("676AA6DD-238A-410D-BB99-65668D01605A"),
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IMFTopologyNodeAttributeEditor
+    {
+        [PreserveSig]
+        int UpdateNodeAttributes(
+            [In] long TopoId,
+            [In] int cUpdates,
+            [In, MarshalAs(UnmanagedType.LPArray)] MFTopoNodeAttributeUpdate[] pUpdates
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("DE9A6157-F660-4643-B56A-DF9F7998C7CD")]
+    public interface IMFTopoLoader
+    {
+        [PreserveSig]
+        int Load(
+            [In, MarshalAs(UnmanagedType.Interface)] IMFTopology pInputTopo,
+            [MarshalAs(UnmanagedType.Interface)] out IMFTopology ppOutputTopo,
+            [In, MarshalAs(UnmanagedType.Interface)] IMFTopology pCurrentTopo
             );
     }
 

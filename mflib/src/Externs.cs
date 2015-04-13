@@ -1272,15 +1272,6 @@ namespace MediaFoundation
             long cbIndexStartOffset,
             out IMFByteStream pIIndexByteStream);
 
-        public delegate void MFPERIODICCALLBACK([MarshalAs(UnmanagedType.IUnknown)] object asdf);
-
-        #endregion // v2.1
-
-#if ALLOW_UNTESTED_INTERFACES
-
-        #region Tested
-        // While these methods are tested, the interfaces they use are not
-
         [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFCreateTopoLoader(
             out IMFTopoLoader ppObj
@@ -1295,7 +1286,11 @@ namespace MediaFoundation
         public static extern int MFCreateASFMultiplexer(
             out IMFASFMultiplexer ppIMultiplexer);
 
-        #endregion
+        public delegate void MFPERIODICCALLBACK([MarshalAs(UnmanagedType.IUnknown)] object asdf);
+
+        #endregion // v2.1
+
+#if ALLOW_UNTESTED_INTERFACES
 
         #region W8
 
@@ -1574,11 +1569,7 @@ namespace MediaFoundation
 
         #region Untestable
 
-        [DllImport("mf.dll", CharSet = CharSet.Unicode, ExactSpelling = true), Obsolete("MS has deleted this method", true), SuppressUnmanagedCodeSecurity]
-        public static extern int MFSetWorkQueueClass(
-            int dwWorkQueueId,
-            [MarshalAs(UnmanagedType.LPWStr)] string szClass);
-
+        // No docs for 'verifier' and is OPM
         [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFGetMFTMerit(
             [MarshalAs(UnmanagedType.IUnknown)] object pMFT,
@@ -1587,9 +1578,12 @@ namespace MediaFoundation
             out int merit
         );
 
-        [DllImport("MFCaptureEngine.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
-        public static extern int MFCreateCaptureEngine(
-            out IMFCaptureEngine ppCaptureEngine
+        // No docs for 'verifier'
+        [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        public static extern int MFGetLocalId(
+            [In] IntPtr verifier,
+            [In] int size,
+            out IntPtr id
         );
 
         [DllImport("evr.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
@@ -1598,6 +1592,16 @@ namespace MediaFoundation
             [In, MarshalAs(UnmanagedType.IUnknown)] object punkSurface,
             [In, MarshalAs(UnmanagedType.Bool)] bool fBottomUpWhenLinear,
             out IMFMediaBuffer ppBuffer);
+
+        [DllImport("mf.dll", CharSet = CharSet.Unicode, ExactSpelling = true), Obsolete("MS has deleted this method", true), SuppressUnmanagedCodeSecurity]
+        public static extern int MFSetWorkQueueClass(
+            int dwWorkQueueId,
+            [MarshalAs(UnmanagedType.LPWStr)] string szClass);
+
+        [DllImport("MFCaptureEngine.dll", ExactSpelling = true), Obsolete("Not supported by MS", true), SuppressUnmanagedCodeSecurity]
+        public static extern int MFCreateCaptureEngine(
+            out IMFCaptureEngine ppCaptureEngine
+        );
 
         [DllImport("evr.dll", ExactSpelling = true), Obsolete("Not supported by MS", true), SuppressUnmanagedCodeSecurity]
         public static extern int MFInitVideoFormat(
@@ -1624,13 +1628,6 @@ namespace MediaFoundation
             MFVideoFormat pToFormat,
             int dwFromDXVA
             );
-
-        [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
-        public static extern int MFGetLocalId(
-            [In] IntPtr verifier,
-            [In] int size,
-            out IntPtr id
-        );
 
         [DllImport("evr.dll", ExactSpelling = true), Obsolete("Not implemented"), SuppressUnmanagedCodeSecurity]
         public static extern int MFCreateVideoMediaTypeFromBitMapInfoHeader(
