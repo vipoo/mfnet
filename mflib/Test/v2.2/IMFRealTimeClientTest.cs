@@ -327,11 +327,6 @@ namespace Testv22
 
     public class TestThing : COMBase, IMFTransform, IDisposable, IMFRealTimeClient
     {
-        private void TRACE(string s)
-        {
-            Debug.WriteLine(s);
-        }
-
         #region Member variables
 
         IMFSample m_pSample;                    // Input sample.
