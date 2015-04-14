@@ -25,6 +25,6 @@ this would be done as:
 After you build this sample, you will need to use this line (or one like it) to 
 register the MFT:
 
-	%windir%\Microsoft.NET\Framework\v2.0.50727\regasm /tlb /codebase MFT_Grayscale.dll
+	%windir%\Microsoft.NET\Framework\v4.0.30319\RegAsm.exe MFT_Grayscale.dll
 
 To invoke this MFT, use the PlaybackFx sample.

@@ -440,7 +440,7 @@ namespace MFT_Grayscale
                 {
                     CheckValidOutputStream(dwOutputStreamID);
 
-                    if (m_pInputType != null)
+                    if (m_pInputType != null && dwTypeIndex == 0)
                     {
                         ppType = m_pInputType;
                     }
