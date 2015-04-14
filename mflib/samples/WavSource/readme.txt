@@ -25,7 +25,7 @@ this would be done as:
 After you build this sample, you will need to use this line (or one like it) to 
 register the handler:
 
-	%windir%\Microsoft.NET\Framework\v2.0.50727\regasm /tlb /codebase WavSource.dll
+	%windir%\Microsoft.NET\Framework\v4.0.30319\RegAsm.exe WavSource.dll
 
 To invoke this handler, use the BasicPlayback sample to play a .wav file.
 
