@@ -1,4 +1,4 @@
-There are 224 interfaces listed for Media Foundation at 
+There are 234 interfaces listed for Media Foundation at 
 https://msdn.microsoft.com/en-us/library/windows/desktop/ms696268%28v=vs.85%29.aspx and 
 258 externs defined at https://msdn.microsoft.com/en-us/library/windows/desktop/ms696205%28v=vs.85%29.aspx
 
@@ -6,7 +6,7 @@ This doc describes the status of each of these.
 
 ===================================== Interfaces =====================================
 
-These 108 interfaces have been tested (10 of these are duplicates to deal with MF bugs)
+These 129 interfaces have been tested (11 of these are duplicates to deal with MF bugs)
 
 IEVRFilterConfig
 IEVRFilterConfigEx
@@ -16,6 +16,7 @@ IMF2DBuffer
 IMFActivate
 IMFASFContentInfo
 IMFASFIndexer
+IMFASFMultiplexer
 IMFASFMutualExclusion
 IMFASFProfile
 IMFASFSplitter
@@ -25,7 +26,10 @@ IMFAsyncCallback
 IMFAsyncResult
 IMFAttributes
 IMFAudioMediaType
+IMFAudioPolicy
+IMFAudioStreamVolume
 IMFByteStream
+IMFByteStreamBuffering
 IMFByteStreamCacheControl
 IMFByteStreamHandler
 IMFClock
@@ -40,6 +44,7 @@ IMFFinalizableMediaSink
 IMFFinalizableMediaSinkAlt
 IMFGetService
 IMFGetServiceAlt
+IMFLocalMFTRegistration
 IMFMediaBuffer
 IMFMediaEvent
 IMFMediaEventGenerator
@@ -49,6 +54,7 @@ IMFMediaEventQueueAlt
 IMFMediaSession
 IMFMediaSink
 IMFMediaSinkAlt
+IMFMediaSinkPreroll
 IMFMediaSource
 IMFMediaSourceAlt
 IMFMediaSourceTopologyProvider
@@ -60,11 +66,17 @@ IMFMetadata
 IMFMetadataProvider
 IMFNetCredential
 IMFNetCredentialCache
+IMFNetCredentialManager
 IMFNetProxyLocator
+IMFNetProxyLocatorFactory
+IMFNetSchemeHandlerConfig
+IMFObjectReferenceStream
 IMFPluginControl
 IMFPMediaItem
 IMFPMediaPlayer
 IMFPMediaPlayerCallback
+IMFPMPClient
+IMFPMPHost
 IMFPMPServer
 IMFPresentationClock
 IMFPresentationDescriptor
@@ -72,19 +84,25 @@ IMFPresentationTimeSource
 IMFQualityAdvise
 IMFQualityAdvise2
 IMFQualityAdviseLimits
+IMFQualityManager
 IMFRateControl
 IMFRateSupport
 IMFReadWriteClassFactory
+IMFRealTimeClient
 IMFRemoteDesktopPlugin
+IMFSAMIStyle
 IMFSample
 IMFSampleGrabberSinkCallback
 IMFSampleGrabberSinkCallback2
+IMFSaveJob
+IMFSchemeHandler
 IMFSequencerSource
 IMFShutdown
 IMFSinkWriter
 IMFSinkWriterCallback
 IMFSourceOpenMonitor
 IMFSourceReader
+IMFSourceReaderAsync
 IMFSourceReaderCallback
 IMFSourceResolver
 IMFStreamDescriptor
@@ -93,8 +111,10 @@ IMFStreamSink
 IMFStreamSinkAlt
 IMFTimecodeTranslate
 IMFTimer
+IMFTopoLoader
 IMFTopology
 IMFTopologyNode
+IMFTopologyNodeAttributeEditor
 IMFTopologyServiceLookup
 IMFTopologyServiceLookupAlt
 IMFTopologyServiceLookupClient
@@ -116,9 +136,9 @@ IMFVideoRenderer
 IMFVideoSampleAllocator
 IMFVideoSampleAllocatorCallback
 IMFVideoSampleAllocatorNotify
+IMFWorkQueueServices
 
 ------------------------------------------------------------------------------
-
 These 2 tested interfaces are not part of Media Foundation, but MF uses them so
 they are defined in the library.
 
@@ -126,16 +146,23 @@ IPropertyStore
 INamedPropertyStore
 
 ------------------------------------------------------------------------------
-These 56 interfaces are defined in the library, but have not yet been tested.
+These 68 interfaces are defined in the library, but have not yet been tested.
 
-IAdvancedMediaCapture
-IAdvancedMediaCaptureInitializationSettings
-IAdvancedMediaCaptureSettings
-IMF2DBuffer2
 IMFAsyncCallbackLogging
 IMFByteStreamCacheControl2
 IMFByteStreamProxyClassFactory
 IMFByteStreamTimeSeek
+IMFCaptureEngine
+IMFCaptureEngineClassFactory
+IMFCaptureEngineOnEventCallback
+IMFCaptureEngineOnSampleCallback
+IMFCapturePhotoSink
+IMFCapturePreviewSink
+IMFCaptureRecordSink
+IMFCaptureSink
+IMFCaptureSource
+IMFImageSharingEngine
+IMFImageSharingEngineClassFactory
 IMFMediaEngine
 IMFMediaEngineClassFactory
 IMFMediaEngineEx
@@ -144,6 +171,8 @@ IMFMediaEngineNotify
 IMFMediaEngineProtectedContent
 IMFMediaEngineSrcElements
 IMFMediaError
+IMFMediaSharingEngine
+IMFMediaSharingEngineClassFactory
 IMFMediaSourceEx
 IMFMediaTimeRange
 IMFNetResourceFilter
@@ -154,18 +183,21 @@ IMFProtectedEnvironmentAccess
 IMFRealTimeClientEx
 IMFSampleOutputStream
 IMFSeekInfo
+IMFSharingEngineClassFactory
 IMFSignedLibrary
+IMFSimpleAudioVolume
 IMFSinkWriterEx
 IMFSourceReaderEx
 IMFSystemId
 IMFVideoProcessorControl
 IMFVideoSampleAllocatorEx
 IMFWorkQueueServicesEx
+IPlayToControl
+IPlayToSourceClassFactory
 IMFBufferListNotify
 IMFCaptureEngineOnSampleCallback2
 IMFCaptureSink2
 IMFCdmSuspendNotify
-IMFDXGIDeviceManagerSource
 IMFMediaEngineClassFactory2
 IMFMediaEngineClassFactoryEx
 IMFMediaEngineEME
@@ -187,44 +219,39 @@ IPlayToControlWithCapabilities
 
 ------------------------------------------------------------------------------
 
-These 31 interfaces are defined in the library, but are deprecated, undocumented 
+These 33 interfaces are defined in the library, but are deprecated, undocumented 
 or otherwise untestable:
 
-IMFRemoteAsyncCallback
-IMFAudioPolicy
-IMFAudioStreamVolume
-IMFByteStreamBuffering
+IAdvancedMediaCapture
+IAdvancedMediaCaptureInitializationSettings
+IAdvancedMediaCaptureSettings
+IDirect3DDevice9Ex
+IDirect3DSurface9
+IDXVAHD_Device
+IDXVAHD_VideoProcessor
+IMF2DBuffer2
+IMFASFStreamPrioritization
 IMFDRMNetHelper
+IMFDXGIBuffer
+IMFDXGIDeviceManager
+IMFDXGIDeviceManagerSource
 IMFInputTrustAuthority
-IMFMediaSinkPreroll
 IMFMediaSourcePresentationProvider
-IMFNetCredentialManager
-IMFNetProxyLocatorFactory
-IMFNetSchemeHandlerConfig
-IMFObjectReferenceStream
 IMFOutputPolicy
 IMFOutputSchema
 IMFOutputTrustAuthority
-IMFPMPClient
-IMFPMPHost
-IMFRealTimeClient
+IMFRemoteAsyncCallback
 IMFRemoteProxy
-IMFSAMIStyle
 IMFSampleProtection
-IMFSaveJob
 IMFSecureChannel
-IMFSimpleAudioVolume
 IMFSSLCertificateManager
-IMFTopologyNodeAttributeEditor
 IMFTrustedInput
 IMFTrustedOutput
-IMFWorkQueueServices
-IMFASFStreamPrioritization
-IMFLocalMFTRegistration
+IOPMVideoOutput
 
 ------------------------------------------------------------------------------
 
-These 12 interfaces require work that is beyond the scope of this library and
+These 7 interfaces require work that is beyond the scope of this library and
 are not defined in the library:
 
 IDirect3DDeviceManager9
@@ -234,15 +261,10 @@ IDirectXVideoDecoderService
 IDirectXVideoMemoryConfiguration
 IDirectXVideoProcessor
 IDirectXVideoProcessorService
-IDXVAHD_Device
-IDXVAHD_VideoProcessor
-IMFDXGIBuffer
-IMFDXGIDeviceManager
-IOPMVideoOutput
 
 ====================== Externs ===========================
 
-These 180 externs are tested
+These 181 externs are tested
 
 CreateNamedPropertyStore
 CreatePropertyStore
@@ -352,6 +374,7 @@ MFEndRegisterWorkQueueWithMMCSS
 MFEndUnregisterWorkQueueWithMMCSS
 MFEnumDeviceSources
 MFFrameRateToAverageTimePerFrame
+MFGetAttribute2UINT32asUINT64
 MFGetAttributeDouble
 MFGetAttributeRatio
 MFGetAttributesAsBlob
@@ -388,6 +411,7 @@ MFllMulDiv
 MFLockPlatform
 MFLockWorkQueue
 MFPCreateMediaPlayer
+MFPERIODICCALLBACK
 MFPutWorkItem
 MFPutWorkItemEx
 MFRemovePeriodicCallback
@@ -396,6 +420,7 @@ MFScheduleWorkItem
 MFScheduleWorkItemEx
 MFSerializeAttributesToStream
 MFSerializePresentationDescriptor
+MFSetAttribute2UINT32asUINT64
 MFSetAttributeRatio
 MFSetAttributeSize
 MFShutdown
@@ -422,8 +447,6 @@ PackSize
 Unpack2UINT32AsUINT64
 UnpackRatio
 UnpackSize
-MFGetAttribute2UINT32asUINT64
-MFSetAttribute2UINT32asUINT64
 
 ------------------------------------------------------------------------------
 These 41 externs are defined in the library, but have not yet been tested.
@@ -471,9 +494,20 @@ MFCreateAVIMediaSink
 MFCreateWAVEMediaSink
 
 ------------------------------------------------------------------------------
-These 8 externs require work that is beyond the scope of this library and
-are not included in the library:
+These 37 externs won't be tested:
 
+MFCreateQualityManager
+MFSetWorkQueueClass
+MFHeapAlloc
+MFHeapFree
+MFConvertColorInfoFromDXVA
+MFConvertColorInfoToDXVA
+MFCreateCaptureEngine
+MFCreateMP3ByteStreamPlugin
+MFCreateURLFromPath
+MFCreateVideoMediaTypeFromBitMapInfoHeader
+MFInitVideoFormat
+MFInitVideoFormat_RGB
 DXVA2_Fixed32OpaqueAlpha
 DXVA2_Fixed32TransparentAlpha
 DXVA2CreateDirect3DDeviceManager9
@@ -482,18 +516,6 @@ DXVA2FixedToFloat
 DXVA2FloatToFixed
 DXVAHD_CreateDevice
 MFCreateDXSurfaceBuffer
-
-------------------------------------------------------------------------------
-
-These 28 externs are defined in the library, but are untestable:
-
-MFConvertColorInfoFromDXVA
-MFConvertColorInfoToDXVA
-MFCreateCaptureEngine
-MFCreateMP3ByteStreamPlugin
-MFCreateQualityManager
-MFCreateURLFromPath
-MFSetWorkQueueClass
 PDXVAHDSW_CreateDevice
 PDXVAHDSW_CreateVideoProcessor
 PDXVAHDSW_DestroyDevice
@@ -511,8 +533,3 @@ PDXVAHDSW_ProposeVideoPrivateFormat
 PDXVAHDSW_SetVideoProcessBltState
 PDXVAHDSW_SetVideoProcessStreamState
 PDXVAHDSW_VideoProcessBltHD
-MFCreateVideoMediaTypeFromBitMapInfoHeader
-MFHeapAlloc
-MFHeapFree
-MFInitVideoFormat
-MFInitVideoFormat_RGB

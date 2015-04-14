@@ -1,3 +1,23 @@
+v2.2 (2015-04-14)
+
+
+232 defined
+131 tested
+ 33 untestable
+
+Externs
+
+259 defined
+181 tested
+ 37 untestable
+
+See interfaces.txt for details.
+
+Also, it is now possible to get MSDN help for MFNet interfaces inside Visual 
+Studio. Run docs\insthelp.cmd to configure this features for VS2012, 2013 & 
+2015.
+
+-----------------------------------------------------------------
 v2.1 (2015-03-10)
 
 

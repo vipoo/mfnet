@@ -57,6 +57,12 @@ if "%found11%" == "Detected" call :InstallOne 2.0 11 VS2012
 if "%found12%" == "Detected" call :InstallOne 2.1 12 VS2013
 if "%found14%" == "Detected" call :InstallOne 2.2 14 VS2015
 
+echo.
+echo All configurations complete!
+
+rem Keep window open for 2 seconds
+choice /d y /t 2 > nul
+
 goto :eof
 
 rem %1 is MS Help version, %2 is VS version, %3 is VS Name
