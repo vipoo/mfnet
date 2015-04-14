@@ -62,10 +62,10 @@ code that has been translated to c#.
 It is a COM object, so it must be registered with REGASM.  In Visual Studio, this is done for
 you, otherwise use regasm from 
 
-   %windir%\Microsoft.NET\Framework\v2.0.50727\RegAsm.exe EVRPresenter.dll
+   %windir%\Microsoft.NET\Framework\v4.0.30319\RegAsm.exe EVRPresenter.dll
    
    64 bit:
-   %windir%\Microsoft.NET\Framework64\v2.0.50727\RegAsm.exe EVRPresenter.dll
+   %windir%\Microsoft.NET\Framework64\v4.0.30319\RegAsm.exe EVRPresenter.dll
 
 
 You may also need to run RegAsm /TLB against MediaFoundation.dll and/or DirectShowLib before 

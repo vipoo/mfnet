@@ -28,7 +28,7 @@ In practice, I find that this doesn't work on Vista due to the way they have
 mucked with security.  Instead, I use this command line from a cmd window opened 
 with "Run as administrator":
 
-c:\Windows\Microsoft.NET\Framework\v2.0.50727\regasm /tlb /codebase WavSink.dll
+%windir%\Microsoft.NET\Framework\v4.0.30319\RegAsm.exe WavSink.dll
 
 The way MF loads sinks seems strange (to me).  Look at this comment from the c++ code:
 
