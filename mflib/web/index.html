@@ -1,824 +1,891 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Media Foundation .NET</title>
+	<title>Media Foundation .NET</title>
 </head>
 <body>
-    <center>
-        <h1>
-            Media Foundation .Net</h1>
-    </center>
-    <br />
-    <p>
-        Purpose: The goal of this project is to allow programmers who create managed applications
-        to use the interfaces in Vista's/Windows 7 Media Foundation.&nbsp; If you are not a programmer,
-        or are not running on Vista (or Windows 7), there is nothing in this project that
-        you are going to find useful.</p>
-    <p>
-        If you have questions, comments, or just want to offer encouragement, post a message
-        to this project's forum at <a href="https://sourceforge.net/p/mfnet/discussion/711229/">
-            https://sourceforge.net/p/mfnet/discussion/711229/</a>.</p>
-    <p>
-        Downloads including samples, library, and the complete source code are at <a href="https://sourceforge.net/projects/mfnet/files/">
-            https://sourceforge.net/projects/mfnet/files/</a>.</p>
-    <p>
-        Related libraries can be found at:</p>
-    <ul style="list-style: none">
-        <li><a href="http://DirectShowNet.SourceForge.Net">DirectShow .NET</a></li>
-        <li><a href="http://WindowsMediaNet.SourceForge.Net">Windows Media Format .NET</a></li>
-    </ul>
-    <hr />
+	<center>
+		<h1>
+			Media Foundation .Net</h1>
+	</center>
+	<br />
 	<p>
-	<b>April 7 15, 2015</b>
-	</p>
-	<h2>Project Status</h2>
-	<p>Eric and I have made a second pass thru some of the interfaces I had previously skipped. This
-	should get us another 20 or so interfaces for v2.2.  That's probably the last of the pre Windows 8
-	interfaces that can be done (absent more input from MS).
-	</p>
-	<p>There is a new feature that I'm planning to include in v2.2 as well: Getting MSDN help for
-	MediaFoundation interfaces inside Visual Studio.  Currently if you press F1 on an MSDN interface
-	(IMFAttributes) or interface method (IMFAttributes.GetObject), you are taken to MSDN, which
-	informs you that MSDN has no help to offer for MediaFoundation.IMFAttributes.GetObject.  Since
-	that namespace is unique (-ish) to this project and is not defined by MS, it is no surprise that
-	MSDN has no help to offer.
-	</p>
-	<p>However, MS Help (which is what MSDN uses) has a way to redirect help for certain objects
-	to an alternate website.  This basically involves adding some registery keys.  I have also 
-	updated MFNet.SourceForge.Net so that when it receives one of these requests, it massages the
-	contents of the request, then redirects to MSDN.
-	</p>
-	<p>While this won't work for everything, it does work for most interfaces, interface methods,
-	classes, enums, and the methods on MFExtern.</p>
-	<p>One of the components here is a PHP script (to massage the url and redirect).  I am not an
-	expert at php, so while the script works, it could probably work better (faster, safer, etc).
-	If you are a php expert and would like to take a look
+		Purpose: The goal of this project is to allow programmers who create managed applications
+		to use the interfaces in Vista's/Windows 7 Media Foundation.&nbsp; If you are not
+		a programmer, or are not running on Vista (or Windows 7), there is nothing in this
+		project that you are going to find useful.</p>
 	<p>
-	<b>March 15, 2015</b>
+		If you have questions, comments, or just want to offer encouragement, post a message
+		to this project's forum at <a href="https://sourceforge.net/p/mfnet/discussion/711229/">
+			https://sourceforge.net/p/mfnet/discussion/711229/</a>.</p>
+	<p>
+		Downloads including samples, library, and the complete source code are at <a href="https://sourceforge.net/projects/mfnet/files/">
+			https://sourceforge.net/projects/mfnet/files/</a>.</p>
+	<p>
+		Related libraries can be found at:</p>
+	<ul style="list-style: none">
+		<li><a href="http://DirectShowNet.SourceForge.Net">DirectShow .NET</a></li>
+		<li><a href="http://WindowsMediaNet.SourceForge.Net">Windows Media Format .NET</a></li>
+	</ul>
+	<hr />
+	<p>
+		<b>April 19, 2015</b>
 	</p>
-	<h2>Project Status</h2>
-	<p>Thanks to the work by Eric, I'm pleased to announce the release of MFNet v2.1.  This 
-		release contains 28 more tested interfaces, and 105 more tested 
-	externs along with 3 new samples.  You can find the new zip files for the library and the samples in the 
-	<a href="https://sourceforge.net/projects/mfnet/files/">Files</a> area.  Also of note: The library has 
-		moved from framework version 2.0 to 3.5.</p>
-	<p>We are looking at what to work on next.&nbsp; Currently defined in the library
-		(but untested) are:</p>
-		<ul><li>33 Windows 8 interfaces</li><li>23 Windows 8.1 interfaces</li><li>47 interfaces that 
-		I have &quot;skipped.&quot;</li></ul>
-		<p>Of the skipped, some are because I couldn&#39;t figure out how to test them (like 
-		the IMFDRMNetHelper &amp; IMFSSLCertificateManager).&nbsp; Some are broken (like 
-		IMFSimpleAudioVolume).&nbsp; Some are described as &quot;Applications do not use or 
-		implement this interface.&quot;&nbsp; But there may be some useful ones here too.</p>
-	<p>If we don&#39;t find anything interesting among the skipped, we might jump 
-		straight to the W8 interfaces.&nbsp; If you have some specific interfaces you&#39;d like to 
-		see (especially if you are willing to help test them), post a message
-        to this project's forum at <a href="https://sourceforge.net/p/mfnet/discussion/711229/">
-            https://sourceforge.net/p/mfnet/discussion/711229/</a>.</p>
-	<p>I&#39;m also considering moving to Framework v4.&nbsp; While moving from 2.0 to 3.5 
-		was a big step forward, even 3.5 is getting kinda old.&nbsp; Feel free to share 
+	<h2>
+		Project Status</h2>
+	<p>
+		Version 2.2 is now available to download in the <a href="https://sourceforge.net/projects/mfnet/files/">
+			files</a> area.  In addition to upgrading to framework v4.0.3, this release 
+		moves an additional 20 
+			interfaces out of the untested section.  These interfaces are the last of the &lt;= Windows 7 interfaces and externs that can 
+			be tested.  The next release (3.0) will begin targeting the Windows 8 interfaces.
+	</p>
+	<p>v2.2 also includes a new feature: Support for getting F1 help on MFNet interfaces thru MSDN. 
+	To use this feature with VS2012 and up, run docs\insthelp.cmd.</p>
+	<p>
+		<b>April 7, 2015</b>
+	</p>
+	<h2>
+		Project Status</h2>
+	<p>
+		Eric and I are almost done making a second pass thru some of the interfaces I had
+		previously skipped. This should get us another ~20 interfaces for v2.2. That's probably
+		the last of the pre-Windows 8 interfaces that can be done (unless MS is willing
+		to <a href="https://social.msdn.microsoft.com/Forums/windowsdesktop/en-US/fecf98e7-021c-4d34-b6f0-e09c35398eec/imfsslcertificatemanager-gives-errors-0x80072ee2-0x80092003?forum=mediafoundationdevelopment">
+			step up</a> and provide more info about how MediaFoundation works).&nbsp; As
+		mentioned back in March, we are also moving from framework 3.5 to 4.0.3.&nbsp; While
+		moving to 3.5 was a big step forward from 2.0, 3.5 was still pretty old (2007).</p>
+	<p>
+		There is a new feature that I&#39;m planning to include in v2.2 as well: Getting
+		MSDN help for MFNet interfaces inside Visual Studio. Currently if you press F1 on
+		a MediaFoundation interface (like IMFAttributes) or interface method (such as IMFAttributes.GetItem),
+		you are taken to MSDN, which informs you that MSDN has no help to offer for MediaFoundation.IMFAttributes.GetItem.
+		Since that namespace is unique(-ish) to this project and is not defined by MS, it
+		is no surprise that MSDN has no help to offer. In fact, it becomes kind of 
+		irritating that it even tries.</p>
+	<p>
+		However, MS Help (which is what Visual Studio uses) has a way to redirect help for
+		certain objects to an alternate website via registery
+		keys. I have created a batch file to add the necessary keys to send the
+		request to http://MFNet.SourceForge.net, and I have updated MFNet.SourceForge.Net
+		to process and redirect the requests to MSDN.&nbsp; While this won't work for everything,
+		it does work for most interfaces, interface methods, structs, enums, and the methods
+		on MFExtern.</p>
+	<p>
+		One of the components of this feature is a PHP script (to redirect the url). I am not an expert at php, so while the script works, it could probably work
+		better (smaller, faster, safer, etc). If you are a php expert and have a minute
+		to look this over, the file is checked in to CVS at <a href="http://mfnet.cvs.sourceforge.net/viewvc/mfnet/mflib/web/index.php?view=markup">
+			http://mfnet.cvs.sourceforge.net/viewvc/mfnet/mflib/web/index.php?view=markupp</a>.
+		The batch file to add the registry keys is at <a href="http://mfnet.cvs.sourceforge.net/viewvc/mfnet/mflib/docs/insthelp.cmd?view=markup">
+			http://mfnet.cvs.sourceforge.net/viewvc/mfnet/mflib/docs/insthelp.cmd?view=markup</a>, 
+		and is expected to be included in the upcoming v2.2 release of the library.</p>
+	<p>
+		Looking ahead, the next set of interfaces are the ones from Windows 8.&nbsp; We&#39;ll
+		probably call that v3.0.&nbsp; There are 46 Windows 8 interfaces.&nbsp; That&#39;s
+		a lot.&nbsp; Instead of trying to do them all in one release, we may need to split
+		this up some.&nbsp; Unless we can get some people to help.&nbsp; If you are available
+		to write some c# test code using MediaFoundation in Windows 8, let <a href="https://sourceforge.net/u/snarfle/profile/send_message">
+			me</a> know.</p>
+	<p>
+		<b>March 15, 2015</b>
+	</p>
+	<h2>
+		Project Status</h2>
+	<p>
+		Thanks to the work by Eric, I'm pleased to announce the release of MFNet v2.1. This
+		release contains 28 more tested interfaces, and 105 more tested externs along with
+		3 new samples. You can find the new zip files for the library and the samples in
+		the <a href="https://sourceforge.net/projects/mfnet/files/">Files</a> area. Also
+		of note: The library has moved from framework version 2.0 to 3.5.</p>
+	<p>
+		We are looking at what to work on next.&nbsp; Currently defined in the library (but
+		untested) are:</p>
+	<ul>
+		<li>33 Windows 8 interfaces</li><li>23 Windows 8.1 interfaces</li><li>47 interfaces
+			that I have &quot;skipped.&quot;</li></ul>
+	<p>
+		Of the skipped, some are because I couldn&#39;t figure out how to test them (like
+		the IMFDRMNetHelper &amp; IMFSSLCertificateManager).&nbsp; Some are broken (like
+		IMFSimpleAudioVolume).&nbsp; Some are described as &quot;Applications do not use
+		or implement this interface.&quot;&nbsp; But there may be some useful ones here
+		too.</p>
+	<p>
+		If we don&#39;t find anything interesting among the skipped, we might jump straight
+		to the W8 interfaces.&nbsp; If you have some specific interfaces you&#39;d like
+		to see (especially if you are willing to help test them), post a message to this
+		project's forum at <a href="https://sourceforge.net/p/mfnet/discussion/711229/">https://sourceforge.net/p/mfnet/discussion/711229/</a>.</p>
+	<p>
+		I&#39;m also considering moving to Framework v4.&nbsp; While moving from 2.0 to
+		3.5 was a big step forward, even 3.5 is getting kinda old.&nbsp; Feel free to share
 		your thoughts on the forum.</p>
-	<p>FYI: As of today, we are just short of 20,000 downloads of the MFNet library.</p>
+	<p>
+		FYI: As of today, we are just short of 20,000 downloads of the MFNet library.</p>
 	</p>
 	<p>
-	<b>November 22, 2012</b>
+		<b>November 22, 2012</b>
 	</p>
-	<h2>Project Status</h2>
+	<h2>
+		Project Status</h2>
 	<p>
-I said back in March on the project's home page that I was seeking helpers for work on v2.1. While I heard back from a few people, most disappeared after just 1-2 emails. The amount of actual work provided by volunteers was disappointingly limited.</p>
-
-<p>I found this particularly frustrating, since there really wasn't that much work to be done and it doesn't require particularly advanced programmers to do it. Surely somewhere among the nearly 4,000 downloads since then, there must be at least some folks willing to donate some time.</p>
-
-<p>Still, I myself use a number of OS projects without volunteering to help on them, so I can't really fault people for not stepping up.</p>
-
-<p>But as a result, I am not (currently) planning on doing any more development work on MF.Net.</p>
-
-<p>I will continue to respond to posts in the forum that strike me as interesting, and if people report bugs, I may look at them too. We'll see.</p>
-
-<p>Will I ever do more work on this project? Maybe. But without at least one (and preferably more) committed volunteers to work on it with me, probably not.</p>
-
-<p>As of this posting, all the work I have done post v2.0 is checked into the <a href="http://mfnet.cvs.sourceforge.net/viewvc/mfnet/mflib/">project's CVS</a> under src and samples. I wanted to make sure none of it would be lost. This work includes a few updates beyond what is in the released downloads. In particular:</p>
-
-<ul>
-    <li>W8 definitions are included, but marked as ALLOW_UNTESTED_INTERFACES (because they aren't tested). See the docs for what this means.</li>
-    <li>A few new samples (MFCapture*).</li>
-    <li>A few bug fixes.</li>
-</ul>
-
-<p>I hope that having a centralized place that contains all the classes, structures, enums, and interfaces for Media Foundation is something you are finding useful, and that the samples give you some idea of how to get started with MF.Net. Remember that you have the complete source code to the project (all c#) and in a pinch can resolve any outstanding problems yourself.</p>
+		I said back in March on the project's home page that I was seeking helpers for work
+		on v2.1. While I heard back from a few people, most disappeared after just 1-2 emails.
+		The amount of actual work provided by volunteers was disappointingly limited.</p>
+	<p>
+		I found this particularly frustrating, since there really wasn't that much work
+		to be done and it doesn't require particularly advanced programmers to do it. Surely
+		somewhere among the nearly 4,000 downloads since then, there must be at least some
+		folks willing to donate some time.</p>
+	<p>
+		Still, I myself use a number of OS projects without volunteering to help on them,
+		so I can't really fault people for not stepping up.</p>
+	<p>
+		But as a result, I am not (currently) planning on doing any more development work
+		on MF.Net.</p>
+	<p>
+		I will continue to respond to posts in the forum that strike me as interesting,
+		and if people report bugs, I may look at them too. We'll see.</p>
+	<p>
+		Will I ever do more work on this project? Maybe. But without at least one (and preferably
+		more) committed volunteers to work on it with me, probably not.</p>
+	<p>
+		As of this posting, all the work I have done post v2.0 is checked into the <a href="http://mfnet.cvs.sourceforge.net/viewvc/mfnet/mflib/">
+			project's CVS</a> under src and samples. I wanted to make sure none of it would
+		be lost. This work includes a few updates beyond what is in the released downloads.
+		In particular:</p>
+	<ul>
+		<li>W8 definitions are included, but marked as ALLOW_UNTESTED_INTERFACES (because they
+			aren't tested). See the docs for what this means.</li>
+		<li>A few new samples (MFCapture*).</li>
+		<li>A few bug fixes.</li>
+	</ul>
+	<p>
+		I hope that having a centralized place that contains all the classes, structures,
+		enums, and interfaces for Media Foundation is something you are finding useful,
+		and that the samples give you some idea of how to get started with MF.Net. Remember
+		that you have the complete source code to the project (all c#) and in a pinch can
+		resolve any outstanding problems yourself.</p>
 	<br />
 	<p>
-	<b>March 9, 2012</b>
+		<b>March 9, 2012</b>
 	</p>
-	<h2>Looking for helpers for v2.1</h2>
+	<h2>
+		Looking for helpers for v2.1</h2>
 	<p>
-    If you are interested in offering to help with the release of v2.1, see the thread at 
-	<a href="https://sourceforge.net/projects/mfnet/forums/forum/711231/topic/5104305">https://sourceforge.net/projects/mfnet/forums/forum/711231/topic/5104305</a>.  If you don't have access to 
-	the Developers forum, send me an email at <a href="https://sourceforge.net/u/snarfle/profile/send_message">https://sourceforge.net/u/snarfle/profile/send_message</a>.
+		If you are interested in offering to help with the release of v2.1, see the thread
+		at <a href="https://sourceforge.net/projects/mfnet/forums/forum/711231/topic/5104305">
+			https://sourceforge.net/projects/mfnet/forums/forum/711231/topic/5104305</a>.
+		If you don't have access to the Developers forum, send me an email at <a href="https://sourceforge.net/u/snarfle/profile/send_message">
+			https://sourceforge.net/u/snarfle/profile/send_message</a>.
 	</p>
 	<br />
-    <p>
-        <b>March 7, 2012</b></p>
-    <p />
-    <h2>V2.0 finished</h2>
-    <p>
-	V2.0 has been released and is now ready for download in the <a href="https://sourceforge.net/projects/mfnet/files/">Files</a> area.
-    	Both the library and the samples have been updated, so make sure you grab the 
-		2.0 version of both.</p>
-	<br />
-    <p>
-        <b>March 1, 2012</b></p>
-    <p />
-    <h2>V2.0 nearing completion</h2>
-    <p>
-	Yes, it has been a while, but I've dusted off the files and am working to release v2.0.  
-	I have trimmed down the list of tasks I am trying to achieve for this release by removing #5 (see list below).
-	v2.1 will target these interfaces for testing.
-    </p>
 	<p>
-	If you are available to help review the beta, check out the thread in the forum (<a href="https://sourceforge.net/projects/mfnet/forums/forum/711229/topic/5056914">https://sourceforge.net/projects/mfnet/forums/forum/711229/topic/5056914</a>).  But hurry.&nbsp; 
-		The plan is to ship this on March 7th.
+		<b>March 7, 2012</b></p>
+	<p />
+	<h2>
+		V2.0 finished</h2>
+	<p>
+		V2.0 has been released and is now ready for download in the <a href="https://sourceforge.net/projects/mfnet/files/">
+			Files</a> area. Both the library and the samples have been updated, so make
+		sure you grab the 2.0 version of both.</p>
+	<br />
+	<p>
+		<b>March 1, 2012</b></p>
+	<p />
+	<h2>
+		V2.0 nearing completion</h2>
+	<p>
+		Yes, it has been a while, but I've dusted off the files and am working to release
+		v2.0. I have trimmed down the list of tasks I am trying to achieve for this release
+		by removing #5 (see list below). v2.1 will target these interfaces for testing.
+	</p>
+	<p>
+		If you are available to help review the beta, check out the thread in the forum
+		(<a href="https://sourceforge.net/projects/mfnet/forums/forum/711229/topic/5056914">https://sourceforge.net/projects/mfnet/forums/forum/711229/topic/5056914</a>).
+		But hurry.&nbsp; The plan is to ship this on March 7th.
 	</p>
 	<br />
-    <p>
-        <b>August 22, 2009</b></p>
-    <p />
-    <h2>V2.0 is in progress</h2>
-    <p>
-    There are several tasks I'm trying to accomplish for v2.0:
-    </p>
-    <ul>
-    <li>1) Add the W7 interfaces, structs enums, guids, etc to the library</li>
-    <li>2) Change from the exception model to an HRESULT model</li>
-    <li>3) Update the samples to work with HRESULTs</li>
-    <li>4) Update the docs</li>
-    <li>5) Determine which of the W7 interfaces to test and test them</li>
-    </ul>
-    <p>
-    As of today, the first two items on the list are done and checked in. The samples are 
-        probably next on the todo list.
-    If you have any preferences about which interfaces need to go on the list to be tested for v2.0, feel
-    free to share you thoughts in the forum at <a href="https://sourceforge.net/forum/message.php?msg_id=7578031">
-            https://sourceforge.net/forum/message.php?msg_id=7578031</a>.&nbsp; If you 
-        are willing to help create the tests for your chosen interface, that&#39;s going to 
-        push it to the top of the list.</p>
-    <br />
-    <p>
-        <b>June 10, 2009</b></p>
-    <p />
-    <h2>v1.1 of the library released!</h2>
-    <p>
-    In v1.1 I have tested all the Vista MF interfaces I intend to test.  Along with the updated library, 
-    I have also released an updated samples project which includes my EVRPresenter sample.  You can download both of them
-    in the Downloads area.</p>
-    <p>v2.0 (if and when there is such a thing), will include definitions of the new W7 interfaces.  MF only has 20 new 
-    interfaces in W7.  How hard can it be?
-    v2.0 will probably also use HRESULTS instead of exceptions (see discussion below).</p>
-    <p>Enjoy!</p>
-    <br />
-    <p>
-        <b>May 21, 2009</b></p>
-        <p />
-        <p>
-        I now have a working customer presenter for the EVR written in c#. Woo hoo!</p>
-    <p>
-        This was a huge project and there was some finicky work required. However, the question
-        now is, what do I do with it? It doesn't really fit as a sample for this project,
-        since it uses DirectShow. And it doesn't fit there cuz it uses MF. It's a little
-        small for its own project. And really, it's pretty complex to even be called a sample.</p>
-    <p>
-        Suggestions anyone?</p>
-    <br />
-    <p>
-        <b>May 20, 2009</b></p>
-    <p />
-    <p>
-        Thank you to all the people who responded to the &quot;Do you want another release?&quot;
-        thread. It always feels good to know people are using what I'm writing.</p>
-    <p>
-        Since there does appear to be some interest, I've decided to do at least one more
-        release, and possibly two.</p>
-    <p>
-        In the first release, I am going to attack the remaining Vista interfaces. I have
-        picked out the ones I intend to do and have already started creating tests for them.
-        This includes the last of the easy interfaces, and all of the remaining ones I find
-        to be interesting. If there is some particular interface you need, this would be
-        the time to mention it. Check out your docs\Interfaces.txt for the status of the
-        existing interfaces. If you need an interface enough to request it, be prepared
-        to help create the test for it.</p>
-    <p>
-        The second release will contain the W7 interfaces. Looks like they added about 20
-        interfaces. I don't have W7 installed, so I don't yet have a way to write any tests
-        for the new interfaces, but hopefully soon.</p>
-    <p>
-        And while we are talking about an update to the library, a new question has arisen.
-        There is a major difference between the way DSNet returns errors (uses an HRESULT),
-        and the way MFNet returns errors (throws exceptions). However, I'm considering changing
-        MF to be like DS.</p>
-    <p>
-        There are several reasons that throwing exceptions are better than returning HRESULTS:</p>
-    <ul>
-        <li>More c#-like</li>
-        <li>Easier to implement: since c# is based on exceptions, apps must already have try/catch
-            exception handling</li>
-        <li>Ensures that all method call returns get checked</li>
-        <li>Cleaner code, no &quot;if SUCCEEDED&quot; structures nested 5 deep</li>
-        <li>Existing MFNet apps are written this way</li>
-    </ul>
-    <p>
-        There are also reasons that using HRESULTS are better than exceptions:</p>
-    <ul>
-        <li>More consistent with DSNet. In an app that uses both, this gets very confusing.</li>
-        <li>More consistent with c++ docs</li>
-        <li>More consistent with existing c++ samples</li>
-        <li>Some methods in the current library already must use HRESULTS (since they return
-            important S_CODES). If people don't realize that these methods aren't throwing exceptions,
-            some error checking will be missed.</li>
-        <li>Throwing exceptions has much worse performance than returning HRESULTS. This can
-            be a real limitation during video processing.</li>
-    </ul>
-    <p>
-        As you can see, the benefits for exceptions are mostly cosmetic. The functional
-        items for HRESULTS are rather compelling.</p>
-    <p>
-        I hate to do it. I *like* the exception model, and I really appreciate the cleaner
-        code that results. But I'm definitely leaning that way. I just created a project
-        where the slow performance of many exceptions being thrown was a problem. So unless
-        someone can throw some weight on the &quot;exceptions&quot; side of the scale, that's
-        probably what I'll do.</p>
-    <p>
-        If you have any feedback on these subjects, feel free to start a thread over in
-        the forum.</p>
-    <p>
-        And if I'm going to do this and shatter backward compatibility, it makes sense to
-        do it now, before the big W7 rush of downloads (he dreams).</p>
-    <br />
-    <p>
-        <b>March 21, 2009</b></p>
-    <p>
-        So, here we are a year and a half later. I still haven't really heard any feedback
-        from anyone. To my surprise, there have been over 1,000 downloads of the library.
-        On the other hand, there have been less than 10 threads in the forum over the entire
-        lifetime of the project. I'm interpreting that to mean that while people are grabbing
-        a copy of the library in case they ever need it, very few people are actually using
-        it.
-    </p>
-    <p>
-        Looking forward, Microsoft has added a bunch of new interfaces to Windows 7 (<a href="http://msdn.microsoft.com/en-us/library/bb970511(VS.85).aspx">http://msdn.microsoft.com/en-us/library/bb970511(VS.85).aspx</a>).
-        They are designed to make MF much easier to use, as well as expanding the functionality.
-        Obviously these features will <i><b>only</b></i> work in W7 (and beyond).
-    </p>
-    <p>
-        So, the question is, does anyone think we need to add these definitions to this
-        library? Or is there just not enough interest in using Media Foundation from c#
-        to make it worth the effort?
-    </p>
-    <p>
-        Post your thoughts here: <a href="https://sourceforge.net/forum/message.php?msg_id=6903604">
-            https://sourceforge.net/forum/message.php?msg_id=6903604</a>.</p>
-    <br />
-    <p>
-        <b>September 23, 2007</b></p>
-    <p>
-        Well, I'm a little late, but it's not my fault!&nbsp; My (only) Vista box died on
-        me.&nbsp; Kinda hard to work on a project that only works on Vista if you don't
-        have any working Vista computers.&nbsp; I just got it back from HP on Friday.&nbsp;
-        I will say that it was a HUGE relief to go back to an operating system that doesn't
-        fight you at every turn for a few days.&nbsp; I may leave this Vista box on the
-        shelf and just use my XP box again.&nbsp; Except when I'm working on this project.</p>
-    <p>
-        In any case, I've done what I intended to do for v1.0.&nbsp; In fact, I've added
-        even more samples than I intended, so make sure you download both the updated lib,
-        and the updated samples.</p>
-    <p>
-        I know this release isn't going to be perfect, but until I hear from others, I don't
-        know what else to work on.&nbsp; So, if you like it, hate it, or even if you just
-        use it, drop a note over at the forum (<a href="http://sourceforge.net/forum/forum.php?forum_id=711229">http://sourceforge.net/forum/forum.php?forum_id=711229</a>)
-        and let me know what you think.</p>
-    <p>
-        Here is a list of interfaces that have been tested for v1.0</p>
-    <table>
-        <tr>
-            <td>
-                IEVRFilterConfig
-            </td>
-            <td>
-                IMFClockStateSink
-            </td>
-            <td>
-                IMFMediaType
-            </td>
-        </tr>
-        <tr>
-            <td>
-                IMF2DBuffer
-            </td>
-            <td>
-                IMFCollection
-            </td>
-            <td>
-                IMFMediaTypeHandler
-            </td>
-        </tr>
-        <tr>
-            <td>
-                IMFActivate
-            </td>
-            <td>
-                IMFContentEnabler
-            </td>
-            <td>
-                IMFPresentationClock
-            </td>
-        </tr>
-        <tr>
-            <td>
-                IMFASFContentInfo
-            </td>
-            <td>
-                IMFContentProtectionManager
-            </td>
-            <td>
-                IMFPresentationDescriptor
-            </td>
-        </tr>
-        <tr>
-            <td>
-                IMFASFIndexer
-            </td>
-            <td>
-                IMFFinalizableMediaSink
-            </td>
-            <td>
-                IMFPresentationTimeSource
-            </td>
-        </tr>
-        <tr>
-            <td>
-                IMFASFMutualExclusion
-            </td>
-            <td>
-                IMFGetService
-            </td>
-            <td>
-                IMFSample
-            </td>
-        </tr>
-        <tr>
-            <td>
-                IMFASFProfile
-            </td>
-            <td>
-                IMFMediaBuffer
-            </td>
-            <td>
-                IMFSequencerSource
-            </td>
-        </tr>
-        <tr>
-            <td>
-                IMFASFSplitter
-            </td>
-            <td>
-                IMFMediaEvent
-            </td>
-            <td>
-                IMFSourceResolver
-            </td>
-        </tr>
-        <tr>
-            <td>
-                IMFASFStreamConfig
-            </td>
-            <td>
-                IMFMediaEventGenerator
-            </td>
-            <td>
-                IMFStreamDescriptor
-            </td>
-        </tr>
-        <tr>
-            <td>
-                IMFASFStreamSelector
-            </td>
-            <td>
-                IMFMediaEventQueue
-            </td>
-            <td>
-                IMFStreamSink
-            </td>
-        </tr>
-        <tr>
-            <td>
-                IMFAsyncCallback
-            </td>
-            <td>
-                IMFMediaSession
-            </td>
-            <td>
-                IMFTopology
-            </td>
-        </tr>
-        <tr>
-            <td>
-                IMFAsyncResult
-            </td>
-            <td>
-                IMFMediaSink
-            </td>
-            <td>
-                IMFTopologyNode
-            </td>
-        </tr>
-        <tr>
-            <td>
-                IMFAttributes
-            </td>
-            <td>
-                IMFMediaSource
-            </td>
-            <td>
-                IMFTransform
-            </td>
-        </tr>
-        <tr>
-            <td>
-                IMFByteStream
-            </td>
-            <td>
-                IMFMediaSourceTopologyProvider
-            </td>
-            <td>
-                IMFVideoDisplayControl
-            </td>
-        </tr>
-        <tr>
-            <td>
-                IMFByteStreamHandler
-            </td>
-            <td>
-                IMFMediaStream
-            </td>
-            <td>
-                IMFVideoMediaType
-            </td>
-        </tr>
-        <tr>
-            <td>
-                IMFClock
-            </td>
-            <td>
-            </td>
-            <td>
-            </td>
-        </tr>
-    </table>
-    <p>
-        These interfaces are defined in the library, but aren't yet tested.</p>
-    <table>
-        <tr>
-            <td>
-                IEVRTrustedVideoPlugin
-            </td>
-            <td>
-                IMFOutputSchema
-            </td>
-            <td>
-                IMFSimpleAudioVolume
-            </td>
-        </tr>
-        <tr>
-            <td>
-                IMFASFMultiplexer
-            </td>
-            <td>
-                IMFOutputTrustAuthority
-            </td>
-            <td>
-                IMFSourceOpenMonitor
-            </td>
-        </tr>
-        <tr>
-            <td>
-                IMFAudioPolicy
-            </td>
-            <td>
-                IMFPMPClient
-            </td>
-            <td>
-                IMFTimer
-            </td>
-        </tr>
-        <tr>
-            <td>
-                IMFAudioStreamVolume
-            </td>
-            <td>
-                IMFPMPHost
-            </td>
-            <td>
-                IMFTopoLoader
-            </td>
-        </tr>
-        <tr>
-            <td>
-                IMFByteStreamBuffering
-            </td>
-            <td>
-                IMFPMPServer
-            </td>
-            <td>
-                IMFTopologyNodeAttributeEditor
-            </td>
-        </tr>
-        <tr>
-            <td>
-                IMFDesiredSample
-            </td>
-            <td>
-                IMFQualityAdvise
-            </td>
-            <td>
-                IMFTopologyServiceLookup
-            </td>
-        </tr>
-        <tr>
-            <td>
-                IMFInputTrustAuthority
-            </td>
-            <td>
-                IMFQualityManager
-            </td>
-            <td>
-                IMFTopologyServiceLookupClient
-            </td>
-        </tr>
-        <tr>
-            <td>
-                IMFMediaSinkPreroll
-            </td>
-            <td>
-                IMFRateControl
-            </td>
-            <td>
-                IMFTrackedSample
-            </td>
-        </tr>
-        <tr>
-            <td>
-                IMFMediaSourcePresentationProvider
-            </td>
-            <td>
-                IMFRateSupport
-            </td>
-            <td>
-                IMFTrustedInput
-            </td>
-        </tr>
-        <tr>
-            <td>
-                IMFMetadata
-            </td>
-            <td>
-                IMFRealTimeClient
-            </td>
-            <td>
-                IMFTrustedOutput
-            </td>
-        </tr>
-        <tr>
-            <td>
-                IMFMetadataProvider
-            </td>
-            <td>
-                IMFRemoteDesktopPlugin
-            </td>
-            <td>
-                IMFVideoDeviceID
-            </td>
-        </tr>
-        <tr>
-            <td>
-                IMFNetCredential
-            </td>
-            <td>
-                IMFRemoteProxy
-            </td>
-            <td>
-                IMFVideoMixerBitmap
-            </td>
-        </tr>
-        <tr>
-            <td>
-                IMFNetCredentialCache
-            </td>
-            <td>
-                IMFSAMIStyle
-            </td>
-            <td>
-                IMFVideoMixerControl
-            </td>
-        </tr>
-        <tr>
-            <td>
-                IMFNetCredentialManager
-            </td>
-            <td>
-                IMFSampleGrabberSinkCallback
-            </td>
-            <td>
-                IMFVideoPositionMapper
-            </td>
-        </tr>
-        <tr>
-            <td>
-                IMFNetProxyLocator
-            </td>
-            <td>
-                IMFSampleProtection
-            </td>
-            <td>
-                IMFVideoPresenter
-            </td>
-        </tr>
-        <tr>
-            <td>
-                IMFNetProxyLocatorFactory
-            </td>
-            <td>
-                IMFSaveJob
-            </td>
-            <td>
-                IMFVideoProcessor
-            </td>
-        </tr>
-        <tr>
-            <td>
-                IMFNetSchemeHandlerConfig
-            </td>
-            <td>
-                IMFSchemeHandler
-            </td>
-            <td>
-                IMFVideoRenderer
-            </td>
-        </tr>
-        <tr>
-            <td>
-                IMFObjectReferenceStream
-            </td>
-            <td>
-                IMFSecureChannel
-            </td>
-            <td>
-                IMFVideoSampleAllocator
-            </td>
-        </tr>
-        <tr>
-            <td>
-                IMFOutputPolicy
-            </td>
-            <td>
-                IMFShutdown
-            </td>
-            <td>
-                IMFWorkQueueServices
-            </td>
-        </tr>
-    </table>
-    <br />
-    <p>
-        <b>September 1, 2007</b></p>
-    <p>
-        I have just checked in the WavSink sample.&nbsp; That's the last of the samples
-        (yay).&nbsp; I've made a number of changes to the library over time, so I'm going
-        to need to re-run the test suite to make sure I haven't broken things that *used*
-        to work.&nbsp; Plan still looks like v1.0 in mid-September.</p>
-    <p>
-        WavSink, like WavSource has run into an MF bug.&nbsp; There are a couple of Microsoft's
-        COM objects that don't correctly support QueryInterface.&nbsp; Managed code *really*
-        doesn't care for that.&nbsp; So, there are a couple more interfaces in the Alt.cs
-        file.&nbsp; When MS releases fixes, hopefully these declarations won't be needed
-        any more.&nbsp; Using IntPtrs instead of the actual interfaces for these methods
-        works, but eventually I'm sure this is going to be a problem for someone.</p>
-    <p>
-        Found yet another interesting bug in the PropVariant class.&nbsp; The problem came
-        when a Blob was being sent to an implementation of IMFStreamSink.&nbsp; The code
-        worked correctly, but as the program was ending, the finalizer was called on the
-        PropVariant.&nbsp; This was a real problem since the PropVariant had already been
-        freed by the routine that called me so the finalizer was crashing.&nbsp; I had no
-        business trying to free the thing, it didn't belong to me.&nbsp; Tracking this down
-        took time, but I think I've come up with an elegant solution.</p>
-    <br />
-    <p>
-        <b>August 21, 2007</b></p>
-    <p>
-        I've taken a break from testing interfaces, and have been focusing on converting
-        the MF samples to c#. MF comes with 8 samples and my plan is to convert 7 of them.
-        The 8th (DXVA2_VideoProc) uses DirectX interfaces which are (way) beyond the scope
-        of my efforts for this library. If someone who knows more about DirectDraw wants
-        to step forward and help, that would be great. Failing that, this small corner of
-        MF won't be accessible from managed code.</p>
-    <p>
-        In the meantime, I have converted 6 of the 7 samples, and have started work on the
-        7th. Finishing this sample seems like a reasonable milestone, so that's probably
-        the point at which I'll declare v1.0. I've made enough changes now that I want people
-        who are downloading to get that it's probably time.&nbsp; Look for v1.0 in mid-September.</p>
-    <p>
-        I continue to make minor tweaks to the library. Found an interesting bug in my PropVariant
-        class the other day. The class is declared using LayoutKind.Explicit, so I didn't
-        realize that the VariantType field was overlapping the reserved1 field. Wasn't a
-        problem until I ran into something that was using the reserved1 field. Changing
-        the VariantType to a short (which is what it should have been in the first place)
-        solved the problem.</p>
-    <br />
-    <p>
-        <b>August 03, 2007</b></p>
-    <p>
-        I'm continuing to create tests for interfaces and I have made a number of changes
-        to the existing code.&nbsp; Oddly enough, some code that worked fine in 64bit (my
-        main dev machine) didn't work in 32bit.&nbsp; Required a bit of cleanup.</p>
-    <p>
-        My original plan was to do a release with just a selection of interfaces.&nbsp;
-        However, I've revised that plan.&nbsp; Now I'm going to see about testing all of
-        them for release v1.0.&nbsp; We'll see.</p>
-    <p>
-        I've got a total of 4 samples working now:</p>
-    <blockquote>
-        BasicPlayback<br />
-        MFT_Grayscale<br />
-        PlaybackFX<br />
-        WavSource</blockquote>
-    <p>
-        If you are doing work and need some particular interfaces done sooner rather than
-        later, or are looking for a release with the latest samples/fixes, drop me a note
-        over in the forum and I'll see if I can find a clean stopping point.</p>
-    <br />
-    <p>
-        <b>July 18, 2007</b></p>
-    <p>
-        I have been doing some more work on the library.&nbsp; I now have one more sample
-        (a c# version of MFT_GrayScale), a couple more tested interfaces, and a few fixes
-        for the code that was released in the beta.&nbsp; However, I'm holding off on doing
-        another release until I hear back from people.&nbsp; If you have a minute, please,
-        scribble a few lines for this message thread (<a href="http://sourceforge.net/forum/forum.php?thread_id=1781387&amp;forum_id=711229">http://sourceforge.net/forum/forum.php?thread_id=1781387&amp;forum_id=711229</a>)
-        and let me know what you think of this project.</p>
-    <p>
-        An interesting note: I was never able to get the DirectShow base classes to work
-        with c#.&nbsp; However, it appears that one of the benefits of Media Foundation
-        is that the re-design is more compatible with managed code (whether by design or
-        just happenstance, I couldn't say).&nbsp; I have now written two "filters" for MF
-        in c#:&nbsp; One a source filter, and one a transform filter.&nbsp; While I haven't
-        done any detailed performance comparisons, they seem to give comparable results
-        to the c++ samples on which they are based.</p>
-    <br />
-    <p>
-        <b>July 14, 2007</b></p>
-    <p>
-        Beta 1 is now ready.</p>
-    <p>
-        I have created 2 zip files (one for samples, one for the library) and they are available
-        in the Downloads section (see above).&nbsp; I am now looking for people to read
-        the docs, compile/run the samples, and let me know what they think.&nbsp;
-    </p>
-    <br />
-    <p>
-        <b>July 9, 2007</b></p>
-    <p>
-        Much progress has been made.&nbsp; I have changed all the interfaces to remove the
-        PreserveSig attribute, and wrote tests for 33 of them. Next step is to create some
-        documentation.</p>
-    <p>
-        Sometime in the next few days, I could use some help making sure v1 of the product
-        is ready.&nbsp; If you are interested, drop me a line at <a href="https://sourceforge.net/u/snarfle/profile/send_message">
-            https://sourceforge.net/u/snarfle/profile/send_message</a>.
-    </p>
-    <br />
-    <p>
-        <b>July 1, 2007</b></p>
-    <p>
-        Right now, this project is still in its early stages. At this point it is just barely
-        past the "proof of concept" state.</p>
-    <p>
-        Included in the project is the code for the library, and two samples that use it.</p>
-    <p>
-        The library has the definitions for all of the Media Foundation interfaces, plus
-        all the structures and enums that they use (at least I *think* it does). It also
-        contains definitions for a few helper classes (MFError, COMBase).</p>
-    <p>
-        The two samples are translations of the c++ MF samples BasicPlayer and WavSource.
-        Both samples run (at least on my machine). As of today, these samples don't even
-        have readmes. To find out what they do, read the c++ docs for the related sample.
-        To get WavSource to run, you'll also need to know how to use regasm.</p>
-    <p>
-        I am still planning on large-scale changes to the library. So, while you are welcome
-        to download and study this code, I wouldn't recommend doing any significant development
-        based on it just yet.</p>
-    <p>
-        <a href="http://sourceforge.net/projects/mfnet">
-            <img src="http://sflogo.sourceforge.net/sflogo.php?group_id=199925&type=16" width="150"
-                height="40" border="0" alt="Get Media Foundation .NET at SourceForge.net. Fast, secure and Free Open Source software downloads" />
-        </a>
-    </p>
+	<p>
+		<b>August 22, 2009</b></p>
+	<p />
+	<h2>
+		V2.0 is in progress</h2>
+	<p>
+		There are several tasks I'm trying to accomplish for v2.0:
+	</p>
+	<ul>
+		<li>1) Add the W7 interfaces, structs enums, guids, etc to the library</li>
+		<li>2) Change from the exception model to an HRESULT model</li>
+		<li>3) Update the samples to work with HRESULTs</li>
+		<li>4) Update the docs</li>
+		<li>5) Determine which of the W7 interfaces to test and test them</li>
+	</ul>
+	<p>
+		As of today, the first two items on the list are done and checked in. The samples
+		are probably next on the todo list. If you have any preferences about which interfaces
+		need to go on the list to be tested for v2.0, feel free to share you thoughts in
+		the forum at <a href="https://sourceforge.net/forum/message.php?msg_id=7578031">https://sourceforge.net/forum/message.php?msg_id=7578031</a>.&nbsp;
+		If you are willing to help create the tests for your chosen interface, that&#39;s
+		going to push it to the top of the list.</p>
+	<br />
+	<p>
+		<b>June 10, 2009</b></p>
+	<p />
+	<h2>
+		v1.1 of the library released!</h2>
+	<p>
+		In v1.1 I have tested all the Vista MF interfaces I intend to test. Along with the
+		updated library, I have also released an updated samples project which includes
+		my EVRPresenter sample. You can download both of them in the Downloads area.</p>
+	<p>
+		v2.0 (if and when there is such a thing), will include definitions of the new W7
+		interfaces. MF only has 20 new interfaces in W7. How hard can it be? v2.0 will probably
+		also use HRESULTS instead of exceptions (see discussion below).</p>
+	<p>
+		Enjoy!</p>
+	<br />
+	<p>
+		<b>May 21, 2009</b></p>
+	<p />
+	<p>
+		I now have a working customer presenter for the EVR written in c#. Woo hoo!</p>
+	<p>
+		This was a huge project and there was some finicky work required. However, the question
+		now is, what do I do with it? It doesn't really fit as a sample for this project,
+		since it uses DirectShow. And it doesn't fit there cuz it uses MF. It's a little
+		small for its own project. And really, it's pretty complex to even be called a sample.</p>
+	<p>
+		Suggestions anyone?</p>
+	<br />
+	<p>
+		<b>May 20, 2009</b></p>
+	<p />
+	<p>
+		Thank you to all the people who responded to the &quot;Do you want another release?&quot;
+		thread. It always feels good to know people are using what I'm writing.</p>
+	<p>
+		Since there does appear to be some interest, I've decided to do at least one more
+		release, and possibly two.</p>
+	<p>
+		In the first release, I am going to attack the remaining Vista interfaces. I have
+		picked out the ones I intend to do and have already started creating tests for them.
+		This includes the last of the easy interfaces, and all of the remaining ones I find
+		to be interesting. If there is some particular interface you need, this would be
+		the time to mention it. Check out your docs\Interfaces.txt for the status of the
+		existing interfaces. If you need an interface enough to request it, be prepared
+		to help create the test for it.</p>
+	<p>
+		The second release will contain the W7 interfaces. Looks like they added about 20
+		interfaces. I don't have W7 installed, so I don't yet have a way to write any tests
+		for the new interfaces, but hopefully soon.</p>
+	<p>
+		And while we are talking about an update to the library, a new question has arisen.
+		There is a major difference between the way DSNet returns errors (uses an HRESULT),
+		and the way MFNet returns errors (throws exceptions). However, I'm considering changing
+		MF to be like DS.</p>
+	<p>
+		There are several reasons that throwing exceptions are better than returning HRESULTS:</p>
+	<ul>
+		<li>More c#-like</li>
+		<li>Easier to implement: since c# is based on exceptions, apps must already have try/catch
+			exception handling</li>
+		<li>Ensures that all method call returns get checked</li>
+		<li>Cleaner code, no &quot;if SUCCEEDED&quot; structures nested 5 deep</li>
+		<li>Existing MFNet apps are written this way</li>
+	</ul>
+	<p>
+		There are also reasons that using HRESULTS are better than exceptions:</p>
+	<ul>
+		<li>More consistent with DSNet. In an app that uses both, this gets very confusing.</li>
+		<li>More consistent with c++ docs</li>
+		<li>More consistent with existing c++ samples</li>
+		<li>Some methods in the current library already must use HRESULTS (since they return
+			important S_CODES). If people don't realize that these methods aren't throwing exceptions,
+			some error checking will be missed.</li>
+		<li>Throwing exceptions has much worse performance than returning HRESULTS. This can
+			be a real limitation during video processing.</li>
+	</ul>
+	<p>
+		As you can see, the benefits for exceptions are mostly cosmetic. The functional
+		items for HRESULTS are rather compelling.</p>
+	<p>
+		I hate to do it. I *like* the exception model, and I really appreciate the cleaner
+		code that results. But I'm definitely leaning that way. I just created a project
+		where the slow performance of many exceptions being thrown was a problem. So unless
+		someone can throw some weight on the &quot;exceptions&quot; side of the scale, that's
+		probably what I'll do.</p>
+	<p>
+		If you have any feedback on these subjects, feel free to start a thread over in
+		the forum.</p>
+	<p>
+		And if I'm going to do this and shatter backward compatibility, it makes sense to
+		do it now, before the big W7 rush of downloads (he dreams).</p>
+	<br />
+	<p>
+		<b>March 21, 2009</b></p>
+	<p>
+		So, here we are a year and a half later. I still haven't really heard any feedback
+		from anyone. To my surprise, there have been over 1,000 downloads of the library.
+		On the other hand, there have been less than 10 threads in the forum over the entire
+		lifetime of the project. I'm interpreting that to mean that while people are grabbing
+		a copy of the library in case they ever need it, very few people are actually using
+		it.
+	</p>
+	<p>
+		Looking forward, Microsoft has added a bunch of new interfaces to Windows 7 (<a href="http://msdn.microsoft.com/en-us/library/bb970511(VS.85).aspx">http://msdn.microsoft.com/en-us/library/bb970511(VS.85).aspx</a>).
+		They are designed to make MF much easier to use, as well as expanding the functionality.
+		Obviously these features will <i><b>only</b></i> work in W7 (and beyond).
+	</p>
+	<p>
+		So, the question is, does anyone think we need to add these definitions to this
+		library? Or is there just not enough interest in using Media Foundation from c#
+		to make it worth the effort?
+	</p>
+	<p>
+		Post your thoughts here: <a href="https://sourceforge.net/forum/message.php?msg_id=6903604">
+			https://sourceforge.net/forum/message.php?msg_id=6903604</a>.</p>
+	<br />
+	<p>
+		<b>September 23, 2007</b></p>
+	<p>
+		Well, I'm a little late, but it's not my fault!&nbsp; My (only) Vista box died on
+		me.&nbsp; Kinda hard to work on a project that only works on Vista if you don't
+		have any working Vista computers.&nbsp; I just got it back from HP on Friday.&nbsp;
+		I will say that it was a HUGE relief to go back to an operating system that doesn't
+		fight you at every turn for a few days.&nbsp; I may leave this Vista box on the
+		shelf and just use my XP box again.&nbsp; Except when I'm working on this project.</p>
+	<p>
+		In any case, I've done what I intended to do for v1.0.&nbsp; In fact, I've added
+		even more samples than I intended, so make sure you download both the updated lib,
+		and the updated samples.</p>
+	<p>
+		I know this release isn't going to be perfect, but until I hear from others, I don't
+		know what else to work on.&nbsp; So, if you like it, hate it, or even if you just
+		use it, drop a note over at the forum (<a href="http://sourceforge.net/forum/forum.php?forum_id=711229">http://sourceforge.net/forum/forum.php?forum_id=711229</a>)
+		and let me know what you think.</p>
+	<p>
+		Here is a list of interfaces that have been tested for v1.0</p>
+	<table>
+		<tr>
+			<td>
+				IEVRFilterConfig
+			</td>
+			<td>
+				IMFClockStateSink
+			</td>
+			<td>
+				IMFMediaType
+			</td>
+		</tr>
+		<tr>
+			<td>
+				IMF2DBuffer
+			</td>
+			<td>
+				IMFCollection
+			</td>
+			<td>
+				IMFMediaTypeHandler
+			</td>
+		</tr>
+		<tr>
+			<td>
+				IMFActivate
+			</td>
+			<td>
+				IMFContentEnabler
+			</td>
+			<td>
+				IMFPresentationClock
+			</td>
+		</tr>
+		<tr>
+			<td>
+				IMFASFContentInfo
+			</td>
+			<td>
+				IMFContentProtectionManager
+			</td>
+			<td>
+				IMFPresentationDescriptor
+			</td>
+		</tr>
+		<tr>
+			<td>
+				IMFASFIndexer
+			</td>
+			<td>
+				IMFFinalizableMediaSink
+			</td>
+			<td>
+				IMFPresentationTimeSource
+			</td>
+		</tr>
+		<tr>
+			<td>
+				IMFASFMutualExclusion
+			</td>
+			<td>
+				IMFGetService
+			</td>
+			<td>
+				IMFSample
+			</td>
+		</tr>
+		<tr>
+			<td>
+				IMFASFProfile
+			</td>
+			<td>
+				IMFMediaBuffer
+			</td>
+			<td>
+				IMFSequencerSource
+			</td>
+		</tr>
+		<tr>
+			<td>
+				IMFASFSplitter
+			</td>
+			<td>
+				IMFMediaEvent
+			</td>
+			<td>
+				IMFSourceResolver
+			</td>
+		</tr>
+		<tr>
+			<td>
+				IMFASFStreamConfig
+			</td>
+			<td>
+				IMFMediaEventGenerator
+			</td>
+			<td>
+				IMFStreamDescriptor
+			</td>
+		</tr>
+		<tr>
+			<td>
+				IMFASFStreamSelector
+			</td>
+			<td>
+				IMFMediaEventQueue
+			</td>
+			<td>
+				IMFStreamSink
+			</td>
+		</tr>
+		<tr>
+			<td>
+				IMFAsyncCallback
+			</td>
+			<td>
+				IMFMediaSession
+			</td>
+			<td>
+				IMFTopology
+			</td>
+		</tr>
+		<tr>
+			<td>
+				IMFAsyncResult
+			</td>
+			<td>
+				IMFMediaSink
+			</td>
+			<td>
+				IMFTopologyNode
+			</td>
+		</tr>
+		<tr>
+			<td>
+				IMFAttributes
+			</td>
+			<td>
+				IMFMediaSource
+			</td>
+			<td>
+				IMFTransform
+			</td>
+		</tr>
+		<tr>
+			<td>
+				IMFByteStream
+			</td>
+			<td>
+				IMFMediaSourceTopologyProvider
+			</td>
+			<td>
+				IMFVideoDisplayControl
+			</td>
+		</tr>
+		<tr>
+			<td>
+				IMFByteStreamHandler
+			</td>
+			<td>
+				IMFMediaStream
+			</td>
+			<td>
+				IMFVideoMediaType
+			</td>
+		</tr>
+		<tr>
+			<td>
+				IMFClock
+			</td>
+			<td>
+			</td>
+			<td>
+			</td>
+		</tr>
+	</table>
+	<p>
+		These interfaces are defined in the library, but aren't yet tested.</p>
+	<table>
+		<tr>
+			<td>
+				IEVRTrustedVideoPlugin
+			</td>
+			<td>
+				IMFOutputSchema
+			</td>
+			<td>
+				IMFSimpleAudioVolume
+			</td>
+		</tr>
+		<tr>
+			<td>
+				IMFASFMultiplexer
+			</td>
+			<td>
+				IMFOutputTrustAuthority
+			</td>
+			<td>
+				IMFSourceOpenMonitor
+			</td>
+		</tr>
+		<tr>
+			<td>
+				IMFAudioPolicy
+			</td>
+			<td>
+				IMFPMPClient
+			</td>
+			<td>
+				IMFTimer
+			</td>
+		</tr>
+		<tr>
+			<td>
+				IMFAudioStreamVolume
+			</td>
+			<td>
+				IMFPMPHost
+			</td>
+			<td>
+				IMFTopoLoader
+			</td>
+		</tr>
+		<tr>
+			<td>
+				IMFByteStreamBuffering
+			</td>
+			<td>
+				IMFPMPServer
+			</td>
+			<td>
+				IMFTopologyNodeAttributeEditor
+			</td>
+		</tr>
+		<tr>
+			<td>
+				IMFDesiredSample
+			</td>
+			<td>
+				IMFQualityAdvise
+			</td>
+			<td>
+				IMFTopologyServiceLookup
+			</td>
+		</tr>
+		<tr>
+			<td>
+				IMFInputTrustAuthority
+			</td>
+			<td>
+				IMFQualityManager
+			</td>
+			<td>
+				IMFTopologyServiceLookupClient
+			</td>
+		</tr>
+		<tr>
+			<td>
+				IMFMediaSinkPreroll
+			</td>
+			<td>
+				IMFRateControl
+			</td>
+			<td>
+				IMFTrackedSample
+			</td>
+		</tr>
+		<tr>
+			<td>
+				IMFMediaSourcePresentationProvider
+			</td>
+			<td>
+				IMFRateSupport
+			</td>
+			<td>
+				IMFTrustedInput
+			</td>
+		</tr>
+		<tr>
+			<td>
+				IMFMetadata
+			</td>
+			<td>
+				IMFRealTimeClient
+			</td>
+			<td>
+				IMFTrustedOutput
+			</td>
+		</tr>
+		<tr>
+			<td>
+				IMFMetadataProvider
+			</td>
+			<td>
+				IMFRemoteDesktopPlugin
+			</td>
+			<td>
+				IMFVideoDeviceID
+			</td>
+		</tr>
+		<tr>
+			<td>
+				IMFNetCredential
+			</td>
+			<td>
+				IMFRemoteProxy
+			</td>
+			<td>
+				IMFVideoMixerBitmap
+			</td>
+		</tr>
+		<tr>
+			<td>
+				IMFNetCredentialCache
+			</td>
+			<td>
+				IMFSAMIStyle
+			</td>
+			<td>
+				IMFVideoMixerControl
+			</td>
+		</tr>
+		<tr>
+			<td>
+				IMFNetCredentialManager
+			</td>
+			<td>
+				IMFSampleGrabberSinkCallback
+			</td>
+			<td>
+				IMFVideoPositionMapper
+			</td>
+		</tr>
+		<tr>
+			<td>
+				IMFNetProxyLocator
+			</td>
+			<td>
+				IMFSampleProtection
+			</td>
+			<td>
+				IMFVideoPresenter
+			</td>
+		</tr>
+		<tr>
+			<td>
+				IMFNetProxyLocatorFactory
+			</td>
+			<td>
+				IMFSaveJob
+			</td>
+			<td>
+				IMFVideoProcessor
+			</td>
+		</tr>
+		<tr>
+			<td>
+				IMFNetSchemeHandlerConfig
+			</td>
+			<td>
+				IMFSchemeHandler
+			</td>
+			<td>
+				IMFVideoRenderer
+			</td>
+		</tr>
+		<tr>
+			<td>
+				IMFObjectReferenceStream
+			</td>
+			<td>
+				IMFSecureChannel
+			</td>
+			<td>
+				IMFVideoSampleAllocator
+			</td>
+		</tr>
+		<tr>
+			<td>
+				IMFOutputPolicy
+			</td>
+			<td>
+				IMFShutdown
+			</td>
+			<td>
+				IMFWorkQueueServices
+			</td>
+		</tr>
+	</table>
+	<br />
+	<p>
+		<b>September 1, 2007</b></p>
+	<p>
+		I have just checked in the WavSink sample.&nbsp; That's the last of the samples
+		(yay).&nbsp; I've made a number of changes to the library over time, so I'm going
+		to need to re-run the test suite to make sure I haven't broken things that *used*
+		to work.&nbsp; Plan still looks like v1.0 in mid-September.</p>
+	<p>
+		WavSink, like WavSource has run into an MF bug.&nbsp; There are a couple of Microsoft's
+		COM objects that don't correctly support QueryInterface.&nbsp; Managed code *really*
+		doesn't care for that.&nbsp; So, there are a couple more interfaces in the Alt.cs
+		file.&nbsp; When MS releases fixes, hopefully these declarations won't be needed
+		any more.&nbsp; Using IntPtrs instead of the actual interfaces for these methods
+		works, but eventually I'm sure this is going to be a problem for someone.</p>
+	<p>
+		Found yet another interesting bug in the PropVariant class.&nbsp; The problem came
+		when a Blob was being sent to an implementation of IMFStreamSink.&nbsp; The code
+		worked correctly, but as the program was ending, the finalizer was called on the
+		PropVariant.&nbsp; This was a real problem since the PropVariant had already been
+		freed by the routine that called me so the finalizer was crashing.&nbsp; I had no
+		business trying to free the thing, it didn't belong to me.&nbsp; Tracking this down
+		took time, but I think I've come up with an elegant solution.</p>
+	<br />
+	<p>
+		<b>August 21, 2007</b></p>
+	<p>
+		I've taken a break from testing interfaces, and have been focusing on converting
+		the MF samples to c#. MF comes with 8 samples and my plan is to convert 7 of them.
+		The 8th (DXVA2_VideoProc) uses DirectX interfaces which are (way) beyond the scope
+		of my efforts for this library. If someone who knows more about DirectDraw wants
+		to step forward and help, that would be great. Failing that, this small corner of
+		MF won't be accessible from managed code.</p>
+	<p>
+		In the meantime, I have converted 6 of the 7 samples, and have started work on the
+		7th. Finishing this sample seems like a reasonable milestone, so that's probably
+		the point at which I'll declare v1.0. I've made enough changes now that I want people
+		who are downloading to get that it's probably time.&nbsp; Look for v1.0 in mid-September.</p>
+	<p>
+		I continue to make minor tweaks to the library. Found an interesting bug in my PropVariant
+		class the other day. The class is declared using LayoutKind.Explicit, so I didn't
+		realize that the VariantType field was overlapping the reserved1 field. Wasn't a
+		problem until I ran into something that was using the reserved1 field. Changing
+		the VariantType to a short (which is what it should have been in the first place)
+		solved the problem.</p>
+	<br />
+	<p>
+		<b>August 03, 2007</b></p>
+	<p>
+		I'm continuing to create tests for interfaces and I have made a number of changes
+		to the existing code.&nbsp; Oddly enough, some code that worked fine in 64bit (my
+		main dev machine) didn't work in 32bit.&nbsp; Required a bit of cleanup.</p>
+	<p>
+		My original plan was to do a release with just a selection of interfaces.&nbsp;
+		However, I've revised that plan.&nbsp; Now I'm going to see about testing all of
+		them for release v1.0.&nbsp; We'll see.</p>
+	<p>
+		I've got a total of 4 samples working now:</p>
+	<blockquote>
+		BasicPlayback<br />
+		MFT_Grayscale<br />
+		PlaybackFX<br />
+		WavSource</blockquote>
+	<p>
+		If you are doing work and need some particular interfaces done sooner rather than
+		later, or are looking for a release with the latest samples/fixes, drop me a note
+		over in the forum and I'll see if I can find a clean stopping point.</p>
+	<br />
+	<p>
+		<b>July 18, 2007</b></p>
+	<p>
+		I have been doing some more work on the library.&nbsp; I now have one more sample
+		(a c# version of MFT_GrayScale), a couple more tested interfaces, and a few fixes
+		for the code that was released in the beta.&nbsp; However, I'm holding off on doing
+		another release until I hear back from people.&nbsp; If you have a minute, please,
+		scribble a few lines for this message thread (<a href="http://sourceforge.net/forum/forum.php?thread_id=1781387&amp;forum_id=711229">http://sourceforge.net/forum/forum.php?thread_id=1781387&amp;forum_id=711229</a>)
+		and let me know what you think of this project.</p>
+	<p>
+		An interesting note: I was never able to get the DirectShow base classes to work
+		with c#.&nbsp; However, it appears that one of the benefits of Media Foundation
+		is that the re-design is more compatible with managed code (whether by design or
+		just happenstance, I couldn't say).&nbsp; I have now written two "filters" for MF
+		in c#:&nbsp; One a source filter, and one a transform filter.&nbsp; While I haven't
+		done any detailed performance comparisons, they seem to give comparable results
+		to the c++ samples on which they are based.</p>
+	<br />
+	<p>
+		<b>July 14, 2007</b></p>
+	<p>
+		Beta 1 is now ready.</p>
+	<p>
+		I have created 2 zip files (one for samples, one for the library) and they are available
+		in the Downloads section (see above).&nbsp; I am now looking for people to read
+		the docs, compile/run the samples, and let me know what they think.&nbsp;
+	</p>
+	<br />
+	<p>
+		<b>July 9, 2007</b></p>
+	<p>
+		Much progress has been made.&nbsp; I have changed all the interfaces to remove the
+		PreserveSig attribute, and wrote tests for 33 of them. Next step is to create some
+		documentation.</p>
+	<p>
+		Sometime in the next few days, I could use some help making sure v1 of the product
+		is ready.&nbsp; If you are interested, drop me a line at <a href="https://sourceforge.net/u/snarfle/profile/send_message">
+			https://sourceforge.net/u/snarfle/profile/send_message</a>.
+	</p>
+	<br />
+	<p>
+		<b>July 1, 2007</b></p>
+	<p>
+		Right now, this project is still in its early stages. At this point it is just barely
+		past the "proof of concept" state.</p>
+	<p>
+		Included in the project is the code for the library, and two samples that use it.</p>
+	<p>
+		The library has the definitions for all of the Media Foundation interfaces, plus
+		all the structures and enums that they use (at least I *think* it does). It also
+		contains definitions for a few helper classes (MFError, COMBase).</p>
+	<p>
+		The two samples are translations of the c++ MF samples BasicPlayer and WavSource.
+		Both samples run (at least on my machine). As of today, these samples don't even
+		have readmes. To find out what they do, read the c++ docs for the related sample.
+		To get WavSource to run, you'll also need to know how to use regasm.</p>
+	<p>
+		I am still planning on large-scale changes to the library. So, while you are welcome
+		to download and study this code, I wouldn't recommend doing any significant development
+		based on it just yet.</p>
+	<p>
+		<a href="http://sourceforge.net/projects/mfnet">
+			<img src="http://sflogo.sourceforge.net/sflogo.php?group_id=199925&type=16" width="150"
+				height="40" border="0" alt="Get Media Foundation .NET at SourceForge.net. Fast, secure and Free Open Source software downloads" />
+		</a>
+	</p>
 </body>
 </html>
