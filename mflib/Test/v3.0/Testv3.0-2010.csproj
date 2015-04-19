@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9764B428-BCCD-4572-B4AD-F928F686DED0}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Testv30</RootNamespace>
+    <AssemblyName>Testv30</AssemblyName>
+    <TargetFrameworkVersion>v4.0.3</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="IMFAsyncCallbackLoggingTest.cs" />
+    <Compile Include="IMFByteStreamCacheControl2Test.cs" />
+    <Compile Include="IMFByteStreamProxyClassFactoryTest.cs" />
+    <Compile Include="IMFByteStreamTimeSeekTest.cs" />
+    <Compile Include="IMFCaptureEngineClassFactoryTest.cs" />
+    <Compile Include="IMFCaptureEngineOnEventCallbackTest.cs" />
+    <Compile Include="IMFCaptureEngineOnSampleCallbackTest.cs" />
+    <Compile Include="IMFCaptureEngineTest.cs" />
+    <Compile Include="IMFCapturePhotoSinkTest.cs" />
+    <Compile Include="IMFCapturePreviewSinkTest.cs" />
+    <Compile Include="IMFCaptureRecordSinkTest.cs" />
+    <Compile Include="IMFCaptureSinkTest.cs" />
+    <Compile Include="IMFCaptureSourceTest.cs" />
+    <Compile Include="IMFImageSharingEngineClassFactoryTest.cs" />
+    <Compile Include="IMFImageSharingEngineTest.cs" />
+    <Compile Include="IMFMediaEngineClassFactoryTest.cs" />
+    <Compile Include="IMFMediaEngineExtensionTest.cs" />
+    <Compile Include="IMFMediaEngineExTest.cs" />
+    <Compile Include="IMFMediaEngineNotifyTest.cs" />
+    <Compile Include="IMFMediaEngineProtectedContentTest.cs" />
+    <Compile Include="IMFMediaEngineSrcElementsTest.cs" />
+    <Compile Include="IMFMediaEngineTest.cs" />
+    <Compile Include="IMFMediaErrorTest.cs" />
+    <Compile Include="IMFMediaSharingEngineClassFactoryTest.cs" />
+    <Compile Include="IMFMediaSharingEngineTest.cs" />
+    <Compile Include="IMFMediaSourceExTest.cs" />
+    <Compile Include="IMFMediaTimeRangeTest.cs" />
+    <Compile Include="IMFNetResourceFilterTest.cs" />
+    <Compile Include="IMFPluginControl2Test.cs" />
+    <Compile Include="IMFPMPClientAppTest.cs" />
+    <Compile Include="IMFPMPHostAppTest.cs" />
+    <Compile Include="IMFProtectedEnvironmentAccessTest.cs" />
+    <Compile Include="IMFRealTimeClientExTest.cs" />
+    <Compile Include="IMFSampleOutputStreamTest.cs" />
+    <Compile Include="IMFSeekInfoTest.cs" />
+    <Compile Include="IMFSharingEngineClassFactoryTest.cs" />
+    <Compile Include="IMFSignedLibraryTest.cs" />
+    <Compile Include="IMFSimpleAudioVolumeTest.cs" />
+    <Compile Include="IMFSinkWriterExTest.cs" />
+    <Compile Include="IMFSourceReaderExTest.cs" />
+    <Compile Include="IMFSystemIdTest.cs" />
+    <Compile Include="IMFVideoProcessorControlTest.cs" />
+    <Compile Include="IMFVideoSampleAllocatorExTest.cs" />
+    <Compile Include="IMFWorkQueueServicesExTest.cs" />
+    <Compile Include="IPlayToControlTest.cs" />
+    <Compile Include="IPlayToSourceClassFactoryTest.cs" />
+    <Compile Include="RunTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="v3-0-Interfaces.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\MediaFoundation-2010.csproj">
+      <Project>{B78C0F3B-071A-4FD2-829D-7A67E0F7BD1C}</Project>
+      <Name>MediaFoundation-2010</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /y C:\SourceForge\mflib\Test\v3.0\bin\Debug\*.* c:\vbox\v3.0\*.*</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
