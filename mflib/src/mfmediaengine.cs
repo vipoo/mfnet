@@ -85,6 +85,10 @@ namespace MediaFoundation
         FirstFrameReady = 1009,
         TracksChange = 1010,
         OpmInfo = 1011,
+
+        ResourceLost = 1012,
+        DelayLoadEventChanged = 1013,
+        StreamRenderingError = 1014,
     }
 
     [UnmanagedName("MF_MEDIA_ENGINE_NETWORK")]
@@ -228,6 +232,104 @@ namespace MediaFoundation
         FailedBDA = 3,
         FailedUnsignedDriver = 4,
         Failed = 5,
+    }
+
+    public enum MF_MSE_APPEND_MODE
+    {
+        Segments = 0,
+        Sequence = 1,
+    }
+
+    public enum MF_TIMED_TEXT_TRACK_KIND
+    {
+        Unknown = 0,
+        Subtitles = 1,
+        Captions = 2,
+        Metadata = 3,
+    }
+
+    public enum MF_TIMED_TEXT_UNIT_TYPE
+    {
+        Pixels = 0,
+        Percentage = 1
+    }
+
+    public enum MF_TIMED_TEXT_FONT_STYLE
+    {
+        Normal = 0,
+        Oblique = 1,
+        Italic = 2,
+    }
+
+    public enum MF_TIMED_TEXT_ALIGNMENT
+    {
+        Start = 0,
+        End = 1,
+        Center = 2,
+    }
+
+    public enum MF_TIMED_TEXT_DISPLAY_ALIGNMENT
+    {
+        Before = 0,
+        After = 1,
+        Center = 2,
+    }
+
+    [Flags]
+    public enum MF_TIMED_TEXT_DECORATION
+    {
+        None = 0,
+        Underline = 1,
+        LineThrough = 2,
+        Overline = 4,
+    }
+
+    public enum MF_TIMED_TEXT_WRITING_MODE
+    {
+        LRTB = 0,
+        RLTB = 1,
+        TBRL = 2,
+        TBLR = 3,
+        LR = 4,
+        RL = 5,
+        TB = 6,
+    }
+
+    public enum MF_TIMED_TEXT_SCROLL_MODE
+    {
+        PopOn = 0,
+        RollUp = 1
+    }
+
+    public enum MF_TIMED_TEXT_ERROR_CODE
+    {
+        NoError = 0,
+        Fatal = 1,
+        DataFormat = 2,
+        Network = 3,
+        Internal = 4
+    }
+
+    public enum MF_TIMED_TEXT_CUE_EVENT
+    {
+        Active,
+        Inactive,
+        Clear,
+    }
+
+    public enum MF_TIMED_TEXT_TRACK_READY_STATE
+    {
+        None,
+        Loading,
+        Loaded,
+        Error,
+    }
+
+    public enum MF_MEDIA_ENGINE_STREAMTYPE_FAILED
+    {
+        Unknown = 0,
+        Audio = 1,
+        Video = 2,
     }
 
 #endif
@@ -1438,6 +1540,537 @@ namespace MediaFoundation
             IMFByteStream pByteStream,
             IMFMediaSource pMediaSource,
             IMFMediaSourceExtension pMSE
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("EBBAF249-AFC2-4582-91C6-B60DF2E84954")]
+    public interface IAudioSourceProvider
+    {
+        [PreserveSig]
+        int ProvideInput(
+        int dwSampleCount,
+        ref int pdwChannelCount,
+        out float[] pInterleavedAudioData
+        );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("ba2743a1-07e0-48ef-84b6-9a2ed023ca6c")]
+    public interface IMFMediaEngineWebSupport
+    {
+        [PreserveSig]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        bool ShouldDelayTheLoadEvent();
+
+        [PreserveSig]
+        int ConnectWebAudio(
+            int dwSampleRate,
+            out IAudioSourceProvider ppSourceProvider
+            );
+
+        [PreserveSig]
+        int DisconnectWebAudio();
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("19666fb4-babe-4c55-bc03-0a074da37e2a")]
+    public interface IMFSourceBufferAppendMode
+    {
+        [PreserveSig]
+        MF_MSE_APPEND_MODE GetAppendMode();
+
+        [PreserveSig]
+        int SetAppendMode(
+            MF_MSE_APPEND_MODE mode
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("1f2a94c9-a3df-430d-9d0f-acd85ddc29af")]
+    public interface IMFTimedText
+    {
+        [PreserveSig]
+        int RegisterNotifications(
+            IMFTimedTextNotify notify
+            );
+
+        [PreserveSig]
+        int SelectTrack(
+            int trackId,
+            [MarshalAs(UnmanagedType.Bool)] bool selected
+            );
+
+        [PreserveSig]
+        int AddDataSource(
+            IMFByteStream byteStream,
+            [In, MarshalAs(UnmanagedType.LPWStr)] string label,
+            [In, MarshalAs(UnmanagedType.LPWStr)] string language,
+            MF_TIMED_TEXT_TRACK_KIND kind,
+            [MarshalAs(UnmanagedType.Bool)] bool isDefault,
+            out int trackId
+            );
+
+        [PreserveSig]
+        int AddDataSourceFromUrl(
+            [In, MarshalAs(UnmanagedType.LPWStr)] string url,
+            [In, MarshalAs(UnmanagedType.LPWStr)] string label,
+            [In, MarshalAs(UnmanagedType.LPWStr)] string language,
+            MF_TIMED_TEXT_TRACK_KIND kind,
+            [MarshalAs(UnmanagedType.Bool)] bool isDefault,
+            out int trackId
+            );
+
+        [PreserveSig]
+        int AddTrack(
+            [In, MarshalAs(UnmanagedType.LPWStr)] string label,
+            [In, MarshalAs(UnmanagedType.LPWStr)] string language,
+            MF_TIMED_TEXT_TRACK_KIND kind,
+            out IMFTimedTextTrack track
+            );
+
+        [PreserveSig]
+        int RemoveTrack(
+            IMFTimedTextTrack track
+            );
+
+        [PreserveSig]
+        int GetCueTimeOffset(
+            out double offset
+            );
+
+        [PreserveSig]
+        int SetCueTimeOffset(
+            double offset
+            );
+
+        [PreserveSig]
+        int GetTracks(
+            out IMFTimedTextTrackList tracks
+            );
+
+        [PreserveSig]
+        int GetActiveTracks(
+            out IMFTimedTextTrackList activeTracks
+            );
+
+        [PreserveSig]
+        int GetTextTracks(
+            out IMFTimedTextTrackList textTracks
+            );
+
+        [PreserveSig]
+        int GetMetadataTracks(
+            out IMFTimedTextTrackList metadataTracks
+            );
+
+        [PreserveSig]
+        int SetInBandEnabled(
+    [MarshalAs(UnmanagedType.Bool)] bool enabled
+    );
+
+        [return: MarshalAs(UnmanagedType.Bool)]
+        bool IsInBandEnabled();
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("df6b87b6-ce12-45db-aba7-432fe054e57d")]
+    public interface IMFTimedTextNotify
+    {
+        void TrackAdded(
+            int trackId
+            );
+
+        void TrackRemoved(
+            int trackId
+            );
+
+        void TrackSelected(
+            int trackId,
+            [MarshalAs(UnmanagedType.Bool)] bool selected
+            );
+
+        void TrackReadyStateChanged(
+            int trackId
+            );
+
+        void Error(
+            MF_TIMED_TEXT_ERROR_CODE errorCode,
+            int extendedErrorCode,
+            int sourceTrackId
+            );
+
+        void Cue(
+            MF_TIMED_TEXT_CUE_EVENT cueEvent,
+            double currentTime,
+            IMFTimedTextCue cue
+            );
+
+        void Reset();
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("8822c32d-654e-4233-bf21-d7f2e67d30d4")]
+    public interface IMFTimedTextTrack
+    {
+        [PreserveSig]
+        int GetId();
+
+        [PreserveSig]
+        int GetLabel(
+            [MarshalAs(UnmanagedType.LPWStr)] out string label
+            );
+
+        [PreserveSig]
+        int SetLabel(
+            [In, MarshalAs(UnmanagedType.LPWStr)] string label
+            );
+
+        [PreserveSig]
+        int GetLanguage(
+            [MarshalAs(UnmanagedType.LPWStr)] out string language
+            );
+
+        [PreserveSig]
+        MF_TIMED_TEXT_TRACK_KIND GetTrackKind();
+
+        [PreserveSig]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        bool IsInBand();
+
+        [PreserveSig]
+        int GetInBandMetadataTrackDispatchType(
+            [MarshalAs(UnmanagedType.LPWStr)] out string dispatchType
+            );
+
+        [PreserveSig]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        bool IsActive();
+
+        [PreserveSig]
+        MF_TIMED_TEXT_ERROR_CODE GetErrorCode();
+
+        [PreserveSig]
+        int GetExtendedErrorCode();
+
+        [PreserveSig]
+        int GetDataFormat(out Guid format);
+
+        [PreserveSig]
+        MF_TIMED_TEXT_TRACK_READY_STATE GetReadyState();
+
+        [PreserveSig]
+        int GetCueList(
+    out IMFTimedTextCueList cues
+    );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("23ff334c-442c-445f-bccc-edc438aa11e2")]
+    public interface IMFTimedTextTrackList
+    {
+        [PreserveSig]
+        int GetLength();
+
+        [PreserveSig]
+        int GetTrack(
+            int index,
+            out IMFTimedTextTrack track
+            );
+
+        [PreserveSig]
+        int GetTrackById(
+            int trackId,
+            out IMFTimedTextTrack track
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("1e560447-9a2b-43e1-a94c-b0aaabfbfbc9")]
+    public interface IMFTimedTextCue
+    {
+        [PreserveSig]
+        int GetId();
+
+        [PreserveSig]
+        int GetOriginalId(
+            [MarshalAs(UnmanagedType.LPWStr)] out string originalId
+            );
+
+        [PreserveSig]
+        MF_TIMED_TEXT_TRACK_KIND GetCueKind();
+
+        [PreserveSig]
+        double GetStartTime();
+
+        [PreserveSig]
+        double GetDuration();
+
+        [PreserveSig]
+        int GetTrackId();
+
+        [PreserveSig]
+        int GetData(
+            out IMFTimedTextBinary data
+            );
+
+        [PreserveSig]
+        int GetRegion(
+            out IMFTimedTextRegion region
+            );
+
+        [PreserveSig]
+        int GetStyle(
+            out IMFTimedTextStyle style
+            );
+
+        [PreserveSig]
+        int GetLineCount();
+
+        [PreserveSig]
+        int GetLine(
+            int index,
+            out IMFTimedTextFormattedText line
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("e13af3c1-4d47-4354-b1f5-e83ae0ecae60")]
+    public interface IMFTimedTextFormattedText
+    {
+        [PreserveSig]
+        int GetText(
+            [MarshalAs(UnmanagedType.LPWStr)] out string text
+            );
+
+        [PreserveSig]
+        int GetSubformattingCount();
+
+        [PreserveSig]
+        int GetSubformatting(
+            int index,
+            out int firstChar,
+            out int charLength,
+            out IMFTimedTextStyle style
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("09b2455d-b834-4f01-a347-9052e21c450e")]
+    public interface IMFTimedTextStyle
+    {
+        [PreserveSig]
+        int GetName(
+            [MarshalAs(UnmanagedType.LPWStr)] out string name
+            );
+
+        [PreserveSig]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        bool IsExternal();
+
+        [PreserveSig]
+        int GetFontFamily(
+            [MarshalAs(UnmanagedType.LPWStr)] out string fontFamily
+            );
+
+        [PreserveSig]
+        int GetFontSize(
+            out double fontSize,
+            out MF_TIMED_TEXT_UNIT_TYPE unitType
+            );
+
+        [PreserveSig]
+        int GetColor(
+            out MFARGB color
+            );
+
+        [PreserveSig]
+        int GetBackgroundColor(
+            out MFARGB bgColor
+            );
+
+        [PreserveSig]
+        int GetShowBackgroundAlways(
+            [MarshalAs(UnmanagedType.Bool)] out bool showBackgroundAlways
+            );
+
+        [PreserveSig]
+        int GetFontStyle(
+            out MF_TIMED_TEXT_FONT_STYLE fontStyle
+            );
+
+        [PreserveSig]
+        int GetBold(
+            [MarshalAs(UnmanagedType.Bool)] out bool bold
+            );
+
+        [PreserveSig]
+        int GetRightToLeft(
+            [MarshalAs(UnmanagedType.Bool)] out bool rightToLeft
+            );
+
+        [PreserveSig]
+        int GetTextAlignment(
+            out MF_TIMED_TEXT_ALIGNMENT textAlign
+            );
+
+        [PreserveSig]
+        int GetTextDecoration(
+            out int textDecoration
+            );
+
+        [PreserveSig]
+        int GetTextOutline(
+            out MFARGB color,
+            out double thickness,
+            out double blurRadius,
+            out MF_TIMED_TEXT_UNIT_TYPE unitType
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("c8d22afc-bc47-4bdf-9b04-787e49ce3f58")]
+    public interface IMFTimedTextRegion
+    {
+        [PreserveSig]
+        int GetName(
+            [MarshalAs(UnmanagedType.LPWStr)] out string name
+            );
+
+        [PreserveSig]
+        int GetPosition(
+            out double pX,
+            out double pY,
+            out MF_TIMED_TEXT_UNIT_TYPE unitType
+            );
+
+        [PreserveSig]
+        int GetExtent(
+            out double pWidth,
+            out double pHeight,
+            out MF_TIMED_TEXT_UNIT_TYPE unitType
+            );
+
+        [PreserveSig]
+        int GetBackgroundColor(
+            out MFARGB bgColor
+            );
+
+        [PreserveSig]
+        int GetWritingMode(
+            out MF_TIMED_TEXT_WRITING_MODE writingMode
+            );
+
+        [PreserveSig]
+        int GetDisplayAlignment(
+            out MF_TIMED_TEXT_DISPLAY_ALIGNMENT displayAlign
+            );
+
+        [PreserveSig]
+        int GetLineHeight(
+            out double pLineHeight,
+            out MF_TIMED_TEXT_UNIT_TYPE unitType
+            );
+
+        [PreserveSig]
+        int GetClipOverflow(
+            [MarshalAs(UnmanagedType.Bool)] out bool clipOverflow
+            );
+
+        [PreserveSig]
+        int GetPadding(
+            out double before,
+            out double start,
+            out double after,
+            out double end,
+            out MF_TIMED_TEXT_UNIT_TYPE unitType
+            );
+
+        [PreserveSig]
+        int GetWrap(
+            [MarshalAs(UnmanagedType.Bool)] out bool wrap
+            );
+
+        [PreserveSig]
+        int GetZIndex(
+            out int zIndex
+            );
+
+        [PreserveSig]
+        int GetScrollMode(
+            out MF_TIMED_TEXT_SCROLL_MODE scrollMode
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("4ae3a412-0545-43c4-bf6f-6b97a5c6c432")]
+    public interface IMFTimedTextBinary
+    {
+        [PreserveSig]
+        int GetData(
+            out byte[] data,
+            out int length
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("ad128745-211b-40a0-9981-fe65f166d0fd")]
+    public interface IMFTimedTextCueList
+    {
+        [PreserveSig]
+        int GetLength();
+
+        [PreserveSig]
+        int GetCueByIndex(
+            int index,
+            out IMFTimedTextCue cue
+            );
+
+        [PreserveSig]
+        int GetCueById(
+            int id,
+            out IMFTimedTextCue cue
+            );
+
+        [PreserveSig]
+        int GetCueByOriginalId(
+            [In, MarshalAs(UnmanagedType.LPWStr)] string originalId,
+            out IMFTimedTextCue cue
+            );
+
+        [PreserveSig]
+        int AddTextCue(
+            double start,
+            double duration,
+            [In, MarshalAs(UnmanagedType.LPWStr)] string text,
+            out IMFTimedTextCue cue
+            );
+
+        [PreserveSig]
+        int AddDataCue(
+            double start,
+            double duration,
+            byte[] data,
+            int dataSize,
+            out IMFTimedTextCue cue
+            );
+
+        [PreserveSig]
+        int RemoveCue(
+            IMFTimedTextCue cue
             );
     }
 

@@ -118,7 +118,9 @@ namespace MediaFoundation.Transform
         SetD3DManager = 2,
         DropSamples = 0x00000003,
         CommandTick = 0x00000004,
-        CommandMarker = 0x20000000
+        CommandMarker = 0x20000000,
+        NotifyReleaseResources = 0x10000004,
+        NotifyReacquireResources = 0x10000005,
     }
 
     [Flags, UnmanagedName("_MFT_OUTPUT_DATA_BUFFER_FLAGS")]
@@ -151,6 +153,7 @@ namespace MediaFoundation.Transform
         SortAndFilter = 0x00000040,   // Apply system local, do not use and preferred sorting and filtering
         SortAndFilterApprovedOnly = 0x000000C0,   // Similar to MFT_ENUM_FLAG_SORTANDFILTER, but apply a local policy of: MF_PLUGIN_CONTROL_POLICY_USE_APPROVED_PLUGINS
         SortAndFilterWebOnly = 0x00000140,   // Similar to MFT_ENUM_FLAG_SORTANDFILTER, but apply a local policy of: MF_PLUGIN_CONTROL_POLICY_USE_WEB_PLUGINS
+        SortAndFilterWebOnlyEdgemode = 0x00000240,
         All = 0x0000003F    // Enumerates all MFTs including SW and HW MFTs and applies filtering
     }
 

@@ -1567,6 +1567,35 @@ namespace MediaFoundation
 
         #endregion
 
+        #region Windows X
+
+        [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        public static extern int MFCreateContentProtectionDevice(
+           [In, MarshalAs(UnmanagedType.LPStruct)] Guid ProtectionSystemId,
+           out IMFContentProtectionDevice ContentProtectionDevice
+        );
+
+        [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        public static extern int MFCheckContentProtectionDevice(
+           [In, MarshalAs(UnmanagedType.LPStruct)] Guid ProtectionSystemId
+            );
+
+        [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        public static extern int MFIsContentProtectionDeviceSupported(
+           [In, MarshalAs(UnmanagedType.LPStruct)] Guid ProtectionSystemId,
+           [MarshalAs(UnmanagedType.Bool)] out bool isSupported
+            );
+
+        [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        public static extern int MFCreateContentDecryptorContext(
+           [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidMediaProtectionSystemId,
+           IMFDXGIDeviceManager pD3DManager,
+           IMFContentProtectionDevice pContentProtectionDevice,
+           out IMFContentDecryptorContext ppContentDecryptorContext
+        );
+
+        #endregion
+
         #region Untestable
 
         // No docs for 'verifier' and is OPM

@@ -2466,6 +2466,11 @@ namespace MediaFoundation.Misc
         public const int MF_E_DXGI_NEW_VIDEO_DEVICE = unchecked((int)0x80041001);
         public const int MF_E_DXGI_VIDEO_DEVICE_LOCKED = unchecked((int)0x80041002);
 
+        public const int MF_E_HARDWARE_DRM_UNSUPPORTED = unchecked((int)0xC00D3706);
+        public const int MF_E_NET_COMPANION_DRIVER_DISCONNECT = unchecked((int)0xC00D4295);
+        public const int MF_E_HDCP_AUTHENTICATION_FAILURE = unchecked((int)0xC00D7188);
+        public const int MF_E_HDCP_LINK_FAILURE = unchecked((int)0xC00D7189);
+
         #endregion
 
         #region externs

@@ -324,6 +324,75 @@ namespace MediaFoundation.ReadWrite
             );
     }
 
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("CF839FE6-8C2A-4DD2-B6EA-C22D6961AF05")]
+    public interface IMFSourceReaderCallback2 : IMFSourceReaderCallback
+    {
+        #region IMFSourceReaderCallback
+
+        [PreserveSig]
+        new int OnReadSample(
+            int hrStatus,
+            int dwStreamIndex,
+            MF_SOURCE_READER_FLAG dwStreamFlags,
+            long llTimestamp,
+            IMFSample pSample
+        );
+
+        [PreserveSig]
+        new int OnFlush(
+            int dwStreamIndex
+        );
+
+        [PreserveSig]
+        new int OnEvent(
+            int dwStreamIndex,
+            IMFMediaEvent pEvent
+        );
+
+        #endregion
+
+        [PreserveSig]
+        int OnTransformChange();
+
+        [PreserveSig]
+        int OnStreamError(
+            int dwStreamIndex,
+            int hrStatus);
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("2456BD58-C067-4513-84FE-8D0C88FFDC61")]
+    public interface IMFSinkWriterCallback2 : IMFSinkWriterCallback
+    {
+
+        #region IMFSinkWriterCallback
+
+        [PreserveSig]
+        new int OnFinalize(
+            int hrStatus
+        );
+
+        [PreserveSig]
+        new int OnMarker(
+            int dwStreamIndex,
+            IntPtr pvContext
+        );
+
+        #endregion
+
+        [PreserveSig]
+        int OnTransformChange();
+
+        [PreserveSig]
+        int OnStreamError(
+            int dwStreamIndex,
+            int hrStatus);
+
+    }
+
 #endif
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,

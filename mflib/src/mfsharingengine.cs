@@ -43,6 +43,7 @@ namespace MediaFoundation
         LocalRenderingStarted = 2001,
         LocalRenderingEnded = 2002,
         Stopped = 2003,
+        Error = 2501,
     }
 
     [UnmanagedName("MF_MEDIA_SHARING_ENGINE_EVENT")]

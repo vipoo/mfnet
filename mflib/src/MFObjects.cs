@@ -100,6 +100,9 @@ namespace MediaFoundation
         Func240M = 6,
         Func28 = 8,
         Func709 = 5,
+        Func2020Const = 12,
+        Func2020 = 13,
+        Func26 = 14,
         ForceDWORD = 0x7fffffff,
         Last = 9,
         sRGB = 7,
@@ -121,7 +124,9 @@ namespace MediaFoundation
         SMPTE_C = 8,
         SMPTE170M = 5,
         SMPTE240M = 6,
-        Unknown = 0
+        Unknown = 0,
+        BT2020 = 9,
+        XYZ = 10,
     }
 
     [UnmanagedName("MFVideoTransferMatrix")]
@@ -130,9 +135,11 @@ namespace MediaFoundation
         BT601 = 2,
         BT709 = 1,
         ForceDWORD = 0x7fffffff,
-        Last = 4,
         SMPTE240M = 3,
-        Unknown = 0
+        Unknown = 0,
+        BT2020_10 = 4,
+        BT2020_12 = 5,
+        Last = 6,
     }
 
     [UnmanagedName("MFVideoLighting")]
@@ -376,12 +383,14 @@ namespace MediaFoundation
         METransformHaveOutput,
         METransformDrainComplete,
         METransformMarker,
+        METransformInputStreamStateChanged,
         MEByteStreamCharacteristicsChanged = 700,
         MEVideoCaptureDeviceRemoved = 800,
         MEVideoCaptureDevicePreempted = 801,
         MEStreamSinkFormatInvalidated = 802,
         MEEncodingParameters = 803,
         MEContentProtectionMetadata = 900,
+        MEDeviceThermalStateChanged = 950,
         MEReservedMax = 10000
     }
 
@@ -529,7 +538,8 @@ namespace MediaFoundation
     {
         UseAllPlugins = 0,
         UseApprovedPlugins = 1,
-        UseWebPlugins = 2
+        UseWebPlugins = 2,
+        UseWebPluginsEdgemode = 3,
     }
 
 #endif
