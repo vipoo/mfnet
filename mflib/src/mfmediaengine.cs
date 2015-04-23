@@ -36,6 +36,45 @@ namespace MediaFoundation
 
 #if ALLOW_UNTESTED_INTERFACES
 
+    [Flags, UnmanagedName("MFMEDIASOURCE_CHARACTERISTICS")]
+    public enum MFMEDIASOURCE_CHARACTERISTICS
+    {
+        IsLive = 0x1,
+        CanSeek = 0x2,
+        CanPause = 0x4,
+        HasSlowSeek = 0x8,
+        HasMultiplePresentations = 0x10,
+        CanSkipForward = 0x20,
+        CanSkipBackward = 0x40,
+        DoesNotUseNetwork = 0x80,
+    }
+    
+    [UnmanagedName("ERole")]
+    public enum ERole
+    {
+        eConsole = 0,
+        eMultimedia = 1,
+        eCommunications = 2,
+        ERole_enum_count = 3,
+    }
+
+    [UnmanagedName("AUDIO_STREAM_CATEGORY")]
+    public enum AUDIO_STREAM_CATEGORY
+    {
+        Other = 0,
+        ForegroundOnlyMedia,
+        BackgroundCapableMedia,
+        Communications,
+        Alerts,
+        SoundEffects,
+        GameEffects,
+        GameMedia,
+        GameChat,
+        Speech,
+        Movie,
+        Media
+    }
+    
     [UnmanagedName("MF_MEDIA_ENGINE_ERR")]
     public enum MF_MEDIA_ENGINE_ERR : short
     {
@@ -849,7 +888,7 @@ namespace MediaFoundation
 
         [PreserveSig]
         int GetResourceCharacteristics(
-            out int pCharacteristics
+            out MFMEDIASOURCE_CHARACTERISTICS pCharacteristics
             );
 
         [PreserveSig]
@@ -958,22 +997,22 @@ namespace MediaFoundation
 
         [PreserveSig]
         int GetAudioStreamCategory(
-            out int pCategory
+            out AUDIO_STREAM_CATEGORY pCategory
             );
 
         [PreserveSig]
         int SetAudioStreamCategory(
-            int category
+            AUDIO_STREAM_CATEGORY category
             );
 
         [PreserveSig]
         int GetAudioEndpointRole(
-            out int pRole
+            out ERole pRole
             );
 
         [PreserveSig]
         int SetAudioEndpointRole(
-            int role
+            ERole role
             );
 
         [PreserveSig]
@@ -1044,7 +1083,7 @@ namespace MediaFoundation
 
         [PreserveSig]
         int GetRequiredProtections(
-            out int pFrameProtectionFlags
+            out MF_MEDIA_ENGINE_FRAME_PROTECTION_FLAGS pFrameProtectionFlags
             );
 
         [PreserveSig]
@@ -1058,7 +1097,7 @@ namespace MediaFoundation
             [In] MFVideoNormalizedRect pSrc,
             [In] MFRect pDst,
             [In] MFARGB pBorderClr,
-            out int pFrameProtectionFlags
+            out MF_MEDIA_ENGINE_FRAME_PROTECTION_FLAGS pFrameProtectionFlags
             );
 
         [PreserveSig]
