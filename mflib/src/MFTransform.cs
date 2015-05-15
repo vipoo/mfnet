@@ -123,7 +123,7 @@ namespace MediaFoundation.Transform
         NotifyReacquireResources = 0x10000005,
     }
 
-    [Flags, UnmanagedName("_MFT_OUTPUT_DATA_BUFFER_FLAGS")]
+    [UnmanagedName("_MFT_OUTPUT_DATA_BUFFER_FLAGS")]
     public enum MFTOutputDataBufferFlags
     {
         None = 0,
