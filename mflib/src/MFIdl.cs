@@ -40,14 +40,7 @@ namespace MediaFoundation
     Guid("98230571-0087-4204-b020-3282538e57d3")]
     public class CColorConvertDMO
     {
-    }
-
-    [UnmanagedName("CLSID_MFCaptureEngine"),
-    ComImport,
-    Guid("efce38d3-8914-4674-a7df-ae1b3d654b8a")]
-    public class MFCaptureEngine
-    {
-    }
+    }    
 
     [UnmanagedName("CLSID_PlayToSourceClassFactory"),
     ComImport,
@@ -772,6 +765,9 @@ namespace MediaFoundation
         public static readonly Guid MF_PD_VIDEO_ENCODING_BITRATE = new Guid(0x6c990d36, 0xbb8e, 0x477a, 0x85, 0x98, 0xd, 0x5d, 0x96, 0xfc, 0xd8, 0x8a);
 
         // wmcontainer.h Attributes
+        public static readonly Guid MFASFSampleExtension_SampleDuration = new Guid(0xc6bd9450, 0x867f, 0x4907, 0x83, 0xa3, 0xc7, 0x79, 0x21, 0xb7, 0x33, 0xad);
+        public static readonly Guid MFSampleExtension_SampleKeyID = new Guid(0x9ed713c8, 0x9b87, 0x4b26, 0x82, 0x97, 0xa9, 0x3b, 0x0c, 0x5a, 0x8a, 0xcc);
+
         public static readonly Guid MF_PD_ASF_FILEPROPERTIES_FILE_ID = new Guid(0x3de649b4, 0xd76d, 0x4e66, 0x9e, 0xc9, 0x78, 0x12, 0xf, 0xb4, 0xc7, 0xe3);
         public static readonly Guid MF_PD_ASF_FILEPROPERTIES_CREATION_TIME = new Guid(0x3de649b6, 0xd76d, 0x4e66, 0x9e, 0xc9, 0x78, 0x12, 0xf, 0xb4, 0xc7, 0xe3);
         public static readonly Guid MF_PD_ASF_FILEPROPERTIES_PACKETS = new Guid(0x3de649b7, 0xd76d, 0x4e66, 0x9e, 0xc9, 0x78, 0x12, 0xf, 0xb4, 0xc7, 0xe3);
@@ -1383,6 +1379,7 @@ namespace MediaFoundation
 
         // Generic
 
+        public static readonly Guid CLSID_MFCaptureEngine = new Guid("efce38d3-8914-4674-a7df-ae1b3d654b8a");
         public static readonly Guid CLSID_MFSinkWriter = new Guid(0xa3bbfb17, 0x8273, 0x4e52, 0x9e, 0x0e, 0x97, 0x39, 0xdc, 0x88, 0x79, 0x90);
         public static readonly Guid CLSID_MFSourceReader = new Guid(0x1777133c, 0x0881, 0x411b, 0xa5, 0x77, 0xad, 0x54, 0x5f, 0x07, 0x14, 0xc4);
         public static readonly Guid CLSID_MFSourceResolver = new Guid(0x90eab60f, 0xe43a, 0x4188, 0xbc, 0xc4, 0xe4, 0x7f, 0xdf, 0x04, 0x86, 0x8c);
@@ -1538,6 +1535,20 @@ namespace MediaFoundation
         public static readonly Guid MFAudioFormat_Base_HDCP = new Guid(0x3884b5bc, 0xe277, 0x43fd, 0x98, 0x3d, 0x03, 0x8a, 0xa8, 0xd9, 0xb6, 0x05);
         public static readonly Guid MFVideoFormat_H264_HDCP = new Guid(0x5d0ce9dd, 0x9817, 0x49da, 0xbd, 0xfd, 0xf5, 0xf5, 0xb9, 0x8f, 0x18, 0xa6);
         public static readonly Guid MFVideoFormat_Base_HDCP = new Guid(0xeac3b9d5, 0xbd14, 0x4237, 0x8f, 0x1f, 0xba, 0xb4, 0x28, 0xe4, 0x93, 0x12);
+
+        public static string LookupName(Guid gSeeking)
+        {
+            Type t = typeof(MFMediaType);
+            System.Reflection.FieldInfo[] fia = t.GetFields(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
+
+            foreach (System.Reflection.FieldInfo fi in fia)
+            {
+                if (gSeeking.CompareTo(fi.GetValue(t)) == 0)
+                    return fi.Name;
+            }
+
+            return gSeeking.ToString();
+        }
     }
 
     public static class MFImageFormat
