@@ -416,7 +416,14 @@ namespace MediaFoundation.Misc
         {
             if (type == VariantType.IUnknown)
             {
-                return Marshal.GetObjectForIUnknown(ptr);
+                if (ptr != IntPtr.Zero)
+                {
+                    return Marshal.GetObjectForIUnknown(ptr);
+                }
+                else
+                {
+                    return null;
+                }
             }
             throw new ArgumentException("PropVariant contents not an IUnknown");
         }
@@ -487,7 +494,15 @@ namespace MediaFoundation.Misc
 
                 case VariantType.IUnknown:
                     {
-                        sRet = GetIUnknown().ToString();
+                        object o = GetIUnknown();
+                        if (o != null)
+                        {
+                            sRet = GetIUnknown().ToString();
+                        }
+                        else
+                        {
+                            sRet = "<null>";
+                        }
                         break;
                     }
 
