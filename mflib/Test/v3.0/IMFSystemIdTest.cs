@@ -11,6 +11,18 @@ namespace Testv30
     {
         public void DoTests()
         {
+            int hr;
+
+            IMFSystemId id;
+            hr = MFExtern.MFGetSystemId(out id);
+            MFError.ThrowExceptionForHR(hr);
+
+            //hr = id.Setup();
+
+            int i;
+            IntPtr ip;
+            hr = id.GetData(out i, out ip);
+            MFError.ThrowExceptionForHR(hr);
         }
     }
 }
