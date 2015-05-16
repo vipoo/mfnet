@@ -1369,7 +1369,7 @@ namespace MediaFoundation
             [MarshalAs(UnmanagedType.IUnknown)] out object ppv
         );
 
-        [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFCreateProtectedEnvironmentAccess(
             out IMFProtectedEnvironmentAccess ppAccess
         );
@@ -1380,7 +1380,7 @@ namespace MediaFoundation
             out IMFSignedLibrary ppLib
         );
 
-        [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFGetSystemId(
             out IMFSystemId ppId
         );

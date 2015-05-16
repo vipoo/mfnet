@@ -28,8 +28,6 @@ using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 
 using MediaFoundation.Misc;
-using MediaFoundation;
-using System.Drawing;
 
 namespace MediaFoundation
 {
@@ -179,6 +177,13 @@ namespace MediaFoundation
     ComImport,
     Guid("f447b69e-1884-4a7e-8055-346f74d6edb3")]
     public class AudioResamplerMediaObject
+    {
+    }
+
+    [UnmanagedName("CLSID_VideoProcessorMFT"),
+    ComImport,
+    Guid("88753B26-5B24-49bd-B2E7-0C445C78C982")]
+    public class VideoProcessorMFT
     {
     }
 
@@ -1361,8 +1366,6 @@ namespace MediaFoundation
     public static class CLSID
     {
         // Not attribs
-        public static readonly Guid CLSID_VideoProcessorMFT = new Guid(0x88753b26, 0x5b24, 0x49bd, 0xb2, 0xe7, 0xc, 0x44, 0x5c, 0x78, 0xc9, 0x82);
-
         public static readonly Guid MFASFINDEXER_TYPE_TIMECODE = new Guid(0x49815231, 0x6bad, 0x44fd, 0x81, 0xa, 0x3f, 0x60, 0x98, 0x4e, 0xc7, 0xfd);
 
         public static readonly Guid MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE_AUDCAP_GUID = new Guid(0x14dd9a1c, 0x7cff, 0x41be, 0xb1, 0xb9, 0xba, 0x1a, 0xc6, 0xec, 0xb5, 0x71);
@@ -1848,8 +1851,8 @@ namespace MediaFoundation
     [StructLayout(LayoutKind.Sequential)]
     public struct MOVE_RECT
     {
-        Point SourcePoint;
-        Rectangle DestRect;
+        //Point SourcePoint;
+        MFRect DestRect;
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -1857,7 +1860,7 @@ namespace MediaFoundation
     {
         int FrameNumber;
         int NumDirtyRects;
-        Rectangle[] DirtyRects;
+        MFRect[] DirtyRects;
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -1878,7 +1881,7 @@ namespace MediaFoundation
     [StructLayout(LayoutKind.Sequential)]
     public struct FaceRectInfo
     {
-        Rectangle Region;
+        MFRect Region;
         int confidenceLevel;
     }
 
@@ -1935,7 +1938,7 @@ namespace MediaFoundation
         int Width;
         int Height;
 
-        Rectangle Region;
+        MFRect Region;
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -2641,12 +2644,12 @@ namespace MediaFoundation
 
         [PreserveSig]
         int SetSourceRectangle(
-            Rectangle pSrcRect
+            MFRect pSrcRect
         );
 
         [PreserveSig]
         int SetDestinationRectangle(
-            Rectangle pDstRect
+            MFRect pDstRect
         );
 
         [PreserveSig]
@@ -3663,12 +3666,12 @@ namespace MediaFoundation
 
         [PreserveSig]
         new int SetSourceRectangle(
-            Rectangle pSrcRect
+            MFRect pSrcRect
         );
 
         [PreserveSig]
         new int SetDestinationRectangle(
-            Rectangle pDstRect
+            MFRect pDstRect
         );
 
         [PreserveSig]
