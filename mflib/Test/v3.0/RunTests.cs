@@ -9,6 +9,9 @@ namespace Testv30
 {
     static public class Program
     {
+        public static string File1 = @"c:\SourceForge\mflib\Test\Media\AspectRatio4x3.wmv";
+        public static string File2 = @"http://www.LimeGreenSocks.com/AspectRatio4x3.wmv";
+
         [MTAThread]
         static void Main(string[] args)
         {
@@ -177,7 +180,6 @@ namespace Testv30
 
                 //IMFCapturePhotoSinkTest t76 = new IMFCapturePhotoSinkTest();
                 //t76.DoTests();
-
             }
             catch (Exception e)
             {
@@ -211,6 +213,5 @@ namespace Testv30
             Marshal.Release(p);
             Marshal.Release(p);
         }
-
     }
 }

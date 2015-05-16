@@ -11,6 +11,9 @@ namespace Testv30
     {
         public void DoTests()
         {
+            // returns 0x80040111 (Class not available)
+            IMFImageSharingEngineClassFactory isecf = new MFMediaSharingEngineClassFactory() as IMFImageSharingEngineClassFactory;
+            Debug.Assert(isecf != null);
         }
     }
 }
