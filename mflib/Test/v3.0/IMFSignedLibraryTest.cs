@@ -11,6 +11,19 @@ namespace Testv30
     {
         public void DoTests()
         {
+            string [] sn = System.IO.Directory.GetFiles(@"c:\windows\system32", "*.dll");
+            IMFSignedLibrary sl;
+            int hr;
+
+            Debug.WriteLine(sn.Length);
+
+            foreach (string s in sn)
+            {
+                hr = MFExtern.MFLoadSignedLibrary(s, out sl);
+
+                if (hr != MFError.MF_E_SIGNATURE_VERIFICATION_FAILED)
+                    Debug.WriteLine(s);
+            }
         }
     }
 }

@@ -1374,7 +1374,7 @@ namespace MediaFoundation
             out IMFProtectedEnvironmentAccess ppAccess
         );
 
-        [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFLoadSignedLibrary(
             [In, MarshalAs(UnmanagedType.LPWStr)] string pszName,
             out IMFSignedLibrary ppLib
