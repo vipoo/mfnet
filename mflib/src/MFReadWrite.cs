@@ -213,7 +213,7 @@ namespace MediaFoundation.ReadWrite
         [PreserveSig]
         int AddTransformForStream(
             int dwStreamIndex,
-            [MarshalAs(UnmanagedType.IUnknown)] out object pTransformOrActivate);
+            [MarshalAs(UnmanagedType.IUnknown)] object pTransformOrActivate);
 
         [PreserveSig]
         int RemoveAllTransformsForStream(
