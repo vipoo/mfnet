@@ -11,6 +11,17 @@ namespace Testv30
     {
         public void DoTests()
         {
+            int hr;
+
+            IMFPluginControl pc;
+            hr = MFExtern.MFGetPluginControl(out pc);
+            MFError.ThrowExceptionForHR(hr);
+
+            IMFPluginControl2 pc2;
+            pc2 = (IMFPluginControl2)pc;
+
+            hr = pc2.SetPolicy(MF_PLUGIN_CONTROL_POLICY.UseAllPlugins);
+            MFError.ThrowExceptionForHR(hr);
         }
     }
 }
