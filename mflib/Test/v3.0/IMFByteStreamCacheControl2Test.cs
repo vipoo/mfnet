@@ -10,7 +10,6 @@ namespace Testv30
     class IMFByteStreamCacheControl2Test
     {
         IMFByteStreamCacheControl2 m_bscc2;
-        IMFByteStreamTimeSeek m_bsts;
 
         public void DoTests()
         {
