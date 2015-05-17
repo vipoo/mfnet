@@ -1589,10 +1589,10 @@ namespace MediaFoundation
     }
 
     [StructLayout(LayoutKind.Sequential), UnmanagedName("MF_BYTE_STREAM_CACHE_RANGE")]
-    public class MF_BYTE_STREAM_CACHE_RANGE
+    public struct MF_BYTE_STREAM_CACHE_RANGE
     {
-        long qwStartOffset;
-        long qwEndOffset;
+        public long qwStartOffset;
+        public long qwEndOffset;
     }
 
     [UnmanagedName("MFAudioConstriction")]
@@ -2850,7 +2850,7 @@ namespace MediaFoundation
         [PreserveSig]
         int GetByteRanges(
             out int pcRanges,
-            [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] MF_BYTE_STREAM_CACHE_RANGE[] ppRanges
+            [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] out MF_BYTE_STREAM_CACHE_RANGE[] ppRanges
         );
 
         [PreserveSig]
