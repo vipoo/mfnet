@@ -94,21 +94,20 @@ namespace MFT_Grayscale
                 null
                 );
             MFError.ThrowExceptionForHR(hr);
-
         }
 
         [ComUnregisterFunctionAttribute]
         static public void DllUnregisterServer(Type t)
         {
             int hr = MFExtern.MFTUnregister(typeof(Grayscale).GUID);
-            MFError.ThrowExceptionForHR(hr);
+            //MFError.ThrowExceptionForHR(hr);
         }
 
         #endregion
 
         public Grayscale()
         {
-            TRACE("Constructor");
+            Trace("Constructor");
 
             m_pSample = null;
             m_pInputType = null;
@@ -120,7 +119,7 @@ namespace MFT_Grayscale
 
         ~Grayscale()
         {
-            TRACE("Destructor");
+            Trace("Destructor");
             Dispose();
         }
 
@@ -136,7 +135,7 @@ namespace MFT_Grayscale
             // Make sure we *never* leave this entry point with an exception
             try
             {
-                TRACE("GetStreamLimits");
+                Trace("GetStreamLimits");
 
                 // Fixed stream limits.
                 if (pdwInputMinimum != null)
@@ -172,7 +171,7 @@ namespace MFT_Grayscale
             // Make sure we *never* leave this entry point with an exception
             try
             {
-                TRACE("GetStreamCount");
+                Trace("GetStreamCount");
 
                 // Fixed stream count.
                 if (pcInputStreams != null)
@@ -202,7 +201,7 @@ namespace MFT_Grayscale
             // Make sure we *never* leave this entry point with an exception
             try
             {
-                TRACE("GetStreamIDs");
+                Trace("GetStreamIDs");
 
                 // Do not need to implement, because this MFT has a fixed number of 
                 // streams and the stream IDs match the stream indexes.
@@ -228,7 +227,7 @@ namespace MFT_Grayscale
             // Make sure we *never* leave this entry point with an exception
             try
             {
-                TRACE("GetInputStreamInfo");
+                Trace("GetInputStreamInfo");
 
                 pStreamInfo = new MFTInputStreamInfo();
 
@@ -260,7 +259,7 @@ namespace MFT_Grayscale
             try
             {
                 int hr;
-                TRACE("GetOutputStreamInfo");
+                Trace("GetOutputStreamInfo");
 
                 lock (this)
                 {
@@ -298,7 +297,7 @@ namespace MFT_Grayscale
             // Make sure we *never* leave this entry point with an exception
             try
             {
-                TRACE("GetAttributes");
+                Trace("GetAttributes");
 
                 pAttributes = null;
 
@@ -320,7 +319,7 @@ namespace MFT_Grayscale
             // Make sure we *never* leave this entry point with an exception
             try
             {
-                TRACE("GetInputStreamAttributes");
+                Trace("GetInputStreamAttributes");
 
                 ppAttributes = null;
 
@@ -342,7 +341,7 @@ namespace MFT_Grayscale
             // Make sure we *never* leave this entry point with an exception
             try
             {
-                TRACE("GetOutputStreamAttributes");
+                Trace("GetOutputStreamAttributes");
 
                 ppAttributes = null;
 
@@ -361,7 +360,7 @@ namespace MFT_Grayscale
             // Make sure we *never* leave this entry point with an exception
             try
             {
-                TRACE("DeleteInputStream");
+                Trace("DeleteInputStream");
 
                 // Removing streams not supported
                 return E_NotImplemented;
@@ -380,7 +379,7 @@ namespace MFT_Grayscale
             // Make sure we *never* leave this entry point with an exception
             try
             {
-                TRACE("AddInputStreams");
+                Trace("AddInputStreams");
 
                 // Adding streams not supported
                 return E_NotImplemented;
@@ -400,7 +399,9 @@ namespace MFT_Grayscale
             // Make sure we *never* leave this entry point with an exception
             try
             {
-                TRACE(string.Format("GetInputAvailableType (stream = {0}, type index = {1})", dwInputStreamID, dwTypeIndex));
+                int hr = S_Ok;
+
+                Trace(string.Format("GetInputAvailableType (stream = {0}, type index = {1})", dwInputStreamID, dwTypeIndex));
 
                 lock (this)
                 {
@@ -408,7 +409,15 @@ namespace MFT_Grayscale
 
                     if (m_pOutputType != null)
                     {
-                        ppType = m_pOutputType;
+                        if (dwTypeIndex == 0)
+                        {
+                            ppType = m_pOutputType;
+                        }
+                        else
+                        {
+                            ppType = null;
+                            hr = MFError.MF_E_NO_MORE_TYPES;
+                        }
                     }
                     else
                     {
@@ -416,7 +425,7 @@ namespace MFT_Grayscale
                         OnGetPartialType(dwTypeIndex, out ppType);
                     }
                 }
-                return S_Ok;
+                return hr;
             }
             catch (Exception e)
             {
@@ -434,22 +443,32 @@ namespace MFT_Grayscale
             // Make sure we *never* leave this entry point with an exception
             try
             {
-                TRACE(string.Format("GetOutputAvailableType (stream = {0}, type index = {1})", dwOutputStreamID, dwTypeIndex));
+                Trace(string.Format("GetOutputAvailableType (stream = {0}, type index = {1})", dwOutputStreamID, dwTypeIndex));
+
+                int hr = S_Ok;
 
                 lock (this)
                 {
                     CheckValidOutputStream(dwOutputStreamID);
 
-                    if (m_pInputType != null && dwTypeIndex == 0)
+                    if (m_pInputType != null)
                     {
-                        ppType = m_pInputType;
+                        if (dwTypeIndex == 0)
+                        {
+                            ppType = m_pInputType;
+                        }
+                        else
+                        {
+                            ppType = null;
+                            hr = MFError.MF_E_NO_MORE_TYPES;
+                        }
                     }
                     else
                     {
                         OnGetPartialType(dwTypeIndex, out ppType);
                     }
                 }
-                return S_Ok;
+                return hr;
             }
             catch (Exception e)
             {
@@ -464,7 +483,7 @@ namespace MFT_Grayscale
             MFTSetTypeFlags dwFlags
         )
         {
-            TRACE("SetInputType");
+            Trace("SetInputType");
 
             // Make sure we *never* leave this entry point with an exception
             try
@@ -510,7 +529,7 @@ namespace MFT_Grayscale
             // Make sure we *never* leave this entry point with an exception
             try
             {
-                TRACE("SetOutputType");
+                Trace("SetOutputType");
 
                 lock (this)
                 {
@@ -552,7 +571,7 @@ namespace MFT_Grayscale
             try
             {
                 int hr;
-                TRACE("GetInputCurrentType");
+                Trace("GetInputCurrentType");
 
                 lock (this)
                 {
@@ -590,7 +609,7 @@ namespace MFT_Grayscale
             try
             {
                 int hr;
-                TRACE("GetOutputCurrentType");
+                Trace("GetOutputCurrentType");
 
                 lock (this)
                 {
@@ -627,7 +646,7 @@ namespace MFT_Grayscale
             // Make sure we *never* leave this entry point with an exception
             try
             {
-                TRACE("GetInputStatus");
+                Trace("GetInputStatus");
 
                 lock (this)
                 {
@@ -659,7 +678,7 @@ namespace MFT_Grayscale
             // Make sure we *never* leave this entry point with an exception
             try
             {
-                TRACE("GetOutputStatus");
+                Trace("GetOutputStatus");
 
                 lock (this)
                 {
@@ -691,7 +710,7 @@ namespace MFT_Grayscale
             // Make sure we *never* leave this entry point with an exception
             try
             {
-                TRACE("SetOutputBounds");
+                Trace("SetOutputBounds");
 
                 // Output bounds not supported
                 return E_NotImplemented;
@@ -710,7 +729,7 @@ namespace MFT_Grayscale
             // Make sure we *never* leave this entry point with an exception
             try
             {
-                TRACE("ProcessEvent");
+                Trace("ProcessEvent");
 
                 // Events not support
                 return E_NotImplemented;
@@ -729,7 +748,7 @@ namespace MFT_Grayscale
             // Make sure we *never* leave this entry point with an exception
             try
             {
-                TRACE("ProcessMessage");
+                Trace("ProcessMessage");
 
                 lock (this)
                 {
@@ -785,7 +804,7 @@ namespace MFT_Grayscale
             // Make sure we *never* leave this entry point with an exception
             try
             {
-                TRACE("ProcessInput");
+                Trace("ProcessInput");
 
                 lock (this)
                 {
@@ -838,7 +857,7 @@ namespace MFT_Grayscale
             // Make sure we *never* leave this entry point with an exception
             try
             {
-                TRACE("ProcessOutput");
+                Trace("ProcessOutput");
 
                 int hr;
 
@@ -958,6 +977,11 @@ namespace MFT_Grayscale
 
         #region Private Methods
 
+        private static void Trace(string s)
+        {
+            Debug.WriteLine(s);
+        }
+
         //-------------------------------------------------------------------
         // Name: OnGetPartialType
         // Description: Returns a partial media type from our list.
@@ -990,7 +1014,7 @@ namespace MFT_Grayscale
 
         private void OnCheckInputType(IMFMediaType pmt)
         {
-            TRACE("OnCheckInputType");
+            Trace("OnCheckInputType");
 
             // If the output type is set, see if they match.
             if (m_pOutputType != null)
@@ -1018,7 +1042,7 @@ namespace MFT_Grayscale
 
         private void OnCheckOutputType(IMFMediaType pmt)
         {
-            TRACE("OnCheckOutputType");
+            Trace("OnCheckOutputType");
 
             // If the input type is set, see if they match.
             if (m_pInputType != null)
@@ -1102,7 +1126,7 @@ namespace MFT_Grayscale
 
         private void OnSetInputType(IMFMediaType pmt)
         {
-            TRACE("OnSetInputType");
+            Trace("OnSetInputType");
 
             // Release the old type
             SafeRelease(m_pInputType);
@@ -1124,7 +1148,7 @@ namespace MFT_Grayscale
 
         private void OnSetOutputType(IMFMediaType pmt)
         {
-            TRACE("OnSetOutputType");
+            Trace("OnSetOutputType");
 
             // Release the old type
             SafeRelease(m_pOutputType);
@@ -1165,14 +1189,14 @@ namespace MFT_Grayscale
             pOut2D = pOut as IMF2DBuffer;
             if (pOut2D != null)
             {
-                TRACE("output buffer: 2D");
+                Trace("output buffer: 2D");
                 hr = pOut2D.Lock2D(out pDest, out lDestStride);
                 MFError.ThrowExceptionForHR(hr);
             }
             else
             {
                 int ml;
-                TRACE("output buffer: Lock");
+                Trace("output buffer: Lock");
                 hr = pOut.Lock(out pDest, out ml, out cb);
                 MFError.ThrowExceptionForHR(hr);
                 lDestStride = lStrideIfContiguous;
@@ -1183,14 +1207,14 @@ namespace MFT_Grayscale
             pIn2D = pIn as IMF2DBuffer;
             if (pIn2D != null)
             {
-                TRACE("input buffer: 2D");
+                Trace("input buffer: 2D");
                 hr = pIn2D.Lock2D(out pSrc, out lSrcStride);
                 MFError.ThrowExceptionForHR(hr);
             }
             else
             {
                 int ml;
-                TRACE("Input buffer: lock");
+                Trace("Input buffer: lock");
                 hr = pIn.Lock(out pSrc, out ml, out cb);
                 MFError.ThrowExceptionForHR(hr);
                 lSrcStride = lStrideIfContiguous;
@@ -1211,7 +1235,7 @@ namespace MFT_Grayscale
             // Unlock the buffers.
             if (bLockedOutputBuffer)
             {
-                TRACE("Output buffer: unlock");
+                Trace("Output buffer: unlock");
                 if (pOut2D != null)
                 {
                     hr = pOut2D.Unlock2D();
@@ -1226,7 +1250,7 @@ namespace MFT_Grayscale
 
             if (bLockedInputBuffer)
             {
-                TRACE("Input buffer: unlock");
+                Trace("Input buffer: unlock");
                 if (pIn2D != null)
                 {
                     hr = pIn2D.Unlock2D();
@@ -1309,7 +1333,7 @@ namespace MFT_Grayscale
                 m_imageHeightInPixels = (int)(lPacked & int.MaxValue);
                 m_imageWidthInPixels = (int)(lPacked >> 32);
 
-                TRACE(string.Format("Frame size: {0} x {1}", m_imageWidthInPixels, m_imageHeightInPixels));
+                Trace(string.Format("Frame size: {0} x {1}", m_imageWidthInPixels, m_imageHeightInPixels));
 
                 // Calculate the image size (not including padding)
                 GetImageSize(m_videoFOURCC, m_imageWidthInPixels, m_imageHeightInPixels, out m_cbImageSize);
@@ -1381,7 +1405,7 @@ namespace MFT_Grayscale
         {
 #if DEBUG
             FourCC fc = new FourCC(g);
-            TRACE(string.Format("Subtype: {0}", fc.ToString()));
+            Trace(string.Format("Subtype: {0}", fc.ToString()));
 #endif
         }
 
@@ -1517,7 +1541,7 @@ namespace MFT_Grayscale
 
         public void Dispose()
         {
-            TRACE("Dispose");
+            Trace("Dispose");
 
             SafeRelease(m_pSample);
             m_pSample = null;
