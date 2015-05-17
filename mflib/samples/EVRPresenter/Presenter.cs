@@ -1450,7 +1450,7 @@ namespace EVRPresenter
         // IsScrubbing: Scrubbing occurs when the frame rate is 0.
         protected bool IsScrubbing() { return m_fRate == 0.0f; }
 
-        // NotifyEvent: Send an e vent to the EVR through its IMediaEventSink interface.
+        // NotifyEvent: Send an event to the EVR through its IMediaEventSink interface.
         protected void NotifyEvent(EventCode ec, IntPtr Param1, IntPtr Param2)
         {
             if (m_pMediaEventSink != null)
