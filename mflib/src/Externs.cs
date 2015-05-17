@@ -618,8 +618,6 @@ namespace MediaFoundation
             out int pnumMFTActivate
         );
 
-        #region v2.1
-
         [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFCreatePMPServer(
             MFPMPSessionCreationFlags dwCreationFlags,
@@ -1288,35 +1286,33 @@ namespace MediaFoundation
 
         public delegate void MFPERIODICCALLBACK([MarshalAs(UnmanagedType.IUnknown)] object asdf);
 
-        #endregion // v2.1
-
 #if ALLOW_UNTESTED_INTERFACES
 
         #region W8
 
-        [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFCreateAC3MediaSink(
             IMFByteStream pTargetByteStream,
             IMFMediaType pAudioMediaType,
             out IMFMediaSink ppMediaSink
         );
 
-        [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFCreateADTSMediaSink(
             IMFByteStream pTargetByteStream,
             IMFMediaType pAudioMediaType,
             out IMFMediaSink ppMediaSink
         );
 
-        [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFCreateMuxSink(
-        [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidOutputSubType,
+            Guid guidOutputSubType,
             IMFAttributes pOutputAttributes,
             IMFByteStream pOutputByteStream,
             out IMFMediaSink ppMuxSink
         );
 
-        [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFCreateFMPEG4MediaSink(
             IMFByteStream pIByteStream,
             IMFMediaType pVideoMediaType,
@@ -1324,7 +1320,7 @@ namespace MediaFoundation
             out IMFMediaSink ppIMediaSink
         );
 
-        [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFCreateTranscodeTopologyFromByteStream(
             IMFMediaSource pSrc,
             IMFByteStream pOutputStream,

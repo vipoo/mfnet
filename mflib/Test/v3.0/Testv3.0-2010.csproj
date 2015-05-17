@@ -39,6 +39,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExternsTest.cs" />
     <Compile Include="IMFAsyncCallbackLoggingTest.cs" />
     <Compile Include="IMFByteStreamCacheControl2Test.cs" />
     <Compile Include="IMFByteStreamProxyClassFactoryTest.cs" />

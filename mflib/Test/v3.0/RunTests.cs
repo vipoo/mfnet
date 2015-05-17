@@ -28,7 +28,7 @@ namespace Testv30
                 hr = MFExtern.MFLockPlatform();
                 MFError.ThrowExceptionForHR(hr);
 
-                //TestExterns t1 = new TestExterns();
+                //ExternTest t1 = new ExternTest();
                 //t1.DoTests();
 
                 //IAdvancedMediaCaptureTest t2 = new IAdvancedMediaCaptureTest();
