@@ -429,7 +429,7 @@ namespace MediaFoundation
 
         [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFTEnum(
-            [In, MarshalAs(UnmanagedType.Struct)] Guid guidCategory,
+            [In, MarshalAs(UnmanagedType.Struct)] Guid MFTransformCategory,
             [In] int Flags, // Must be zero
             [In, MarshalAs(UnmanagedType.LPStruct)] MFTRegisterTypeInfo pInputType,
             [In, MarshalAs(UnmanagedType.LPStruct)] MFTRegisterTypeInfo pOutputType,
@@ -610,7 +610,7 @@ namespace MediaFoundation
 
         [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFTEnumEx(
-            [In] Guid guidCategory,
+            [In] Guid MFTransformCategory,
             MFT_EnumFlag Flags,
             [In, MarshalAs(UnmanagedType.LPStruct)] MFTRegisterTypeInfo pInputType,
             [In, MarshalAs(UnmanagedType.LPStruct)] MFTRegisterTypeInfo pOutputType,

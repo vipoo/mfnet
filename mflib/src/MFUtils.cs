@@ -405,7 +405,10 @@ namespace MediaFoundation.Misc
             {
                 byte[] b = new byte[blobValue.cbSize];
 
-                Marshal.Copy(blobValue.pBlobData, b, 0, blobValue.cbSize);
+                if (blobValue.cbSize > 0)
+                {
+                    Marshal.Copy(blobValue.pBlobData, b, 0, blobValue.cbSize);
+                }
 
                 return b;
             }
