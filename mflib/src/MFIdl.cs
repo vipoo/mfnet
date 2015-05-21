@@ -1130,6 +1130,20 @@ namespace MediaFoundation
         public static readonly Guid SOURCE_CURRENT_DEVICE_MEDIA_TYPE_SET = new Guid(0xe7e75e4c, 0x039c, 0x4410, 0x81, 0x5b, 0x87, 0x41, 0x30, 0x7b, 0x63, 0xaa);
         public static readonly Guid SINK_PREPARED = new Guid(0x7BFCE257, 0x12B1, 0x4409, 0x8C, 0x34, 0xD4, 0x45, 0xDA, 0xAB, 0x75, 0x78);
         public static readonly Guid OUTPUT_MEDIA_TYPE_SET = new Guid(0xcaaad994, 0x83ec, 0x45e9, 0xa3, 0x0a, 0x1f, 0x20, 0xaa, 0xdb, 0x98, 0x31);
+
+        public static string LookupName(Guid gSeeking)
+        {
+            Type t = typeof(MF_CAPTURE_ENGINE);
+            System.Reflection.FieldInfo[] fia = t.GetFields(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
+
+            foreach (System.Reflection.FieldInfo fi in fia)
+            {
+                if (gSeeking.CompareTo(fi.GetValue(t)) == 0)
+                    return fi.Name;
+            }
+
+            return gSeeking.ToString();
+        }
     }
 
     public static class MFTranscodeContainerType
@@ -1543,6 +1557,9 @@ namespace MediaFoundation
         public static readonly Guid MPEG2Transport = new Guid(0xe06d8023, 0xdb46, 0x11cf, 0xb4, 0xd1, 0x00, 0x80, 0x5f, 0x6c, 0xbb, 0xea);
         public static readonly Guid MPEG2Program = new Guid(0x263067d1, 0xd330, 0x45dc, 0xb6, 0x69, 0x34, 0xd9, 0x86, 0xe4, 0xe3, 0xe1);
 
+        public static readonly Guid V216_MS = new Guid(0x36313256, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
+        public static readonly Guid V410_MS = new Guid(0x30313456, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
+
         public static string LookupName(Guid gSeeking)
         {
             Type t = typeof(MFMediaType);
@@ -1552,6 +1569,12 @@ namespace MediaFoundation
             {
                 if (gSeeking.CompareTo(fi.GetValue(t)) == 0)
                     return fi.Name;
+            }
+
+            if (FourCC.IsA4ccSubtype(gSeeking))
+            {
+                FourCC fc = new FourCC(gSeeking);
+                return fc.ToString();
             }
 
             return gSeeking.ToString();

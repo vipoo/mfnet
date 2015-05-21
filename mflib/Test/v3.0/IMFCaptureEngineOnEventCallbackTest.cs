@@ -7,8 +7,9 @@ using System.Diagnostics;
 
 namespace Testv30
 {
-    class IMFCaptureEngineOnEventCallback
+    class IMFCaptureEngineOnEventCallbackTest
     {
+        // see IMFCaptureEngineTest
         public void DoTests()
         {
         }
