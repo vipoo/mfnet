@@ -361,7 +361,7 @@ namespace MediaFoundation
         [PreserveSig]
         int AddEffect(
             int dwSourceStreamIndex,
-            [MarshalAs(UnmanagedType.IUnknown)] out object pUnknown
+            [MarshalAs(UnmanagedType.IUnknown)] object pUnknown
             );
 
         [PreserveSig]
