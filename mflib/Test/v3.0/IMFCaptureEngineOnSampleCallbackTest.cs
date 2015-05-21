@@ -9,6 +9,7 @@ namespace Testv30
 {
     class IMFCaptureEngineOnSampleCallbackTest
     {
+        // see IMFCaptureRecordSinkTest
         public void DoTests()
         {
         }
