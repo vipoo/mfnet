@@ -2703,8 +2703,8 @@ namespace MediaFoundation
         int GetNearestKeyFrames(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid pguidTimeFormat,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant pvarStartPosition,
-            [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant pvarPreviousKeyFrame,
-            [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant pvarNextKeyFrame
+            [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalCookie = "0", MarshalTypeRef = typeof(PVMarshaler))] PropVariant pvarPreviousKeyFrame,
+            [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalCookie = "1", MarshalTypeRef = typeof(PVMarshaler))] PropVariant pvarNextKeyFrame
         );
     }
 
