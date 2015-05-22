@@ -244,7 +244,7 @@ namespace MediaFoundation
         int UpdateVideo(
             [In] MFVideoNormalizedRect pSrc,
             [In] MFRect pDst,
-            [In] MFARGB pBorderClr
+            [In] MFInt pBorderClr
             );
 
         [PreserveSig]

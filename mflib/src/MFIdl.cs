@@ -2418,6 +2418,11 @@ namespace MediaFoundation
         public byte rgbGreen;
         public byte rgbRed;
         public byte rgbAlpha;
+
+        public int ToInt32()
+        {
+            return (rgbRed) | (rgbGreen << 8) | (rgbBlue << 16) | (rgbAlpha << 24);
+        }
     }
 
     [StructLayout(LayoutKind.Explicit, Pack = 1), UnmanagedName("MFPaletteEntry")]
