@@ -422,6 +422,7 @@ namespace MediaFoundation
             out  double pEnd
             );
 
+        [PreserveSig]
         [return: MarshalAs(UnmanagedType.Bool)]
         bool ContainsTime(
             double time
