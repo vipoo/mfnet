@@ -191,7 +191,7 @@ namespace Testv30
                     Debug.WriteLine(string.Format("0x{0:x}", hr2));
                 }
 
-                Debug.WriteLine(MF_CAPTURE_ENGINE.LookupName(g));
+                Debug.WriteLine(MFDump.LookupName(typeof(MF_CAPTURE_ENGINE), g));
             }
 
             return hr;

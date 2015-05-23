@@ -306,8 +306,11 @@ namespace Testv30
 
             AutoResetEvent are = new AutoResetEvent(false);
 
+            // 'System.Threading.WaitHandle.Handle' is obsolete: 'Use the SafeWaitHandle property instead.'
+#pragma warning disable 618
             hr = MFExtern.MFPutWaitingWorkItem(are.Handle, 0, ar, out longOut);
             MFError.ThrowExceptionForHR(hr);
+#pragma warning disable 
 
             System.Threading.Thread.Sleep(2000);
             Debug.Assert(st.iCount == 3);
@@ -432,19 +435,6 @@ namespace Testv30
             //SafeRelease(&pSourceResolver);
             //SafeRelease(&pSource);
             //return hr;
-        }
-
-        public static void DumpAttribs(IMFAttributes ia)
-        {
-            int c;
-            PropVariant pv = new PropVariant();
-            Guid g;
-            ia.GetCount(out c);
-            for (int x = 0; x < c; x++)
-            {
-                ia.GetItemByIndex(x, out g, pv);
-                Debug.WriteLine(string.Format("{0} {1} {2}", MFAttributesClsid.LookupName(g), pv.GetMFAttributeType(), pv.ToString()));
-            }
         }
 
         #endregion

@@ -110,7 +110,7 @@ namespace Testv30
                 if (g == MF_CAPTURE_ENGINE.SINK_PREPARED)
                     m_Init = 2;
 
-                Debug.WriteLine(MF_CAPTURE_ENGINE.LookupName(g));
+                Debug.WriteLine(MFDump.LookupName(typeof(MF_CAPTURE_ENGINE), g));
             }
 
             return hr;

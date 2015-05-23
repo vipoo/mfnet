@@ -53,7 +53,7 @@ namespace Testv30
             hr = m_Source.GetAvailableDeviceMediaType(0, 0, out mt);
             MFError.ThrowExceptionForHR(hr);
 
-            ExternTest.DumpAttribs(mt);
+            Debug.WriteLine(MFDump.DumpAttribs(mt));
 
             hr = m_Source.SetCurrentDeviceMediaType(0, mt);
             MFError.ThrowExceptionForHR(hr);

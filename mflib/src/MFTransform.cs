@@ -96,6 +96,7 @@ namespace MediaFoundation.Transform
     [Flags, UnmanagedName("_MFT_INPUT_STREAM_INFO_FLAGS")]
     public enum MFTInputStreamInfoFlags
     {
+        None = 0,
         WholeSamples = 0x1,
         SingleSamplePerBuffer = 0x2,
         FixedSampleSize = 0x4,

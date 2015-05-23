@@ -915,7 +915,6 @@ namespace MediaFoundation
         public static readonly Guid MF_TOPONODE_WORKQUEUE_MMCSS_PRIORITY = new Guid(0x5001f840, 0x2816, 0x48f4, 0x93, 0x64, 0xad, 0x1e, 0xf6, 0x61, 0xa1, 0x23);
         public static readonly Guid MF_TOPONODE_WORKQUEUE_ITEM_PRIORITY = new Guid(0xa1ff99be, 0x5e97, 0x4a53, 0xb4, 0x94, 0x56, 0x8c, 0x64, 0x2c, 0x0f, 0xf3);
         public static readonly Guid MF_AUDIO_RENDERER_ATTRIBUTE_STREAM_CATEGORY = new Guid(0xa9770471, 0x92ec, 0x4df4, 0x94, 0xfe, 0x81, 0xc3, 0x6f, 0xc, 0x3a, 0x7a);
-        public static readonly Guid MR_CAPTURE_POLICY_VOLUME_SERVICE = new Guid(0x24030acd, 0x107a, 0x4265, 0x97, 0x5c, 0x41, 0x4e, 0x33, 0xe6, 0x5f, 0x2a);
         public static readonly Guid MFPROTECTION_PROTECTED_SURFACE = new Guid(0x4f5d9566, 0xe742, 0x4a25, 0x8d, 0x1f, 0xd2, 0x87, 0xb5, 0xfa, 0x0a, 0xde);
         public static readonly Guid MFPROTECTION_DISABLE_SCREEN_SCRAPE = new Guid(0xa21179a4, 0xb7cd, 0x40d8, 0x96, 0x14, 0x8e, 0xf2, 0x37, 0x1b, 0xa7, 0x8d);
         public static readonly Guid MFPROTECTION_VIDEO_FRAMES = new Guid(0x36a59cbc, 0x7401, 0x4a8c, 0xbc, 0x20, 0x46, 0xa7, 0xc9, 0xe5, 0x97, 0xf0);
@@ -1070,21 +1069,6 @@ namespace MediaFoundation
         public static readonly Guid MF_MSE_BUFFERLIST_CALLBACK = new Guid(0x42e669b0, 0xd60e, 0x4afb, 0xa8, 0x5b, 0xd8, 0xe5, 0xfe, 0x6b, 0xda, 0xb5);
         public static readonly Guid MF_MSE_CALLBACK = new Guid(0x9063a7c0, 0x42c5, 0x4ffd, 0xa8, 0xa8, 0x6f, 0xcf, 0x9e, 0xa3, 0xd0, 0x0c);
         public static readonly Guid MF_MT_VIDEO_3D = new Guid(0xcb5e88cf, 0x7b5b, 0x476b, 0x85, 0xaa, 0x1c, 0xa5, 0xae, 0x18, 0x75, 0x55);
-
-        // Get the attribute name for a guid
-        public static string LookupName(Guid gSeeking)
-        {
-            Type t = typeof(MFAttributesClsid);
-            System.Reflection.FieldInfo[] fia = t.GetFields(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
-
-            foreach (System.Reflection.FieldInfo fi in fia)
-            {
-                if (gSeeking.CompareTo(fi.GetValue(t)) == 0)
-                    return fi.Name;
-            }
-
-            return gSeeking.ToString();
-        }
     }
 
     public static class MF_MEDIA_SHARING_ENGINE
@@ -1130,20 +1114,6 @@ namespace MediaFoundation
         public static readonly Guid SOURCE_CURRENT_DEVICE_MEDIA_TYPE_SET = new Guid(0xe7e75e4c, 0x039c, 0x4410, 0x81, 0x5b, 0x87, 0x41, 0x30, 0x7b, 0x63, 0xaa);
         public static readonly Guid SINK_PREPARED = new Guid(0x7BFCE257, 0x12B1, 0x4409, 0x8C, 0x34, 0xD4, 0x45, 0xDA, 0xAB, 0x75, 0x78);
         public static readonly Guid OUTPUT_MEDIA_TYPE_SET = new Guid(0xcaaad994, 0x83ec, 0x45e9, 0xa3, 0x0a, 0x1f, 0x20, 0xaa, 0xdb, 0x98, 0x31);
-
-        public static string LookupName(Guid gSeeking)
-        {
-            Type t = typeof(MF_CAPTURE_ENGINE);
-            System.Reflection.FieldInfo[] fia = t.GetFields(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
-
-            foreach (System.Reflection.FieldInfo fi in fia)
-            {
-                if (gSeeking.CompareTo(fi.GetValue(t)) == 0)
-                    return fi.Name;
-            }
-
-            return gSeeking.ToString();
-        }
     }
 
     public static class MFTranscodeContainerType
@@ -1340,6 +1310,7 @@ namespace MediaFoundation
         public static readonly Guid GUID_NativeDeviceService = new Guid(0xef71e53c, 0x52f4, 0x43c5, 0xb8, 0x6a, 0xad, 0x6c, 0xb2, 0x16, 0xa6, 0x1e);
         public static readonly Guid MF_WRAPPED_OBJECT = new Guid(0x2b182c4c, 0xd6ac, 0x49f4, 0x89, 0x15, 0xf7, 0x18, 0x87, 0xdb, 0x70, 0xcd);
         public static readonly Guid MF_SCRUBBING_SERVICE = new Guid(0xDD0AC3D8, 0x40E3, 0x4128, 0xAC, 0x48, 0xC0, 0xAD, 0xD0, 0x67, 0xB7, 0x14);
+        public static readonly Guid MR_CAPTURE_POLICY_VOLUME_SERVICE = new Guid(0x24030acd, 0x107a, 0x4265, 0x97, 0x5c, 0x41, 0x4e, 0x33, 0xe6, 0x5f, 0x2a);
     }
 
     public static class MFPKEY
@@ -1559,26 +1530,6 @@ namespace MediaFoundation
 
         public static readonly Guid V216_MS = new Guid(0x36313256, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
         public static readonly Guid V410_MS = new Guid(0x30313456, 0x0000, 0x0010, 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71);
-
-        public static string LookupName(Guid gSeeking)
-        {
-            Type t = typeof(MFMediaType);
-            System.Reflection.FieldInfo[] fia = t.GetFields(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
-
-            foreach (System.Reflection.FieldInfo fi in fia)
-            {
-                if (gSeeking.CompareTo(fi.GetValue(t)) == 0)
-                    return fi.Name;
-            }
-
-            if (FourCC.IsA4ccSubtype(gSeeking))
-            {
-                FourCC fc = new FourCC(gSeeking);
-                return fc.ToString();
-            }
-
-            return gSeeking.ToString();
-        }
     }
 
     public static class MFImageFormat

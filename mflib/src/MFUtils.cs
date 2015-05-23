@@ -42,6 +42,11 @@ namespace MediaFoundation.Misc
     {
         private float Value;
 
+        public MfFloat()
+            : this(0)
+        {
+        }
+
         public MfFloat(float v)
         {
             Value = v;
@@ -167,8 +172,8 @@ namespace MediaFoundation.Misc
         #endregion
 
         public ConstPropVariant()
+            : this(VariantType.None)
         {
-            type = VariantType.None;
         }
 
         protected ConstPropVariant(VariantType v)
@@ -1742,6 +1747,11 @@ namespace MediaFoundation.Misc
     {
         protected int m_value;
 
+        public MFInt()
+            : this(0)
+        {
+        }
+
         public MFInt(int v)
         {
             m_value = v;
@@ -1840,11 +1850,8 @@ namespace MediaFoundation.Misc
         /// Warning, MFRect define a rectangle by defining two of his corners and <see cref="System.Drawing.Rectangle"/> define a rectangle with his upper/left corner, his width and his height.
         /// </remarks>
         public MFRect(Rectangle rectangle)
+            : this(rectangle.Left, rectangle.Top, rectangle.Right, rectangle.Bottom)
         {
-            left = rectangle.Left;
-            top = rectangle.Top;
-            right = rectangle.Right;
-            bottom = rectangle.Bottom;
         }
 
         /// <summary>
@@ -1981,8 +1988,8 @@ namespace MediaFoundation.Misc
         /// Initialize it with System.Guid.Empty
         /// </summary>
         public MFGuid()
+            : this(Empty)
         {
-            this.guid = Empty;
         }
 
         /// <summary>
@@ -1991,8 +1998,8 @@ namespace MediaFoundation.Misc
         /// </summary>
         /// <param name="g">A valid System.Guid as string</param>
         public MFGuid(string g)
+            : this(new Guid(g))
         {
-            this.guid = new Guid(g);
         }
 
         /// <summary>
@@ -2132,6 +2139,85 @@ namespace MediaFoundation.Misc
     #endregion
 
     #region Utility Classes
+
+    public static class MFDump
+    {
+        public static string LookupName(Type t, Guid gSeeking)
+        {
+            System.Reflection.FieldInfo[] fia = t.GetFields(System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
+
+            foreach (System.Reflection.FieldInfo fi in fia)
+            {
+                if (gSeeking.CompareTo(fi.GetValue(t)) == 0)
+                    return fi.Name;
+            }
+
+            return gSeeking.ToString();
+        }
+
+        public static string DumpAttribs(IMFAttributes ia)
+        {
+            if (ia != null)
+            {
+                int iCount;
+                PropVariant pv = new PropVariant();
+                Guid g;
+                StringBuilder sb = new StringBuilder(1024);
+
+                int hr = ia.GetCount(out iCount);
+                MFError.ThrowExceptionForHR(hr);
+
+                for (int x = 0; x < iCount; x++)
+                {
+                    hr = ia.GetItemByIndex(x, out g, pv);
+                    MFError.ThrowExceptionForHR(hr);
+
+                    sb.AppendFormat("{0} {1} {2}", LookupName(typeof(MFAttributesClsid), g), pv.GetMFAttributeType(), AttribValueToString(g, pv));
+                }
+
+                return sb.ToString();
+            }
+            else
+                return "<null>";
+        }
+
+        [CLSCompliant(false)]
+        public static string UnpackRatio(ulong l)
+        {
+            int w, h;
+            MFExtern.Unpack2UINT32AsUINT64((long)l, out w, out h);
+
+            return string.Format("{0}x{1}", w, h);
+        }
+
+        public static string AttribValueToString(Guid gAttrib, ConstPropVariant pv)
+        {
+            if (gAttrib == MFAttributesClsid.MF_MT_MAJOR_TYPE || gAttrib == MFAttributesClsid.MF_MT_SUBTYPE)
+                return LookupName(typeof(MFMediaType), pv.GetGuid());
+
+            else if (gAttrib == MFAttributesClsid.MF_TRANSFORM_CATEGORY_Attribute)
+                return LookupName(typeof(MFTransformCategory), pv.GetGuid());
+
+            else if (gAttrib == MFAttributesClsid.MF_TRANSCODE_CONTAINERTYPE)
+                return LookupName(typeof(MFTranscodeContainerType), pv.GetGuid());
+
+            else if (gAttrib == MFAttributesClsid.MF_EVENT_TOPOLOGY_STATUS)
+                return ((MFTopoStatus)pv.GetUInt()).ToString();
+
+            else if (gAttrib == MFAttributesClsid.MF_MT_INTERLACE_MODE)
+                return ((MFVideoInterlaceMode)pv.GetUInt()).ToString();
+
+            else if (gAttrib == MFAttributesClsid.MF_TOPOLOGY_DXVA_MODE)
+                return ((MFTOPOLOGY_DXVA_MODE)pv.GetUInt()).ToString();
+
+            else if (gAttrib == MFAttributesClsid.MF_MT_FRAME_SIZE ||
+                     gAttrib == MFAttributesClsid.MF_MT_FRAME_RATE ||
+                     gAttrib == MFAttributesClsid.MF_MT_PIXEL_ASPECT_RATIO)
+                return UnpackRatio(pv.GetULong());
+
+            return pv.ToString();
+        }
+    }
 
     public static class MFError
     {
@@ -2691,6 +2777,7 @@ namespace MediaFoundation.Misc
             }
         }
 
+        [Conditional("DEBUG")]
         public static void TRACE(string s)
         {
             Debug.WriteLine(s);
