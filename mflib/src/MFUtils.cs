@@ -2172,7 +2172,7 @@ namespace MediaFoundation.Misc
                     hr = ia.GetItemByIndex(x, out g, pv);
                     MFError.ThrowExceptionForHR(hr);
 
-                    sb.AppendFormat("{0} {1} {2}", LookupName(typeof(MFAttributesClsid), g), pv.GetMFAttributeType(), AttribValueToString(g, pv));
+                    sb.AppendFormat("{0} {1} {2}\n", LookupName(typeof(MFAttributesClsid), g), pv.GetMFAttributeType(), AttribValueToString(g, pv));
                 }
 
                 return sb.ToString();
