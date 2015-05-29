@@ -546,6 +546,7 @@ namespace MediaFoundation
         [PreserveSig]
         MF_MEDIA_ENGINE_READY GetReadyState();
 
+        [PreserveSig]
         [return: MarshalAs(UnmanagedType.Bool)]
         bool IsSeeking();
 
@@ -563,6 +564,7 @@ namespace MediaFoundation
         [PreserveSig]
         double GetDuration();
 
+        [PreserveSig]
         [return: MarshalAs(UnmanagedType.Bool)]
         bool IsPaused();
 
@@ -592,9 +594,11 @@ namespace MediaFoundation
             out IMFMediaTimeRange ppSeekable
             );
 
+        [PreserveSig]
         [return: MarshalAs(UnmanagedType.Bool)]
         bool IsEnded();
 
+        [PreserveSig]
         [return: MarshalAs(UnmanagedType.Bool)]
         bool GetAutoPlay();
 
@@ -603,6 +607,7 @@ namespace MediaFoundation
             [MarshalAs(UnmanagedType.Bool)] bool AutoPlay
             );
 
+        [PreserveSig]
         [return: MarshalAs(UnmanagedType.Bool)]
         bool GetLoop();
 
@@ -617,6 +622,7 @@ namespace MediaFoundation
         [PreserveSig]
         int Pause();
 
+        [PreserveSig]
         [return: MarshalAs(UnmanagedType.Bool)]
         bool GetMuted();
 
@@ -633,9 +639,11 @@ namespace MediaFoundation
             double Volume
             );
 
+        [PreserveSig]
         [return: MarshalAs(UnmanagedType.Bool)]
         bool HasVideo();
 
+        [PreserveSig]
         [return: MarshalAs(UnmanagedType.Bool)]
         bool HasAudio();
 
@@ -657,8 +665,8 @@ namespace MediaFoundation
         [PreserveSig]
         int TransferVideoFrame(
             [In, MarshalAs(UnmanagedType.IUnknown)] object pDstSurf,
-            [In] MFVideoNormalizedRect pSrc,
-            [In] MFRect pDst,
+            [In, MarshalAs(UnmanagedType.LPStruct)] MFVideoNormalizedRect pSrc,
+            [In, MarshalAs(UnmanagedType.LPStruct)] MFRect pDst,
             [In] MFARGB pBorderClr
             );
 
@@ -728,6 +736,7 @@ namespace MediaFoundation
         [PreserveSig]
         new MF_MEDIA_ENGINE_READY GetReadyState();
 
+        [PreserveSig]
         [return: MarshalAs(UnmanagedType.Bool)]
         new bool IsSeeking();
 
@@ -745,6 +754,7 @@ namespace MediaFoundation
         [PreserveSig]
         new double GetDuration();
 
+        [PreserveSig]
         [return: MarshalAs(UnmanagedType.Bool)]
         new bool IsPaused();
 
@@ -774,9 +784,11 @@ namespace MediaFoundation
             out IMFMediaTimeRange ppSeekable
             );
 
+        [PreserveSig]
         [return: MarshalAs(UnmanagedType.Bool)]
         new bool IsEnded();
 
+        [PreserveSig]
         [return: MarshalAs(UnmanagedType.Bool)]
         new bool GetAutoPlay();
 
@@ -785,6 +797,7 @@ namespace MediaFoundation
             [MarshalAs(UnmanagedType.Bool)] bool AutoPlay
             );
 
+        [PreserveSig]
         [return: MarshalAs(UnmanagedType.Bool)]
         new bool GetLoop();
 
@@ -799,6 +812,7 @@ namespace MediaFoundation
         [PreserveSig]
         new int Pause();
 
+        [PreserveSig]
         [return: MarshalAs(UnmanagedType.Bool)]
         new bool GetMuted();
 
@@ -815,9 +829,11 @@ namespace MediaFoundation
             double Volume
             );
 
+        [PreserveSig]
         [return: MarshalAs(UnmanagedType.Bool)]
         new bool HasVideo();
 
+        [PreserveSig]
         [return: MarshalAs(UnmanagedType.Bool)]
         new bool HasAudio();
 
@@ -878,6 +894,7 @@ namespace MediaFoundation
             double balance
             );
 
+        [PreserveSig]
         [return: MarshalAs(UnmanagedType.Bool)]
         bool IsPlaybackRateSupported(
             double rate
@@ -959,6 +976,7 @@ namespace MediaFoundation
         [PreserveSig]
         int CancelTimelineMarkerTimer();
 
+        [PreserveSig]
         [return: MarshalAs(UnmanagedType.Bool)]
         bool IsStereo3D();
 
@@ -1190,6 +1208,7 @@ namespace MediaFoundation
     InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
     public interface IMFSourceBuffer
     {
+        [PreserveSig]
         [return: MarshalAs(UnmanagedType.Bool)]
         bool GetUpdating();
 
@@ -1297,6 +1316,7 @@ namespace MediaFoundation
             MF_MSE_ERROR error
             );
 
+        [PreserveSig]
         [return: MarshalAs(UnmanagedType.Bool)]
         bool IsTypeSupported(
             [MarshalAs(UnmanagedType.BStr)] string type
@@ -1711,9 +1731,10 @@ namespace MediaFoundation
 
         [PreserveSig]
         int SetInBandEnabled(
-    [MarshalAs(UnmanagedType.Bool)] bool enabled
-    );
+            [MarshalAs(UnmanagedType.Bool)] bool enabled
+        );
 
+        [PreserveSig]
         [return: MarshalAs(UnmanagedType.Bool)]
         bool IsInBandEnabled();
     }
