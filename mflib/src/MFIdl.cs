@@ -2363,7 +2363,7 @@ namespace MediaFoundation
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1), UnmanagedName("MFARGB")]
-    public struct MFARGB
+    public class MFARGB
     {
         public byte rgbBlue;
         public byte rgbGreen;
@@ -2372,7 +2372,7 @@ namespace MediaFoundation
 
         public int ToInt32()
         {
-            return (rgbRed) | (rgbGreen << 8) | (rgbBlue << 16) | (rgbAlpha << 24);
+            return (rgbBlue) | (rgbGreen << 8) | (rgbRed << 16) | (rgbAlpha << 24);
         }
     }
 

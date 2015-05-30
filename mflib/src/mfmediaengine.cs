@@ -667,7 +667,7 @@ namespace MediaFoundation
             [In, MarshalAs(UnmanagedType.IUnknown)] object pDstSurf,
             [In, MarshalAs(UnmanagedType.LPStruct)] MFVideoNormalizedRect pSrc,
             [In, MarshalAs(UnmanagedType.LPStruct)] MFRect pDst,
-            [In] MFARGB pBorderClr
+            [In, MarshalAs(UnmanagedType.LPStruct)] MFARGB pBorderClr
             );
 
         [PreserveSig]
@@ -857,7 +857,7 @@ namespace MediaFoundation
             [In, MarshalAs(UnmanagedType.IUnknown)] object pDstSurf,
             [In] MFVideoNormalizedRect pSrc,
             [In] MFRect pDst,
-            [In] MFARGB pBorderClr
+            [In, MarshalAs(UnmanagedType.LPStruct)] MFARGB pBorderClr
             );
 
         [PreserveSig]
@@ -883,7 +883,7 @@ namespace MediaFoundation
         int UpdateVideoStream(
             [In] MFVideoNormalizedRect pSrc,
             [In] MFRect pDst,
-            [In] MFARGB pBorderClr
+            [In, MarshalAs(UnmanagedType.LPStruct)] MFARGB pBorderClr
             );
 
         [PreserveSig]
@@ -1114,9 +1114,9 @@ namespace MediaFoundation
         [PreserveSig]
         int TransferVideoFrame(
             [In, MarshalAs(UnmanagedType.IUnknown)] object pDstSurf,
-            [In] MFVideoNormalizedRect pSrc,
-            [In] MFRect pDst,
-            [In] MFARGB pBorderClr,
+            [In, MarshalAs(UnmanagedType.LPStruct)] MFVideoNormalizedRect pSrc,
+            [In, MarshalAs(UnmanagedType.LPStruct)] MFRect pDst,
+            [In, MarshalAs(UnmanagedType.LPStruct)] MFARGB pBorderClr,
             out MF_MEDIA_ENGINE_FRAME_PROTECTION_FLAGS pFrameProtectionFlags
             );
 
