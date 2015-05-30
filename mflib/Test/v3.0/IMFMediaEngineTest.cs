@@ -185,6 +185,10 @@ namespace Testv30
             Bitmap b = new Bitmap(800, 600, 800 * 4, System.Drawing.Imaging.PixelFormat.Format32bppRgb, p);
             b.Save("a.bmp");
 
+            IMFMediaBuffer imb;
+            hr = MFExtern.MFCreateWICBitmapBuffer(typeof(IWICBitmap).GUID, pp, out imb);
+            MFError.ThrowExceptionForHR(hr);
+
             hr = m_me.Shutdown();
             MFError.ThrowExceptionForHR(hr);
         }

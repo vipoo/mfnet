@@ -329,6 +329,7 @@ namespace Testv30
                 out imfMediaBufferOut
             );
 
+            // Tested in IMFMediaEngineTest
             hr = MFExtern.MFCreateWICBitmapBuffer(
                 Guid.Empty, //typeof(IWICBitmap).GUID,
                 null,
