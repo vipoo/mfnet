@@ -326,7 +326,7 @@ namespace MediaFoundation.Misc
             {
                 return iVal;
             }
-            throw new ArgumentException("PropVariant contents not an Short");
+            throw new ArgumentException("PropVariant contents not a Short");
         }
 
         [CLSCompliant(false)]
@@ -336,7 +336,7 @@ namespace MediaFoundation.Misc
             {
                 return uiVal;
             }
-            throw new ArgumentException("PropVariant contents not an UShort");
+            throw new ArgumentException("PropVariant contents not a UShort");
         }
 
         public int GetInt()
@@ -355,7 +355,7 @@ namespace MediaFoundation.Misc
             {
                 return uintVal;
             }
-            throw new ArgumentException("PropVariant contents not an uint32");
+            throw new ArgumentException("PropVariant contents not a uint32");
         }
 
         public long GetLong()
@@ -374,7 +374,7 @@ namespace MediaFoundation.Misc
             {
                 return ulongValue;
             }
-            throw new ArgumentException("PropVariant contents not an uint64");
+            throw new ArgumentException("PropVariant contents not a uint64");
         }
 
         public float GetFloat()
@@ -417,7 +417,34 @@ namespace MediaFoundation.Misc
 
                 return b;
             }
-            throw new ArgumentException("PropVariant contents are not a Blob");
+            throw new ArgumentException("PropVariant contents not a Blob");
+        }
+
+        public object GetBlob(Type t)
+        {
+            if (type == VariantType.Blob)
+            {
+                object o;
+
+                if (blobValue.cbSize > 0)
+                {
+                    if (blobValue.cbSize >= Marshal.SizeOf(t))
+                    {
+                        o = Marshal.PtrToStructure(blobValue.pBlobData, t);
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Blob wrong size");
+                    }
+                }
+                else
+                {
+                    o = null;
+                }
+
+                return o;
+            }
+            throw new ArgumentException("PropVariant contents not a Blob");
         }
 
         public object GetIUnknown()
@@ -998,7 +1025,23 @@ namespace MediaFoundation.Misc
         public PropVariant(object value)
             : base(VariantType.IUnknown)
         {
-            ptr = Marshal.GetIUnknownForObject(value);
+            if (value == null)
+            {
+                ptr = IntPtr.Zero;
+            }
+            else if (Marshal.IsComObject(value))
+            {
+                ptr = Marshal.GetIUnknownForObject(value);
+            }
+            else
+            {
+                type = VariantType.Blob;
+
+                blobValue.cbSize = Marshal.SizeOf(value);
+                blobValue.pBlobData = Marshal.AllocCoTaskMem(blobValue.cbSize);
+
+                Marshal.StructureToPtr(value, blobValue.pBlobData, false);
+            }
         }
 
         public PropVariant(IntPtr value)
