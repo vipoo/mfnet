@@ -2354,7 +2354,7 @@ namespace MediaFoundation
     }
 
     [StructLayout(LayoutKind.Sequential, Pack = 1), UnmanagedName("MFAYUVSample")]
-    public struct MFAYUVSample
+    public class MFAYUVSample
     {
         public byte bCrValue;
         public byte bCbValue;
