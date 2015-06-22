@@ -420,17 +420,17 @@ namespace MediaFoundation.Misc
             throw new ArgumentException("PropVariant contents not a Blob");
         }
 
-        public object GetBlob(Type t)
+        public object GetBlob(Type t, int offset)
         {
             if (type == VariantType.Blob)
             {
                 object o;
 
-                if (blobValue.cbSize > 0)
+                if (blobValue.cbSize > offset)
                 {
-                    if (blobValue.cbSize >= Marshal.SizeOf(t))
+                    if (blobValue.cbSize >= Marshal.SizeOf(t) + offset)
                     {
-                        o = Marshal.PtrToStructure(blobValue.pBlobData, t);
+                        o = Marshal.PtrToStructure(blobValue.pBlobData + offset, t);
                     }
                     else
                     {
@@ -445,6 +445,11 @@ namespace MediaFoundation.Misc
                 return o;
             }
             throw new ArgumentException("PropVariant contents not a Blob");
+        }
+
+        public object GetBlob(Type t)
+        {
+            return GetBlob(t, 0);
         }
 
         public object GetIUnknown()
