@@ -1286,10 +1286,6 @@ namespace MediaFoundation
 
         public delegate void MFPERIODICCALLBACK([MarshalAs(UnmanagedType.IUnknown)] object asdf);
 
-#if ALLOW_UNTESTED_INTERFACES
-
-        #region W8
-
         [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFCreateAC3MediaSink(
             IMFByteStream pTargetByteStream,
@@ -1363,22 +1359,6 @@ namespace MediaFoundation
             IMFMediaType pMediaType,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
             [MarshalAs(UnmanagedType.IUnknown)] out object ppv
-        );
-
-        [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
-        public static extern int MFCreateProtectedEnvironmentAccess(
-            out IMFProtectedEnvironmentAccess ppAccess
-        );
-
-        [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
-        public static extern int MFLoadSignedLibrary(
-            [In, MarshalAs(UnmanagedType.LPWStr)] string pszName,
-            out IMFSignedLibrary ppLib
-        );
-
-        [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
-        public static extern int MFGetSystemId(
-            out IMFSystemId ppId
         );
 
         [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
@@ -1455,12 +1435,6 @@ namespace MediaFoundation
         );
 
         [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
-        public static extern int MFLockDXGIDeviceManager(
-            out int pResetToken,
-            out IMFDXGIDeviceManager ppManager
-        );
-
-        [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFUnlockDXGIDeviceManager();
 
         [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
@@ -1471,24 +1445,9 @@ namespace MediaFoundation
         );
 
         [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
-        public static extern int MFCreateDXGISurfaceBuffer(
-            [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
-            [MarshalAs(UnmanagedType.Interface)] object punkSurface,
-            int uSubresourceIndex,
-            [MarshalAs(UnmanagedType.Bool)] bool fBottomUpWhenLinear,
-            out IMFMediaBuffer ppBuffer
-        );
-
-        [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFCreateVideoSampleAllocatorEx(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
             [MarshalAs(UnmanagedType.Interface)] out object ppSampleAllocator
-        );
-
-        [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
-        public static extern int MFCreateDXGIDeviceManager(
-            out int resetToken,
-            out IMFDXGIDeviceManager ppDeviceManager
         );
 
         [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
@@ -1541,6 +1500,51 @@ namespace MediaFoundation
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidProtectionSystemID,
             out Guid pclsid
         );
+
+#if ALLOW_UNTESTED_INTERFACES
+
+        #region W8
+
+        [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        public static extern int MFCreateDXGISurfaceBuffer(
+            [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
+            [MarshalAs(UnmanagedType.Interface)] object punkSurface,
+            int uSubresourceIndex,
+            [MarshalAs(UnmanagedType.Bool)] bool fBottomUpWhenLinear,
+            out IMFMediaBuffer ppBuffer
+        );
+
+        [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        public static extern int MFCreateProtectedEnvironmentAccess(
+            out IMFProtectedEnvironmentAccess ppAccess
+        );
+
+        [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        public static extern int MFLoadSignedLibrary(
+            [In, MarshalAs(UnmanagedType.LPWStr)] string pszName,
+            out IMFSignedLibrary ppLib
+        );
+
+        [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        public static extern int MFGetSystemId(
+            out IMFSystemId ppId
+        );
+
+        // Tested, but IMFDXGIDeviceManager is not
+        [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        public static extern int MFCreateDXGIDeviceManager(
+            out int resetToken,
+            out IMFDXGIDeviceManager ppDeviceManager
+        );
+
+        // Tested, but IMFDXGIDeviceManager is not
+        [DllImport("mfplat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        public static extern int MFLockDXGIDeviceManager(
+            out int pResetToken,
+            out IMFDXGIDeviceManager ppManager
+        );
+
+        ///////////////////////////////
 
         #endregion
 

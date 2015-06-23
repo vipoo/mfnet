@@ -31,16 +31,12 @@ namespace MediaFoundation.Transform
 {
     #region Declarations
 
-#if ALLOW_UNTESTED_INTERFACES
-
     [Flags, UnmanagedName("MF3DVideoOutputType")]
     public enum MF3DVideoOutputType
     {
         BaseView = 0,
         Stereo = 1
     }
-
-#endif
 
     [UnmanagedName("_MFT_DRAIN_TYPE")]
     public enum MFTDrainType

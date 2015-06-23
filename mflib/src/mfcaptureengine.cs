@@ -32,7 +32,6 @@ using MediaFoundation.EVR;
 
 namespace MediaFoundation
 {
-#if ALLOW_UNTESTED_INTERFACES
     #region Declarations
 
     [UnmanagedName("MF_CAPTURE_ENGINE_DEVICE_TYPE")]
@@ -64,6 +63,94 @@ namespace MediaFoundation
     #endregion
 
     #region Interfaces
+
+#if ALLOW_UNTESTED_INTERFACES
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("e37ceed7-340f-4514-9f4d-9c2ae026100b")]
+    public interface IMFCaptureEngineOnSampleCallback2 : IMFCaptureEngineOnSampleCallback
+    {
+        #region IMFCaptureEngineOnSampleCallback methods
+
+        [PreserveSig]
+        new int OnSample(
+            IMFSample pSample
+            );
+
+        #endregion
+
+        [PreserveSig]
+        int OnSynchronizedEvent(
+            IMFMediaEvent pEvent
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("f9e4219e-6197-4b5e-b888-bee310ab2c59")]
+    public interface IMFCaptureSink2 : IMFCaptureSink
+    {
+        #region IMFCaptureEngineOnSampleCallback methods
+
+        [PreserveSig]
+        new int GetOutputMediaType(
+            int dwSinkStreamIndex,
+            out IMFMediaType ppMediaType
+            );
+
+        [PreserveSig]
+        new int GetService(
+            int dwSinkStreamIndex,
+            [In, MarshalAs(UnmanagedType.LPStruct)] Guid rguidService,
+            [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
+            [MarshalAs(UnmanagedType.IUnknown)] out object ppUnknown
+            );
+
+        [PreserveSig]
+        new int AddStream(
+            int dwSourceStreamIndex,
+            IMFMediaType pMediaType,
+            IMFAttributes pAttributes,
+            out int pdwSinkStreamIndex
+            );
+
+        [PreserveSig]
+        new int Prepare();
+
+        [PreserveSig]
+        new int RemoveAllStreams();
+
+        #endregion
+
+        [PreserveSig]
+        int SetOutputMediaType(
+            int dwStreamIndex,
+            IMFMediaType pMediaType,
+            IMFAttributes pEncodingAttributes
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("19f68549-ca8a-4706-a4ef-481dbc95e12c")]
+    public interface IMFCapturePhotoConfirmation
+    {
+        [PreserveSig]
+        int SetPhotoConfirmationCallback(
+            IMFAsyncCallback pNotificationCallback
+            );
+
+        [PreserveSig]
+        int SetPixelFormat(
+            [In, MarshalAs(UnmanagedType.LPStruct)] Guid subtype
+            );
+
+        [PreserveSig]
+        int GetPixelFormat(
+            out Guid subtype
+            );
+    }
+#endif
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
     Guid("aeda51c0-9025-4983-9012-de597b88b089"),
@@ -480,93 +567,5 @@ namespace MediaFoundation
                 );
 
     }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    Guid("e37ceed7-340f-4514-9f4d-9c2ae026100b")]
-    public interface IMFCaptureEngineOnSampleCallback2 : IMFCaptureEngineOnSampleCallback
-    {
-        #region IMFCaptureEngineOnSampleCallback methods
-
-        [PreserveSig]
-        new int OnSample(
-            IMFSample pSample
-            );
-
-        #endregion
-
-        [PreserveSig]
-        int OnSynchronizedEvent(
-            IMFMediaEvent pEvent
-            );
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    Guid("f9e4219e-6197-4b5e-b888-bee310ab2c59")]
-    public interface IMFCaptureSink2 : IMFCaptureSink
-    {
-        #region IMFCaptureEngineOnSampleCallback methods
-
-        [PreserveSig]
-        new int GetOutputMediaType(
-            int dwSinkStreamIndex,
-            out IMFMediaType ppMediaType
-            );
-
-        [PreserveSig]
-        new int GetService(
-            int dwSinkStreamIndex,
-            [In, MarshalAs(UnmanagedType.LPStruct)] Guid rguidService,
-            [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
-            [MarshalAs(UnmanagedType.IUnknown)] out object ppUnknown
-            );
-
-        [PreserveSig]
-        new int AddStream(
-            int dwSourceStreamIndex,
-            IMFMediaType pMediaType,
-            IMFAttributes pAttributes,
-            out int pdwSinkStreamIndex
-            );
-
-        [PreserveSig]
-        new int Prepare();
-
-        [PreserveSig]
-        new int RemoveAllStreams();
-
-        #endregion
-
-        [PreserveSig]
-        int SetOutputMediaType(
-            int dwStreamIndex,
-            IMFMediaType pMediaType,
-            IMFAttributes pEncodingAttributes
-            );
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
-    Guid("19f68549-ca8a-4706-a4ef-481dbc95e12c")]
-    public interface IMFCapturePhotoConfirmation
-    {
-        [PreserveSig]
-        int SetPhotoConfirmationCallback(
-            IMFAsyncCallback pNotificationCallback
-            );
-
-        [PreserveSig]
-        int SetPixelFormat(
-            [In, MarshalAs(UnmanagedType.LPStruct)] Guid subtype
-            );
-
-        [PreserveSig]
-        int GetPixelFormat(
-            out Guid subtype
-            );
-    }
-
     #endregion
-#endif
 }

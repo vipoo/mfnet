@@ -33,6 +33,22 @@ namespace MediaFoundation
 {
     #region Declarations
 
+#if ALLOW_UNTESTED_INTERFACES
+
+    [UnmanagedName("MF2DBuffer_LockFlags")]
+    public enum MF2DBuffer_LockFlags
+    {
+        None,
+        LockTypeMask = 0x1 | 0x2 | 0x3,
+        Read = 0x1,
+        Write = 0x2,
+        ReadWrite = 0x3,
+
+        ForceDWORD = 0x7FFFFFFF
+    }
+
+#endif
+
     [Flags, UnmanagedName("MFVideoFlags")]
     public enum MFVideoFlags : long
     {
@@ -519,20 +535,6 @@ namespace MediaFoundation
         public MFVideoSurfaceInfo surfaceInfo;
     }
 
-#if ALLOW_UNTESTED_INTERFACES
-
-    [UnmanagedName("MF2DBuffer_LockFlags")]
-    public enum MF2DBuffer_LockFlags
-    {
-        None,
-        LockTypeMask = 0x1 | 0x2 | 0x3,
-        Read = 0x1,
-        Write = 0x2,
-        ReadWrite = 0x3,
-
-        ForceDWORD = 0x7FFFFFFF
-    }
-
     [UnmanagedName("MF_PLUGIN_CONTROL_POLICY")]
     public enum MF_PLUGIN_CONTROL_POLICY
     {
@@ -542,70 +544,11 @@ namespace MediaFoundation
         UseWebPluginsEdgemode = 3,
     }
 
-#endif
-
     #endregion
 
     #region Interfaces
 
 #if ALLOW_UNTESTED_INTERFACES
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    Guid("C6982083-3DDC-45CB-AF5E-0F7A8CE4DE77"),
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IMFPluginControl2 : IMFPluginControl
-    {
-        #region IMFPluginControl methods
-
-        [PreserveSig]
-        new int GetPreferredClsid(
-            MFPluginType pluginType,
-            [MarshalAs(UnmanagedType.LPWStr)] string selector,
-            out Guid clsid
-        );
-
-        [PreserveSig]
-        new int GetPreferredClsidByIndex(
-            MFPluginType pluginType,
-            int index,
-            [MarshalAs(UnmanagedType.LPWStr)] out string selector,
-            out Guid clsid
-        );
-
-        [PreserveSig]
-        new int SetPreferredClsid(
-            MFPluginType pluginType,
-            [MarshalAs(UnmanagedType.LPWStr)] string selector,
-            [In, MarshalAs(UnmanagedType.LPStruct)] MFGuid clsid
-        );
-
-        [PreserveSig]
-        new int IsDisabled(
-            MFPluginType pluginType,
-            [MarshalAs(UnmanagedType.LPStruct)] Guid clsid
-        );
-
-        [PreserveSig]
-        new int GetDisabledByIndex(
-            MFPluginType pluginType,
-            int index,
-            out Guid clsid
-        );
-
-        [PreserveSig]
-        new int SetDisabled(
-            MFPluginType pluginType,
-            [MarshalAs(UnmanagedType.LPStruct)] Guid clsid,
-            [MarshalAs(UnmanagedType.Bool)] bool disabled
-        );
-
-        #endregion
-
-        [PreserveSig]
-        int SetPolicy(
-            MF_PLUGIN_CONTROL_POLICY policy
-        );
-    }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
     Guid("eb533d5d-2db6-40f8-97a9-494692014f07"),
@@ -652,20 +595,6 @@ namespace MediaFoundation
         int UnlockDevice(
             IntPtr hDevice,
             [MarshalAs(UnmanagedType.Bool)]  bool fSaveState
-        );
-    }
-
-    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
-    Guid("a6b43f84-5c0a-42e8-a44d-b1857a76992f"),
-    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    public interface IMFByteStreamProxyClassFactory
-    {
-        [PreserveSig]
-        int CreateByteStreamProxy(
-            IMFByteStream pByteStream,
-            IMFAttributes pAttributes,
-            [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
-            [MarshalAs(UnmanagedType.IUnknown)] out object ppvObject
         );
     }
 
@@ -2527,6 +2456,77 @@ namespace MediaFoundation
 
         [PreserveSig, Obsolete("To get the properties of the audio format, applications should use the media type attributes. If you need to convert the media type into a WAVEFORMATEX structure, call MFCreateWaveFormatExFromMFMediaType")]
         IntPtr GetAudioFormat();
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    Guid("a6b43f84-5c0a-42e8-a44d-b1857a76992f"),
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IMFByteStreamProxyClassFactory
+    {
+        [PreserveSig]
+        int CreateByteStreamProxy(
+            IMFByteStream pByteStream,
+            IMFAttributes pAttributes,
+            [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
+            [MarshalAs(UnmanagedType.IUnknown)] out object ppvObject
+        );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    Guid("C6982083-3DDC-45CB-AF5E-0F7A8CE4DE77"),
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IMFPluginControl2 : IMFPluginControl
+    {
+        #region IMFPluginControl methods
+
+        [PreserveSig]
+        new int GetPreferredClsid(
+            MFPluginType pluginType,
+            [MarshalAs(UnmanagedType.LPWStr)] string selector,
+            out Guid clsid
+        );
+
+        [PreserveSig]
+        new int GetPreferredClsidByIndex(
+            MFPluginType pluginType,
+            int index,
+            [MarshalAs(UnmanagedType.LPWStr)] out string selector,
+            out Guid clsid
+        );
+
+        [PreserveSig]
+        new int SetPreferredClsid(
+            MFPluginType pluginType,
+            [MarshalAs(UnmanagedType.LPWStr)] string selector,
+            [In, MarshalAs(UnmanagedType.LPStruct)] MFGuid clsid
+        );
+
+        [PreserveSig]
+        new int IsDisabled(
+            MFPluginType pluginType,
+            [MarshalAs(UnmanagedType.LPStruct)] Guid clsid
+        );
+
+        [PreserveSig]
+        new int GetDisabledByIndex(
+            MFPluginType pluginType,
+            int index,
+            out Guid clsid
+        );
+
+        [PreserveSig]
+        new int SetDisabled(
+            MFPluginType pluginType,
+            [MarshalAs(UnmanagedType.LPStruct)] Guid clsid,
+            [MarshalAs(UnmanagedType.Bool)] bool disabled
+        );
+
+        #endregion
+
+        [PreserveSig]
+        int SetPolicy(
+            MF_PLUGIN_CONTROL_POLICY policy
+        );
     }
 
     #endregion
