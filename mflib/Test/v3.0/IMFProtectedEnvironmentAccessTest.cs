@@ -12,6 +12,7 @@ namespace Testv30
     {
         public void DoTests()
         {
+#if false
             int hr;
 
             IMFProtectedEnvironmentAccess pea;
@@ -28,6 +29,7 @@ namespace Testv30
             IntPtr ipout = Marshal.AllocCoTaskMem(1000);
             hr = pea.Call(0, IntPtr.Zero, 1000, ipout);
             MFError.ThrowExceptionForHR(hr);
+#endif
         }
     }
 }

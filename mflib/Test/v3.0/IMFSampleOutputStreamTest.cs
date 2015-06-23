@@ -11,6 +11,14 @@ namespace Testv30
     {
         public void DoTests()
         {
+#if false
+            int hr;
+
+            IMFByteStream bs;
+            hr = MFExtern.MFCreateFile(MFFileAccessMode.Write, MFFileOpenMode.DeleteIfExist, MFFileFlags.None, "output.wmv", out bs);
+
+            IMFSampleOutputStream sos = bs as IMFSampleOutputStream;
+#endif
         }
     }
 }

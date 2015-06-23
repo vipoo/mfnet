@@ -11,6 +11,7 @@ namespace Testv30
     {
         public void DoTests()
         {
+#if false
             string [] sn = System.IO.Directory.GetFiles(@"c:\windows\system32", "*.dll");
             IMFSignedLibrary sl;
             int hr;
@@ -24,6 +25,7 @@ namespace Testv30
                 if (hr != MFError.MF_E_SIGNATURE_VERIFICATION_FAILED)
                     Debug.WriteLine(s);
             }
+#endif
         }
     }
 }

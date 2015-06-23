@@ -11,6 +11,7 @@ namespace Testv30
     {
         public void DoTests()
         {
+#if false
             int hr;
 
             IMFSystemId id;
@@ -23,6 +24,7 @@ namespace Testv30
             IntPtr ip;
             hr = id.GetData(out i, out ip);
             MFError.ThrowExceptionForHR(hr);
+#endif
         }
     }
 }
