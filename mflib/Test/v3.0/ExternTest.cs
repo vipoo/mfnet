@@ -38,7 +38,7 @@ namespace Testv30
             IMFTrackedSample imfTrackedSampleOut = null;
             IStream iStreamOut = null;
             IntPtr intPtrIn = IntPtr.Zero;
-            IMFDXGIDeviceManager imfDXGIDeviceManagerOut = null;
+            //IMFDXGIDeviceManager imfDXGIDeviceManagerOut = null;
             IMFMediaBuffer imfMediaBufferOut = null;
 
             IMFByteStream imfByteStreamWritable = null;
@@ -115,24 +115,12 @@ namespace Testv30
 
             Debug.Assert(dxgi == 2);
 
-            hr = MFExtern.MFLockDXGIDeviceManager(
-                out intOut,
-                out imfDXGIDeviceManagerOut
-            );
-            MFError.ThrowExceptionForHR(hr);
-
             hr = MFExtern.MFUnlockDXGIDeviceManager();
             MFError.ThrowExceptionForHR(hr);
 
             hr = MFExtern.MFCreateVideoSampleAllocatorEx(
                 typeof(IMFVideoSampleAllocator).GUID,
                 out objectOut
-            );
-            MFError.ThrowExceptionForHR(hr);
-
-            hr = MFExtern.MFCreateDXGIDeviceManager(
-                out intOut,
-                out imfDXGIDeviceManagerOut
             );
             MFError.ThrowExceptionForHR(hr);
 
@@ -273,6 +261,9 @@ namespace Testv30
 
             IMFMediaSink _mediaSink;
             hr = MFExtern.MFCreateMPEG4MediaSink(_byteStream, imfMediaTypeIn, null, out _mediaSink);
+
+            IMFMediaSink _mediaSink2;
+            hr = MFExtern.MFCreateFMPEG4MediaSink(_byteStream, imfMediaTypeIn, null, out _mediaSink2);
         }
 
         void QueueStuff()
@@ -319,6 +310,20 @@ namespace Testv30
         void Untestable()
         {
 #if false
+            ////////////////
+            // Tested, but IMFDXGIDeviceManager is not
+            hr = MFExtern.MFLockDXGIDeviceManager(
+                out intOut,
+                out imfDXGIDeviceManagerOut
+            );
+            MFError.ThrowExceptionForHR(hr);
+            // Tested, but IMFDXGIDeviceManager is not
+            hr = MFExtern.MFCreateDXGIDeviceManager(
+                out intOut,
+                out imfDXGIDeviceManagerOut
+            );
+            MFError.ThrowExceptionForHR(hr);
+            ////////////////
 
             Guid IID_ID3D11Texture2D = new Guid(0x6f15aaf2, 0xd208, 0x4e89, 0x9a, 0xb4, 0x48, 0x95, 0x35, 0xd3, 0x4f, 0x9c);
             hr = MFExtern.MFCreateDXGISurfaceBuffer(
