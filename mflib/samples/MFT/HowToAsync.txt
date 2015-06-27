@@ -181,7 +181,7 @@ Section 4 - Distributing/using the MFT.
 
 The code in this project is public domain, so there are no legal requirements involved in using it (with the exceptions of the LGPL for MediaFoundation.dll).  While it would be nice to have a mention in your docs and/or an emailed "thanks", even more useful would be some contribution to make the project better.  Bug fixes, doc improvements, additional samples, etc to make things better/easier for the next guy, the way this project has made things easier for you.
 
-What kind of installation you need to do for your MFT depends on how you are going to use it.  There are 3 general cases:
+What kind of installation you need to do for your MFT depends on how you are going to use it.  There are 4 general cases:
 
 1) Your MFT can be installed as a regular COM object, and created via CoCreateInstance by anyone who knows its CLSID.  This requires you to register your dll using the regasm tool (possibly twice if you support both x86 and x64).
 2) Your MFT can be registered with both COM and MediaFoundation.  It will be discoverable by any application using MFTEnumEx, and may be used automatically by some MF functions.  This requires using MFTRegister, which is performed for you automatically if the OnGetCategory function is implemented and returns a non-Empty value.
@@ -189,6 +189,8 @@ What kind of installation you need to do for your MFT depends on how you are goi
 There is a third case that might be useful for some situations, which affects some of the discussion above.
 
 3) You can actually compile your MFT right into your executable (instead of producing a DLL), and create an instance using 'new' (ie MyMft m = new MyMft()).  This instance can be passed to methods such as IMFMediaEngineEx::InsertVideoEffect or added to a topology node using SetObject().  This approach requires no COM registration, or registration with MFTRegister.
+
+4) You can use Register-free COM to be able to run your COM objects WITHOUT requiring admin rights to install them.  See google.
 
 
 Section 5 - FAQ:

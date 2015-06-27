@@ -37,17 +37,7 @@ individual project.
 
 For instructions on creating your own MFT, read HowTo.txt.
 
-IMPORTANT: This sample includes a debug build of MediaFoundation.dll
-from http://MFNet.SF.Net.  It includes not-yet-released code from the
-upcoming V3.0 release.
-
-Given that it is a debug build from a not-yet-released version, you
-should not use it in production code.
-
 Also, before trying to build this project, you will need to register
 lib\MediaFoundation.dll, with a command line like:
 
 %windir%\Microsoft.NET\Framework\v4.0.30319\RegAsm.exe /tlb MediaFoundation.dll
-
-Lastly, unless someone is willing to spend some time updating it, the MEPlayer 
-project may be removed before the final release.
