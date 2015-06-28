@@ -30,6 +30,12 @@ $logmsg = substr($logmsg, 0, 254) . "\r\n";
 // Split out all the parts.  $symbols will have no more than 4 elements.
 $symbols = explode(".", $_GET['F1'], 4);
 
+if ($symbols[0] == 'NoHelp')
+{
+   print("This is the NoHelp test for https://connect.microsoft.com/VisualStudio/feedback/details/1219146<br><br>The fact that you are seeing this means that the redirection worked.<br>You requested url: " . $_SERVER['REQUEST_URI']);
+   exit;
+}
+
 if ($symbols[0] != 'MediaFoundation')
 {
    print("Unrecognized namespace in uRl: " . $_SERVER['REQUEST_URI']);
@@ -51,10 +57,10 @@ if (array_search($symbols[0], $skip1) !== false)
 // Remove static class names.  This code could be combined 
 // with skip1 since they don't overlap, but for clarity...
 
-$skip2 = array('DXVAHDETWGUID', 'OPMExtern', 'MFExtern', 'MF_MEDIA_ENGINE', 'MF_MSE', 'MFAttributesClsid', 
+$skip2 = array('DXVAHDETWGUID', 'OPMExtern', 'MFExtern', 'MF_MEDIA_ENGINE', 'MFAttributesClsid', 
    'MF_MEDIA_SHARING_ENGINE', 'MF_CAPTURE_ENGINE', 'MFTranscodeContainerType', 'MFConnector', 
    'MFTransformCategory', 'MFEnabletype', 'MFRepresentation', 'MFProperties', 'MFServices', 
-   'MFPKEY', 'CLSID', 'MFMediaType', 'MFImageFormat', 'MFStreamFormat', 'MFError', 'MFOpmStatusRequests', 
+   'MFPKEY', 'CLSID', 'MFMediaType', 'MFImageFormat', 'MFError', 'MFOpmStatusRequests', 
    'OpmConstants', 'MFPKEY_ASFMEDIASINK', 'MFASFSampleExtension');
 
 if (array_search($symbols[0], $skip2) !== false)
@@ -78,18 +84,22 @@ else
       $namemap = Array(
          "AMMediaType" => "AM_MEDIA_TYPE",
          "ASFIndexIdentifier" => "ASF_INDEX_IDENTIFIER",
+         "ASFMuxStatistics" => "ASF_MUX_STATISTICS",
          "ASFSelectionStatus" => "ASF_SELECTION_STATUS",
          "ASFStatusFlags" => "ASF_STATUSFLAGS",
          "BitmapInfoHeaderWithData" => "BITMAPINFO",
          "DXVA2ProcAmpValues" => "DXVA2_ProcAmpValues",
          "DXVA2ValueRange" => "DXVA2_ValueRange",
          "DXVA2VideoProcessorCaps" => "DXVA2_VideoProcessorCaps",
+         "MF_LeakyBucketPair" => "MF_LEAKY_BUCKET_PAIR",
          "MFAsfIndexerFlags" => "MFASF_INDEXERFLAGS",
+         "MFASFMultiplexerFlags" => "MFASF_MULTIPLEXERFLAGS",
          "MFASFSplitterFlags" => "MFASF_SPLITTERFLAGS",
          "MFAsfStreamSelectorFlags" => "MFASF_STREAMSELECTORFLAGS",
          "MFAttributeSerializeOptions" => "MF_ATTRIBUTE_SERIALIZE_OPTIONS",
          "MFAttributesMatchType" => "MF_ATTRIBUTES_MATCH_TYPE",
          "MFAttributeType" => "MF_ATTRIBUTE_TYPE",
+         "MFByteStreamBufferingParams" => "MFBYTESTREAM_BUFFERING_PARAMS",
          "MFByteStreamSeekOrigin" => "MFBYTESTREAM_SEEK_ORIGIN",
          "MFClockCharacteristicsFlags" => "MFCLOCK_CHARACTERISTICS_FLAGS",
          "MFClockProperties" => "MFCLOCK_PROPERTIES",
@@ -99,6 +109,7 @@ else
          "MFFileFlags" => "MF_FILE_FLAGS",
          "MFFileOpenMode" => "MF_FILE_OPENMODE",
          "MFMediaSourceCharacteristics" => "MFMEDIASOURCE_CHARACTERISTICS",
+         "MFNetSourceProtocolType" => "MFNETSOURCE_PROTOCOL_TYPE",
          "MFObjectType" => "MF_OBJECT_TYPE",
          "MFPluginType" => "MF_Plugin_Type",
          "MFPMPSessionCreationFlags" => "MFPMPSESSION_CREATION_FLAGS",
@@ -110,6 +121,7 @@ else
          "MFSessionGetFullTopologyFlags" => "MFSESSION_GETFULLTOPOLOGY_FLAGS",
          "MFSessionSetTopologyFlags" => "MFSESSION_SETTOPOLOGY_FLAGS",
          "MFShutdownStatus" => "MFSHUTDOWN_STATUS",
+         "MFSize" => "SIZE",
          "MFStreamSinkMarkerType" => "MFSTREAMSINK_MARKER_TYPE",
          "MFT_EnumFlag" => "MFT_ENUM_FLAG",
          "MFTDrainType" => "_MFT_DRAIN_TYPE",
@@ -119,6 +131,7 @@ else
          "MFTInputStreamInfoFlags" => "_MFT_INPUT_STREAM_INFO_FLAGS",
          "MFTMessageType" => "MFT_MESSAGE_TYPE",
          "MFTopologyType" => "MF_TOPOLOGY_TYPE",
+         "MFTopoNodeAttributeUpdate" => "MFTOPONODE_ATTRIBUTE_UPDATE",
          "MFTopoStatus" => "MF_TOPOSTATUS",
          "MFTOutputDataBuffer" => "MFT_OUTPUT_DATA_BUFFER",
          "MFTOutputDataBufferFlags" => "_MFT_OUTPUT_DATA_BUFFER_FLAGS",
