@@ -1,3 +1,27 @@
+v3.0 (2015-06-29)
+
+252 defined
+159 tested
+ 44 untestable
+
+Externs
+263 defined
+214 tested
+ 41 untestable
+
+See interfaces.txt for details.  These are all the testable 
+interfaces/externs up to and including W8.
+
+Be aware that .Net Framework v4.0.3 requires KB2495593.
+
+Also in v3.0, the licensing has been expanded to support BSD.
+
+New samples have been added showing how to write Media 
+Foundation Transforms (MFTs), along with templates to make 
+them easier to write.
+
+
+-----------------------------------------------------------------
 v2.2 (2015-04-14)
 
 
@@ -12,6 +36,8 @@ Externs
  37 untestable
 
 See interfaces.txt for details.
+
+Moved to framework v4.0.3.
 
 Also, it is now possible to get MSDN help for MFNet interfaces inside Visual 
 Studio. Run docs\insthelp.cmd to configure this features for VS2012, 2013 & 

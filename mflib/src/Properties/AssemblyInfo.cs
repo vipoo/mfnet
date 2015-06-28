@@ -34,14 +34,14 @@ using System.Security.Permissions;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: Guid("106ce403-2382-4c3d-ab55-fcb43e09f245")]
-[assembly: AssemblyVersion("2.2.0.*")]
-[assembly: AssemblyFileVersion("2.2.0.0")]
+[assembly: AssemblyVersion("3.1.0.*")]
+[assembly: AssemblyFileVersion("3.1.0.0")]
 #if DEBUG
 [assembly: AssemblyProduct("Debug Version")]
 #else
 [assembly : AssemblyProduct("Release Version")]
 #endif
-[assembly: AssemblyCopyright("GNU Lesser General Public License v2.1")]
+[assembly: AssemblyCopyright("GNU Lesser General Public License v2.1 or BSD")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]

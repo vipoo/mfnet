@@ -1,4 +1,4 @@
-Media Foundation Lib Samples 2015-04-14
+Media Foundation Lib Samples 2015-06-29
 
 http://mflib.SourceForge.net
 
@@ -13,7 +13,7 @@ public domain.  Use them as you like.  Every one of these samples needs the Medi
 library which is not included in this package.  Get the latest version of the library from 
 the SourceForge website.
 
-These samples have been updated to work with the v2.2 library.  As of 2015-04-14, they
+These samples have been updated to work with the v3.0 library.  As of 2015-04-14, they
 have been updated to work with framework version 4.0.3.
 
 The people who wrote these samples usually hang out in 
@@ -40,6 +40,12 @@ Samples\WavSource
 --------------------
 A c# implementation of the WavSource sample that ships with the Vista PSDK.  It extends
 Mediafoundation to include support for reading .wav files.
+
+
+Samples\MFT
+--------------------
+A collection of Media Foundation Transforms (MFTs) written in c#, along with templates
+and documention on how to create your own.
 
 
 Samples\MFT_Grayscale
