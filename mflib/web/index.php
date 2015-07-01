@@ -43,10 +43,17 @@ if ($symbols[0] != 'MediaFoundation')
 }
 
 // Remove 'MediaFoundation' that all requests should have.  $symbols now <= 3 elements.
-array_shift($symbols); 
+array_shift($symbols);
+
+// Special case the Alt namespace to remove the suffix from the interface names.
+if ($symbols[0] == 'Alt')
+{
+   array_shift($symbols);
+   $symbols[0] = substr($symbols[0], 0, -3);
+}
 
 // For nested namespaces, remove the namespace.
-$skip1 = array('Alt', 'dxvahd', 'EVR', 'MFPlayer', 'Misc', 'OPM', 'ReadWrite', 'Transform');
+$skip1 = array('dxvahd', 'EVR', 'MFPlayer', 'Misc', 'OPM', 'ReadWrite', 'Transform');
 if (array_search($symbols[0], $skip1) !== false)
 {
    array_shift($symbols);
