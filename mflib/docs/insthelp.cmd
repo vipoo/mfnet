@@ -93,58 +93,110 @@ echo.>>%tn%
 
 echo %br%]>>%tn% && echo "location"=%loc%>>%tn% && echo.>>%tn%
 
+rem Namespaces and static classes
+
 for %%f in (
 Alt dxvahd EVR MFPlayer Misc OPM ReadWrite Transform DXVAHDETWGUID OPMExtern MFExtern MF_MEDIA_ENGINE
 MFAttributesClsid MF_MEDIA_SHARING_ENGINE MF_CAPTURE_ENGINE MFTranscodeContainerType MFConnector
 MFTransformCategory MFEnabletype MFRepresentation MFProperties MFServices MFPKEY CLSID MFMediaType
 MFImageFormat MFError MFOpmStatusRequests OpmConstants MFPKEY_ASFMEDIASINK MFASFSampleExtension
-IAdvancedMediaCapture IAdvancedMediaCaptureInitializationSettings IAdvancedMediaCaptureSettings IAudioSourceProvider
-IDirect3DDevice9Ex IDirect3DDeviceManager9 IDirect3DSurface9 IDirectXVideoAccelerationService IDirectXVideoDecoder
-IDirectXVideoDecoderService IDirectXVideoMemoryConfiguration IDirectXVideoProcessor IDirectXVideoProcessorService
-IDXVAHD_Device IDXVAHD_VideoProcessor IEVRFilterConfig IEVRFilterConfigEx IEVRTrustedVideoPlugin IEVRVideoStreamControl
-IMF2DBuffer IMF2DBuffer2 IMFActivate IMFASFContentInfo IMFASFIndexer IMFASFMultiplexer IMFASFMutualExclusion
-IMFASFProfile IMFASFSplitter IMFASFStreamConfig IMFASFStreamPrioritization IMFASFStreamSelector IMFAsyncCallback
-IMFAsyncCallbackLogging IMFAsyncResult IMFAttributes IMFAudioMediaType IMFAudioPolicy IMFAudioStreamVolume
-IMFBufferListNotify IMFByteStream IMFByteStreamBuffering IMFByteStreamCacheControl IMFByteStreamCacheControl2
+) do echo %br%.%%f]>>%tn% && echo "location"=%loc%>>%tn% && echo.>>%tn%
+
+rem MediaFoundation.Alt namespace
+
+for %%f in (
+IMFFinalizableMediaSinkAlt IMFGetServiceAlt IMFMediaEventGeneratorAlt IMFMediaEventQueueAlt IMFMediaSinkAlt 
+IMFMediaSourceAlt IMFMediaStreamAlt IMFSourceReaderAsync IMFStreamSinkAlt IMFTopologyServiceLookupAlt 
+IMFTopologyServiceLookupClientAlt
+) do echo %br%.Alt.%%f]>>%tn% && echo "location"=%loc%>>%tn% && echo.>>%tn%
+
+rem MediaFoundation.dxvahd namespace
+
+for %%f in (
+IDXVAHD_Device IDXVAHD_VideoProcessor
+) do echo %br%.dxvahd.%%f]>>%tn% && echo "location"=%loc%>>%tn% && echo.>>%tn%
+
+rem MediaFoundation.EVR namespace
+
+for %%f in (
+IEVRFilterConfig IEVRFilterConfigEx IEVRTrustedVideoPlugin IEVRVideoStreamControl IMFDesiredSample
+IMFTopologyServiceLookup IMFTopologyServiceLookupClient IMFTrackedSample IMFVideoDeviceID IMFVideoDisplayControl 
+IMFVideoMixerBitmap IMFVideoMixerControl IMFVideoMixerControl2 IMFVideoPositionMapper IMFVideoPresenter 
+IMFVideoProcessor IMFVideoRenderer 
+) do echo %br%.EVR.%%f]>>%tn% && echo "location"=%loc%>>%tn% && echo.>>%tn%
+
+rem MediaFoundation namespace
+
+for %%f in (
+IAdvancedMediaCapture IAdvancedMediaCaptureInitializationSettings IAdvancedMediaCaptureSettings IAudioSourceProvider 
+IMF2DBuffer IMF2DBuffer2 IMFActivate IMFASFContentInfo IMFASFIndexer IMFASFMultiplexer IMFASFMutualExclusion 
+IMFASFProfile IMFASFSplitter IMFASFStreamConfig IMFASFStreamPrioritization IMFASFStreamSelector IMFAsyncCallback 
+IMFAsyncCallbackLogging IMFAsyncResult IMFAttributes IMFAudioMediaType IMFAudioPolicy IMFAudioStreamVolume 
+IMFBufferListNotify IMFByteStream IMFByteStreamBuffering IMFByteStreamCacheControl IMFByteStreamCacheControl2 
 IMFByteStreamHandler IMFByteStreamProxyClassFactory IMFByteStreamTimeSeek IMFCaptureEngine IMFCaptureEngineClassFactory
 IMFCaptureEngineOnEventCallback IMFCaptureEngineOnSampleCallback IMFCaptureEngineOnSampleCallback2
 IMFCapturePhotoConfirmation IMFCapturePhotoSink IMFCapturePreviewSink IMFCaptureRecordSink IMFCaptureSink
 IMFCaptureSink2 IMFCaptureSource IMFCdmSuspendNotify IMFClock IMFClockStateSink IMFCollection
-IMFContentDecryptorContext IMFContentEnabler IMFContentProtectionDevice IMFContentProtectionManager IMFDesiredSample
-IMFDLNASinkInit IMFDRMNetHelper IMFDXGIBuffer IMFDXGIDeviceManager IMFDXGIDeviceManagerSource IMFFieldOfUseMFTUnlock
+IMFContentDecryptorContext IMFContentEnabler IMFContentProtectionDevice IMFContentProtectionManager IMFDLNASinkInit
+IMFDRMNetHelper IMFDXGIBuffer IMFDXGIDeviceManager IMFDXGIDeviceManagerSource IMFFieldOfUseMFTUnlock
 IMFFinalizableMediaSink IMFGetService IMFImageSharingEngine IMFImageSharingEngineClassFactory IMFInputTrustAuthority
-IMFLocalMFTRegistration IMFMediaBuffer IMFMediaEngine IMFMediaEngineClassFactory IMFMediaEngineClassFactory2
-IMFMediaEngineClassFactoryEx IMFMediaEngineEME IMFMediaEngineEx IMFMediaEngineExtension IMFMediaEngineNeedKeyNotify
-IMFMediaEngineNotify IMFMediaEngineOPMInfo IMFMediaEngineProtectedContent IMFMediaEngineSrcElements
-IMFMediaEngineSrcElementsEx IMFMediaEngineSupportsSourceTransfer IMFMediaEngineWebSupport IMFMediaError IMFMediaEvent
-IMFMediaEventGenerator IMFMediaEventQueue IMFMediaKeys IMFMediaKeySession IMFMediaKeySessionNotify IMFMediaSession
-IMFMediaSharingEngine IMFMediaSharingEngineClassFactory IMFMediaSink IMFMediaSinkPreroll IMFMediaSource
-IMFMediaSourceEx IMFMediaSourceExtension IMFMediaSourceExtensionNotify IMFMediaSourcePresentationProvider
-IMFMediaSourceTopologyProvider IMFMediaStream IMFMediaStreamSourceSampleRequest IMFMediaTimeRange IMFMediaType
-IMFMediaTypeHandler IMFMetadata IMFMetadataProvider IMFNetCredential IMFNetCredentialCache IMFNetCredentialManager
-IMFNetProxyLocator IMFNetProxyLocatorFactory IMFNetResourceFilter IMFNetSchemeHandlerConfig IMFObjectReferenceStream
-IMFOutputPolicy IMFOutputSchema IMFOutputTrustAuthority IMFPluginControl IMFPluginControl2 IMFPMediaItem
-IMFPMediaPlayer IMFPMediaPlayerCallback IMFPMPClient IMFPMPClientApp IMFPMPHost IMFPMPHostApp IMFPMPServer
-IMFPresentationClock IMFPresentationDescriptor IMFPresentationTimeSource IMFProtectedEnvironmentAccess IMFQualityAdvise
-IMFQualityAdvise2 IMFQualityAdviseLimits IMFQualityManager IMFRateControl IMFRateSupport IMFReadWriteClassFactory
-IMFRealTimeClient IMFRealTimeClientEx IMFRemoteAsyncCallback IMFRemoteDesktopPlugin IMFRemoteProxy IMFSAMIStyle
-IMFSample IMFSampleGrabberSinkCallback IMFSampleGrabberSinkCallback2 IMFSampleOutputStream IMFSampleProtection
-IMFSaveJob IMFSchemeHandler IMFSecureChannel IMFSeekInfo IMFSequencerSource IMFSharingEngineClassFactory IMFShutdown
-IMFSignedLibrary IMFSimpleAudioVolume IMFSinkWriter IMFSinkWriterCallback IMFSinkWriterCallback2
-IMFSinkWriterEncoderConfig IMFSinkWriterEx IMFSourceBuffer IMFSourceBufferAppendMode IMFSourceBufferList
-IMFSourceBufferNotify IMFSourceOpenMonitor IMFSourceReader IMFSourceReaderAsync IMFSourceReaderCallback
-IMFSourceReaderCallback2 IMFSourceReaderEx IMFSourceResolver IMFSSLCertificateManager IMFStreamDescriptor
-IMFStreamingSinkConfig IMFStreamSink IMFSystemId IMFTimecodeTranslate IMFTimedText IMFTimedTextBinary IMFTimedTextCue
-IMFTimedTextCueList IMFTimedTextFormattedText IMFTimedTextNotify IMFTimedTextRegion IMFTimedTextStyle IMFTimedTextTrack
-IMFTimedTextTrackList IMFTimer IMFTopoLoader IMFTopology IMFTopologyNode IMFTopologyNodeAttributeEditor
-IMFTopologyServiceLookup IMFTopologyServiceLookupClient IMFTrackedSample IMFTranscodeProfile
-IMFTranscodeSinkInfoProvider IMFTransform IMFTrustedInput IMFTrustedOutput IMFVideoDeviceID IMFVideoDisplayControl
-IMFVideoMediaType IMFVideoMixerBitmap IMFVideoMixerControl IMFVideoMixerControl2 IMFVideoPositionMapper
-IMFVideoPresenter IMFVideoProcessor IMFVideoProcessorControl IMFVideoProcessorControl2 IMFVideoRenderer
-IMFVideoSampleAllocator IMFVideoSampleAllocatorCallback IMFVideoSampleAllocatorEx IMFVideoSampleAllocatorNotify
-IMFVideoSampleAllocatorNotifyEx IMFWorkQueueServices IMFWorkQueueServicesEx INamedPropertyStore IOPMVideoOutput
-IPlayToControl IPlayToControlWithCapabilities IPlayToSourceClassFactory IPropertyStore
+IMFMediaBuffer IMFMediaEngine IMFMediaEngineClassFactory IMFMediaEngineClassFactory2 IMFMediaEngineClassFactoryEx
+IMFMediaEngineEME IMFMediaEngineEx IMFMediaEngineExtension IMFMediaEngineNeedKeyNotify IMFMediaEngineNotify
+IMFMediaEngineOPMInfo IMFMediaEngineProtectedContent IMFMediaEngineSrcElements IMFMediaEngineSrcElementsEx
+IMFMediaEngineSupportsSourceTransfer IMFMediaEngineWebSupport IMFMediaError IMFMediaEvent IMFMediaEventGenerators
+IMFMediaEventQueue IMFMediaKeys IMFMediaKeySession IMFMediaKeySessionNotify IMFMediaSession IMFMediaSharingEngine
+IMFMediaSharingEngineClassFactory IMFMediaSink IMFMediaSinkPreroll IMFMediaSource IMFMediaSourceEx
+IMFMediaSourceExtension IMFMediaSourceExtensionNotify IMFMediaSourcePresentationProvider IMFMediaSourceTopologyProvider
+IMFMediaStream IMFMediaStreamSourceSampleRequest IMFMediaTimeRange IMFMediaType IMFMediaTypeHandler IMFMetadata
+IMFMetadataProvider IMFNetCredential IMFNetCredentialCache IMFNetCredentialManager IMFNetProxyLocator
+IMFNetProxyLocatorFactory IMFNetResourceFilter IMFNetSchemeHandlerConfig IMFObjectReferenceStream IMFOutputPolicy
+IMFOutputSchema IMFOutputTrustAuthority IMFPluginControl IMFPluginControl2 IMFPMPClient IMFPMPClientApp IMFPMPHost
+IMFPMPHostApp IMFPMPServer IMFPresentationClock IMFPresentationDescriptor IMFPresentationTimeSource
+IMFProtectedEnvironmentAccess IMFQualityAdvise IMFQualityAdvise2 IMFQualityAdviseLimits IMFQualityManager
+IMFRateControl IMFRateSupport IMFRealTimeClient IMFRealTimeClientEx IMFRemoteAsyncCallback IMFRemoteDesktopPlugin
+IMFRemoteProxy IMFSAMIStyle IMFSample IMFSampleGrabberSinkCallback IMFSampleGrabberSinkCallback2 IMFSampleOutputStream
+IMFSampleProtection IMFSaveJob IMFSchemeHandler IMFSecureChannel IMFSeekInfo IMFSequencerSource
+IMFSharingEngineClassFactory IMFShutdown IMFSignedLibrary IMFSimpleAudioVolume IMFSourceBuffer IMFSourceBufferAppendMode
+IMFSourceBufferList IMFSourceBufferNotify IMFSourceOpenMonitor IMFSourceResolver IMFSSLCertificateManager
+IMFStreamDescriptor IMFStreamingSinkConfig IMFStreamSink IMFSystemId IMFTimecodeTranslate IMFTimedText
+IMFTimedTextBinary IMFTimedTextCue IMFTimedTextCueList IMFTimedTextFormattedText IMFTimedTextNotify IMFTimedTextRegion
+IMFTimedTextStyle IMFTimedTextTrack IMFTimedTextTrackList IMFTimer IMFTopoLoader IMFTopology IMFTopologyNode
+IMFTopologyNodeAttributeEditor IMFTranscodeProfile IMFTranscodeSinkInfoProvider IMFTrustedInput IMFTrustedOutput
+IMFVideoMediaType IMFVideoProcessorControl IMFVideoProcessorControl2 IMFVideoSampleAllocator
+IMFVideoSampleAllocatorCallback IMFVideoSampleAllocatorEx IMFVideoSampleAllocatorNotify IMFVideoSampleAllocatorNotifyEx
+IMFWorkQueueServices IMFWorkQueueServicesEx IPlayToControl IPlayToControlWithCapabilities IPlayToSourceClassFactory
 ) do echo %br%.%%f]>>%tn% && echo "location"=%loc%>>%tn% && echo.>>%tn%
+
+rem MediaFoundation.MFPlayer namespace
+
+for %%f in (
+IMFPMediaItem IMFPMediaPlayer IMFPMediaPlayerCallback
+) do echo %br%.MFPlayer.%%f]>>%tn% && echo "location"=%loc%>>%tn% && echo.>>%tn%
+
+rem MediaFoundation.Misc namespace
+
+for %%f in (
+INamedPropertyStore IPropertyStore 
+) do echo %br%.Misc.%%f]>>%tn% && echo "location"=%loc%>>%tn% && echo.>>%tn%
+
+rem MediaFoundation.OPM namespace
+
+for %%f in (
+IOPMVideoOutput
+) do echo %br%.OPM.%%f]>>%tn% && echo "location"=%loc%>>%tn% && echo.>>%tn%
+
+rem MediaFoundation.ReadWrite namespace
+
+for %%f in (
+IMFReadWriteClassFactory IMFSinkWriter IMFSinkWriterCallback IMFSinkWriterCallback2 IMFSinkWriterEncoderConfig
+IMFSinkWriterEx IMFSourceReader IMFSourceReaderCallback IMFSourceReaderCallback2 IMFSourceReaderEx 
+) do echo %br%.ReadWrite.%%f]>>%tn% && echo "location"=%loc%>>%tn% && echo.>>%tn%
+
+rem MediaFoundation.Transform namespace
+
+for %%f in (
+IMFLocalMFTRegistration IMFTransform
+) do echo %br%.Transform.%%f]>>%tn% && echo "location"=%loc%>>%tn% && echo.>>%tn%
 
 echo Registering objects...
 regedit /s %tn%
