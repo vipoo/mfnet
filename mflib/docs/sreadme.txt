@@ -1,4 +1,4 @@
-Media Foundation Lib Samples 2015-06-29
+Media Foundation Lib Samples 2015-07-01
 
 http://mflib.SourceForge.net
 
@@ -8,7 +8,7 @@ Media Foundation.  Feel free to polish them into applications of your own, or ex
 sections to use in your own code.  Each sample has (at least one) readme file.  
 If you are looking for info regarding a sample, these are always a good place to start.
 
-Also, while the Media Foundation library is licensed under LGPL, these samples are 
+Also, while the Media Foundation library is licensed under LGPL or BSD, these samples are 
 public domain.  Use them as you like.  Every one of these samples needs the MediaFoundation
 library which is not included in this package.  Get the latest version of the library from 
 the SourceForge website.

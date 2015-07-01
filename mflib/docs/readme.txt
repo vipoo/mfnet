@@ -9,5 +9,5 @@ Here's where to find things:
 - The list of interfaces indicating which are tested or untested can be found in docs\interfaces.txt
 - The complete source code with definitions for all interfaces (tested and untested) can be found in src\*.*
 
-Licensed under Lesser General Public License.  See license.txt for details.
+Licensed under either Lesser General Public License v2.1 or BSD.  See license.txt or BSDL.txt for details.
 http://mfnet.sourceforge.net
