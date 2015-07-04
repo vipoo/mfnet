@@ -1,9 +1,10 @@
 ﻿/****************************************************************************
-While the underlying libraries are covered by LGPL, this sample is released 
+While the underlying library is covered by LGPL or BSD, this sample is released
 as public domain.  It is distributed in the hope that it will be useful, but 
 WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY 
 or FITNESS FOR A PARTICULAR PURPOSE.  
 *****************************************************************************/
+
 using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -22,7 +23,7 @@ using System.Runtime.InteropServices;
 #else
 [assembly : AssemblyProduct("Release Version")]
 #endif
-[assembly: AssemblyCopyright("GNU Lesser General Public License v2.1")]
+[assembly: AssemblyCopyright("")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
