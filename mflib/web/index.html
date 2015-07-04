@@ -12,8 +12,8 @@
 	<p>
 		Purpose: The goal of this project is to allow programmers who create managed applications
 		to use the interfaces in Vista's/Windows 7 Media Foundation.&nbsp; If you are not
-		a programmer, or are not running on Vista (or Windows 7), there is nothing in this
-		project that you are going to find useful.</p>
+		a programmer, or are not running on (at least) Vista, there is nothing in this project
+		that you are going to find useful.</p>
 	<p>
 		If you have questions, comments, or just want to offer encouragement, post a message
 		to this project's forum at <a href="https://sourceforge.net/p/mfnet/discussion/711229/">
@@ -29,19 +29,35 @@
 	</ul>
 	<hr />
 	<p>
-		<b>April 19, 2015</b>
+		<b>July 4, 2015</b>
 	</p>
 	<h2>
 		Project Status</h2>
 	<p>
-		Version 2.2 is now available to download in the <a href="https://sourceforge.net/projects/mfnet/files/">
-			files</a> area.  In addition to upgrading to framework v4.0.3, this release 
-		moves an additional 20 
-			interfaces out of the untested section.  These interfaces are the last of the &lt;= Windows 7 interfaces and externs that can 
-			be tested.  The next release (3.0) will begin targeting the Windows 8 interfaces.
+		Version 3.0 is now available to download in the <a href="https://sourceforge.net/projects/mfnet/files/">
+			files</a> area. This release moves the 28 testable W8.0 interfaces out of the untested
+		section. The next release (3.1) will include the Windows 8.1 interfaces.
 	</p>
-	<p>v2.2 also includes a new feature: Support for getting F1 help on MFNet interfaces thru MSDN. 
-	To use this feature with VS2012 and up, run docs\insthelp.cmd.</p>
+	<p>
+		Also in v3.0, the licensing has been expanded to include either LGPL or BSD.</p>
+	<p>
+		New samples have been added showing how to write Media Foundation Transforms (MFTs),
+		along with templates to make them easier to write.
+		<p>
+			<b>April 19, 2015</b>
+		</p>
+		<h2>
+			Project Status</h2>
+		<p>
+			Version 2.2 is now available to download in the <a href="https://sourceforge.net/projects/mfnet/files/">
+				files</a> area. In addition to upgrading to framework v4.0.3, this release moves
+			an additional 20 interfaces out of the untested section. These interfaces are the
+			last of the &lt;= Windows 7 interfaces and externs that can be tested. The next
+			release (3.0) will begin targeting the Windows 8 interfaces.</p>
+	</p>
+	<p>
+		v2.2 also includes a new feature: Support for getting F1 help on MFNet interfaces
+		thru MSDN. To use this feature with VS2012 and up, run docs\insthelp.cmd.</p>
 	<p>
 		<b>April 7, 2015</b>
 	</p>
@@ -61,23 +77,23 @@
 		a MediaFoundation interface (like IMFAttributes) or interface method (such as IMFAttributes.GetItem),
 		you are taken to MSDN, which informs you that MSDN has no help to offer for MediaFoundation.IMFAttributes.GetItem.
 		Since that namespace is unique(-ish) to this project and is not defined by MS, it
-		is no surprise that MSDN has no help to offer. In fact, it becomes kind of 
-		irritating that it even tries.</p>
+		is no surprise that MSDN has no help to offer. In fact, it becomes kind of irritating
+		that it even tries.</p>
 	<p>
 		However, MS Help (which is what Visual Studio uses) has a way to redirect help for
-		certain objects to an alternate website via registery
-		keys. I have created a batch file to add the necessary keys to send the
-		request to http://MFNet.SourceForge.net, and I have updated MFNet.SourceForge.Net
-		to process and redirect the requests to MSDN.&nbsp; While this won't work for everything,
-		it does work for most interfaces, interface methods, structs, enums, and the methods
-		on MFExtern.</p>
+		certain objects to an alternate website via registery keys. I have created a batch
+		file to add the necessary keys to send the request to http://MFNet.SourceForge.net,
+		and I have updated MFNet.SourceForge.Net to process and redirect the requests to
+		MSDN.&nbsp; While this won't work for everything, it does work for most interfaces,
+		interface methods, structs, enums, and the methods on MFExtern.</p>
 	<p>
-		One of the components of this feature is a PHP script (to redirect the url). I am not an expert at php, so while the script works, it could probably work
-		better (smaller, faster, safer, etc). If you are a php expert and have a minute
-		to look this over, the file is checked in to CVS at <a href="http://mfnet.cvs.sourceforge.net/viewvc/mfnet/mflib/web/index.php?view=markup">
+		One of the components of this feature is a PHP script (to redirect the url). I am
+		not an expert at php, so while the script works, it could probably work better (smaller,
+		faster, safer, etc). If you are a php expert and have a minute to look this over,
+		the file is checked in to CVS at <a href="http://mfnet.cvs.sourceforge.net/viewvc/mfnet/mflib/web/index.php?view=markup">
 			http://mfnet.cvs.sourceforge.net/viewvc/mfnet/mflib/web/index.php?view=markupp</a>.
 		The batch file to add the registry keys is at <a href="http://mfnet.cvs.sourceforge.net/viewvc/mfnet/mflib/docs/insthelp.cmd?view=markup">
-			http://mfnet.cvs.sourceforge.net/viewvc/mfnet/mflib/docs/insthelp.cmd?view=markup</a>, 
+			http://mfnet.cvs.sourceforge.net/viewvc/mfnet/mflib/docs/insthelp.cmd?view=markup</a>,
 		and is expected to be included in the upcoming v2.2 release of the library.</p>
 	<p>
 		Looking ahead, the next set of interfaces are the ones from Windows 8.&nbsp; We&#39;ll
