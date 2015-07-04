@@ -151,7 +151,7 @@ Accessors:
 
 Section 4 - Distributing/using the MFT.
 
-The code in this project is public domain, so there are no legal requirements involved in using it (with the exceptions of the LGPL for MediaFoundation.dll).  While it would be nice to have a mention in your docs and/or an emailed "thanks", even more useful would be some contribution to make the project better.  Bug fixes, doc improvements, additional samples, etc to make things better/easier for the next guy, the way this project has made things easier for you.
+The code in this project is public domain, so there are no legal requirements involved in using it (with the exceptions of the LGPL or BSD for MediaFoundation.dll).  While it would be nice to have a mention in your docs and/or an emailed "thanks", even more useful would be some contribution to make the project better.  Bug fixes, doc improvements, additional samples, etc to make things better/easier for the next guy, the way this project has made things easier for you.
 
 What kind of installation you need to do for your MFT depends on how you are going to use it.  There are 4 general cases:
 

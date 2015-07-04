@@ -179,7 +179,7 @@ Accessors:
 
 Section 4 - Distributing/using the MFT.
 
-The code in this project is public domain, so there are no legal requirements involved in using it (with the exceptions of the LGPL for MediaFoundation.dll).  While it would be nice to have a mention in your docs and/or an emailed "thanks", even more useful would be some contribution to make the project better.  Bug fixes, doc improvements, additional samples, etc to make things better/easier for the next guy, the way this project has made things easier for you.
+The code in this project is public domain, so there are no legal requirements involved in using it (with the exceptions of the LGPL or BSD for MediaFoundation.dll).  While it would be nice to have a mention in your docs and/or an emailed "thanks", even more useful would be some contribution to make the project better.  Bug fixes, doc improvements, additional samples, etc to make things better/easier for the next guy, the way this project has made things easier for you.
 
 What kind of installation you need to do for your MFT depends on how you are going to use it.  There are 4 general cases:
 
@@ -255,6 +255,6 @@ Q: I want to climb in to the guts of this to see how it all works (or to add sup
 A: There is a *big* comment above ProcessingThread that is worth reading.
 
 Q: What if I want to make changes to the template?
-A: While I hope that isn't necessary, you may need to do this.  You've got the full source, and the license is public domain, so help yourself.
+A: While I hope that isn't necessary, you may need to do this.  You've got the full source, and the template license is public domain, so help yourself.
 
 That said, if the reason you are making a change is because there is a bug, performance issue or any other change that would be useful to others, I hope you will choose to share it and make things better for everyone.
