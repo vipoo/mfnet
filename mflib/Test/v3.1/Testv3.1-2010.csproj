@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{57702571-00E1-462A-8272-330032E97FA2}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Testv31</RootNamespace>
+    <AssemblyName>Testv31</AssemblyName>
+    <TargetFrameworkVersion>v4.0.3</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ExternTest.cs" />
+    <Compile Include="IMFBufferListNotifyTest.cs" />
+    <Compile Include="IMFCaptureEngineOnSampleCallback2Test.cs" />
+    <Compile Include="IMFCaptureSink2Test.cs" />
+    <Compile Include="IMFCdmSuspendNotifyTest.cs" />
+    <Compile Include="IMFDXGIDeviceManagerSourceTest.cs" />
+    <Compile Include="IMFMediaEngineClassFactory2Test.cs" />
+    <Compile Include="IMFMediaEngineClassFactoryExTest.cs" />
+    <Compile Include="IMFMediaEngineEMETest.cs" />
+    <Compile Include="IMFMediaEngineNeedKeyNotifyTest.cs" />
+    <Compile Include="IMFMediaEngineOPMInfoTest.cs" />
+    <Compile Include="IMFMediaEngineSrcElementsExTest.cs" />
+    <Compile Include="IMFMediaEngineSupportsSourceTransferTest.cs" />
+    <Compile Include="IMFMediaKeySessionNotifyTest.cs" />
+    <Compile Include="IMFMediaKeySessionTest.cs" />
+    <Compile Include="IMFMediaKeysTest.cs" />
+    <Compile Include="IMFMediaSourceExtensionNotifyTest.cs" />
+    <Compile Include="IMFMediaSourceExtensionTest.cs" />
+    <Compile Include="IMFMediaStreamSourceSampleRequestTest.cs" />
+    <Compile Include="IMFSinkWriterEncoderConfigTest.cs" />
+    <Compile Include="IMFSourceBufferListTest.cs" />
+    <Compile Include="IMFSourceBufferNotifyTest.cs" />
+    <Compile Include="IMFSourceBufferTest.cs" />
+    <Compile Include="IPlayToControlWithCapabilitiesTest.cs" />
+    <Compile Include="RunTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="v3-1-Interfaces.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\MediaFoundation-2010.csproj">
+      <Project>{B78C0F3B-071A-4FD2-829D-7A67E0F7BD1C}</Project>
+      <Name>MediaFoundation-2010</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
