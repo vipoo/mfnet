@@ -1540,7 +1540,7 @@ namespace MediaFoundation
 
         #region 8.1
 
-        [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        [DllImport("mfsrcsnk.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFCreateAVIMediaSink(
             [In] IMFByteStream pIByteStream,
             [In] IMFMediaType pVideoMediaType,
@@ -1548,7 +1548,7 @@ namespace MediaFoundation
             out IMFMediaSink ppIMediaSink
         );
 
-        [DllImport("mf.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
+        [DllImport("mfsrcsnk.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
         public static extern int MFCreateWAVEMediaSink(
             [In] IMFByteStream pTargetByteStream,
             [In] IMFMediaType pAudioMediaType,
