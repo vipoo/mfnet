@@ -17,7 +17,7 @@ namespace Testv31
 
         private void TestAVI()
         {
-            int hr;
+            HResult hr;
 
             IMFMediaType pType = null;
             IMFByteStream imfByteStreamWritable = null;
@@ -62,7 +62,7 @@ namespace Testv31
 
         private void TestWave()
         {
-            int hr;
+            HResult hr;
 
             IMFMediaType pType = null;
             IMFByteStream imfByteStreamWritable = null;

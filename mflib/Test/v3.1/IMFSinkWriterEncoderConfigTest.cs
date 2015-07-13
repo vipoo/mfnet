@@ -26,7 +26,7 @@ namespace Testv31
 
         public void DoTests()
         {
-            int hr;
+            HResult hr;
 
             IMFAttributes ia;
             hr = MFExtern.MFCreateAttributes(out ia, 5);
@@ -42,7 +42,7 @@ namespace Testv31
 
         void InitializeWriter()
         {
-            int hr;
+            HResult hr;
             IMFSinkWriter ppWriter;
             IMFAttributes ia = null;
 

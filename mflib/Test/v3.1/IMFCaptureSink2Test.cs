@@ -25,7 +25,7 @@ namespace Testv31
 
         public void DoTests()
         {
-            int hr = 0;
+            HResult hr = 0;
             GetInterface();
 
             int i;
@@ -61,7 +61,7 @@ namespace Testv31
             Debug.Assert(cecf != null);
 
             object o;
-            int hr = cecf.CreateInstance(CLSID.CLSID_MFCaptureEngine, typeof(IMFCaptureEngine).GUID, out o);
+            HResult hr = cecf.CreateInstance(CLSID.CLSID_MFCaptureEngine, typeof(IMFCaptureEngine).GUID, out o);
             MFError.ThrowExceptionForHR(hr);
 
             m_ce = o as IMFCaptureEngine;
@@ -99,15 +99,15 @@ namespace Testv31
             m_csink2 = m_csink as IMFCaptureSink2;
         }
 
-        public int OnEvent(IMFMediaEvent pEvent)
+        public HResult OnEvent(IMFMediaEvent pEvent)
         {
-            int hr;
+            HResult hr;
 
             MediaEventType met = 0;
             hr = pEvent.GetType(out met);
             MFError.ThrowExceptionForHR(hr);
 
-            int hr2;
+            HResult hr2;
             hr = pEvent.GetStatus(out hr2);
 
             switch (met)
@@ -125,7 +125,7 @@ namespace Testv31
                             m_Init = 2;
 
                         else if (g == MF_CAPTURE_ENGINE.RECORD_STOPPED)
-                            ;
+                            hr = HResult.S_OK;
                         //m_Done = 1;
 
                         else if (g == MF_CAPTURE_ENGINE.ERROR)
@@ -150,13 +150,13 @@ namespace Testv31
             return hr;
         }
 
-        public int OnSample(IMFSample pSample)
+        public HResult OnSample(IMFSample pSample)
         {
             m_Count++;
-            return S_Ok;
+            return HResult.S_OK;
         }
 
-        public int OnSynchronizedEvent(IMFMediaEvent pEvent)
+        public HResult OnSynchronizedEvent(IMFMediaEvent pEvent)
         {
             Debug.WriteLine("WE'RE HERE!!!");
             throw new NotImplementedException();
