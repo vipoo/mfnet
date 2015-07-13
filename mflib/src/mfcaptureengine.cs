@@ -13,9 +13,7 @@ b) The BSD License (see BSDL.txt)
 */
 
 using System;
-using System.Text;
 using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
 
 using MediaFoundation.Misc;
 using MediaFoundation.EVR;
@@ -63,14 +61,14 @@ namespace MediaFoundation
         #region IMFCaptureEngineOnSampleCallback methods
 
         [PreserveSig]
-        new int OnSample(
+        new HResult OnSample(
             IMFSample pSample
             );
 
         #endregion
 
         [PreserveSig]
-        int OnSynchronizedEvent(
+        HResult OnSynchronizedEvent(
             IMFMediaEvent pEvent
             );
     }
@@ -83,13 +81,13 @@ namespace MediaFoundation
         #region IMFCaptureEngineOnSampleCallback methods
 
         [PreserveSig]
-        new int GetOutputMediaType(
+        new HResult GetOutputMediaType(
             int dwSinkStreamIndex,
             out IMFMediaType ppMediaType
             );
 
         [PreserveSig]
-        new int GetService(
+        new HResult GetService(
             int dwSinkStreamIndex,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid rguidService,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
@@ -97,7 +95,7 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        new int AddStream(
+        new HResult AddStream(
             int dwSourceStreamIndex,
             IMFMediaType pMediaType,
             IMFAttributes pAttributes,
@@ -105,15 +103,15 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        new int Prepare();
+        new HResult Prepare();
 
         [PreserveSig]
-        new int RemoveAllStreams();
+        new HResult RemoveAllStreams();
 
         #endregion
 
         [PreserveSig]
-        int SetOutputMediaType(
+        HResult SetOutputMediaType(
             int dwStreamIndex,
             IMFMediaType pMediaType,
             IMFAttributes pEncodingAttributes
@@ -126,17 +124,17 @@ namespace MediaFoundation
     public interface IMFCapturePhotoConfirmation
     {
         [PreserveSig]
-        int SetPhotoConfirmationCallback(
+        HResult SetPhotoConfirmationCallback(
             IMFAsyncCallback pNotificationCallback
             );
 
         [PreserveSig]
-        int SetPixelFormat(
+        HResult SetPixelFormat(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid subtype
             );
 
         [PreserveSig]
-        int GetPixelFormat(
+        HResult GetPixelFormat(
             out Guid subtype
             );
     }
@@ -148,7 +146,7 @@ namespace MediaFoundation
     public interface IMFCaptureEngineOnEventCallback
     {
         [PreserveSig]
-        int OnEvent(
+        HResult OnEvent(
             IMFMediaEvent pEvent
             );
     }
@@ -159,7 +157,7 @@ namespace MediaFoundation
     public interface IMFCaptureEngineOnSampleCallback
     {
         [PreserveSig]
-        int OnSample(
+        HResult OnSample(
             IMFSample pSample
             );
     }
@@ -170,13 +168,13 @@ namespace MediaFoundation
     public interface IMFCaptureSink
     {
         [PreserveSig]
-        int GetOutputMediaType(
+        HResult GetOutputMediaType(
             int dwSinkStreamIndex,
             out IMFMediaType ppMediaType
             );
 
         [PreserveSig]
-        int GetService(
+        HResult GetService(
             int dwSinkStreamIndex,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid rguidService,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
@@ -184,7 +182,7 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        int AddStream(
+        HResult AddStream(
             int dwSourceStreamIndex,
             IMFMediaType pMediaType,
             IMFAttributes pAttributes,
@@ -192,10 +190,10 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        int Prepare();
+        HResult Prepare();
 
         [PreserveSig]
-        int RemoveAllStreams();
+        HResult RemoveAllStreams();
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -206,13 +204,13 @@ namespace MediaFoundation
         #region IMFCaptureSink Methods
 
         [PreserveSig]
-        new int GetOutputMediaType(
+        new HResult GetOutputMediaType(
             int dwSinkStreamIndex,
             out IMFMediaType ppMediaType
             );
 
         [PreserveSig]
-        new int GetService(
+        new HResult GetService(
             int dwSinkStreamIndex,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid rguidService,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
@@ -220,7 +218,7 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        new int AddStream(
+        new HResult AddStream(
             int dwSourceStreamIndex,
             IMFMediaType pMediaType,
             IMFAttributes pAttributes,
@@ -228,43 +226,43 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        new int Prepare();
+        new HResult Prepare();
 
         [PreserveSig]
-        new int RemoveAllStreams();
+        new HResult RemoveAllStreams();
 
         #endregion
 
         [PreserveSig]
-        int SetOutputByteStream(
+        HResult SetOutputByteStream(
             IMFByteStream pByteStream,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidContainerType
             );
 
         [PreserveSig]
-        int SetOutputFileName(
+        HResult SetOutputFileName(
             [MarshalAs(UnmanagedType.LPWStr)] string fileName
             );
 
         [PreserveSig]
-        int SetSampleCallback(
+        HResult SetSampleCallback(
             int dwStreamSinkIndex,
             IMFCaptureEngineOnSampleCallback pCallback
             );
 
         [PreserveSig]
-        int SetCustomSink(
+        HResult SetCustomSink(
             IMFMediaSink pMediaSink
             );
 
         [PreserveSig]
-        int GetRotation(
+        HResult GetRotation(
             int dwStreamIndex,
             out int pdwRotationValue
             );
 
         [PreserveSig]
-        int SetRotation(
+        HResult SetRotation(
             int dwStreamIndex,
             int dwRotationValue
         );
@@ -278,13 +276,13 @@ namespace MediaFoundation
         #region IMFCaptureSink Methods
 
         [PreserveSig]
-        new int GetOutputMediaType(
+        new HResult GetOutputMediaType(
             int dwSinkStreamIndex,
             out IMFMediaType ppMediaType
             );
 
         [PreserveSig]
-        new int GetService(
+        new HResult GetService(
             int dwSinkStreamIndex,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid rguidService,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
@@ -292,7 +290,7 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        new int AddStream(
+        new HResult AddStream(
             int dwSourceStreamIndex,
             IMFMediaType pMediaType,
             IMFAttributes pAttributes,
@@ -300,60 +298,60 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        new int Prepare();
+        new HResult Prepare();
 
         [PreserveSig]
-        new int RemoveAllStreams();
+        new HResult RemoveAllStreams();
 
         #endregion
 
         [PreserveSig]
-        int SetRenderHandle(
+        HResult SetRenderHandle(
             IntPtr handle
             );
 
         [PreserveSig]
-        int SetRenderSurface(
+        HResult SetRenderSurface(
             [MarshalAs(UnmanagedType.IUnknown)] object pSurface
             );
 
         [PreserveSig]
-        int UpdateVideo(
+        HResult UpdateVideo(
             [In] MFVideoNormalizedRect pSrc,
             [In] MFRect pDst,
             [In] MFInt pBorderClr
             );
 
         [PreserveSig]
-        int SetSampleCallback(
+        HResult SetSampleCallback(
             int dwStreamSinkIndex,
             IMFCaptureEngineOnSampleCallback pCallback
             );
 
         [PreserveSig]
-        int GetMirrorState(
+        HResult GetMirrorState(
             [MarshalAs(UnmanagedType.Bool)] out bool pfMirrorState
             );
 
         [PreserveSig]
-        int SetMirrorState(
+        HResult SetMirrorState(
             [MarshalAs(UnmanagedType.Bool)] bool fMirrorState
             );
 
         [PreserveSig]
-        int GetRotation(
+        HResult GetRotation(
             int dwStreamIndex,
             out int pdwRotationValue
             );
 
         [PreserveSig]
-        int SetRotation(
+        HResult SetRotation(
             int dwStreamIndex,
             int dwRotationValue
             );
 
         [PreserveSig]
-        int SetCustomSink(
+        HResult SetCustomSink(
             IMFMediaSink pMediaSink
             );
     }
@@ -366,13 +364,13 @@ namespace MediaFoundation
         #region IMFCaptureSink Methods
 
         [PreserveSig]
-        new int GetOutputMediaType(
+        new HResult GetOutputMediaType(
             int dwSinkStreamIndex,
             out IMFMediaType ppMediaType
             );
 
         [PreserveSig]
-        new int GetService(
+        new HResult GetService(
             int dwSinkStreamIndex,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid rguidService,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
@@ -380,7 +378,7 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        new int AddStream(
+        new HResult AddStream(
             int dwSourceStreamIndex,
             IMFMediaType pMediaType,
             IMFAttributes pAttributes,
@@ -388,25 +386,25 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        new int Prepare();
+        new HResult Prepare();
 
         [PreserveSig]
-        new int RemoveAllStreams();
+        new HResult RemoveAllStreams();
 
         #endregion
 
         [PreserveSig]
-        int SetOutputFileName(
+        HResult SetOutputFileName(
             [MarshalAs(UnmanagedType.LPWStr)] string fileName
             );
 
         [PreserveSig]
-        int SetSampleCallback(
+        HResult SetSampleCallback(
             IMFCaptureEngineOnSampleCallback pCallback
             );
 
         [PreserveSig]
-        int SetOutputByteStream(
+        HResult SetOutputByteStream(
             IMFByteStream pByteStream
             );
     }
@@ -417,85 +415,85 @@ namespace MediaFoundation
     public interface IMFCaptureSource
     {
         [PreserveSig]
-        int GetCaptureDeviceSource(
+        HResult GetCaptureDeviceSource(
             MF_CAPTURE_ENGINE_DEVICE_TYPE mfCaptureEngineDeviceType,
             out IMFMediaSource ppMediaSource
             );
 
         [PreserveSig]
-        int GetCaptureDeviceActivate(
+        HResult GetCaptureDeviceActivate(
             MF_CAPTURE_ENGINE_DEVICE_TYPE mfCaptureEngineDeviceType,
             out IMFActivate ppActivate
             );
 
         [PreserveSig]
-        int GetService(
+        HResult GetService(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid rguidService,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
             [MarshalAs(UnmanagedType.IUnknown)] out object ppUnknown
             );
 
         [PreserveSig]
-        int AddEffect(
+        HResult AddEffect(
             int dwSourceStreamIndex,
             [MarshalAs(UnmanagedType.IUnknown)] object pUnknown
             );
 
         [PreserveSig]
-        int RemoveEffect(
+        HResult RemoveEffect(
             int dwSourceStreamIndex,
             [MarshalAs(UnmanagedType.IUnknown)] object pUnknown
             );
 
         [PreserveSig]
-        int RemoveAllEffects(
+        HResult RemoveAllEffects(
             int dwSourceStreamIndex
             );
 
         [PreserveSig]
-        int GetAvailableDeviceMediaType(
+        HResult GetAvailableDeviceMediaType(
             int dwSourceStreamIndex,
             int dwMediaTypeIndex,
             out IMFMediaType ppMediaType
             );
 
         [PreserveSig]
-        int SetCurrentDeviceMediaType(
+        HResult SetCurrentDeviceMediaType(
             int dwSourceStreamIndex,
             IMFMediaType pMediaType
             );
 
         [PreserveSig]
-        int GetCurrentDeviceMediaType(
+        HResult GetCurrentDeviceMediaType(
             int dwSourceStreamIndex,
             out IMFMediaType ppMediaType
             );
 
         [PreserveSig]
-        int GetDeviceStreamCount(
+        HResult GetDeviceStreamCount(
             out int pdwStreamCount
             );
 
         [PreserveSig]
-        int GetDeviceStreamCategory(
+        HResult GetDeviceStreamCategory(
             int dwSourceStreamIndex,
             out MF_CAPTURE_ENGINE_STREAM_CATEGORY pStreamCategory
             );
 
         [PreserveSig]
-        int GetMirrorState(
+        HResult GetMirrorState(
             int dwStreamIndex,
             [MarshalAs(UnmanagedType.Bool)] out bool pfMirrorState
             );
 
         [PreserveSig]
-        int SetMirrorState(
+        HResult SetMirrorState(
             int dwStreamIndex,
             [MarshalAs(UnmanagedType.Bool)] bool fMirrorState
             );
 
         [PreserveSig]
-        int GetStreamIndexFromFriendlyName(
+        HResult GetStreamIndexFromFriendlyName(
             int uifriendlyName,
             out int pdwActualStreamIndex
             );
@@ -507,7 +505,7 @@ namespace MediaFoundation
     public interface IMFCaptureEngine
     {
         [PreserveSig]
-        int Initialize(
+        HResult Initialize(
             IMFCaptureEngineOnEventCallback pEventCallback,
             IMFAttributes pAttributes,
             [MarshalAs(UnmanagedType.IUnknown)] object pAudioSource,
@@ -515,31 +513,31 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        int StartPreview();
+        HResult StartPreview();
 
         [PreserveSig]
-        int StopPreview();
+        HResult StopPreview();
 
         [PreserveSig]
-        int StartRecord();
+        HResult StartRecord();
 
         [PreserveSig]
-        int StopRecord(
+        HResult StopRecord(
             [MarshalAs(UnmanagedType.Bool)] bool bFinalize,
             [MarshalAs(UnmanagedType.Bool)] bool bFlushUnprocessedSamples
             );
 
         [PreserveSig]
-        int TakePhoto();
+        HResult TakePhoto();
 
         [PreserveSig]
-        int GetSink(
+        HResult GetSink(
             MF_CAPTURE_ENGINE_SINK_TYPE mfCaptureEngineSinkType,
             out IMFCaptureSink ppSink
             );
 
         [PreserveSig]
-        int GetSource(
+        HResult GetSource(
             out IMFCaptureSource ppSource
             );
     }
@@ -550,7 +548,7 @@ namespace MediaFoundation
     public interface IMFCaptureEngineClassFactory
     {
         [PreserveSig]
-        int CreateInstance(
+        HResult CreateInstance(
                 [In, MarshalAs(UnmanagedType.LPStruct)] Guid clsid,
                 [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
                 [MarshalAs(UnmanagedType.IUnknown)] out object ppvObject

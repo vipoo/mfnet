@@ -15,10 +15,8 @@ b) The BSD License (see BSDL.txt)
 using System;
 using System.Runtime.InteropServices;
 
-using MediaFoundation;
 using MediaFoundation.Misc;
 using MediaFoundation.Transform;
-using System.Drawing;
 
 namespace MediaFoundation.EVR
 {
@@ -287,22 +285,22 @@ namespace MediaFoundation.EVR
     public interface IEVRTrustedVideoPlugin
     {
         [PreserveSig]
-        int IsInTrustedVideoMode(
+        HResult IsInTrustedVideoMode(
             [MarshalAs(UnmanagedType.Bool)] out bool pYes
             );
 
         [PreserveSig]
-        int CanConstrict(
+        HResult CanConstrict(
             [MarshalAs(UnmanagedType.Bool)] out bool pYes
             );
 
         [PreserveSig]
-        int SetConstriction(
+        HResult SetConstriction(
             int dwKPix
             );
 
         [PreserveSig]
-        int DisableImageExport(
+        HResult DisableImageExport(
             [MarshalAs(UnmanagedType.Bool)] bool bDisable
             );
     }
@@ -315,24 +313,24 @@ namespace MediaFoundation.EVR
         #region IEVRFilterConfig methods
 
         [PreserveSig]
-        new int SetNumberOfStreams(
+        new HResult SetNumberOfStreams(
             int dwMaxStreams
         );
 
         [PreserveSig]
-        new int GetNumberOfStreams(
+        new HResult GetNumberOfStreams(
             out int pdwMaxStreams
         );
 
         #endregion
 
         [PreserveSig]
-        int SetConfigPrefs(
+        HResult SetConfigPrefs(
             [In] EVRFilterConfigPrefs dwConfigFlags
         );
 
         [PreserveSig]
-        int GetConfigPrefs(
+        HResult GetConfigPrefs(
             out EVRFilterConfigPrefs pdwConfigFlags
         );
     }
@@ -345,25 +343,25 @@ namespace MediaFoundation.EVR
         #region IMFVideoMixerControl methods
 
         [PreserveSig]
-        new int SetStreamZOrder(
+        new HResult SetStreamZOrder(
             [In] int dwStreamID,
             [In] int dwZ
             );
 
         [PreserveSig]
-        new int GetStreamZOrder(
+        new HResult GetStreamZOrder(
             [In] int dwStreamID,
             out int pdwZ
             );
 
         [PreserveSig]
-        new int SetStreamOutputRect(
+        new HResult SetStreamOutputRect(
             [In] int dwStreamID,
             [In] MFVideoNormalizedRect pnrcOutput
             );
 
         [PreserveSig]
-        new int GetStreamOutputRect(
+        new HResult GetStreamOutputRect(
             [In] int dwStreamID,
             [Out, MarshalAs(UnmanagedType.LPStruct)] MFVideoNormalizedRect pnrcOutput
             );
@@ -371,12 +369,12 @@ namespace MediaFoundation.EVR
         #endregion
 
         [PreserveSig]
-        int SetMixingPrefs(
+        HResult SetMixingPrefs(
             [In] MFVideoMixPrefs dwMixFlags
         );
 
         [PreserveSig]
-        int GetMixingPrefs(
+        HResult GetMixingPrefs(
             out MFVideoMixPrefs pdwMixFlags
         );
     }
@@ -387,54 +385,54 @@ namespace MediaFoundation.EVR
     public interface IMFVideoDisplayControl
     {
         [PreserveSig]
-        int GetNativeVideoSize(
+        HResult GetNativeVideoSize(
             [Out] MFSize pszVideo,
             [Out] MFSize pszARVideo
             );
 
         [PreserveSig]
-        int GetIdealVideoSize(
+        HResult GetIdealVideoSize(
             [Out] MFSize pszMin,
             [Out] MFSize pszMax
             );
 
         [PreserveSig]
-        int SetVideoPosition(
+        HResult SetVideoPosition(
             [In] MFVideoNormalizedRect pnrcSource,
             [In] MFRect prcDest
             );
 
         [PreserveSig]
-        int GetVideoPosition(
+        HResult GetVideoPosition(
             [Out] MFVideoNormalizedRect pnrcSource,
             [Out] MFRect prcDest
             );
 
         [PreserveSig]
-        int SetAspectRatioMode(
+        HResult SetAspectRatioMode(
             [In] MFVideoAspectRatioMode dwAspectRatioMode
             );
 
         [PreserveSig]
-        int GetAspectRatioMode(
+        HResult GetAspectRatioMode(
             out MFVideoAspectRatioMode pdwAspectRatioMode
             );
 
         [PreserveSig]
-        int SetVideoWindow(
+        HResult SetVideoWindow(
             [In] IntPtr hwndVideo
             );
 
         [PreserveSig]
-        int GetVideoWindow(
+        HResult GetVideoWindow(
             out IntPtr phwndVideo
             );
 
         [PreserveSig]
-        int RepaintVideo();
+        HResult RepaintVideo();
 
         [PreserveSig]
-        int GetCurrentImage(
+        HResult GetCurrentImage(
             [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(BMMarshaler))] BitmapInfoHeader pBih,
             out IntPtr pDib,
             out int pcbDib,
@@ -442,32 +440,32 @@ namespace MediaFoundation.EVR
             );
 
         [PreserveSig]
-        int SetBorderColor(
+        HResult SetBorderColor(
             [In] int Clr
             );
 
         [PreserveSig]
-        int GetBorderColor(
+        HResult GetBorderColor(
             out int pClr
             );
 
         [PreserveSig]
-        int SetRenderingPrefs(
+        HResult SetRenderingPrefs(
             [In] MFVideoRenderPrefs dwRenderFlags
             );
 
         [PreserveSig]
-        int GetRenderingPrefs(
+        HResult GetRenderingPrefs(
             out MFVideoRenderPrefs pdwRenderFlags
             );
 
         [PreserveSig]
-        int SetFullscreen(
+        HResult SetFullscreen(
             [In, MarshalAs(UnmanagedType.Bool)] bool fFullscreen
             );
 
         [PreserveSig]
-        int GetFullscreen(
+        HResult GetFullscreen(
             [MarshalAs(UnmanagedType.Bool)] out bool pfFullscreen
             );
     }
@@ -478,12 +476,12 @@ namespace MediaFoundation.EVR
     public interface IEVRFilterConfig
     {
         [PreserveSig]
-        int SetNumberOfStreams(
+        HResult SetNumberOfStreams(
             int dwMaxStreams
             );
 
         [PreserveSig]
-        int GetNumberOfStreams(
+        HResult GetNumberOfStreams(
             out int pdwMaxStreams
             );
     }
@@ -494,7 +492,7 @@ namespace MediaFoundation.EVR
     public interface IMFVideoPositionMapper
     {
         [PreserveSig]
-        int MapOutputCoordinateToInputStream(
+        HResult MapOutputCoordinateToInputStream(
             [In] float xOut,
             [In] float yOut,
             [In] int dwOutputStreamIndex,
@@ -510,25 +508,25 @@ namespace MediaFoundation.EVR
     public interface IMFVideoMixerControl
     {
         [PreserveSig]
-        int SetStreamZOrder(
+        HResult SetStreamZOrder(
             [In] int dwStreamID,
             [In] int dwZ
             );
 
         [PreserveSig]
-        int GetStreamZOrder(
+        HResult GetStreamZOrder(
             [In] int dwStreamID,
             out int pdwZ
             );
 
         [PreserveSig]
-        int SetStreamOutputRect(
+        HResult SetStreamOutputRect(
             [In] int dwStreamID,
             [In] MFVideoNormalizedRect pnrcOutput
             );
 
         [PreserveSig]
-        int GetStreamOutputRect(
+        HResult GetStreamOutputRect(
             [In] int dwStreamID,
             [Out, MarshalAs(UnmanagedType.LPStruct)] MFVideoNormalizedRect pnrcOutput
             );
@@ -540,12 +538,12 @@ namespace MediaFoundation.EVR
     public interface IMFTopologyServiceLookupClient
     {
         [PreserveSig]
-        int InitServicePointers(
+        HResult InitServicePointers(
             IMFTopologyServiceLookup pLookup
             );
 
         [PreserveSig]
-        int ReleaseServicePointers();
+        HResult ReleaseServicePointers();
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -556,28 +554,28 @@ namespace MediaFoundation.EVR
         #region IMFClockStateSink
 
         [PreserveSig]
-        new int OnClockStart(
+        new HResult OnClockStart(
             [In] long hnsSystemTime,
             [In] long llClockStartOffset
             );
 
         [PreserveSig]
-        new int OnClockStop(
+        new HResult OnClockStop(
             [In] long hnsSystemTime
             );
 
         [PreserveSig]
-        new int OnClockPause(
+        new HResult OnClockPause(
             [In] long hnsSystemTime
             );
 
         [PreserveSig]
-        new int OnClockRestart(
+        new HResult OnClockRestart(
             [In] long hnsSystemTime
             );
 
         [PreserveSig]
-        new int OnClockSetRate(
+        new HResult OnClockSetRate(
             [In] long hnsSystemTime,
             [In] float flRate
             );
@@ -585,13 +583,13 @@ namespace MediaFoundation.EVR
         #endregion
 
         [PreserveSig]
-        int ProcessMessage(
+        HResult ProcessMessage(
             MFVPMessageType eMessage,
             IntPtr ulParam
             );
 
         [PreserveSig]
-        int GetCurrentMediaType(
+        HResult GetCurrentMediaType(
             [MarshalAs(UnmanagedType.Interface)] out IMFVideoMediaType ppMediaType
             );
     }
@@ -602,7 +600,7 @@ namespace MediaFoundation.EVR
     public interface IMFTopologyServiceLookup
     {
         [PreserveSig]
-        int LookupService(
+        HResult LookupService(
             [In] MFServiceLookupType type,
             [In] int dwIndex,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidService,
@@ -618,7 +616,7 @@ namespace MediaFoundation.EVR
     public interface IMFVideoDeviceID
     {
         [PreserveSig]
-        int GetDeviceID(
+        HResult GetDeviceID(
             out Guid pDeviceID
             );
     }
@@ -629,7 +627,7 @@ namespace MediaFoundation.EVR
     public interface IMFVideoRenderer
     {
         [PreserveSig]
-        int InitializeRenderer(
+        HResult InitializeRenderer(
             [In, MarshalAs(UnmanagedType.Interface)] IMFTransform pVideoMixer,
             [In, MarshalAs(UnmanagedType.Interface)] IMFVideoPresenter pVideoPresenter
             );
@@ -641,7 +639,7 @@ namespace MediaFoundation.EVR
     public interface IMFTrackedSample
     {
         [PreserveSig]
-        int SetAllocator(
+        HResult SetAllocator(
             [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pSampleAllocator,
             [In, MarshalAs(UnmanagedType.IUnknown)] object pUnkState
             );
@@ -653,7 +651,7 @@ namespace MediaFoundation.EVR
     public interface IMFDesiredSample
     {
         [PreserveSig]
-        int GetDesiredSampleTimeAndDuration(
+        HResult GetDesiredSampleTimeAndDuration(
             out long phnsSampleTime,
             out long phnsSampleDuration
             );
@@ -674,59 +672,59 @@ namespace MediaFoundation.EVR
     public interface IMFVideoProcessor
     {
         [PreserveSig]
-        int GetAvailableVideoProcessorModes(
+        HResult GetAvailableVideoProcessorModes(
             out int lpdwNumProcessingModes,
             [MarshalAs(UnmanagedType.LPArray, SizeParamIndex=0)] out Guid[] ppVideoProcessingModes);
 
         [PreserveSig]
-        int GetVideoProcessorCaps(
+        HResult GetVideoProcessorCaps(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid lpVideoProcessorMode,
             out DXVA2VideoProcessorCaps lpVideoProcessorCaps);
 
         [PreserveSig]
-        int GetVideoProcessorMode(
+        HResult GetVideoProcessorMode(
             out Guid lpMode);
 
         [PreserveSig]
-        int SetVideoProcessorMode(
+        HResult SetVideoProcessorMode(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid lpMode);
 
         [PreserveSig]
-        int GetProcAmpRange(
+        HResult GetProcAmpRange(
             DXVA2ProcAmp dwProperty,
             out DXVA2ValueRange pPropRange);
 
         [PreserveSig]
-        int GetProcAmpValues(
+        HResult GetProcAmpValues(
             DXVA2ProcAmp dwFlags,
             [Out, MarshalAs(UnmanagedType.LPStruct)] DXVA2ProcAmpValues Values);
 
         [PreserveSig]
-        int SetProcAmpValues(
+        HResult SetProcAmpValues(
             DXVA2ProcAmp dwFlags,
             [In] DXVA2ProcAmpValues pValues);
 
         [PreserveSig]
-        int GetFilteringRange(
+        HResult GetFilteringRange(
             DXVA2Filters dwProperty,
             out DXVA2ValueRange pPropRange);
 
         [PreserveSig]
-        int GetFilteringValue(
+        HResult GetFilteringValue(
             DXVA2Filters dwProperty,
             out int pValue);
 
         [PreserveSig]
-        int SetFilteringValue(
+        HResult SetFilteringValue(
             DXVA2Filters dwProperty,
             [In] ref int pValue);
 
         [PreserveSig]
-        int GetBackgroundColor(
+        HResult GetBackgroundColor(
             out int lpClrBkg);
 
         [PreserveSig]
-        int SetBackgroundColor(
+        HResult SetBackgroundColor(
             int ClrBkg);
     }
 
@@ -736,18 +734,18 @@ namespace MediaFoundation.EVR
     public interface IMFVideoMixerBitmap
     {
         [PreserveSig]
-        int SetAlphaBitmap(
+        HResult SetAlphaBitmap(
             [In, MarshalAs(UnmanagedType.LPStruct)] MFVideoAlphaBitmap pBmpParms);
 
         [PreserveSig]
-        int ClearAlphaBitmap();
+        HResult ClearAlphaBitmap();
 
         [PreserveSig]
-        int UpdateAlphaBitmapParameters(
+        HResult UpdateAlphaBitmapParameters(
             [In] MFVideoAlphaBitmapParams pBmpParms);
 
         [PreserveSig]
-        int GetAlphaBitmapParameters(
+        HResult GetAlphaBitmapParameters(
             [Out] MFVideoAlphaBitmapParams pBmpParms);
     }
 
@@ -757,14 +755,13 @@ namespace MediaFoundation.EVR
     public interface IEVRVideoStreamControl
     {
         [PreserveSig]
-        int SetStreamActiveState(
+        HResult SetStreamActiveState(
             [MarshalAs(UnmanagedType.Bool)] bool fActive);
 
         [PreserveSig]
-        int GetStreamActiveState(
+        HResult GetStreamActiveState(
             [MarshalAs(UnmanagedType.Bool)] out bool lpfActive);
     }
 
     #endregion
-
 }

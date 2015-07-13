@@ -55,7 +55,7 @@ namespace MediaFoundation
     public interface IMFDLNASinkInit
     {
         [PreserveSig]
-        int Initialize(
+        HResult Initialize(
             IMFByteStream pByteStream,
             [MarshalAs(UnmanagedType.Bool)] bool fPal
         );

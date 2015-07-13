@@ -21,7 +21,6 @@ using MediaFoundation.Transform;
 
 namespace MediaFoundation
 {
-
     #region Declarations
 
 #if ALLOW_UNTESTED_INTERFACES
@@ -375,22 +374,22 @@ namespace MediaFoundation
     public interface IMFMediaEngineProtectedContent
     {
         [PreserveSig]
-        int ShareResources(
+        HResult ShareResources(
             [In, MarshalAs(UnmanagedType.IUnknown)] object pUnkDeviceContext
             );
 
         [PreserveSig]
-        int GetRequiredProtections(
+        HResult GetRequiredProtections(
             out MF_MEDIA_ENGINE_FRAME_PROTECTION_FLAGS pFrameProtectionFlags
             );
 
         [PreserveSig]
-        int SetOPMWindow(
+        HResult SetOPMWindow(
             IntPtr hwnd
             );
 
         [PreserveSig]
-        int TransferVideoFrame(
+        HResult TransferVideoFrame(
             [In, MarshalAs(UnmanagedType.IUnknown)] object pDstSurf,
             [In, MarshalAs(UnmanagedType.LPStruct)] MFVideoNormalizedRect pSrc,
             [In, MarshalAs(UnmanagedType.LPStruct)] MFRect pDst,
@@ -399,12 +398,12 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        int SetContentProtectionManager(
+        HResult SetContentProtectionManager(
             IMFContentProtectionManager pCPM
             );
 
         [PreserveSig]
-        int SetApplicationCertificate(
+        HResult SetApplicationCertificate(
             IntPtr pbBlob,
             int cbBlob
             );
@@ -449,7 +448,7 @@ namespace MediaFoundation
         void OnAbort();
 
         [PreserveSig]
-        void OnError(int hr);
+        void OnError(HResult hr);
 
         [PreserveSig]
         void OnUpdate();
@@ -468,7 +467,7 @@ namespace MediaFoundation
         bool GetUpdating();
 
         [PreserveSig]
-        int GetBuffered(
+        HResult GetBuffered(
             out IMFMediaTimeRange ppBuffered
             );
 
@@ -476,7 +475,7 @@ namespace MediaFoundation
         double GetTimeStampOffset();
 
         [PreserveSig]
-        int SetTimeStampOffset(
+        HResult SetTimeStampOffset(
             double offset
             );
 
@@ -484,7 +483,7 @@ namespace MediaFoundation
         double GetAppendWindowStart();
 
         [PreserveSig]
-        int SetAppendWindowStart(
+        HResult SetAppendWindowStart(
             double time
             );
 
@@ -492,27 +491,27 @@ namespace MediaFoundation
         double GetAppendWindowEnd();
 
         [PreserveSig]
-        int SetAppendWindowEnd(
+        HResult SetAppendWindowEnd(
             double time
             );
 
         [PreserveSig]
-        int Append(
+        HResult Append(
             IntPtr pData,
             int len
             );
 
         [PreserveSig]
-        int AppendByteStream(
+        HResult AppendByteStream(
             IMFByteStream pStream,
             long pMaxLen
             );
 
         [PreserveSig]
-        int Abort();
+        HResult Abort();
 
         [PreserveSig]
-        int Remove(
+        HResult Remove(
             double start,
             double end
             );
@@ -550,24 +549,24 @@ namespace MediaFoundation
         double GetDuration();
 
         [PreserveSig]
-        int SetDuration(
+        HResult SetDuration(
             double duration
             );
 
         [PreserveSig]
-        int AddSourceBuffer(
+        HResult AddSourceBuffer(
             [MarshalAs(UnmanagedType.BStr)] string type,
             IMFSourceBufferNotify pNotify,
             out IMFSourceBuffer ppSourceBuffer
             );
 
         [PreserveSig]
-        int RemoveSourceBuffer(
+        HResult RemoveSourceBuffer(
             IMFSourceBuffer pSourceBuffer
             );
 
         [PreserveSig]
-        int SetEndOfStream(
+        HResult SetEndOfStream(
             MF_MSE_ERROR error
             );
 
@@ -589,12 +588,12 @@ namespace MediaFoundation
     public interface IMFMediaEngineEME
     {
         [PreserveSig]
-        int get_Keys(
+        HResult get_Keys(
            out IMFMediaKeys keys // check null
            );
 
         [PreserveSig]
-        int SetMediaKeys(
+        HResult SetMediaKeys(
            IMFMediaKeys keys
            );
     }
@@ -610,37 +609,37 @@ namespace MediaFoundation
         new int GetLength();
 
         [PreserveSig]
-        new int GetURL(
+        new HResult GetURL(
             int index,
             [MarshalAs(UnmanagedType.BStr)] out string pURL
             );
 
         [PreserveSig]
-        new int GetType(
+        new HResult GetType(
             int index,
             [MarshalAs(UnmanagedType.BStr)] out string pType
             );
 
         [PreserveSig]
-        new int GetMedia(
+        new HResult GetMedia(
             int index,
             [MarshalAs(UnmanagedType.BStr)] out string pMedia
             );
 
         [PreserveSig]
-        new int AddElement(
+        new HResult AddElement(
             [MarshalAs(UnmanagedType.BStr)] string pURL,
             [MarshalAs(UnmanagedType.BStr)] string pType,
             [MarshalAs(UnmanagedType.BStr)] string pMedia
             );
 
         [PreserveSig]
-        new int RemoveAllElements();
+        new HResult RemoveAllElements();
 
         #endregion
 
         [PreserveSig]
-        int AddElementEx(
+        HResult AddElementEx(
             [MarshalAs(UnmanagedType.BStr)] string pURL,
             [MarshalAs(UnmanagedType.BStr)] string pType,
             [MarshalAs(UnmanagedType.BStr)] string pMedia,
@@ -648,7 +647,7 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        int GetKeySystem(
+        HResult GetKeySystem(
             int index,
             [MarshalAs(UnmanagedType.BStr)] out string pType
             );
@@ -672,7 +671,7 @@ namespace MediaFoundation
     public interface IMFMediaKeys
     {
         [PreserveSig]
-        int CreateSession(
+        HResult CreateSession(
            [MarshalAs(UnmanagedType.BStr)] string mimeType,
            IntPtr initData,
            int cb,
@@ -683,15 +682,15 @@ namespace MediaFoundation
            );
 
         [PreserveSig]
-        int get_KeySystem(
+        HResult get_KeySystem(
            [MarshalAs(UnmanagedType.BStr)] out string keySystem
            );
 
         [PreserveSig]
-        int Shutdown();
+        HResult Shutdown();
 
         [PreserveSig]
-        int GetSuspendNotify(
+        HResult GetSuspendNotify(
            out IMFCdmSuspendNotify notify
            );
     }
@@ -702,28 +701,28 @@ namespace MediaFoundation
     public interface IMFMediaKeySession
     {
         [PreserveSig]
-        int GetError(
+        HResult GetError(
            out short code,
            out int systemCode);
 
         [PreserveSig]
-        int get_KeySystem(
+        HResult get_KeySystem(
            [MarshalAs(UnmanagedType.BStr)] out string keySystem
            );
 
         [PreserveSig]
-        int get_SessionId(
+        HResult get_SessionId(
            [MarshalAs(UnmanagedType.BStr)] out string sessionId
            );
 
         [PreserveSig]
-        int Update(
+        HResult Update(
            IntPtr key,
            int cb
            );
 
         [PreserveSig]
-        int Close();
+        HResult Close();
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -754,10 +753,10 @@ namespace MediaFoundation
     public interface IMFCdmSuspendNotify
     {
         [PreserveSig]
-        int Begin();
+        HResult Begin();
 
         [PreserveSig]
-        int End();
+        HResult End();
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -766,7 +765,7 @@ namespace MediaFoundation
     public interface IMFMediaEngineOPMInfo
     {
         [PreserveSig]
-        int GetOPMInfo(
+        HResult GetOPMInfo(
             out MF_MEDIA_ENGINE_OPM_STATUS pStatus,
             [MarshalAs(UnmanagedType.Bool)] out bool pConstricted
             );
@@ -780,40 +779,40 @@ namespace MediaFoundation
         #region IMFMediaEngineClassFactory methods
 
         [PreserveSig]
-        new int CreateInstance(
+        new HResult CreateInstance(
             MF_MEDIA_ENGINE_CREATEFLAGS dwFlags,
             IMFAttributes pAttr,
             out IMFMediaEngine ppPlayer
             );
 
         [PreserveSig]
-        new int CreateTimeRange(
+        new HResult CreateTimeRange(
             out IMFMediaTimeRange ppTimeRange
             );
 
         [PreserveSig]
-        new int CreateError(
+        new HResult CreateError(
             out IMFMediaError ppError
             );
 
         #endregion
 
         [PreserveSig]
-        int CreateMediaSourceExtension(
+        HResult CreateMediaSourceExtension(
             int dwFlags,
             IMFAttributes pAttr,
             out IMFMediaSourceExtension ppMSE
             );
 
         [PreserveSig]
-        int CreateMediaKeys(
+        HResult CreateMediaKeys(
             [MarshalAs(UnmanagedType.BStr)] string keySystem,
             [MarshalAs(UnmanagedType.BStr)] string cdmStorePath,
             out IMFMediaKeys ppKeys
             );
 
         [PreserveSig]
-        int IsTypeSupported(
+        HResult IsTypeSupported(
             [MarshalAs(UnmanagedType.BStr)] string type,
             [MarshalAs(UnmanagedType.BStr)] string keySystem,
             [MarshalAs(UnmanagedType.Bool)] out bool isSupported
@@ -826,7 +825,7 @@ namespace MediaFoundation
     public interface IMFMediaEngineClassFactory2
     {
         [PreserveSig]
-        int CreateMediaKeys2(
+        HResult CreateMediaKeys2(
             [MarshalAs(UnmanagedType.BStr)] string keySystem,
             [MarshalAs(UnmanagedType.BStr)] string defaultCdmStorePath,
             [MarshalAs(UnmanagedType.BStr)] string inprivateCdmStorePath,
@@ -840,19 +839,19 @@ namespace MediaFoundation
     public interface IMFMediaEngineSupportsSourceTransfer
     {
         [PreserveSig]
-        int ShouldTransferSource(
+        HResult ShouldTransferSource(
           [MarshalAs(UnmanagedType.Bool)] out bool pfShouldTransfer
           );
 
         [PreserveSig]
-        int DetachMediaSource(
+        HResult DetachMediaSource(
             out IMFByteStream ppByteStream,
             out IMFMediaSource ppMediaSource,
             out IMFMediaSourceExtension ppMSE
             );
 
         [PreserveSig]
-        int AttachMediaSource(
+        HResult AttachMediaSource(
             IMFByteStream pByteStream,
             IMFMediaSource pMediaSource,
             IMFMediaSourceExtension pMSE
@@ -865,7 +864,7 @@ namespace MediaFoundation
     public interface IAudioSourceProvider
     {
         [PreserveSig]
-        int ProvideInput(
+        HResult ProvideInput(
         int dwSampleCount,
         ref int pdwChannelCount,
         out float[] pInterleavedAudioData
@@ -882,13 +881,13 @@ namespace MediaFoundation
         bool ShouldDelayTheLoadEvent();
 
         [PreserveSig]
-        int ConnectWebAudio(
+        HResult ConnectWebAudio(
             int dwSampleRate,
             out IAudioSourceProvider ppSourceProvider
             );
 
         [PreserveSig]
-        int DisconnectWebAudio();
+        HResult DisconnectWebAudio();
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -900,7 +899,7 @@ namespace MediaFoundation
         MF_MSE_APPEND_MODE GetAppendMode();
 
         [PreserveSig]
-        int SetAppendMode(
+        HResult SetAppendMode(
             MF_MSE_APPEND_MODE mode
             );
     }
@@ -911,18 +910,18 @@ namespace MediaFoundation
     public interface IMFTimedText
     {
         [PreserveSig]
-        int RegisterNotifications(
+        HResult RegisterNotifications(
             IMFTimedTextNotify notify
             );
 
         [PreserveSig]
-        int SelectTrack(
+        HResult SelectTrack(
             int trackId,
             [MarshalAs(UnmanagedType.Bool)] bool selected
             );
 
         [PreserveSig]
-        int AddDataSource(
+        HResult AddDataSource(
             IMFByteStream byteStream,
             [In, MarshalAs(UnmanagedType.LPWStr)] string label,
             [In, MarshalAs(UnmanagedType.LPWStr)] string language,
@@ -932,7 +931,7 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        int AddDataSourceFromUrl(
+        HResult AddDataSourceFromUrl(
             [In, MarshalAs(UnmanagedType.LPWStr)] string url,
             [In, MarshalAs(UnmanagedType.LPWStr)] string label,
             [In, MarshalAs(UnmanagedType.LPWStr)] string language,
@@ -942,7 +941,7 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        int AddTrack(
+        HResult AddTrack(
             [In, MarshalAs(UnmanagedType.LPWStr)] string label,
             [In, MarshalAs(UnmanagedType.LPWStr)] string language,
             MF_TIMED_TEXT_TRACK_KIND kind,
@@ -950,42 +949,42 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        int RemoveTrack(
+        HResult RemoveTrack(
             IMFTimedTextTrack track
             );
 
         [PreserveSig]
-        int GetCueTimeOffset(
+        HResult GetCueTimeOffset(
             out double offset
             );
 
         [PreserveSig]
-        int SetCueTimeOffset(
+        HResult SetCueTimeOffset(
             double offset
             );
 
         [PreserveSig]
-        int GetTracks(
+        HResult GetTracks(
             out IMFTimedTextTrackList tracks
             );
 
         [PreserveSig]
-        int GetActiveTracks(
+        HResult GetActiveTracks(
             out IMFTimedTextTrackList activeTracks
             );
 
         [PreserveSig]
-        int GetTextTracks(
+        HResult GetTextTracks(
             out IMFTimedTextTrackList textTracks
             );
 
         [PreserveSig]
-        int GetMetadataTracks(
+        HResult GetMetadataTracks(
             out IMFTimedTextTrackList metadataTracks
             );
 
         [PreserveSig]
-        int SetInBandEnabled(
+        HResult SetInBandEnabled(
             [MarshalAs(UnmanagedType.Bool)] bool enabled
         );
 
@@ -1018,7 +1017,7 @@ namespace MediaFoundation
 
         void Error(
             MF_TIMED_TEXT_ERROR_CODE errorCode,
-            int extendedErrorCode,
+            HResult extendedErrorCode,
             int sourceTrackId
             );
 
@@ -1040,17 +1039,17 @@ namespace MediaFoundation
         int GetId();
 
         [PreserveSig]
-        int GetLabel(
+        HResult GetLabel(
             [MarshalAs(UnmanagedType.LPWStr)] out string label
             );
 
         [PreserveSig]
-        int SetLabel(
+        HResult SetLabel(
             [In, MarshalAs(UnmanagedType.LPWStr)] string label
             );
 
         [PreserveSig]
-        int GetLanguage(
+        HResult GetLanguage(
             [MarshalAs(UnmanagedType.LPWStr)] out string language
             );
 
@@ -1062,7 +1061,7 @@ namespace MediaFoundation
         bool IsInBand();
 
         [PreserveSig]
-        int GetInBandMetadataTrackDispatchType(
+        HResult GetInBandMetadataTrackDispatchType(
             [MarshalAs(UnmanagedType.LPWStr)] out string dispatchType
             );
 
@@ -1074,18 +1073,18 @@ namespace MediaFoundation
         MF_TIMED_TEXT_ERROR_CODE GetErrorCode();
 
         [PreserveSig]
-        int GetExtendedErrorCode();
+        HResult GetExtendedErrorCode();
 
         [PreserveSig]
-        int GetDataFormat(out Guid format);
+        HResult GetDataFormat(out Guid format);
 
         [PreserveSig]
         MF_TIMED_TEXT_TRACK_READY_STATE GetReadyState();
 
         [PreserveSig]
-        int GetCueList(
-    out IMFTimedTextCueList cues
-    );
+        HResult GetCueList(
+            out IMFTimedTextCueList cues
+            );
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -1097,13 +1096,13 @@ namespace MediaFoundation
         int GetLength();
 
         [PreserveSig]
-        int GetTrack(
+        HResult GetTrack(
             int index,
             out IMFTimedTextTrack track
             );
 
         [PreserveSig]
-        int GetTrackById(
+        HResult GetTrackById(
             int trackId,
             out IMFTimedTextTrack track
             );
@@ -1118,7 +1117,7 @@ namespace MediaFoundation
         int GetId();
 
         [PreserveSig]
-        int GetOriginalId(
+        HResult GetOriginalId(
             [MarshalAs(UnmanagedType.LPWStr)] out string originalId
             );
 
@@ -1135,17 +1134,17 @@ namespace MediaFoundation
         int GetTrackId();
 
         [PreserveSig]
-        int GetData(
+        HResult GetData(
             out IMFTimedTextBinary data
             );
 
         [PreserveSig]
-        int GetRegion(
+        HResult GetRegion(
             out IMFTimedTextRegion region
             );
 
         [PreserveSig]
-        int GetStyle(
+        HResult GetStyle(
             out IMFTimedTextStyle style
             );
 
@@ -1153,7 +1152,7 @@ namespace MediaFoundation
         int GetLineCount();
 
         [PreserveSig]
-        int GetLine(
+        HResult GetLine(
             int index,
             out IMFTimedTextFormattedText line
             );
@@ -1165,7 +1164,7 @@ namespace MediaFoundation
     public interface IMFTimedTextFormattedText
     {
         [PreserveSig]
-        int GetText(
+        HResult GetText(
             [MarshalAs(UnmanagedType.LPWStr)] out string text
             );
 
@@ -1173,7 +1172,7 @@ namespace MediaFoundation
         int GetSubformattingCount();
 
         [PreserveSig]
-        int GetSubformatting(
+        HResult GetSubformatting(
             int index,
             out int firstChar,
             out int charLength,
@@ -1187,7 +1186,7 @@ namespace MediaFoundation
     public interface IMFTimedTextStyle
     {
         [PreserveSig]
-        int GetName(
+        HResult GetName(
             [MarshalAs(UnmanagedType.LPWStr)] out string name
             );
 
@@ -1196,58 +1195,58 @@ namespace MediaFoundation
         bool IsExternal();
 
         [PreserveSig]
-        int GetFontFamily(
+        HResult GetFontFamily(
             [MarshalAs(UnmanagedType.LPWStr)] out string fontFamily
             );
 
         [PreserveSig]
-        int GetFontSize(
+        HResult GetFontSize(
             out double fontSize,
             out MF_TIMED_TEXT_UNIT_TYPE unitType
             );
 
         [PreserveSig]
-        int GetColor(
+        HResult GetColor(
             out MFARGB color
             );
 
         [PreserveSig]
-        int GetBackgroundColor(
+        HResult GetBackgroundColor(
             out MFARGB bgColor
             );
 
         [PreserveSig]
-        int GetShowBackgroundAlways(
+        HResult GetShowBackgroundAlways(
             [MarshalAs(UnmanagedType.Bool)] out bool showBackgroundAlways
             );
 
         [PreserveSig]
-        int GetFontStyle(
+        HResult GetFontStyle(
             out MF_TIMED_TEXT_FONT_STYLE fontStyle
             );
 
         [PreserveSig]
-        int GetBold(
+        HResult GetBold(
             [MarshalAs(UnmanagedType.Bool)] out bool bold
             );
 
         [PreserveSig]
-        int GetRightToLeft(
+        HResult GetRightToLeft(
             [MarshalAs(UnmanagedType.Bool)] out bool rightToLeft
             );
 
         [PreserveSig]
-        int GetTextAlignment(
+        HResult GetTextAlignment(
             out MF_TIMED_TEXT_ALIGNMENT textAlign
             );
 
         [PreserveSig]
-        int GetTextDecoration(
+        HResult GetTextDecoration(
             out int textDecoration
             );
 
         [PreserveSig]
-        int GetTextOutline(
+        HResult GetTextOutline(
             out MFARGB color,
             out double thickness,
             out double blurRadius,
@@ -1261,52 +1260,52 @@ namespace MediaFoundation
     public interface IMFTimedTextRegion
     {
         [PreserveSig]
-        int GetName(
+        HResult GetName(
             [MarshalAs(UnmanagedType.LPWStr)] out string name
             );
 
         [PreserveSig]
-        int GetPosition(
+        HResult GetPosition(
             out double pX,
             out double pY,
             out MF_TIMED_TEXT_UNIT_TYPE unitType
             );
 
         [PreserveSig]
-        int GetExtent(
+        HResult GetExtent(
             out double pWidth,
             out double pHeight,
             out MF_TIMED_TEXT_UNIT_TYPE unitType
             );
 
         [PreserveSig]
-        int GetBackgroundColor(
+        HResult GetBackgroundColor(
             out MFARGB bgColor
             );
 
         [PreserveSig]
-        int GetWritingMode(
+        HResult GetWritingMode(
             out MF_TIMED_TEXT_WRITING_MODE writingMode
             );
 
         [PreserveSig]
-        int GetDisplayAlignment(
+        HResult GetDisplayAlignment(
             out MF_TIMED_TEXT_DISPLAY_ALIGNMENT displayAlign
             );
 
         [PreserveSig]
-        int GetLineHeight(
+        HResult GetLineHeight(
             out double pLineHeight,
             out MF_TIMED_TEXT_UNIT_TYPE unitType
             );
 
         [PreserveSig]
-        int GetClipOverflow(
+        HResult GetClipOverflow(
             [MarshalAs(UnmanagedType.Bool)] out bool clipOverflow
             );
 
         [PreserveSig]
-        int GetPadding(
+        HResult GetPadding(
             out double before,
             out double start,
             out double after,
@@ -1315,17 +1314,17 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        int GetWrap(
+        HResult GetWrap(
             [MarshalAs(UnmanagedType.Bool)] out bool wrap
             );
 
         [PreserveSig]
-        int GetZIndex(
+        HResult GetZIndex(
             out int zIndex
             );
 
         [PreserveSig]
-        int GetScrollMode(
+        HResult GetScrollMode(
             out MF_TIMED_TEXT_SCROLL_MODE scrollMode
             );
     }
@@ -1336,7 +1335,7 @@ namespace MediaFoundation
     public interface IMFTimedTextBinary
     {
         [PreserveSig]
-        int GetData(
+        HResult GetData(
             out byte[] data,
             out int length
             );
@@ -1351,25 +1350,25 @@ namespace MediaFoundation
         int GetLength();
 
         [PreserveSig]
-        int GetCueByIndex(
+        HResult GetCueByIndex(
             int index,
             out IMFTimedTextCue cue
             );
 
         [PreserveSig]
-        int GetCueById(
+        HResult GetCueById(
             int id,
             out IMFTimedTextCue cue
             );
 
         [PreserveSig]
-        int GetCueByOriginalId(
+        HResult GetCueByOriginalId(
             [In, MarshalAs(UnmanagedType.LPWStr)] string originalId,
             out IMFTimedTextCue cue
             );
 
         [PreserveSig]
-        int AddTextCue(
+        HResult AddTextCue(
             double start,
             double duration,
             [In, MarshalAs(UnmanagedType.LPWStr)] string text,
@@ -1377,7 +1376,7 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        int AddDataCue(
+        HResult AddDataCue(
             double start,
             double duration,
             byte[] data,
@@ -1386,7 +1385,7 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        int RemoveCue(
+        HResult RemoveCue(
             IMFTimedTextCue cue
             );
     }
@@ -1402,16 +1401,16 @@ namespace MediaFoundation
         MF_MEDIA_ENGINE_ERR GetErrorCode();
 
         [PreserveSig]
-        int GetExtendedErrorCode();
+        HResult GetExtendedErrorCode();
 
         [PreserveSig]
-        int SetErrorCode(
+        HResult SetErrorCode(
             MF_MEDIA_ENGINE_ERR error
             );
 
         [PreserveSig]
-        int SetExtendedErrorCode(
-            int error
+        HResult SetExtendedErrorCode(
+            HResult error
             );
     }
 
@@ -1424,13 +1423,13 @@ namespace MediaFoundation
         int GetLength();
 
         [PreserveSig]
-        int GetStart(
+        HResult GetStart(
             int index,
             out double pStart
             );
 
         [PreserveSig]
-        int GetEnd(
+        HResult GetEnd(
             int index,
             out  double pEnd
             );
@@ -1442,13 +1441,13 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        int AddRange(
+        HResult AddRange(
             double startTime,
             double endTime
             );
 
         [PreserveSig]
-        int Clear();
+        HResult Clear();
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -1457,7 +1456,7 @@ namespace MediaFoundation
     public interface IMFMediaEngineNotify
     {
         [PreserveSig]
-        int EventNotify(
+        HResult EventNotify(
             MF_MEDIA_ENGINE_EVENT eventid,
             IntPtr param1,
             int param2
@@ -1473,32 +1472,32 @@ namespace MediaFoundation
         int GetLength();
 
         [PreserveSig]
-        int GetURL(
+        HResult GetURL(
             int index,
             [MarshalAs(UnmanagedType.BStr)] out string pURL
             );
 
         [PreserveSig]
-        int GetType(
+        HResult GetType(
             int index,
             [MarshalAs(UnmanagedType.BStr)] out string pType
             );
 
         [PreserveSig]
-        int GetMedia(
+        HResult GetMedia(
             int index,
             [MarshalAs(UnmanagedType.BStr)] out string pMedia
             );
 
         [PreserveSig]
-        int AddElement(
+        HResult AddElement(
             [MarshalAs(UnmanagedType.BStr)] string pURL,
             [MarshalAs(UnmanagedType.BStr)] string pType,
             [MarshalAs(UnmanagedType.BStr)] string pMedia
             );
 
         [PreserveSig]
-        int RemoveAllElements();
+        HResult RemoveAllElements();
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -1507,27 +1506,27 @@ namespace MediaFoundation
     public interface IMFMediaEngine
     {
         [PreserveSig]
-        int GetError(
+        HResult GetError(
             out IMFMediaError ppError
             );
 
         [PreserveSig]
-        int SetErrorCode(
+        HResult SetErrorCode(
             MF_MEDIA_ENGINE_ERR error
             );
 
         [PreserveSig]
-        int SetSourceElements(
+        HResult SetSourceElements(
             IMFMediaEngineSrcElements pSrcElements
             );
 
         [PreserveSig]
-        int SetSource(
+        HResult SetSource(
             [MarshalAs(UnmanagedType.BStr)] string pUrl
             );
 
         [PreserveSig]
-        int GetCurrentSource(
+        HResult GetCurrentSource(
             [MarshalAs(UnmanagedType.BStr)] out string ppUrl
             );
 
@@ -1538,20 +1537,20 @@ namespace MediaFoundation
         MF_MEDIA_ENGINE_PRELOAD GetPreload();
 
         [PreserveSig]
-        int SetPreload(
+        HResult SetPreload(
             MF_MEDIA_ENGINE_PRELOAD Preload
             );
 
         [PreserveSig]
-        int GetBuffered(
+        HResult GetBuffered(
             out IMFMediaTimeRange ppBuffered
             );
 
         [PreserveSig]
-        int Load();
+        HResult Load();
 
         [PreserveSig]
-        int CanPlayType(
+        HResult CanPlayType(
             [MarshalAs(UnmanagedType.BStr)] string type,
             out MF_MEDIA_ENGINE_CANPLAY pAnswer
             );
@@ -1567,7 +1566,7 @@ namespace MediaFoundation
         double GetCurrentTime();
 
         [PreserveSig]
-        int SetCurrentTime(
+        HResult SetCurrentTime(
             double seekTime
             );
 
@@ -1585,7 +1584,7 @@ namespace MediaFoundation
         double GetDefaultPlaybackRate();
 
         [PreserveSig]
-        int SetDefaultPlaybackRate(
+        HResult SetDefaultPlaybackRate(
             double Rate
             );
 
@@ -1593,17 +1592,17 @@ namespace MediaFoundation
         double GetPlaybackRate();
 
         [PreserveSig]
-        int SetPlaybackRate(
+        HResult SetPlaybackRate(
             double Rate
             );
 
         [PreserveSig]
-        int GetPlayed(
+        HResult GetPlayed(
             out IMFMediaTimeRange ppPlayed
             );
 
         [PreserveSig]
-        int GetSeekable(
+        HResult GetSeekable(
             out IMFMediaTimeRange ppSeekable
             );
 
@@ -1616,7 +1615,7 @@ namespace MediaFoundation
         bool GetAutoPlay();
 
         [PreserveSig]
-        int SetAutoPlay(
+        HResult SetAutoPlay(
             [MarshalAs(UnmanagedType.Bool)] bool AutoPlay
             );
 
@@ -1625,22 +1624,22 @@ namespace MediaFoundation
         bool GetLoop();
 
         [PreserveSig]
-        int SetLoop(
+        HResult SetLoop(
             [MarshalAs(UnmanagedType.Bool)] bool Loop
             );
 
         [PreserveSig]
-        int Play();
+        HResult Play();
 
         [PreserveSig]
-        int Pause();
+        HResult Pause();
 
         [PreserveSig]
         [return: MarshalAs(UnmanagedType.Bool)]
         bool GetMuted();
 
         [PreserveSig]
-        int SetMuted(
+        HResult SetMuted(
             [MarshalAs(UnmanagedType.Bool)] bool Muted
             );
 
@@ -1648,7 +1647,7 @@ namespace MediaFoundation
         double GetVolume();
 
         [PreserveSig]
-        int SetVolume(
+        HResult SetVolume(
             double Volume
             );
 
@@ -1661,22 +1660,22 @@ namespace MediaFoundation
         bool HasAudio();
 
         [PreserveSig]
-        int GetNativeVideoSize(
+        HResult GetNativeVideoSize(
             out int cx,
             out int cy
             );
 
         [PreserveSig]
-        int GetVideoAspectRatio(
+        HResult GetVideoAspectRatio(
             out int cx,
             out int cy
             );
 
         [PreserveSig]
-        int Shutdown();
+        HResult Shutdown();
 
         [PreserveSig]
-        int TransferVideoFrame(
+        HResult TransferVideoFrame(
             [In, MarshalAs(UnmanagedType.IUnknown)] object pDstSurf,
             [In, MarshalAs(UnmanagedType.LPStruct)] MFVideoNormalizedRect pSrc,
             [In, MarshalAs(UnmanagedType.LPStruct)] MFRect pDst,
@@ -1684,7 +1683,7 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        int OnVideoStreamTick(
+        HResult OnVideoStreamTick(
             out long pPts
             );
     }
@@ -1697,27 +1696,27 @@ namespace MediaFoundation
         #region IMFMediaEngine methods
 
         [PreserveSig]
-        new int GetError(
+        new HResult GetError(
             out IMFMediaError ppError
             );
 
         [PreserveSig]
-        new int SetErrorCode(
+        new HResult SetErrorCode(
             MF_MEDIA_ENGINE_ERR error
             );
 
         [PreserveSig]
-        new int SetSourceElements(
+        new HResult SetSourceElements(
             IMFMediaEngineSrcElements pSrcElements
             );
 
         [PreserveSig]
-        new int SetSource(
+        new HResult SetSource(
             [MarshalAs(UnmanagedType.BStr)] string pUrl
             );
 
         [PreserveSig]
-        new int GetCurrentSource(
+        new HResult GetCurrentSource(
             [MarshalAs(UnmanagedType.BStr)] out string ppUrl
             );
 
@@ -1728,20 +1727,20 @@ namespace MediaFoundation
         new MF_MEDIA_ENGINE_PRELOAD GetPreload();
 
         [PreserveSig]
-        new int SetPreload(
+        new HResult SetPreload(
             MF_MEDIA_ENGINE_PRELOAD Preload
             );
 
         [PreserveSig]
-        new int GetBuffered(
+        new HResult GetBuffered(
             out IMFMediaTimeRange ppBuffered
             );
 
         [PreserveSig]
-        new int Load();
+        new HResult Load();
 
         [PreserveSig]
-        new int CanPlayType(
+        new HResult CanPlayType(
             [MarshalAs(UnmanagedType.BStr)] string type,
             out MF_MEDIA_ENGINE_CANPLAY pAnswer
             );
@@ -1757,7 +1756,7 @@ namespace MediaFoundation
         new double GetCurrentTime();
 
         [PreserveSig]
-        new int SetCurrentTime(
+        new HResult SetCurrentTime(
             double seekTime
             );
 
@@ -1775,7 +1774,7 @@ namespace MediaFoundation
         new double GetDefaultPlaybackRate();
 
         [PreserveSig]
-        new int SetDefaultPlaybackRate(
+        new HResult SetDefaultPlaybackRate(
             double Rate
             );
 
@@ -1783,17 +1782,17 @@ namespace MediaFoundation
         new double GetPlaybackRate();
 
         [PreserveSig]
-        new int SetPlaybackRate(
+        new HResult SetPlaybackRate(
             double Rate
             );
 
         [PreserveSig]
-        new int GetPlayed(
+        new HResult GetPlayed(
             out IMFMediaTimeRange ppPlayed
             );
 
         [PreserveSig]
-        new int GetSeekable(
+        new HResult GetSeekable(
             out IMFMediaTimeRange ppSeekable
             );
 
@@ -1806,7 +1805,7 @@ namespace MediaFoundation
         new bool GetAutoPlay();
 
         [PreserveSig]
-        new int SetAutoPlay(
+        new HResult SetAutoPlay(
             [MarshalAs(UnmanagedType.Bool)] bool AutoPlay
             );
 
@@ -1815,22 +1814,22 @@ namespace MediaFoundation
         new bool GetLoop();
 
         [PreserveSig]
-        new int SetLoop(
+        new HResult SetLoop(
             [MarshalAs(UnmanagedType.Bool)] bool Loop
             );
 
         [PreserveSig]
-        new int Play();
+        new HResult Play();
 
         [PreserveSig]
-        new int Pause();
+        new HResult Pause();
 
         [PreserveSig]
         [return: MarshalAs(UnmanagedType.Bool)]
         new bool GetMuted();
 
         [PreserveSig]
-        new int SetMuted(
+        new HResult SetMuted(
             [MarshalAs(UnmanagedType.Bool)] bool Muted
             );
 
@@ -1838,7 +1837,7 @@ namespace MediaFoundation
         new double GetVolume();
 
         [PreserveSig]
-        new int SetVolume(
+        new HResult SetVolume(
             double Volume
             );
 
@@ -1851,22 +1850,22 @@ namespace MediaFoundation
         new bool HasAudio();
 
         [PreserveSig]
-        new int GetNativeVideoSize(
+        new HResult GetNativeVideoSize(
             out int cx,
             out int cy
             );
 
         [PreserveSig]
-        new int GetVideoAspectRatio(
+        new HResult GetVideoAspectRatio(
             out int cx,
             out int cy
             );
 
         [PreserveSig]
-        new int Shutdown();
+        new HResult Shutdown();
 
         [PreserveSig]
-        new int TransferVideoFrame(
+        new HResult TransferVideoFrame(
             [In, MarshalAs(UnmanagedType.IUnknown)] object pDstSurf,
             [In] MFVideoNormalizedRect pSrc,
             [In] MFRect pDst,
@@ -1874,26 +1873,26 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        new int OnVideoStreamTick(
+        new HResult OnVideoStreamTick(
             out long pPts
             );
 
         #endregion
 
         [PreserveSig]
-        int SetSourceFromByteStream(
+        HResult SetSourceFromByteStream(
             IMFByteStream pByteStream,
             [MarshalAs(UnmanagedType.BStr)] string pURL
             );
 
         [PreserveSig]
-        int GetStatistics(
+        HResult GetStatistics(
             MF_MEDIA_ENGINE_STATISTIC StatisticID,
             [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant pStatistic
             );
 
         [PreserveSig]
-        int UpdateVideoStream(
+        HResult UpdateVideoStream(
             [In] MFVideoNormalizedRect pSrc,
             [In] MFRect pDst,
             [In, MarshalAs(UnmanagedType.LPStruct)] MFARGB pBorderClr
@@ -1903,7 +1902,7 @@ namespace MediaFoundation
         double GetBalance();
 
         [PreserveSig]
-        int SetBalance(
+        HResult SetBalance(
             double balance
             );
 
@@ -1914,158 +1913,158 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        int FrameStep(
+        HResult FrameStep(
             [MarshalAs(UnmanagedType.Bool)] bool Forward
             );
 
         [PreserveSig]
-        int GetResourceCharacteristics(
+        HResult GetResourceCharacteristics(
             out MFMEDIASOURCE_CHARACTERISTICS pCharacteristics
             );
 
         [PreserveSig]
-        int GetPresentationAttribute(
+        HResult GetPresentationAttribute(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidMFAttribute,
             [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant pvValue
             );
 
         [PreserveSig]
-        int GetNumberOfStreams(
+        HResult GetNumberOfStreams(
             out int pdwStreamCount
             );
 
         [PreserveSig]
-        int GetStreamAttribute(
+        HResult GetStreamAttribute(
             int dwStreamIndex,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidMFAttribute,
             [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant pvValue
             );
 
         [PreserveSig]
-        int GetStreamSelection(
+        HResult GetStreamSelection(
             int dwStreamIndex,
             [MarshalAs(UnmanagedType.Bool)] out bool pEnabled
             );
 
         [PreserveSig]
-        int SetStreamSelection(
+        HResult SetStreamSelection(
             int dwStreamIndex,
             [MarshalAs(UnmanagedType.Bool)] bool Enabled
             );
 
         [PreserveSig]
-        int ApplyStreamSelections();
+        HResult ApplyStreamSelections();
 
         [PreserveSig]
-        int IsProtected(
+        HResult IsProtected(
             [MarshalAs(UnmanagedType.Bool)] out bool pProtected
             );
 
         [PreserveSig]
-        int InsertVideoEffect(
+        HResult InsertVideoEffect(
             [In, MarshalAs(UnmanagedType.IUnknown)] object pEffect,
             [MarshalAs(UnmanagedType.Bool)] bool fOptional
             );
 
         [PreserveSig]
-        int InsertAudioEffect(
+        HResult InsertAudioEffect(
             [In, MarshalAs(UnmanagedType.IUnknown)] object pEffect,
             [MarshalAs(UnmanagedType.Bool)] bool fOptional
             );
 
         [PreserveSig]
-        int RemoveAllEffects();
+        HResult RemoveAllEffects();
 
         [PreserveSig]
-        int SetTimelineMarkerTimer(
+        HResult SetTimelineMarkerTimer(
             double timeToFire
             );
 
         [PreserveSig]
-        int GetTimelineMarkerTimer(
+        HResult GetTimelineMarkerTimer(
             out double pTimeToFire
             );
 
         [PreserveSig]
-        int CancelTimelineMarkerTimer();
+        HResult CancelTimelineMarkerTimer();
 
         [PreserveSig]
         [return: MarshalAs(UnmanagedType.Bool)]
         bool IsStereo3D();
 
         [PreserveSig]
-        int GetStereo3DFramePackingMode(
+        HResult GetStereo3DFramePackingMode(
             out MF_MEDIA_ENGINE_S3D_PACKING_MODE packMode
             );
 
         [PreserveSig]
-        int SetStereo3DFramePackingMode(
+        HResult SetStereo3DFramePackingMode(
             MF_MEDIA_ENGINE_S3D_PACKING_MODE packMode
             );
 
         [PreserveSig]
-        int GetStereo3DRenderMode(
+        HResult GetStereo3DRenderMode(
             out MF3DVideoOutputType outputType
             );
 
         [PreserveSig]
-        int SetStereo3DRenderMode(
+        HResult SetStereo3DRenderMode(
             MF3DVideoOutputType outputType
             );
 
         [PreserveSig]
-        int EnableWindowlessSwapchainMode(
+        HResult EnableWindowlessSwapchainMode(
             [MarshalAs(UnmanagedType.Bool)] bool fEnable
             );
 
         [PreserveSig]
-        int GetVideoSwapchainHandle(
+        HResult GetVideoSwapchainHandle(
             out IntPtr phSwapchain
             );
 
         [PreserveSig]
-        int EnableHorizontalMirrorMode(
+        HResult EnableHorizontalMirrorMode(
             [MarshalAs(UnmanagedType.Bool)] bool fEnable
             );
 
         [PreserveSig]
-        int GetAudioStreamCategory(
+        HResult GetAudioStreamCategory(
             out AUDIO_STREAM_CATEGORY pCategory
             );
 
         [PreserveSig]
-        int SetAudioStreamCategory(
+        HResult SetAudioStreamCategory(
             AUDIO_STREAM_CATEGORY category
             );
 
         [PreserveSig]
-        int GetAudioEndpointRole(
+        HResult GetAudioEndpointRole(
             out ERole pRole
             );
 
         [PreserveSig]
-        int SetAudioEndpointRole(
+        HResult SetAudioEndpointRole(
             ERole role
             );
 
         [PreserveSig]
-        int GetRealTimeMode(
+        HResult GetRealTimeMode(
             [MarshalAs(UnmanagedType.Bool)] out bool pfEnabled
             );
 
         [PreserveSig]
-        int SetRealTimeMode(
+        HResult SetRealTimeMode(
             [MarshalAs(UnmanagedType.Bool)] bool fEnable
             );
 
         [PreserveSig]
-        int SetCurrentTimeEx(
+        HResult SetCurrentTimeEx(
             double seekTime,
             MF_MEDIA_ENGINE_SEEK_MODE seekMode
             );
 
         [PreserveSig]
-        int EnableTimeUpdateTimer(
+        HResult EnableTimeUpdateTimer(
             [MarshalAs(UnmanagedType.Bool)] bool fEnableTimer
             );
     }
@@ -2076,14 +2075,14 @@ namespace MediaFoundation
     public interface IMFMediaEngineExtension
     {
         [PreserveSig]
-        int CanPlayType(
+        HResult CanPlayType(
             [MarshalAs(UnmanagedType.Bool)] bool AudioOnly,
             [MarshalAs(UnmanagedType.BStr)] string MimeType,
             out MF_MEDIA_ENGINE_CANPLAY pAnswer
             );
 
         [PreserveSig]
-        int BeginCreateObject(
+        HResult BeginCreateObject(
             [MarshalAs(UnmanagedType.BStr)] string bstrURL,
             IMFByteStream pByteStream,
             MFObjectType type,
@@ -2093,12 +2092,12 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        int CancelObjectCreation(
+        HResult CancelObjectCreation(
             [In, MarshalAs(UnmanagedType.IUnknown)] object pIUnknownCancelCookie
             );
 
         [PreserveSig]
-        int EndCreateObject(
+        HResult EndCreateObject(
             IMFAsyncResult pResult,
             [MarshalAs(UnmanagedType.IUnknown)] out object ppObject
             );
@@ -2110,23 +2109,22 @@ namespace MediaFoundation
     public interface IMFMediaEngineClassFactory
     {
         [PreserveSig]
-        int CreateInstance(
+        HResult CreateInstance(
             MF_MEDIA_ENGINE_CREATEFLAGS dwFlags,
             IMFAttributes pAttr,
             out IMFMediaEngine ppPlayer
             );
 
         [PreserveSig]
-        int CreateTimeRange(
+        HResult CreateTimeRange(
             out IMFMediaTimeRange ppTimeRange
             );
 
         [PreserveSig]
-        int CreateError(
+        HResult CreateError(
             out IMFMediaError ppError
             );
     }
 
     #endregion
-
 }

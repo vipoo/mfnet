@@ -191,22 +191,22 @@ namespace MediaFoundation.Misc
     public interface INamedPropertyStore
     {
         [PreserveSig]
-        int GetNamedValue(
+        HResult GetNamedValue(
             [In, MarshalAs(UnmanagedType.LPWStr)] string pszName,
             [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant pValue
         );
 
         [PreserveSig]
-        int SetNamedValue(
+        HResult SetNamedValue(
             [In, MarshalAs(UnmanagedType.LPWStr)] string pszName,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant propvar);
 
         [PreserveSig]
-        int GetNameCount(
+        HResult GetNameCount(
             out int pdwCount);
 
         [PreserveSig]
-        int GetNameAt(
+        HResult GetNameAt(
             int iProp,
             [MarshalAs(UnmanagedType.BStr)] out string pbstrName);
     }
@@ -217,32 +217,31 @@ namespace MediaFoundation.Misc
     public interface IPropertyStore
     {
         [PreserveSig]
-        int GetCount(
+        HResult GetCount(
             out int cProps
             );
 
         [PreserveSig]
-        int GetAt(
+        HResult GetAt(
             [In] int iProp,
             [Out] PropertyKey pkey
             );
 
         [PreserveSig]
-        int GetValue(
+        HResult GetValue(
             [In, MarshalAs(UnmanagedType.LPStruct)] PropertyKey key,
             [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant pv
             );
 
         [PreserveSig]
-        int SetValue(
+        HResult SetValue(
             [In, MarshalAs(UnmanagedType.LPStruct)] PropertyKey key,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant propvar
             );
 
         [PreserveSig]
-        int Commit();
+        HResult Commit();
     }
 
     #endregion
-
 }

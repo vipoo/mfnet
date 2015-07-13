@@ -1935,7 +1935,7 @@ namespace MediaFoundation
         int PrivateDataByteCount;
         int MaxHWProtectionDataByteCount;
         int HWProtectionDataByteCount;
-        int Status;
+        HResult Status;
         long TransportTimeInHundredsOfNanoseconds;
         long ExecutionTimeInHundredsOfNanoseconds;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
@@ -2403,7 +2403,7 @@ namespace MediaFoundation
     [StructLayout(LayoutKind.Sequential), UnmanagedName("MFNetCredentialManagerGetParam")]
     public class MFNetCredentialManagerGetParam
     {
-        public int hrOp;
+        public HResult hrOp;
         [MarshalAs(UnmanagedType.Bool)]
         public bool fAllowLoggedOnUser;
         [MarshalAs(UnmanagedType.Bool)]
@@ -2477,28 +2477,28 @@ namespace MediaFoundation
         #region IMFMediaEventGenerator methods
 
         [PreserveSig]
-        new int GetEvent(
+        new HResult GetEvent(
             [In] MFEventFlag dwFlags,
             [MarshalAs(UnmanagedType.Interface)] out IMFMediaEvent ppEvent
         );
 
         [PreserveSig]
-        new int BeginGetEvent(
+        new HResult BeginGetEvent(
             [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
             [In, MarshalAs(UnmanagedType.IUnknown)] object o
         );
 
         [PreserveSig]
-        new int EndGetEvent(
+        new HResult EndGetEvent(
             IMFAsyncResult pResult,
             out IMFMediaEvent ppEvent
         );
 
         [PreserveSig]
-        new int QueueEvent(
+        new HResult QueueEvent(
             [In] MediaEventType met,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidExtendedType,
-            [In] int hrStatus,
+            [In] HResult hrStatus,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant pvValue
         );
 
@@ -2507,46 +2507,46 @@ namespace MediaFoundation
         #region IMFMediaSource methods
 
         [PreserveSig]
-        new int GetCharacteristics(
+        new HResult GetCharacteristics(
             out MFMediaSourceCharacteristics pdwCharacteristics
         );
 
         [PreserveSig]
-        new int CreatePresentationDescriptor(
+        new HResult CreatePresentationDescriptor(
             out IMFPresentationDescriptor ppPresentationDescriptor
         );
 
         [PreserveSig]
-        new int Start(
+        new HResult Start(
             [In, MarshalAs(UnmanagedType.Interface)] IMFPresentationDescriptor pPresentationDescriptor,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid pguidTimeFormat,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant pvarStartPosition
         );
 
         [PreserveSig]
-        new int Stop();
+        new HResult Stop();
 
         [PreserveSig]
-        new int Pause();
+        new HResult Pause();
 
         [PreserveSig]
-        new int Shutdown();
+        new HResult Shutdown();
 
         #endregion
 
         [PreserveSig]
-        int GetSourceAttributes(
+        HResult GetSourceAttributes(
             out IMFAttributes ppAttributes
         );
 
         [PreserveSig]
-        int GetStreamAttributes(
+        HResult GetStreamAttributes(
             int dwStreamIdentifier,
             out IMFAttributes ppAttributes
         );
 
         [PreserveSig]
-        int SetD3DManager(
+        HResult SetD3DManager(
             [MarshalAs(UnmanagedType.IUnknown)] object pManager
         );
     }
@@ -2557,7 +2557,7 @@ namespace MediaFoundation
     public interface IMFDXGIDeviceManagerSource
     {
         [PreserveSig]
-        int GetManager(
+        HResult GetManager(
             out IMFDXGIDeviceManager ppManager
             );
     }
@@ -2568,7 +2568,7 @@ namespace MediaFoundation
     public interface IMFSeekInfo
     {
         [PreserveSig]
-        int GetNearestKeyFrames(
+        HResult GetNearestKeyFrames(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid pguidTimeFormat,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant pvarStartPosition,
             [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalCookie = "0", MarshalTypeRef = typeof(PVMarshaler))] PropVariant pvarPreviousKeyFrame,
@@ -2582,17 +2582,17 @@ namespace MediaFoundation
     public interface IMFByteStreamTimeSeek
     {
         [PreserveSig]
-        int IsTimeSeekSupported(
+        HResult IsTimeSeekSupported(
             [Out, MarshalAs(UnmanagedType.Bool)] out bool pfTimeSeekIsSupported
         );
 
         [PreserveSig]
-        int TimeSeek(
+        HResult TimeSeek(
             long qwTimePosition
         );
 
         [PreserveSig]
-        int GetTimeSeekResult(
+        HResult GetTimeSeekResult(
             out long pqwStartTime,
             out long pqwStopTime,
             out long pqwDuration
@@ -2605,13 +2605,13 @@ namespace MediaFoundation
     public interface IMFPMPHostApp
     {
         [PreserveSig]
-        int LockProcess();
+        HResult LockProcess();
 
         [PreserveSig]
-        int UnlockProcess();
+        HResult UnlockProcess();
 
         [PreserveSig]
-        int ActivateClassById(
+        HResult ActivateClassById(
             [In, MarshalAs(UnmanagedType.LPWStr)] string id,
             IStream pStream,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
@@ -2625,7 +2625,7 @@ namespace MediaFoundation
     public interface IMFPMPClientApp
     {
         [PreserveSig]
-        int SetPMPHost(
+        HResult SetPMPHost(
             IMFPMPHostApp pPMPHost
         );
     }
@@ -2636,7 +2636,7 @@ namespace MediaFoundation
     public interface IMFProtectedEnvironmentAccess
     {
         [PreserveSig]
-        int Call(
+        HResult Call(
             int inputLength,
             IntPtr input,
             int outputLength,
@@ -2644,7 +2644,7 @@ namespace MediaFoundation
         );
 
         [PreserveSig]
-        int ReadGRL(
+        HResult ReadGRL(
             out int outputLength,
             out IntPtr output
             );
@@ -2656,7 +2656,7 @@ namespace MediaFoundation
     public interface IMFSignedLibrary
     {
         [PreserveSig]
-        int GetProcedureAddress(
+        HResult GetProcedureAddress(
             [In, MarshalAs(UnmanagedType.LPWStr)] string name,
             out IntPtr address
         );
@@ -2668,13 +2668,13 @@ namespace MediaFoundation
     public interface IMFSystemId
     {
         [PreserveSig]
-        int GetData(
+        HResult GetData(
             out int size,
             out IntPtr data
         );
 
         [PreserveSig]
-        int Setup(
+        HResult Setup(
             int stage,
             int cbIn,
             IntPtr pbIn,
@@ -2689,35 +2689,35 @@ namespace MediaFoundation
     public interface IMFInputTrustAuthority
     {
         [PreserveSig]
-        int GetDecrypter(
+        HResult GetDecrypter(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
             [MarshalAs(UnmanagedType.Interface)] out object ppv
             );
 
         [PreserveSig]
-        int RequestAccess(
+        HResult RequestAccess(
             [In] MFPolicyManagerAction Action,
             [MarshalAs(UnmanagedType.Interface)] out IMFActivate ppContentEnablerActivate
             );
 
         [PreserveSig]
-        int GetPolicy(
+        HResult GetPolicy(
             [In] MFPolicyManagerAction Action,
             [MarshalAs(UnmanagedType.Interface)] out IMFOutputPolicy ppPolicy
             );
 
         [PreserveSig]
-        int BindAccess(
+        HResult BindAccess(
             [In] ref MFInputTrustAuthorityAccessParams pParam
             );
 
         [PreserveSig]
-        int UpdateAccess(
+        HResult UpdateAccess(
             [In] ref MFInputTrustAuthorityAccessParams pParam
             );
 
         [PreserveSig]
-        int Reset();
+        HResult Reset();
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -2726,7 +2726,7 @@ namespace MediaFoundation
     public interface IMFMediaSourcePresentationProvider
     {
         [PreserveSig]
-        int ForceEndOfPresentation(
+        HResult ForceEndOfPresentation(
             [In, MarshalAs(UnmanagedType.Interface)] IMFPresentationDescriptor pPresentationDescriptor
             );
     }
@@ -2739,63 +2739,63 @@ namespace MediaFoundation
         #region IMFAttributes methods
 
         [PreserveSig]
-        new int GetItem(
+        new HResult GetItem(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant pValue
             );
 
         [PreserveSig]
-        new int GetItemType(
+        new HResult GetItemType(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out MFAttributeType pType
             );
 
         [PreserveSig]
-        new int CompareItem(
+        new HResult CompareItem(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant Value,
             [MarshalAs(UnmanagedType.Bool)] out bool pbResult
             );
 
         [PreserveSig]
-        new int Compare(
+        new HResult Compare(
             [MarshalAs(UnmanagedType.Interface)] IMFAttributes pTheirs,
             MFAttributesMatchType MatchType,
             [MarshalAs(UnmanagedType.Bool)] out bool pbResult
             );
 
         [PreserveSig]
-        new int GetUINT32(
+        new HResult GetUINT32(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out int punValue
             );
 
         [PreserveSig]
-        new int GetUINT64(
+        new HResult GetUINT64(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out long punValue
             );
 
         [PreserveSig]
-        new int GetDouble(
+        new HResult GetDouble(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out double pfValue
             );
 
         [PreserveSig]
-        new int GetGUID(
+        new HResult GetGUID(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out Guid pguidValue
             );
 
         [PreserveSig]
-        new int GetStringLength(
+        new HResult GetStringLength(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out int pcchLength
             );
 
         [PreserveSig]
-        new int GetString(
+        new HResult GetString(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszValue,
             int cchBufSize,
@@ -2803,20 +2803,20 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        new int GetAllocatedString(
+        new HResult GetAllocatedString(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [MarshalAs(UnmanagedType.LPWStr)] out string ppwszValue,
             out int pcchLength
             );
 
         [PreserveSig]
-        new int GetBlobSize(
+        new HResult GetBlobSize(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out int pcbBlobSize
             );
 
         [PreserveSig]
-        new int GetBlob(
+        new HResult GetBlob(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [Out, MarshalAs(UnmanagedType.LPArray)] byte[] pBuf,
             int cbBufSize,
@@ -2825,103 +2825,103 @@ namespace MediaFoundation
 
         // Use GetBlob instead of this
         [PreserveSig]
-        new int GetAllocatedBlob(
+        new HResult GetAllocatedBlob(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out IntPtr ip,  // Read w/Marshal.Copy, Free w/Marshal.FreeCoTaskMem
             out int pcbSize
             );
 
         [PreserveSig]
-        new int GetUnknown(
+        new HResult GetUnknown(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
             [MarshalAs(UnmanagedType.IUnknown)] out object ppv
             );
 
         [PreserveSig]
-        new int SetItem(
+        new HResult SetItem(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant Value
             );
 
         [PreserveSig]
-        new int DeleteItem(
+        new HResult DeleteItem(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey
             );
 
         [PreserveSig]
-        new int DeleteAllItems();
+        new HResult DeleteAllItems();
 
         [PreserveSig]
-        new int SetUINT32(
+        new HResult SetUINT32(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             int unValue
             );
 
         [PreserveSig]
-        new int SetUINT64(
+        new HResult SetUINT64(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             long unValue
             );
 
         [PreserveSig]
-        new int SetDouble(
+        new HResult SetDouble(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             double fValue
             );
 
         [PreserveSig]
-        new int SetGUID(
+        new HResult SetGUID(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidValue
             );
 
         [PreserveSig]
-        new int SetString(
+        new HResult SetString(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPWStr)] string wszValue
             );
 
         [PreserveSig]
-        new int SetBlob(
+        new HResult SetBlob(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] pBuf,
             int cbBufSize
             );
 
         [PreserveSig]
-        new int SetUnknown(
+        new HResult SetUnknown(
             [MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.IUnknown)] object pUnknown
             );
 
         [PreserveSig]
-        new int LockStore();
+        new HResult LockStore();
 
         [PreserveSig]
-        new int UnlockStore();
+        new HResult UnlockStore();
 
         [PreserveSig]
-        new int GetCount(
+        new HResult GetCount(
             out int pcItems
             );
 
         [PreserveSig]
-        new int GetItemByIndex(
+        new HResult GetItemByIndex(
             int unIndex,
             out Guid pguidKey,
             [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant pValue
             );
 
         [PreserveSig]
-        new int CopyAllItems(
+        new HResult CopyAllItems(
             [In, MarshalAs(UnmanagedType.Interface)] IMFAttributes pDest
             );
 
         #endregion
 
         [PreserveSig]
-        int GenerateRequiredSchemas(
+        HResult GenerateRequiredSchemas(
             [In] MFOutputAttribute dwAttributes,
             [In, MarshalAs(UnmanagedType.Struct)] Guid guidOutputSubType,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid rgGuidProtectionSchemasSupported,
@@ -2930,12 +2930,12 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        int GetOriginatorID(
+        HResult GetOriginatorID(
             out Guid pguidOriginatorID
             );
 
         [PreserveSig]
-        int GetMinimumGRLVersion(
+        HResult GetMinimumGRLVersion(
             out int pdwMinimumGRLVersion
             );
     }
@@ -2948,63 +2948,63 @@ namespace MediaFoundation
         #region IMFAttributes methods
 
         [PreserveSig]
-        new int GetItem(
+        new HResult GetItem(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant pValue
             );
 
         [PreserveSig]
-        new int GetItemType(
+        new HResult GetItemType(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out MFAttributeType pType
             );
 
         [PreserveSig]
-        new int CompareItem(
+        new HResult CompareItem(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant Value,
             [MarshalAs(UnmanagedType.Bool)] out bool pbResult
             );
 
         [PreserveSig]
-        new int Compare(
+        new HResult Compare(
             [MarshalAs(UnmanagedType.Interface)] IMFAttributes pTheirs,
             MFAttributesMatchType MatchType,
             [MarshalAs(UnmanagedType.Bool)] out bool pbResult
             );
 
         [PreserveSig]
-        new int GetUINT32(
+        new HResult GetUINT32(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out int punValue
             );
 
         [PreserveSig]
-        new int GetUINT64(
+        new HResult GetUINT64(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out long punValue
             );
 
         [PreserveSig]
-        new int GetDouble(
+        new HResult GetDouble(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out double pfValue
             );
 
         [PreserveSig]
-        new int GetGUID(
+        new HResult GetGUID(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out Guid pguidValue
             );
 
         [PreserveSig]
-        new int GetStringLength(
+        new HResult GetStringLength(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out int pcchLength
             );
 
         [PreserveSig]
-        new int GetString(
+        new HResult GetString(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszValue,
             int cchBufSize,
@@ -3012,20 +3012,20 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        new int GetAllocatedString(
+        new HResult GetAllocatedString(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [MarshalAs(UnmanagedType.LPWStr)] out string ppwszValue,
             out int pcchLength
             );
 
         [PreserveSig]
-        new int GetBlobSize(
+        new HResult GetBlobSize(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out int pcbBlobSize
             );
 
         [PreserveSig]
-        new int GetBlob(
+        new HResult GetBlob(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [Out, MarshalAs(UnmanagedType.LPArray)] byte[] pBuf,
             int cbBufSize,
@@ -3034,113 +3034,113 @@ namespace MediaFoundation
 
         // Use GetBlob instead of this
         [PreserveSig]
-        new int GetAllocatedBlob(
+        new HResult GetAllocatedBlob(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out IntPtr ip,  // Read w/Marshal.Copy, Free w/Marshal.FreeCoTaskMem
             out int pcbSize
             );
 
         [PreserveSig]
-        new int GetUnknown(
+        new HResult GetUnknown(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
             [MarshalAs(UnmanagedType.IUnknown)] out object ppv
             );
 
         [PreserveSig]
-        new int SetItem(
+        new HResult SetItem(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant Value
             );
 
         [PreserveSig]
-        new int DeleteItem(
+        new HResult DeleteItem(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey
             );
 
         [PreserveSig]
-        new int DeleteAllItems();
+        new HResult DeleteAllItems();
 
         [PreserveSig]
-        new int SetUINT32(
+        new HResult SetUINT32(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             int unValue
             );
 
         [PreserveSig]
-        new int SetUINT64(
+        new HResult SetUINT64(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             long unValue
             );
 
         [PreserveSig]
-        new int SetDouble(
+        new HResult SetDouble(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             double fValue
             );
 
         [PreserveSig]
-        new int SetGUID(
+        new HResult SetGUID(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidValue
             );
 
         [PreserveSig]
-        new int SetString(
+        new HResult SetString(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPWStr)] string wszValue
             );
 
         [PreserveSig]
-        new int SetBlob(
+        new HResult SetBlob(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] pBuf,
             int cbBufSize
             );
 
         [PreserveSig]
-        new int SetUnknown(
+        new HResult SetUnknown(
             [MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.IUnknown)] object pUnknown
             );
 
         [PreserveSig]
-        new int LockStore();
+        new HResult LockStore();
 
         [PreserveSig]
-        new int UnlockStore();
+        new HResult UnlockStore();
 
         [PreserveSig]
-        new int GetCount(
+        new HResult GetCount(
             out int pcItems
             );
 
         [PreserveSig]
-        new int GetItemByIndex(
+        new HResult GetItemByIndex(
             int unIndex,
             out Guid pguidKey,
             [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant pValue
             );
 
         [PreserveSig]
-        new int CopyAllItems(
+        new HResult CopyAllItems(
             [In, MarshalAs(UnmanagedType.Interface)] IMFAttributes pDest
             );
 
         #endregion
 
         [PreserveSig]
-        int GetSchemaType(
+        HResult GetSchemaType(
             out Guid pguidSchemaType
             );
 
         [PreserveSig]
-        int GetConfigurationData(
+        HResult GetConfigurationData(
             out int pdwVal
             );
 
         [PreserveSig]
-        int GetOriginatorID(
+        HResult GetOriginatorID(
             out Guid pguidOriginatorID
             );
     }
@@ -3151,12 +3151,12 @@ namespace MediaFoundation
     public interface IMFOutputTrustAuthority
     {
         [PreserveSig]
-        int GetAction(
+        HResult GetAction(
             out MFPolicyManagerAction pAction
             );
 
         [PreserveSig]
-        int SetPolicy(
+        HResult SetPolicy(
             [In, MarshalAs(UnmanagedType.Interface)] ref IMFOutputPolicy ppPolicy,
             [In] int nPolicy,
             [Out] IntPtr ppbTicket,
@@ -3170,13 +3170,13 @@ namespace MediaFoundation
     public interface IMFRemoteProxy
     {
         [PreserveSig]
-        int GetRemoteObject(
+        HResult GetRemoteObject(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
             [MarshalAs(UnmanagedType.Interface)] out object ppv
             );
 
         [PreserveSig]
-        int GetRemoteHost(
+        HResult GetRemoteHost(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
             [MarshalAs(UnmanagedType.Interface)] out object ppv
             );
@@ -3188,24 +3188,24 @@ namespace MediaFoundation
     public interface IMFSampleProtection
     {
         [PreserveSig]
-        int GetInputProtectionVersion(
+        HResult GetInputProtectionVersion(
             out int pdwVersion
             );
 
         [PreserveSig]
-        int GetOutputProtectionVersion(
+        HResult GetOutputProtectionVersion(
             out int pdwVersion
             );
 
         [PreserveSig]
-        int GetProtectionCertificate(
+        HResult GetProtectionCertificate(
             [In] int dwVersion,
             [Out] IntPtr ppCert,
             out int pcbCert
             );
 
         [PreserveSig]
-        int InitOutputProtection(
+        HResult InitOutputProtection(
             [In] int dwVersion,
             [In] int dwOutputId,
             [In] ref byte pbCert,
@@ -3215,7 +3215,7 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        int InitInputProtection(
+        HResult InitInputProtection(
             [In] int dwVersion,
             [In] int dwInputId,
             [In] ref byte pbSeed,
@@ -3229,13 +3229,13 @@ namespace MediaFoundation
     public interface IMFSecureChannel
     {
         [PreserveSig]
-        int GetCertificate(
+        HResult GetCertificate(
             [Out] IntPtr ppCert,
             out int pcbCert
             );
 
         [PreserveSig]
-        int SetupSession(
+        HResult SetupSession(
             [In] ref byte pbEncryptedSessionKey,
             [In] int cbSessionKey
             );
@@ -3247,7 +3247,7 @@ namespace MediaFoundation
     public interface IMFTrustedInput
     {
         [PreserveSig]
-        int GetInputTrustAuthority(
+        HResult GetInputTrustAuthority(
             [In] int dwStreamID,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
             [MarshalAs(UnmanagedType.IUnknown)] out object ppunkObject
@@ -3260,18 +3260,18 @@ namespace MediaFoundation
     public interface IMFTrustedOutput
     {
         [PreserveSig]
-        int GetOutputTrustAuthorityCount(
+        HResult GetOutputTrustAuthorityCount(
             out int pcOutputTrustAuthorities
             );
 
         [PreserveSig]
-        int GetOutputTrustAuthorityByIndex(
+        HResult GetOutputTrustAuthorityByIndex(
             [In] int dwIndex,
             [MarshalAs(UnmanagedType.Interface)] out IMFOutputTrustAuthority ppauthority
             );
 
         [PreserveSig]
-        int IsFinal(
+        HResult IsFinal(
             [MarshalAs(UnmanagedType.Bool)] out bool pfIsFinal
             );
     }
@@ -3282,35 +3282,35 @@ namespace MediaFoundation
     public interface IMFSSLCertificateManager
     {
         [PreserveSig]
-        int GetClientCertificate(
+        HResult GetClientCertificate(
             [In, MarshalAs(UnmanagedType.LPWStr)] string pszUrl,
             [Out] out IntPtr ppbData,
             out int pcbData
         );
 
         [PreserveSig]
-        int BeginGetClientCertificate(
+        HResult BeginGetClientCertificate(
             [In, MarshalAs(UnmanagedType.LPWStr)] string pszUrl,
             IMFAsyncCallback pCallback,
             [In, MarshalAs(UnmanagedType.IUnknown)] object pState
         );
 
         [PreserveSig]
-        int EndGetClientCertificate(
+        HResult EndGetClientCertificate(
             IMFAsyncResult pResult,
             [Out] IntPtr ppbData,
             out int pcbData
         );
 
         [PreserveSig]
-        int GetCertificatePolicy(
+        HResult GetCertificatePolicy(
             [In, MarshalAs(UnmanagedType.LPWStr)] string pszUrl,
             [MarshalAs(UnmanagedType.Bool)] out bool pfOverrideAutomaticCheck,
             [MarshalAs(UnmanagedType.Bool)] out bool pfClientCertificateAvailable
         );
 
         [PreserveSig]
-        int OnServerCertificate(
+        HResult OnServerCertificate(
             [In, MarshalAs(UnmanagedType.LPWStr)] string pszUrl,
             [In] IntPtr pbData,
             [In] int cbData,
@@ -3324,7 +3324,7 @@ namespace MediaFoundation
     public interface IMFMediaStreamSourceSampleRequest
     {
         [PreserveSig]
-        int SetSample(
+        HResult SetSample(
             IMFSample value
             );
     }
@@ -3337,12 +3337,12 @@ namespace MediaFoundation
         #region IMFVideoSampleAllocatorNotify
 
         [PreserveSig]
-        new int NotifyRelease();
+        new HResult NotifyRelease();
 
         #endregion
 
         [PreserveSig]
-        int NotifyPrune(IMFSample pSample);
+        HResult NotifyPrune(IMFSample pSample);
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -3353,49 +3353,49 @@ namespace MediaFoundation
         #region IMFVideoProcessorControl
 
         [PreserveSig]
-        new int SetBorderColor(
+        new HResult SetBorderColor(
             MFARGB pBorderColor
         );
 
         [PreserveSig]
-        new int SetSourceRectangle(
+        new HResult SetSourceRectangle(
             MFRect pSrcRect
         );
 
         [PreserveSig]
-        new int SetDestinationRectangle(
+        new HResult SetDestinationRectangle(
             MFRect pDstRect
         );
 
         [PreserveSig]
-        new int SetMirror(
+        new HResult SetMirror(
             MF_VIDEO_PROCESSOR_MIRROR eMirror
         );
 
         [PreserveSig]
-        new int SetRotation(
+        new HResult SetRotation(
             MF_VIDEO_PROCESSOR_ROTATION eRotation
         );
 
         [PreserveSig]
-        new int SetConstrictionSize(
+        new HResult SetConstrictionSize(
             [In] MFSize pConstrictionSize
         );
 
         #endregion
 
         [PreserveSig]
-        int SetRotationOverride(
+        HResult SetRotationOverride(
             int uiRotation
             );
 
         [PreserveSig]
-        int EnableHardwareEffects(
+        HResult EnableHardwareEffects(
             [In, MarshalAs(UnmanagedType.Bool)]bool fEnabled
             );
 
         [PreserveSig]
-        int GetSupportedHardwareEffects(
+        HResult GetSupportedHardwareEffects(
             out int puiSupport
             );
     }
@@ -3406,7 +3406,7 @@ namespace MediaFoundation
     public interface IMFContentProtectionDevice
     {
         [PreserveSig]
-        int InvokeFunction(
+        HResult InvokeFunction(
             int FunctionId,
             int InputBufferByteCount,
             byte[] InputBuffer,
@@ -3415,7 +3415,7 @@ namespace MediaFoundation
         );
 
         [PreserveSig]
-        int GetPrivateDataByteCount(
+        HResult GetPrivateDataByteCount(
             out int PrivateInputByteCount,
             out int PrivateOutputByteCount
         );
@@ -3427,7 +3427,7 @@ namespace MediaFoundation
     public interface IMFContentDecryptorContext
     {
         [PreserveSig]
-        int InitializeHardwareKey(
+        HResult InitializeHardwareKey(
             int InputPrivateDataByteCount,
             [In] byte[] InputPrivateData,
             out long OutputPrivateData
@@ -3444,58 +3444,58 @@ namespace MediaFoundation
         #region IMFMediaEventGenerator methods
 
         [PreserveSig]
-        new int GetEvent(
+        new HResult GetEvent(
             [In] MFEventFlag dwFlags,
             [MarshalAs(UnmanagedType.Interface)] out IMFMediaEvent ppEvent
             );
 
         [PreserveSig]
-        new int BeginGetEvent(
+        new HResult BeginGetEvent(
             [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
             [In, MarshalAs(UnmanagedType.IUnknown)] object o
             );
 
         [PreserveSig]
-        new int EndGetEvent(
+        new HResult EndGetEvent(
             IMFAsyncResult pResult,
             out IMFMediaEvent ppEvent
             );
 
         [PreserveSig]
-        new int QueueEvent(
+        new HResult QueueEvent(
             [In] MediaEventType met,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidExtendedType,
-            [In] int hrStatus,
+            [In] HResult hrStatus,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant pvValue
             );
 
         #endregion
 
         [PreserveSig]
-        int GetCharacteristics(
+        HResult GetCharacteristics(
             out MFMediaSourceCharacteristics pdwCharacteristics
             );
 
         [PreserveSig]
-        int CreatePresentationDescriptor(
+        HResult CreatePresentationDescriptor(
             out IMFPresentationDescriptor ppPresentationDescriptor
             );
 
         [PreserveSig]
-        int Start(
+        HResult Start(
             [In, MarshalAs(UnmanagedType.Interface)] IMFPresentationDescriptor pPresentationDescriptor,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid pguidTimeFormat,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant pvarStartPosition
             );
 
         [PreserveSig]
-        int Stop();
+        HResult Stop();
 
         [PreserveSig]
-        int Pause();
+        HResult Pause();
 
         [PreserveSig]
-        int Shutdown();
+        HResult Shutdown();
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -3506,63 +3506,63 @@ namespace MediaFoundation
         #region IMFAttributes methods
 
         [PreserveSig]
-        new int GetItem(
+        new HResult GetItem(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant pValue
             );
 
         [PreserveSig]
-        new int GetItemType(
+        new HResult GetItemType(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out MFAttributeType pType
             );
 
         [PreserveSig]
-        new int CompareItem(
+        new HResult CompareItem(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant Value,
             [MarshalAs(UnmanagedType.Bool)] out bool pbResult
             );
 
         [PreserveSig]
-        new int Compare(
+        new HResult Compare(
             [MarshalAs(UnmanagedType.Interface)] IMFAttributes pTheirs,
             MFAttributesMatchType MatchType,
             [MarshalAs(UnmanagedType.Bool)] out bool pbResult
             );
 
         [PreserveSig]
-        new int GetUINT32(
+        new HResult GetUINT32(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out int punValue
             );
 
         [PreserveSig]
-        new int GetUINT64(
+        new HResult GetUINT64(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out long punValue
             );
 
         [PreserveSig]
-        new int GetDouble(
+        new HResult GetDouble(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out double pfValue
             );
 
         [PreserveSig]
-        new int GetGUID(
+        new HResult GetGUID(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out Guid pguidValue
             );
 
         [PreserveSig]
-        new int GetStringLength(
+        new HResult GetStringLength(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out int pcchLength
             );
 
         [PreserveSig]
-        new int GetString(
+        new HResult GetString(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszValue,
             int cchBufSize,
@@ -3570,20 +3570,20 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        new int GetAllocatedString(
+        new HResult GetAllocatedString(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [MarshalAs(UnmanagedType.LPWStr)] out string ppwszValue,
             out int pcchLength
             );
 
         [PreserveSig]
-        new int GetBlobSize(
+        new HResult GetBlobSize(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out int pcbBlobSize
             );
 
         [PreserveSig]
-        new int GetBlob(
+        new HResult GetBlob(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [Out, MarshalAs(UnmanagedType.LPArray)] byte[] pBuf,
             int cbBufSize,
@@ -3592,125 +3592,125 @@ namespace MediaFoundation
 
         // Use GetBlob instead of this
         [PreserveSig]
-        new int GetAllocatedBlob(
+        new HResult GetAllocatedBlob(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out IntPtr ip,  // Read w/Marshal.Copy, Free w/Marshal.FreeCoTaskMem
             out int pcbSize
             );
 
         [PreserveSig]
-        new int GetUnknown(
+        new HResult GetUnknown(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
             [MarshalAs(UnmanagedType.IUnknown)] out object ppv
             );
 
         [PreserveSig]
-        new int SetItem(
+        new HResult SetItem(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant Value
             );
 
         [PreserveSig]
-        new int DeleteItem(
+        new HResult DeleteItem(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey
             );
 
         [PreserveSig]
-        new int DeleteAllItems();
+        new HResult DeleteAllItems();
 
         [PreserveSig]
-        new int SetUINT32(
+        new HResult SetUINT32(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             int unValue
             );
 
         [PreserveSig]
-        new int SetUINT64(
+        new HResult SetUINT64(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             long unValue
             );
 
         [PreserveSig]
-        new int SetDouble(
+        new HResult SetDouble(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             double fValue
             );
 
         [PreserveSig]
-        new int SetGUID(
+        new HResult SetGUID(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidValue
             );
 
         [PreserveSig]
-        new int SetString(
+        new HResult SetString(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPWStr)] string wszValue
             );
 
         [PreserveSig]
-        new int SetBlob(
+        new HResult SetBlob(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] pBuf,
             int cbBufSize
             );
 
         [PreserveSig]
-        new int SetUnknown(
+        new HResult SetUnknown(
             [MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.IUnknown)] object pUnknown
             );
 
         [PreserveSig]
-        new int LockStore();
+        new HResult LockStore();
 
         [PreserveSig]
-        new int UnlockStore();
+        new HResult UnlockStore();
 
         [PreserveSig]
-        new int GetCount(
+        new HResult GetCount(
             out int pcItems
             );
 
         [PreserveSig]
-        new int GetItemByIndex(
+        new HResult GetItemByIndex(
             int unIndex,
             out Guid pguidKey,
             [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant pValue
             );
 
         [PreserveSig]
-        new int CopyAllItems(
+        new HResult CopyAllItems(
             [In, MarshalAs(UnmanagedType.Interface)] IMFAttributes pDest
             );
 
         #endregion
 
         [PreserveSig]
-        int GetStreamDescriptorCount(
+        HResult GetStreamDescriptorCount(
             out int pdwDescriptorCount
             );
 
         [PreserveSig]
-        int GetStreamDescriptorByIndex(
+        HResult GetStreamDescriptorByIndex(
             [In] int dwIndex,
             [MarshalAs(UnmanagedType.Bool)] out bool pfSelected,
             [MarshalAs(UnmanagedType.Interface)] out IMFStreamDescriptor ppDescriptor
             );
 
         [PreserveSig]
-        int SelectStream(
+        HResult SelectStream(
             [In] int dwDescriptorIndex
             );
 
         [PreserveSig]
-        int DeselectStream(
+        HResult DeselectStream(
             [In] int dwDescriptorIndex
             );
 
         [PreserveSig]
-        int Clone(
+        HResult Clone(
             [MarshalAs(UnmanagedType.Interface)] out IMFPresentationDescriptor ppPresentationDescriptor
             );
     }
@@ -3723,63 +3723,63 @@ namespace MediaFoundation
         #region IMFAttributes methods
 
         [PreserveSig]
-        new int GetItem(
+        new HResult GetItem(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant pValue
             );
 
         [PreserveSig]
-        new int GetItemType(
+        new HResult GetItemType(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out MFAttributeType pType
             );
 
         [PreserveSig]
-        new int CompareItem(
+        new HResult CompareItem(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant Value,
             [MarshalAs(UnmanagedType.Bool)] out bool pbResult
             );
 
         [PreserveSig]
-        new int Compare(
+        new HResult Compare(
             [MarshalAs(UnmanagedType.Interface)] IMFAttributes pTheirs,
             MFAttributesMatchType MatchType,
             [MarshalAs(UnmanagedType.Bool)] out bool pbResult
             );
 
         [PreserveSig]
-        new int GetUINT32(
+        new HResult GetUINT32(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out int punValue
             );
 
         [PreserveSig]
-        new int GetUINT64(
+        new HResult GetUINT64(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out long punValue
             );
 
         [PreserveSig]
-        new int GetDouble(
+        new HResult GetDouble(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out double pfValue
             );
 
         [PreserveSig]
-        new int GetGUID(
+        new HResult GetGUID(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out Guid pguidValue
             );
 
         [PreserveSig]
-        new int GetStringLength(
+        new HResult GetStringLength(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out int pcchLength
             );
 
         [PreserveSig]
-        new int GetString(
+        new HResult GetString(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszValue,
             int cchBufSize,
@@ -3787,20 +3787,20 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        new int GetAllocatedString(
+        new HResult GetAllocatedString(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [MarshalAs(UnmanagedType.LPWStr)] out string ppwszValue,
             out int pcchLength
             );
 
         [PreserveSig]
-        new int GetBlobSize(
+        new HResult GetBlobSize(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out int pcbBlobSize
             );
 
         [PreserveSig]
-        new int GetBlob(
+        new HResult GetBlob(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [Out, MarshalAs(UnmanagedType.LPArray)] byte[] pBuf,
             int cbBufSize,
@@ -3809,108 +3809,108 @@ namespace MediaFoundation
 
         // Use GetBlob instead of this
         [PreserveSig]
-        new int GetAllocatedBlob(
+        new HResult GetAllocatedBlob(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out IntPtr ip,  // Read w/Marshal.Copy, Free w/Marshal.FreeCoTaskMem
             out int pcbSize
             );
 
         [PreserveSig]
-        new int GetUnknown(
+        new HResult GetUnknown(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
             [MarshalAs(UnmanagedType.IUnknown)] out object ppv
             );
 
         [PreserveSig]
-        new int SetItem(
+        new HResult SetItem(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant Value
             );
 
         [PreserveSig]
-        new int DeleteItem(
+        new HResult DeleteItem(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey
             );
 
         [PreserveSig]
-        new int DeleteAllItems();
+        new HResult DeleteAllItems();
 
         [PreserveSig]
-        new int SetUINT32(
+        new HResult SetUINT32(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             int unValue
             );
 
         [PreserveSig]
-        new int SetUINT64(
+        new HResult SetUINT64(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             long unValue
             );
 
         [PreserveSig]
-        new int SetDouble(
+        new HResult SetDouble(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             double fValue
             );
 
         [PreserveSig]
-        new int SetGUID(
+        new HResult SetGUID(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidValue
             );
 
         [PreserveSig]
-        new int SetString(
+        new HResult SetString(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPWStr)] string wszValue
             );
 
         [PreserveSig]
-        new int SetBlob(
+        new HResult SetBlob(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] pBuf,
             int cbBufSize
             );
 
         [PreserveSig]
-        new int SetUnknown(
+        new HResult SetUnknown(
             [MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.IUnknown)] object pUnknown
             );
 
         [PreserveSig]
-        new int LockStore();
+        new HResult LockStore();
 
         [PreserveSig]
-        new int UnlockStore();
+        new HResult UnlockStore();
 
         [PreserveSig]
-        new int GetCount(
+        new HResult GetCount(
             out int pcItems
             );
 
         [PreserveSig]
-        new int GetItemByIndex(
+        new HResult GetItemByIndex(
             int unIndex,
             out Guid pguidKey,
             [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant pValue
             );
 
         [PreserveSig]
-        new int CopyAllItems(
+        new HResult CopyAllItems(
             [In, MarshalAs(UnmanagedType.Interface)] IMFAttributes pDest
             );
 
         #endregion
 
         [PreserveSig]
-        int GetStreamIdentifier(
+        HResult GetStreamIdentifier(
             out int pdwStreamIdentifier
             );
 
         [PreserveSig]
-        int GetMediaTypeHandler(
+        HResult GetMediaTypeHandler(
             [MarshalAs(UnmanagedType.Interface)] out IMFMediaTypeHandler ppMediaTypeHandler
             );
     }
@@ -3921,34 +3921,34 @@ namespace MediaFoundation
     public interface IMFMediaTypeHandler
     {
         [PreserveSig]
-        int IsMediaTypeSupported(
+        HResult IsMediaTypeSupported(
             [In, MarshalAs(UnmanagedType.Interface)] IMFMediaType pMediaType,
             IntPtr ppMediaType  //[MarshalAs(UnmanagedType.Interface)] out IMFMediaType ppMediaType
             );
 
         [PreserveSig]
-        int GetMediaTypeCount(
+        HResult GetMediaTypeCount(
             out int pdwTypeCount
             );
 
         [PreserveSig]
-        int GetMediaTypeByIndex(
+        HResult GetMediaTypeByIndex(
             [In] int dwIndex,
             [MarshalAs(UnmanagedType.Interface)] out IMFMediaType ppType
             );
 
         [PreserveSig]
-        int SetCurrentMediaType(
+        HResult SetCurrentMediaType(
             [In, MarshalAs(UnmanagedType.Interface)] IMFMediaType pMediaType
             );
 
         [PreserveSig]
-        int GetCurrentMediaType(
+        HResult GetCurrentMediaType(
             [MarshalAs(UnmanagedType.Interface)] out IMFMediaType ppMediaType
             );
 
         [PreserveSig]
-        int GetMajorType(
+        HResult GetMajorType(
             out Guid pguidMajorType
             );
     }
@@ -3961,63 +3961,63 @@ namespace MediaFoundation
         #region IMFAttributes methods
 
         [PreserveSig]
-        new int GetItem(
+        new HResult GetItem(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant pValue
             );
 
         [PreserveSig]
-        new int GetItemType(
+        new HResult GetItemType(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out MFAttributeType pType
             );
 
         [PreserveSig]
-        new int CompareItem(
+        new HResult CompareItem(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant Value,
             [MarshalAs(UnmanagedType.Bool)] out bool pbResult
             );
 
         [PreserveSig]
-        new int Compare(
+        new HResult Compare(
             [MarshalAs(UnmanagedType.Interface)] IMFAttributes pTheirs,
             MFAttributesMatchType MatchType,
             [MarshalAs(UnmanagedType.Bool)] out bool pbResult
             );
 
         [PreserveSig]
-        new int GetUINT32(
+        new HResult GetUINT32(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out int punValue
             );
 
         [PreserveSig]
-        new int GetUINT64(
+        new HResult GetUINT64(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out long punValue
             );
 
         [PreserveSig]
-        new int GetDouble(
+        new HResult GetDouble(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out double pfValue
             );
 
         [PreserveSig]
-        new int GetGUID(
+        new HResult GetGUID(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out Guid pguidValue
             );
 
         [PreserveSig]
-        new int GetStringLength(
+        new HResult GetStringLength(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out int pcchLength
             );
 
         [PreserveSig]
-        new int GetString(
+        new HResult GetString(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszValue,
             int cchBufSize,
@@ -4025,20 +4025,20 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        new int GetAllocatedString(
+        new HResult GetAllocatedString(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [MarshalAs(UnmanagedType.LPWStr)] out string ppwszValue,
             out int pcchLength
             );
 
         [PreserveSig]
-        new int GetBlobSize(
+        new HResult GetBlobSize(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out int pcbBlobSize
             );
 
         [PreserveSig]
-        new int GetBlob(
+        new HResult GetBlob(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [Out, MarshalAs(UnmanagedType.LPArray)] byte[] pBuf,
             int cbBufSize,
@@ -4047,148 +4047,148 @@ namespace MediaFoundation
 
         // Use GetBlob instead of this
         [PreserveSig]
-        new int GetAllocatedBlob(
+        new HResult GetAllocatedBlob(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out IntPtr ip,  // Read w/Marshal.Copy, Free w/Marshal.FreeCoTaskMem
             out int pcbSize
             );
 
         [PreserveSig]
-        new int GetUnknown(
+        new HResult GetUnknown(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
             [MarshalAs(UnmanagedType.IUnknown)] out object ppv
             );
 
         [PreserveSig]
-        new int SetItem(
+        new HResult SetItem(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant Value
             );
 
         [PreserveSig]
-        new int DeleteItem(
+        new HResult DeleteItem(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey
             );
 
         [PreserveSig]
-        new int DeleteAllItems();
+        new HResult DeleteAllItems();
 
         [PreserveSig]
-        new int SetUINT32(
+        new HResult SetUINT32(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             int unValue
             );
 
         [PreserveSig]
-        new int SetUINT64(
+        new HResult SetUINT64(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             long unValue
             );
 
         [PreserveSig]
-        new int SetDouble(
+        new HResult SetDouble(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             double fValue
             );
 
         [PreserveSig]
-        new int SetGUID(
+        new HResult SetGUID(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidValue
             );
 
         [PreserveSig]
-        new int SetString(
+        new HResult SetString(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPWStr)] string wszValue
             );
 
         [PreserveSig]
-        new int SetBlob(
+        new HResult SetBlob(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] pBuf,
             int cbBufSize
             );
 
         [PreserveSig]
-        new int SetUnknown(
+        new HResult SetUnknown(
             [MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.IUnknown)] object pUnknown
             );
 
         [PreserveSig]
-        new int LockStore();
+        new HResult LockStore();
 
         [PreserveSig]
-        new int UnlockStore();
+        new HResult UnlockStore();
 
         [PreserveSig]
-        new int GetCount(
+        new HResult GetCount(
             out int pcItems
             );
 
         [PreserveSig]
-        new int GetItemByIndex(
+        new HResult GetItemByIndex(
             int unIndex,
             out Guid pguidKey,
             [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant pValue
             );
 
         [PreserveSig]
-        new int CopyAllItems(
+        new HResult CopyAllItems(
             [In, MarshalAs(UnmanagedType.Interface)] IMFAttributes pDest
             );
 
         #endregion
 
         [PreserveSig]
-        int GetTopologyID(
+        HResult GetTopologyID(
             out long pID
             );
 
         [PreserveSig]
-        int AddNode(
+        HResult AddNode(
             [In, MarshalAs(UnmanagedType.Interface)] IMFTopologyNode pNode
             );
 
         [PreserveSig]
-        int RemoveNode(
+        HResult RemoveNode(
             [In, MarshalAs(UnmanagedType.Interface)] IMFTopologyNode pNode
             );
 
         [PreserveSig]
-        int GetNodeCount(
+        HResult GetNodeCount(
             out short pwNodes
             );
 
         [PreserveSig]
-        int GetNode(
+        HResult GetNode(
             [In] short wIndex,
             [MarshalAs(UnmanagedType.Interface)] out IMFTopologyNode ppNode
             );
 
         [PreserveSig]
-        int Clear();
+        HResult Clear();
 
         [PreserveSig]
-        int CloneFrom(
+        HResult CloneFrom(
             [In, MarshalAs(UnmanagedType.Interface)] IMFTopology pTopology
             );
 
         [PreserveSig]
-        int GetNodeByID(
+        HResult GetNodeByID(
             [In] long qwTopoNodeID,
             [MarshalAs(UnmanagedType.Interface)] out IMFTopologyNode ppNode
             );
 
         [PreserveSig]
-        int GetSourceNodeCollection(
+        HResult GetSourceNodeCollection(
             [MarshalAs(UnmanagedType.Interface)] out IMFCollection ppCollection
             );
 
         [PreserveSig]
-        int GetOutputNodeCollection(
+        HResult GetOutputNodeCollection(
             [MarshalAs(UnmanagedType.Interface)] out IMFCollection ppCollection
             );
     }
@@ -4201,63 +4201,63 @@ namespace MediaFoundation
         #region IMFAttributes methods
 
         [PreserveSig]
-        new int GetItem(
+        new HResult GetItem(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant pValue
             );
 
         [PreserveSig]
-        new int GetItemType(
+        new HResult GetItemType(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out MFAttributeType pType
             );
 
         [PreserveSig]
-        new int CompareItem(
+        new HResult CompareItem(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant Value,
             [MarshalAs(UnmanagedType.Bool)] out bool pbResult
             );
 
         [PreserveSig]
-        new int Compare(
+        new HResult Compare(
             [MarshalAs(UnmanagedType.Interface)] IMFAttributes pTheirs,
             MFAttributesMatchType MatchType,
             [MarshalAs(UnmanagedType.Bool)] out bool pbResult
             );
 
         [PreserveSig]
-        new int GetUINT32(
+        new HResult GetUINT32(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out int punValue
             );
 
         [PreserveSig]
-        new int GetUINT64(
+        new HResult GetUINT64(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out long punValue
             );
 
         [PreserveSig]
-        new int GetDouble(
+        new HResult GetDouble(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out double pfValue
             );
 
         [PreserveSig]
-        new int GetGUID(
+        new HResult GetGUID(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out Guid pguidValue
             );
 
         [PreserveSig]
-        new int GetStringLength(
+        new HResult GetStringLength(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out int pcchLength
             );
 
         [PreserveSig]
-        new int GetString(
+        new HResult GetString(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszValue,
             int cchBufSize,
@@ -4265,20 +4265,20 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        new int GetAllocatedString(
+        new HResult GetAllocatedString(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [MarshalAs(UnmanagedType.LPWStr)] out string ppwszValue,
             out int pcchLength
             );
 
         [PreserveSig]
-        new int GetBlobSize(
+        new HResult GetBlobSize(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out int pcbBlobSize
             );
 
         [PreserveSig]
-        new int GetBlob(
+        new HResult GetBlob(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [Out, MarshalAs(UnmanagedType.LPArray)] byte[] pBuf,
             int cbBufSize,
@@ -4287,188 +4287,188 @@ namespace MediaFoundation
 
         // Use GetBlob instead of this
         [PreserveSig]
-        new int GetAllocatedBlob(
+        new HResult GetAllocatedBlob(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out IntPtr ip,  // Read w/Marshal.Copy, Free w/Marshal.FreeCoTaskMem
             out int pcbSize
             );
 
         [PreserveSig]
-        new int GetUnknown(
+        new HResult GetUnknown(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
             [MarshalAs(UnmanagedType.IUnknown)] out object ppv
             );
 
         [PreserveSig]
-        new int SetItem(
+        new HResult SetItem(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant Value
             );
 
         [PreserveSig]
-        new int DeleteItem(
+        new HResult DeleteItem(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey
             );
 
         [PreserveSig]
-        new int DeleteAllItems();
+        new HResult DeleteAllItems();
 
         [PreserveSig]
-        new int SetUINT32(
+        new HResult SetUINT32(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             int unValue
             );
 
         [PreserveSig]
-        new int SetUINT64(
+        new HResult SetUINT64(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             long unValue
             );
 
         [PreserveSig]
-        new int SetDouble(
+        new HResult SetDouble(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             double fValue
             );
 
         [PreserveSig]
-        new int SetGUID(
+        new HResult SetGUID(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidValue
             );
 
         [PreserveSig]
-        new int SetString(
+        new HResult SetString(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPWStr)] string wszValue
             );
 
         [PreserveSig]
-        new int SetBlob(
+        new HResult SetBlob(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] pBuf,
             int cbBufSize
             );
 
         [PreserveSig]
-        new int SetUnknown(
+        new HResult SetUnknown(
             [MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.IUnknown)] object pUnknown
             );
 
         [PreserveSig]
-        new int LockStore();
+        new HResult LockStore();
 
         [PreserveSig]
-        new int UnlockStore();
+        new HResult UnlockStore();
 
         [PreserveSig]
-        new int GetCount(
+        new HResult GetCount(
             out int pcItems
             );
 
         [PreserveSig]
-        new int GetItemByIndex(
+        new HResult GetItemByIndex(
             int unIndex,
             out Guid pguidKey,
             [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant pValue
             );
 
         [PreserveSig]
-        new int CopyAllItems(
+        new HResult CopyAllItems(
             [In, MarshalAs(UnmanagedType.Interface)] IMFAttributes pDest
             );
 
         #endregion
 
         [PreserveSig]
-        int SetObject(
+        HResult SetObject(
             [In, MarshalAs(UnmanagedType.IUnknown)] object pObject
             );
 
         [PreserveSig]
-        int GetObject(
+        HResult GetObject(
             [MarshalAs(UnmanagedType.IUnknown)] out object ppObject
             );
 
         [PreserveSig]
-        int GetNodeType(
+        HResult GetNodeType(
             out MFTopologyType pType
             );
 
         [PreserveSig]
-        int GetTopoNodeID(
+        HResult GetTopoNodeID(
             out long pID
             );
 
         [PreserveSig]
-        int SetTopoNodeID(
+        HResult SetTopoNodeID(
             [In] long ullTopoID
             );
 
         [PreserveSig]
-        int GetInputCount(
+        HResult GetInputCount(
             out int pcInputs
             );
 
         [PreserveSig]
-        int GetOutputCount(
+        HResult GetOutputCount(
             out int pcOutputs
             );
 
         [PreserveSig]
-        int ConnectOutput(
+        HResult ConnectOutput(
             [In] int dwOutputIndex,
             [In, MarshalAs(UnmanagedType.Interface)] IMFTopologyNode pDownstreamNode,
             [In] int dwInputIndexOnDownstreamNode
             );
 
         [PreserveSig]
-        int DisconnectOutput(
+        HResult DisconnectOutput(
             [In] int dwOutputIndex
             );
 
         [PreserveSig]
-        int GetInput(
+        HResult GetInput(
             [In] int dwInputIndex,
             [MarshalAs(UnmanagedType.Interface)] out IMFTopologyNode ppUpstreamNode,
             out int pdwOutputIndexOnUpstreamNode
             );
 
         [PreserveSig]
-        int GetOutput(
+        HResult GetOutput(
             [In] int dwOutputIndex,
             [MarshalAs(UnmanagedType.Interface)] out IMFTopologyNode ppDownstreamNode,
             out int pdwInputIndexOnDownstreamNode
             );
 
         [PreserveSig]
-        int SetOutputPrefType(
+        HResult SetOutputPrefType(
             [In] int dwOutputIndex,
             [In, MarshalAs(UnmanagedType.Interface)] IMFMediaType pType
             );
 
         [PreserveSig]
-        int GetOutputPrefType(
+        HResult GetOutputPrefType(
             [In] int dwOutputIndex,
             out IMFMediaType ppType
             );
 
         [PreserveSig]
-        int SetInputPrefType(
+        HResult SetInputPrefType(
             [In] int dwInputIndex,
             [In, MarshalAs(UnmanagedType.Interface)] IMFMediaType pType
             );
 
         [PreserveSig]
-        int GetInputPrefType(
+        HResult GetInputPrefType(
             [In] int dwInputIndex,
             out IMFMediaType ppType
             );
 
         [PreserveSig]
-        int CloneFrom(
+        HResult CloneFrom(
             [In, MarshalAs(UnmanagedType.Interface)] IMFTopologyNode pNode
             );
     }
@@ -4481,72 +4481,72 @@ namespace MediaFoundation
         #region IMFMediaEventGenerator methods
 
         [PreserveSig]
-        new int GetEvent(
+        new HResult GetEvent(
             [In] MFEventFlag dwFlags,
             [MarshalAs(UnmanagedType.Interface)] out IMFMediaEvent ppEvent
             );
 
         [PreserveSig]
-        new int BeginGetEvent(
+        new HResult BeginGetEvent(
             [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
             [In, MarshalAs(UnmanagedType.IUnknown)] object o
             );
 
         [PreserveSig]
-        new int EndGetEvent(
+        new HResult EndGetEvent(
             IMFAsyncResult pResult,
             out IMFMediaEvent ppEvent
             );
 
         [PreserveSig]
-        new int QueueEvent(
+        new HResult QueueEvent(
             [In] MediaEventType met,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidExtendedType,
-            [In] int hrStatus,
+            [In] HResult hrStatus,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant pvValue
             );
 
         #endregion
 
         [PreserveSig]
-        int SetTopology(
+        HResult SetTopology(
             [In] MFSessionSetTopologyFlags dwSetTopologyFlags,
             [In, MarshalAs(UnmanagedType.Interface)] IMFTopology pTopology
             );
 
         [PreserveSig]
-        int ClearTopologies();
+        HResult ClearTopologies();
 
         [PreserveSig]
-        int Start(
+        HResult Start(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid pguidTimeFormat,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant pvarStartPosition
             );
 
         [PreserveSig]
-        int Pause();
+        HResult Pause();
 
         [PreserveSig]
-        int Stop();
+        HResult Stop();
 
         [PreserveSig]
-        int Close();
+        HResult Close();
 
         [PreserveSig]
-        int Shutdown();
+        HResult Shutdown();
 
         [PreserveSig]
-        int GetClock(
+        HResult GetClock(
             [MarshalAs(UnmanagedType.Interface)] out IMFClock ppClock
             );
 
         [PreserveSig]
-        int GetSessionCapabilities(
+        HResult GetSessionCapabilities(
             out MFSessionCapabilities pdwCaps
             );
 
         [PreserveSig]
-        int GetFullTopology(
+        HResult GetFullTopology(
             [In] MFSessionGetFullTopologyFlags dwGetFullTopologyFlags,
             [In] long TopoId,
             [MarshalAs(UnmanagedType.Interface)] out IMFTopology ppFullTopology
@@ -4561,45 +4561,45 @@ namespace MediaFoundation
         #region IMFMediaEventGenerator methods
 
         [PreserveSig]
-        new int GetEvent(
+        new HResult GetEvent(
             [In] MFEventFlag dwFlags,
             [MarshalAs(UnmanagedType.Interface)] out IMFMediaEvent ppEvent
             );
 
         [PreserveSig]
-        new int BeginGetEvent(
+        new HResult BeginGetEvent(
             [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
             [In, MarshalAs(UnmanagedType.IUnknown)] object o
             );
 
         [PreserveSig]
-        new int EndGetEvent(
+        new HResult EndGetEvent(
             IMFAsyncResult pResult,
             out IMFMediaEvent ppEvent
             );
 
         [PreserveSig]
-        new int QueueEvent(
+        new HResult QueueEvent(
             [In] MediaEventType met,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidExtendedType,
-            [In] int hrStatus,
+            [In] HResult hrStatus,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant pvValue
             );
 
         #endregion
 
         [PreserveSig]
-        int GetMediaSource(
+        HResult GetMediaSource(
             [MarshalAs(UnmanagedType.Interface)] out IMFMediaSource ppMediaSource
             );
 
         [PreserveSig]
-        int GetStreamDescriptor(
+        HResult GetStreamDescriptor(
             [MarshalAs(UnmanagedType.Interface)] out IMFStreamDescriptor ppStreamDescriptor
             );
 
         [PreserveSig]
-        int RequestSample(
+        HResult RequestSample(
             [In, MarshalAs(UnmanagedType.IUnknown)] object pToken
             );
     }
@@ -4610,7 +4610,7 @@ namespace MediaFoundation
     public interface IMFSourceResolver
     {
         [PreserveSig]
-        int CreateObjectFromURL(
+        HResult CreateObjectFromURL(
             [In, MarshalAs(UnmanagedType.LPWStr)] string pwszURL,
             [In] MFResolution dwFlags,
             IPropertyStore pProps,
@@ -4619,7 +4619,7 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        int CreateObjectFromByteStream(
+        HResult CreateObjectFromByteStream(
             [In, MarshalAs(UnmanagedType.Interface)] IMFByteStream pByteStream,
             [In, MarshalAs(UnmanagedType.LPWStr)] string pwszURL,
             [In] MFResolution dwFlags,
@@ -4629,7 +4629,7 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        int BeginCreateObjectFromURL(
+        HResult BeginCreateObjectFromURL(
             [In, MarshalAs(UnmanagedType.LPWStr)] string pwszURL,
             MFResolution dwFlags,
             IPropertyStore pProps,
@@ -4639,14 +4639,14 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        int EndCreateObjectFromURL(
+        HResult EndCreateObjectFromURL(
             IMFAsyncResult pResult,
             out MFObjectType pObjectType,
             [MarshalAs(UnmanagedType.Interface)] out object ppObject
             );
 
         [PreserveSig]
-        int BeginCreateObjectFromByteStream(
+        HResult BeginCreateObjectFromByteStream(
             [In, MarshalAs(UnmanagedType.Interface)] IMFByteStream pByteStream,
             [In, MarshalAs(UnmanagedType.LPWStr)] string pwszURL,
             [In] MFResolution dwFlags,
@@ -4657,14 +4657,14 @@ namespace MediaFoundation
            );
 
         [PreserveSig]
-        int EndCreateObjectFromByteStream(
+        HResult EndCreateObjectFromByteStream(
             IMFAsyncResult pResult,
             out MFObjectType pObjectType,
             [MarshalAs(UnmanagedType.IUnknown)] out object ppObject
             );
 
         [PreserveSig]
-        int CancelObjectCreation(
+        HResult CancelObjectCreation(
             [In, MarshalAs(UnmanagedType.IUnknown)] object pIUnknownCancelCookie
             );
     }
@@ -4677,63 +4677,63 @@ namespace MediaFoundation
         #region IMFAttributes methods
 
         [PreserveSig]
-        new int GetItem(
+        new HResult GetItem(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant pValue
             );
 
         [PreserveSig]
-        new int GetItemType(
+        new HResult GetItemType(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out MFAttributeType pType
             );
 
         [PreserveSig]
-        new int CompareItem(
+        new HResult CompareItem(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant Value,
             [MarshalAs(UnmanagedType.Bool)] out bool pbResult
             );
 
         [PreserveSig]
-        new int Compare(
+        new HResult Compare(
             [MarshalAs(UnmanagedType.Interface)] IMFAttributes pTheirs,
             MFAttributesMatchType MatchType,
             [MarshalAs(UnmanagedType.Bool)] out bool pbResult
             );
 
         [PreserveSig]
-        new int GetUINT32(
+        new HResult GetUINT32(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out int punValue
             );
 
         [PreserveSig]
-        new int GetUINT64(
+        new HResult GetUINT64(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out long punValue
             );
 
         [PreserveSig]
-        new int GetDouble(
+        new HResult GetDouble(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out double pfValue
             );
 
         [PreserveSig]
-        new int GetGUID(
+        new HResult GetGUID(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out Guid pguidValue
             );
 
         [PreserveSig]
-        new int GetStringLength(
+        new HResult GetStringLength(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out int pcchLength
             );
 
         [PreserveSig]
-        new int GetString(
+        new HResult GetString(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszValue,
             int cchBufSize,
@@ -4741,20 +4741,20 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        new int GetAllocatedString(
+        new HResult GetAllocatedString(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [MarshalAs(UnmanagedType.LPWStr)] out string ppwszValue,
             out int pcchLength
             );
 
         [PreserveSig]
-        new int GetBlobSize(
+        new HResult GetBlobSize(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out int pcbBlobSize
             );
 
         [PreserveSig]
-        new int GetBlob(
+        new HResult GetBlob(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [Out, MarshalAs(UnmanagedType.LPArray)] byte[] pBuf,
             int cbBufSize,
@@ -4763,112 +4763,112 @@ namespace MediaFoundation
 
         // Use GetBlob instead of this
         [PreserveSig]
-        new int GetAllocatedBlob(
+        new HResult GetAllocatedBlob(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             out IntPtr ip,  // Read w/Marshal.Copy, Free w/Marshal.FreeCoTaskMem
             out int pcbSize
             );
 
         [PreserveSig]
-        new int GetUnknown(
+        new HResult GetUnknown(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
             [MarshalAs(UnmanagedType.IUnknown)] out object ppv
             );
 
         [PreserveSig]
-        new int SetItem(
+        new HResult SetItem(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant Value
             );
 
         [PreserveSig]
-        new int DeleteItem(
+        new HResult DeleteItem(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey
             );
 
         [PreserveSig]
-        new int DeleteAllItems();
+        new HResult DeleteAllItems();
 
         [PreserveSig]
-        new int SetUINT32(
+        new HResult SetUINT32(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             int unValue
             );
 
         [PreserveSig]
-        new int SetUINT64(
+        new HResult SetUINT64(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             long unValue
             );
 
         [PreserveSig]
-        new int SetDouble(
+        new HResult SetDouble(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             double fValue
             );
 
         [PreserveSig]
-        new int SetGUID(
+        new HResult SetGUID(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidValue
             );
 
         [PreserveSig]
-        new int SetString(
+        new HResult SetString(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPWStr)] string wszValue
             );
 
         [PreserveSig]
-        new int SetBlob(
+        new HResult SetBlob(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] byte[] pBuf,
             int cbBufSize
             );
 
         [PreserveSig]
-        new int SetUnknown(
+        new HResult SetUnknown(
             [MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
             [In, MarshalAs(UnmanagedType.IUnknown)] object pUnknown
             );
 
         [PreserveSig]
-        new int LockStore();
+        new HResult LockStore();
 
         [PreserveSig]
-        new int UnlockStore();
+        new HResult UnlockStore();
 
         [PreserveSig]
-        new int GetCount(
+        new HResult GetCount(
             out int pcItems
             );
 
         [PreserveSig]
-        new int GetItemByIndex(
+        new HResult GetItemByIndex(
             int unIndex,
             out Guid pguidKey,
             [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant pValue
             );
 
         [PreserveSig]
-        new int CopyAllItems(
+        new HResult CopyAllItems(
             [In, MarshalAs(UnmanagedType.Interface)] IMFAttributes pDest
             );
 
         #endregion
 
         [PreserveSig]
-        int ActivateObject(
+        HResult ActivateObject(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
             [MarshalAs(UnmanagedType.Interface)] out object ppv
             );
 
         [PreserveSig]
-        int ShutdownObject();
+        HResult ShutdownObject();
 
         [PreserveSig]
-        int DetachObject();
+        HResult DetachObject();
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -4877,7 +4877,7 @@ namespace MediaFoundation
     public interface IMFGetService
     {
         [PreserveSig]
-        int GetService(
+        HResult GetService(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidService,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
             [MarshalAs(UnmanagedType.Interface)] out object ppvObject
@@ -4890,7 +4890,7 @@ namespace MediaFoundation
     public interface IMFByteStreamHandler
     {
         [PreserveSig]
-        int BeginCreateObject(
+        HResult BeginCreateObject(
             [In, MarshalAs(UnmanagedType.Interface)] IMFByteStream pByteStream,
             [In, MarshalAs(UnmanagedType.LPWStr)] string pwszURL,
             [In] MFResolution dwFlags,
@@ -4901,19 +4901,19 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        int EndCreateObject(
+        HResult EndCreateObject(
             [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncResult pResult,
             out MFObjectType pObjectType,
             [MarshalAs(UnmanagedType.IUnknown)] out object ppObject
             );
 
         [PreserveSig]
-        int CancelObjectCreation(
+        HResult CancelObjectCreation(
             [In, MarshalAs(UnmanagedType.IUnknown)] object pIUnknownCancelCookie
             );
 
         [PreserveSig]
-        int GetMaxNumberOfBytesRequiredForResolution(
+        HResult GetMaxNumberOfBytesRequiredForResolution(
             out long pqwBytes
             );
     }
@@ -4924,28 +4924,28 @@ namespace MediaFoundation
     public interface IMFClockStateSink
     {
         [PreserveSig]
-        int OnClockStart(
+        HResult OnClockStart(
             [In] long hnsSystemTime,
             [In] long llClockStartOffset
             );
 
         [PreserveSig]
-        int OnClockStop(
+        HResult OnClockStop(
             [In] long hnsSystemTime
             );
 
         [PreserveSig]
-        int OnClockPause(
+        HResult OnClockPause(
             [In] long hnsSystemTime
             );
 
         [PreserveSig]
-        int OnClockRestart(
+        HResult OnClockRestart(
             [In] long hnsSystemTime
             );
 
         [PreserveSig]
-        int OnClockSetRate(
+        HResult OnClockSetRate(
             [In] long hnsSystemTime,
             [In] float flRate
             );
@@ -4957,30 +4957,30 @@ namespace MediaFoundation
     public interface IMFClock
     {
         [PreserveSig]
-        int GetClockCharacteristics(
+        HResult GetClockCharacteristics(
             out MFClockCharacteristicsFlags pdwCharacteristics
             );
 
         [PreserveSig]
-        int GetCorrelatedTime(
+        HResult GetCorrelatedTime(
             [In] int dwReserved,
             out long pllClockTime,
             out long phnsSystemTime
             );
 
         [PreserveSig]
-        int GetContinuityKey(
+        HResult GetContinuityKey(
             out int pdwContinuityKey
             );
 
         [PreserveSig]
-        int GetState(
+        HResult GetState(
             [In] int dwReserved,
             out MFClockState peClockState
             );
 
         [PreserveSig]
-        int GetProperties(
+        HResult GetProperties(
             out MFClockProperties pClockProperties
             );
     }
@@ -4993,70 +4993,70 @@ namespace MediaFoundation
         #region IMFClock methods
 
         [PreserveSig]
-        new int GetClockCharacteristics(
+        new HResult GetClockCharacteristics(
             out MFClockCharacteristicsFlags pdwCharacteristics
             );
 
         [PreserveSig]
-        new int GetCorrelatedTime(
+        new HResult GetCorrelatedTime(
             [In] int dwReserved,
             out long pllClockTime,
             out long phnsSystemTime
             );
 
         [PreserveSig]
-        new int GetContinuityKey(
+        new HResult GetContinuityKey(
             out int pdwContinuityKey
             );
 
         [PreserveSig]
-        new int GetState(
+        new HResult GetState(
             [In] int dwReserved,
             out MFClockState peClockState
             );
 
         [PreserveSig]
-        new int GetProperties(
+        new HResult GetProperties(
             out MFClockProperties pClockProperties
             );
 
         #endregion
 
         [PreserveSig]
-        int SetTimeSource(
+        HResult SetTimeSource(
             [In, MarshalAs(UnmanagedType.Interface)] IMFPresentationTimeSource pTimeSource
             );
 
         [PreserveSig]
-        int GetTimeSource(
+        HResult GetTimeSource(
             [MarshalAs(UnmanagedType.Interface)] out IMFPresentationTimeSource ppTimeSource
             );
 
         [PreserveSig]
-        int GetTime(
+        HResult GetTime(
             out long phnsClockTime
             );
 
         [PreserveSig]
-        int AddClockStateSink(
+        HResult AddClockStateSink(
             [In, MarshalAs(UnmanagedType.Interface)] IMFClockStateSink pStateSink
             );
 
         [PreserveSig]
-        int RemoveClockStateSink(
+        HResult RemoveClockStateSink(
             [In, MarshalAs(UnmanagedType.Interface)] IMFClockStateSink pStateSink
             );
 
         [PreserveSig]
-        int Start(
+        HResult Start(
             [In] long llClockStartOffset
             );
 
         [PreserveSig]
-        int Stop();
+        HResult Stop();
 
         [PreserveSig]
-        int Pause();
+        HResult Pause();
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -5067,37 +5067,37 @@ namespace MediaFoundation
         #region IMFClock methods
 
         [PreserveSig]
-        new int GetClockCharacteristics(
+        new HResult GetClockCharacteristics(
             out MFClockCharacteristicsFlags pdwCharacteristics
             );
 
         [PreserveSig]
-        new int GetCorrelatedTime(
+        new HResult GetCorrelatedTime(
             [In] int dwReserved,
             out long pllClockTime,
             out long phnsSystemTime
             );
 
         [PreserveSig]
-        new int GetContinuityKey(
+        new HResult GetContinuityKey(
             out int pdwContinuityKey
             );
 
         [PreserveSig]
-        new int GetState(
+        new HResult GetState(
             [In] int dwReserved,
             out MFClockState peClockState
             );
 
         [PreserveSig]
-        new int GetProperties(
+        new HResult GetProperties(
             out MFClockProperties pClockProperties
             );
 
         #endregion
 
         [PreserveSig]
-        int GetUnderlyingClock(
+        HResult GetUnderlyingClock(
             [MarshalAs(UnmanagedType.Interface)] out IMFClock ppClock
             );
     }
@@ -5108,7 +5108,7 @@ namespace MediaFoundation
     public interface IMFMediaSourceTopologyProvider
     {
         [PreserveSig]
-        int GetMediaSourceTopology(
+        HResult GetMediaSourceTopology(
             [In, MarshalAs(UnmanagedType.Interface)] IMFPresentationDescriptor pPresentationDescriptor,
             [MarshalAs(UnmanagedType.Interface)] out IMFTopology ppTopology
             );
@@ -5120,32 +5120,32 @@ namespace MediaFoundation
     public interface IMFSequencerSource
     {
         [PreserveSig]
-        int AppendTopology(
+        HResult AppendTopology(
             [In, MarshalAs(UnmanagedType.Interface)] IMFTopology pTopology,
             [In] MFSequencerTopologyFlags dwFlags,
             out int pdwId
             );
 
         [PreserveSig]
-        int DeleteTopology(
+        HResult DeleteTopology(
             [In] int dwId
             );
 
         [PreserveSig]
-        int GetPresentationContext(
+        HResult GetPresentationContext(
             [In, MarshalAs(UnmanagedType.Interface)] IMFPresentationDescriptor pPD,
             out int pID,
             [MarshalAs(UnmanagedType.Interface)] out IMFTopology ppTopology
             );
 
         [PreserveSig]
-        int UpdateTopology(
+        HResult UpdateTopology(
             [In] int dwId,
             [In, MarshalAs(UnmanagedType.Interface)] IMFTopology pTopology
             );
 
         [PreserveSig]
-        int UpdateTopologyFlags(
+        HResult UpdateTopologyFlags(
             [In] int dwId,
             [In] MFSequencerTopologyFlags dwFlags
             );
@@ -5157,7 +5157,7 @@ namespace MediaFoundation
     public interface IMFContentProtectionManager
     {
         [PreserveSig]
-        int BeginEnableContent(
+        HResult BeginEnableContent(
             IMFActivate pEnablerActivate,
             IMFTopology pTopo,
             IMFAsyncCallback pCallback,
@@ -5165,7 +5165,7 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        int EndEnableContent(
+        HResult EndEnableContent(
             IMFAsyncResult pResult
             );
     }
@@ -5176,33 +5176,33 @@ namespace MediaFoundation
     public interface IMFContentEnabler
     {
         [PreserveSig]
-        int GetEnableType(out Guid pType);
+        HResult GetEnableType(out Guid pType);
 
         [PreserveSig]
-        int GetEnableURL(
+        HResult GetEnableURL(
             [MarshalAs(UnmanagedType.LPWStr)] out string ppwszURL,
             out int pcchURL,
             out MFURLTrustStatus pTrustStatus
             );
 
         [PreserveSig]
-        int GetEnableData(
+        HResult GetEnableData(
             [Out] out IntPtr ppbData,
             out int pcbData);
 
         [PreserveSig]
-        int IsAutomaticSupported(
+        HResult IsAutomaticSupported(
             [MarshalAs(UnmanagedType.Bool)] out bool pfAutomatic
             );
 
         [PreserveSig]
-        int AutomaticEnable();
+        HResult AutomaticEnable();
 
         [PreserveSig]
-        int MonitorEnable();
+        HResult MonitorEnable();
 
         [PreserveSig]
-        int Cancel();
+        HResult Cancel();
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -5211,51 +5211,51 @@ namespace MediaFoundation
     public interface IMFMediaSink
     {
         [PreserveSig]
-        int GetCharacteristics(
+        HResult GetCharacteristics(
             out MFMediaSinkCharacteristics pdwCharacteristics
             );
 
         [PreserveSig]
-        int AddStreamSink(
+        HResult AddStreamSink(
             [In] int dwStreamSinkIdentifier,
             [In, MarshalAs(UnmanagedType.Interface)] IMFMediaType pMediaType,
             [MarshalAs(UnmanagedType.Interface)] out IMFStreamSink ppStreamSink
             );
 
         [PreserveSig]
-        int RemoveStreamSink(
+        HResult RemoveStreamSink(
             [In] int dwStreamSinkIdentifier
             );
 
         [PreserveSig]
-        int GetStreamSinkCount(
+        HResult GetStreamSinkCount(
             out int pcStreamSinkCount
             );
 
         [PreserveSig]
-        int GetStreamSinkByIndex(
+        HResult GetStreamSinkByIndex(
             [In] int dwIndex,
             [MarshalAs(UnmanagedType.Interface)] out IMFStreamSink ppStreamSink
             );
 
         [PreserveSig]
-        int GetStreamSinkById(
+        HResult GetStreamSinkById(
             [In] int dwStreamSinkIdentifier,
             [MarshalAs(UnmanagedType.Interface)] out IMFStreamSink ppStreamSink
             );
 
         [PreserveSig]
-        int SetPresentationClock(
+        HResult SetPresentationClock(
             [In, MarshalAs(UnmanagedType.Interface)] IMFPresentationClock pPresentationClock
             );
 
         [PreserveSig]
-        int GetPresentationClock(
+        HResult GetPresentationClock(
             [MarshalAs(UnmanagedType.Interface)] out IMFPresentationClock ppPresentationClock
             );
 
         [PreserveSig]
-        int Shutdown();
+        HResult Shutdown();
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -5266,62 +5266,62 @@ namespace MediaFoundation
         #region IMFMediaEventGenerator methods
 
         [PreserveSig]
-        new int GetEvent(
+        new HResult GetEvent(
             [In] MFEventFlag dwFlags,
             [MarshalAs(UnmanagedType.Interface)] out IMFMediaEvent ppEvent
             );
 
         [PreserveSig]
-        new int BeginGetEvent(
+        new HResult BeginGetEvent(
             [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
             [In, MarshalAs(UnmanagedType.IUnknown)] object o
             );
 
         [PreserveSig]
-        new int EndGetEvent(
+        new HResult EndGetEvent(
             IMFAsyncResult pResult,
             out IMFMediaEvent ppEvent
             );
 
         [PreserveSig]
-        new int QueueEvent(
+        new HResult QueueEvent(
             [In] MediaEventType met,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidExtendedType,
-            [In] int hrStatus,
+            [In] HResult hrStatus,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant pvValue
             );
 
         #endregion
 
         [PreserveSig]
-        int GetMediaSink(
+        HResult GetMediaSink(
             [MarshalAs(UnmanagedType.Interface)] out IMFMediaSink ppMediaSink
             );
 
         [PreserveSig]
-        int GetIdentifier(
+        HResult GetIdentifier(
             out int pdwIdentifier
             );
 
         [PreserveSig]
-        int GetMediaTypeHandler(
+        HResult GetMediaTypeHandler(
             [MarshalAs(UnmanagedType.Interface)] out IMFMediaTypeHandler ppHandler
             );
 
         [PreserveSig]
-        int ProcessSample(
+        HResult ProcessSample(
             [In, MarshalAs(UnmanagedType.Interface)] IMFSample pSample
             );
 
         [PreserveSig]
-        int PlaceMarker(
+        HResult PlaceMarker(
             [In] MFStreamSinkMarkerType eMarkerType,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant pvarMarkerValue,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant pvarContextValue
             );
 
         [PreserveSig]
-        int Flush();
+        HResult Flush();
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -5332,62 +5332,62 @@ namespace MediaFoundation
         #region IMFMediaSink methods
 
         [PreserveSig]
-        new int GetCharacteristics(
+        new HResult GetCharacteristics(
             out MFMediaSinkCharacteristics pdwCharacteristics
             );
 
         [PreserveSig]
-        new int AddStreamSink(
+        new HResult AddStreamSink(
             [In] int dwStreamSinkIdentifier,
             [In, MarshalAs(UnmanagedType.Interface)] IMFMediaType pMediaType,
             [MarshalAs(UnmanagedType.Interface)] out IMFStreamSink ppStreamSink
             );
 
         [PreserveSig]
-        new int RemoveStreamSink(
+        new HResult RemoveStreamSink(
             [In] int dwStreamSinkIdentifier
             );
 
         [PreserveSig]
-        new int GetStreamSinkCount(
+        new HResult GetStreamSinkCount(
             out int pcStreamSinkCount
             );
 
         [PreserveSig]
-        new int GetStreamSinkByIndex(
+        new HResult GetStreamSinkByIndex(
             [In] int dwIndex,
             [MarshalAs(UnmanagedType.Interface)] out IMFStreamSink ppStreamSink
             );
 
         [PreserveSig]
-        new int GetStreamSinkById(
+        new HResult GetStreamSinkById(
             [In] int dwStreamSinkIdentifier,
             [MarshalAs(UnmanagedType.Interface)] out IMFStreamSink ppStreamSink
             );
 
         [PreserveSig]
-        new int SetPresentationClock(
+        new HResult SetPresentationClock(
             [In, MarshalAs(UnmanagedType.Interface)] IMFPresentationClock pPresentationClock
             );
 
         [PreserveSig]
-        new int GetPresentationClock(
+        new HResult GetPresentationClock(
             [MarshalAs(UnmanagedType.Interface)] out IMFPresentationClock ppPresentationClock
             );
 
         [PreserveSig]
-        new int Shutdown();
+        new HResult Shutdown();
 
         #endregion
 
         [PreserveSig]
-        int BeginFinalize(
+        HResult BeginFinalize(
             [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
             [In, MarshalAs(UnmanagedType.IUnknown)] object pUnkState
             );
 
         [PreserveSig]
-        int EndFinalize(
+        HResult EndFinalize(
             [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncResult pResult
             );
     }
@@ -5398,21 +5398,21 @@ namespace MediaFoundation
     public interface IMFRateSupport
     {
         [PreserveSig]
-        int GetSlowestRate(
+        HResult GetSlowestRate(
             [In] MFRateDirection eDirection,
             [In, MarshalAs(UnmanagedType.Bool)] bool fThin,
             out float pflRate
             );
 
         [PreserveSig]
-        int GetFastestRate(
+        HResult GetFastestRate(
             [In] MFRateDirection eDirection,
             [In, MarshalAs(UnmanagedType.Bool)] bool fThin,
             out float pflRate
             );
 
         [PreserveSig]
-        int IsRateSupported(
+        HResult IsRateSupported(
             [In, MarshalAs(UnmanagedType.Bool)] bool fThin,
             [In] float flRate,
             [In, Out] MfFloat pflNearestSupportedRate
@@ -5425,7 +5425,7 @@ namespace MediaFoundation
     public interface IMFSourceOpenMonitor
     {
         [PreserveSig]
-        int OnSourceEvent(
+        HResult OnSourceEvent(
             [In, MarshalAs(UnmanagedType.Interface)] IMFMediaEvent pEvent
             );
     }
@@ -5436,10 +5436,10 @@ namespace MediaFoundation
     public interface IMFShutdown
     {
         [PreserveSig]
-        int Shutdown();
+        HResult Shutdown();
 
         [PreserveSig]
-        int GetShutdownStatus(
+        HResult GetShutdownStatus(
             out MFShutdownStatus pStatus
             );
     }
@@ -5450,39 +5450,39 @@ namespace MediaFoundation
     public interface IMFMetadata
     {
         [PreserveSig]
-        int SetLanguage(
+        HResult SetLanguage(
             [In, MarshalAs(UnmanagedType.LPWStr)] string pwszRFC1766
             );
 
         [PreserveSig]
-        int GetLanguage(
+        HResult GetLanguage(
             [MarshalAs(UnmanagedType.LPWStr)] out string ppwszRFC1766
             );
 
         [PreserveSig]
-        int GetAllLanguages(
+        HResult GetAllLanguages(
             [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant ppvLanguages
             );
 
         [PreserveSig]
-        int SetProperty(
+        HResult SetProperty(
             [In, MarshalAs(UnmanagedType.LPWStr)] string pwszName,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant ppvValue
             );
 
         [PreserveSig]
-        int GetProperty(
+        HResult GetProperty(
             [In, MarshalAs(UnmanagedType.LPWStr)] string pwszName,
             [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant ppvValue
             );
 
         [PreserveSig]
-        int DeleteProperty(
+        HResult DeleteProperty(
             [In, MarshalAs(UnmanagedType.LPWStr)] string pwszName
             );
 
         [PreserveSig]
-        int GetAllPropertyNames(
+        HResult GetAllPropertyNames(
             [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant ppvNames
             );
     }
@@ -5493,13 +5493,13 @@ namespace MediaFoundation
     public interface IMFRateControl
     {
         [PreserveSig]
-        int SetRate(
+        HResult SetRate(
             [In, MarshalAs(UnmanagedType.Bool)] bool fThin,
             [In] float flRate
             );
 
         [PreserveSig]
-        int GetRate(
+        HResult GetRate(
             [In, Out, MarshalAs(UnmanagedType.Bool)] ref bool pfThin,
             out float pflRate
             );
@@ -5511,7 +5511,7 @@ namespace MediaFoundation
     public interface IMFTimer
     {
         [PreserveSig]
-        int SetTimer(
+        HResult SetTimer(
             [In] MFTimeFlags dwFlags,
             [In] long llClockTime,
             [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
@@ -5520,7 +5520,7 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        int CancelTimer(
+        HResult CancelTimer(
             [In, MarshalAs(UnmanagedType.IUnknown)] object punkKey
             );
     }
@@ -5531,7 +5531,7 @@ namespace MediaFoundation
     public interface IMFMetadataProvider
     {
         [PreserveSig]
-        int GetMFMetadata(
+        HResult GetMFMetadata(
             [In, MarshalAs(UnmanagedType.Interface)]
             IMFPresentationDescriptor pPresentationDescriptor,
             [In] int dwStreamIdentifier,
@@ -5546,7 +5546,7 @@ namespace MediaFoundation
     public interface IMFByteStreamCacheControl
     {
         [PreserveSig]
-        int StopBackgroundTransfer();
+        HResult StopBackgroundTransfer();
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -5555,7 +5555,7 @@ namespace MediaFoundation
     public interface IMFFieldOfUseMFTUnlock
     {
         [PreserveSig]
-        int Unlock(
+        HResult Unlock(
             [In, MarshalAs(UnmanagedType.IUnknown)] object pUnkMFT
         );
     }
@@ -5568,34 +5568,34 @@ namespace MediaFoundation
         #region IMFQualityAdvise methods
 
         [PreserveSig]
-        new int SetDropMode(
+        new HResult SetDropMode(
             [In] MFQualityDropMode eDropMode
             );
 
         [PreserveSig]
-        new int SetQualityLevel(
+        new HResult SetQualityLevel(
             [In] MFQualityLevel eQualityLevel
             );
 
         [PreserveSig]
-        new int GetDropMode(
+        new HResult GetDropMode(
             out MFQualityDropMode peDropMode
             );
 
         [PreserveSig]
-        new int GetQualityLevel(
+        new HResult GetQualityLevel(
             out MFQualityLevel peQualityLevel
             );
 
         [PreserveSig]
-        new int DropTime(
+        new HResult DropTime(
             [In] long hnsAmountToDrop
             );
 
         #endregion
 
         [PreserveSig]
-        int NotifyQualityEvent(
+        HResult NotifyQualityEvent(
             IMFMediaEvent pEvent,
             out MFQualityAdviseFlags pdwFlags
         );
@@ -5607,12 +5607,12 @@ namespace MediaFoundation
     public interface IMFQualityAdviseLimits
     {
         [PreserveSig]
-        int GetMaximumDropMode(
+        HResult GetMaximumDropMode(
             out MFQualityDropMode peDropMode
         );
 
         [PreserveSig]
-        int GetMinimumQualityLevel(
+        HResult GetMinimumQualityLevel(
             out MFQualityLevel peQualityLevel
         );
     }
@@ -5625,28 +5625,28 @@ namespace MediaFoundation
         #region IMFClockStateSink methods
 
         [PreserveSig]
-        new int OnClockStart(
+        new HResult OnClockStart(
             [In] long hnsSystemTime,
             [In] long llClockStartOffset
             );
 
         [PreserveSig]
-        new int OnClockStop(
+        new HResult OnClockStop(
             [In] long hnsSystemTime
             );
 
         [PreserveSig]
-        new int OnClockPause(
+        new HResult OnClockPause(
             [In] long hnsSystemTime
             );
 
         [PreserveSig]
-        new int OnClockRestart(
+        new HResult OnClockRestart(
             [In] long hnsSystemTime
             );
 
         [PreserveSig]
-        new int OnClockSetRate(
+        new HResult OnClockSetRate(
             [In] long hnsSystemTime,
             [In] float flRate
             );
@@ -5656,12 +5656,12 @@ namespace MediaFoundation
         #region IMFSampleGrabberSinkCallback methods
 
         [PreserveSig]
-        new int OnSetPresentationClock(
+        new HResult OnSetPresentationClock(
             [In, MarshalAs(UnmanagedType.Interface)] IMFPresentationClock pPresentationClock
             );
 
         [PreserveSig]
-        new int OnProcessSample(
+        new HResult OnProcessSample(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidMajorMediaType,
             [In] int dwSampleFlags, // must be zero
             [In] long llSampleTime,
@@ -5671,12 +5671,12 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        new int OnShutdown();
+        new HResult OnShutdown();
 
         #endregion
 
         [PreserveSig]
-        int OnProcessSampleEx(
+        HResult OnProcessSampleEx(
             [MarshalAs(UnmanagedType.LPStruct)] Guid guidMajorMediaType,
             [In] int dwSampleFlags, // No flags are defined
             [In] long llSampleTime,
@@ -5693,7 +5693,7 @@ namespace MediaFoundation
     public interface IMFStreamingSinkConfig
     {
         [PreserveSig]
-        int StartStreaming(
+        HResult StartStreaming(
             [MarshalAs(UnmanagedType.Bool)] bool fSeekOffsetIsByteOffset,
             [In] long qwSeekOffset
         );
@@ -5705,27 +5705,27 @@ namespace MediaFoundation
     public interface IMFTimecodeTranslate
     {
         [PreserveSig]
-        int BeginConvertTimecodeToHNS(
+        HResult BeginConvertTimecodeToHNS(
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant pPropVarTimecode,
             IMFAsyncCallback pCallback,
             [In, MarshalAs(UnmanagedType.IUnknown)] object punkState
         );
 
         [PreserveSig]
-        int EndConvertTimecodeToHNS(
+        HResult EndConvertTimecodeToHNS(
             IMFAsyncResult pResult,
             out long phnsTime
         );
 
         [PreserveSig]
-        int BeginConvertHNSToTimecode(
+        HResult BeginConvertHNSToTimecode(
             [In] long hnsTime,
             IMFAsyncCallback pCallback,
             [In, MarshalAs(UnmanagedType.IUnknown)] object punkState
         );
 
         [PreserveSig]
-        int EndConvertHNSToTimecode(
+        HResult EndConvertHNSToTimecode(
             IMFAsyncResult pResult,
             [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant pPropVarTimecode
         );
@@ -5737,32 +5737,32 @@ namespace MediaFoundation
     public interface IMFTranscodeProfile
     {
         [PreserveSig]
-        int SetAudioAttributes(
+        HResult SetAudioAttributes(
             IMFAttributes pAttrs
         );
 
         [PreserveSig]
-        int GetAudioAttributes(
+        HResult GetAudioAttributes(
             out IMFAttributes ppAttrs
         );
 
         [PreserveSig]
-        int SetVideoAttributes(
+        HResult SetVideoAttributes(
             IMFAttributes pAttrs
         );
 
         [PreserveSig]
-        int GetVideoAttributes(
+        HResult GetVideoAttributes(
             out IMFAttributes ppAttrs
         );
 
         [PreserveSig]
-        int SetContainerAttributes(
+        HResult SetContainerAttributes(
             IMFAttributes pAttrs
         );
 
         [PreserveSig]
-        int GetContainerAttributes(
+        HResult GetContainerAttributes(
             out IMFAttributes ppAttrs
         );
     }
@@ -5773,22 +5773,22 @@ namespace MediaFoundation
     public interface IMFTranscodeSinkInfoProvider
     {
         [PreserveSig]
-        int SetOutputFile(
+        HResult SetOutputFile(
             [In, MarshalAs(UnmanagedType.LPWStr)] string pwszFileName
         );
 
         [PreserveSig]
-        int SetOutputByteStream(
+        HResult SetOutputByteStream(
             IMFActivate pByteStreamActivate
         );
 
         [PreserveSig]
-        int SetProfile(
+        HResult SetProfile(
             IMFTranscodeProfile pProfile
         );
 
         [PreserveSig]
-        int GetSinkInfo(
+        HResult GetSinkInfo(
             out MFTranscodeSinkInfo pSinkInfo
         );
     }
@@ -5799,12 +5799,12 @@ namespace MediaFoundation
     public interface IMFVideoSampleAllocatorCallback
     {
         [PreserveSig]
-        int SetCallback(
+        HResult SetCallback(
             IMFVideoSampleAllocatorNotify pNotify
         );
 
         [PreserveSig]
-        int GetFreeSampleCount(
+        HResult GetFreeSampleCount(
             out int plSamples
         );
     }
@@ -5815,7 +5815,7 @@ namespace MediaFoundation
     public interface IMFVideoSampleAllocatorNotify
     {
         [PreserveSig]
-        int NotifyRelease();
+        HResult NotifyRelease();
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -5824,27 +5824,27 @@ namespace MediaFoundation
     public interface IMFQualityAdvise
     {
         [PreserveSig]
-        int SetDropMode(
+        HResult SetDropMode(
             [In] MFQualityDropMode eDropMode
             );
 
         [PreserveSig]
-        int SetQualityLevel(
+        HResult SetQualityLevel(
             [In] MFQualityLevel eQualityLevel
             );
 
         [PreserveSig]
-        int GetDropMode(
+        HResult GetDropMode(
             out MFQualityDropMode peDropMode
             );
 
         [PreserveSig]
-        int GetQualityLevel(
+        HResult GetQualityLevel(
             out MFQualityLevel peQualityLevel
             );
 
         [PreserveSig]
-        int DropTime(
+        HResult DropTime(
             [In] long hnsAmountToDrop
             );
     }
@@ -5857,28 +5857,28 @@ namespace MediaFoundation
         #region IMFClockStateSink methods
 
         [PreserveSig]
-        new int OnClockStart(
+        new HResult OnClockStart(
             [In] long hnsSystemTime,
             [In] long llClockStartOffset
             );
 
         [PreserveSig]
-        new int OnClockStop(
+        new HResult OnClockStop(
             [In] long hnsSystemTime
             );
 
         [PreserveSig]
-        new int OnClockPause(
+        new HResult OnClockPause(
             [In] long hnsSystemTime
             );
 
         [PreserveSig]
-        new int OnClockRestart(
+        new HResult OnClockRestart(
             [In] long hnsSystemTime
             );
 
         [PreserveSig]
-        new int OnClockSetRate(
+        new HResult OnClockSetRate(
             [In] long hnsSystemTime,
             [In] float flRate
             );
@@ -5886,12 +5886,12 @@ namespace MediaFoundation
         #endregion
 
         [PreserveSig]
-        int OnSetPresentationClock(
+        HResult OnSetPresentationClock(
             [In, MarshalAs(UnmanagedType.Interface)] IMFPresentationClock pPresentationClock
             );
 
         [PreserveSig]
-        int OnProcessSample(
+        HResult OnProcessSample(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidMajorMediaType,
             [In] int dwSampleFlags, // must be zero
             [In] long llSampleTime,
@@ -5901,7 +5901,7 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        int OnShutdown();
+        HResult OnShutdown();
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -5910,21 +5910,21 @@ namespace MediaFoundation
     public interface IMFVideoSampleAllocator
     {
         [PreserveSig]
-        int SetDirectXManager(
+        HResult SetDirectXManager(
             [In, MarshalAs(UnmanagedType.IUnknown)] object pManager
             );
 
         [PreserveSig]
-        int UninitializeSampleAllocator();
+        HResult UninitializeSampleAllocator();
 
         [PreserveSig]
-        int InitializeSampleAllocator(
+        HResult InitializeSampleAllocator(
             [In] int cRequestedFrames,
             [In, MarshalAs(UnmanagedType.Interface)] IMFMediaType pMediaType
             );
 
         [PreserveSig]
-        int AllocateSample(
+        HResult AllocateSample(
             [MarshalAs(UnmanagedType.Interface)] out IMFSample ppSample
             );
     }
@@ -5935,13 +5935,13 @@ namespace MediaFoundation
     public interface IMFPMPServer
     {
         [PreserveSig]
-        int LockProcess();
+        HResult LockProcess();
 
         [PreserveSig]
-        int UnlockProcess();
+        HResult UnlockProcess();
 
         [PreserveSig]
-        int CreateObjectByCLSID(
+        HResult CreateObjectByCLSID(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid clsid,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
             [MarshalAs(UnmanagedType.Interface)] out object ppObject
@@ -5954,7 +5954,7 @@ namespace MediaFoundation
     public interface IMFNetCredentialCache
     {
         [PreserveSig]
-        int GetCredential(
+        HResult GetCredential(
             [In, MarshalAs(UnmanagedType.LPWStr)] string pszUrl,
             [In, MarshalAs(UnmanagedType.LPWStr)] string pszRealm,
             [In] MFNetAuthenticationFlags dwAuthenticationFlags,
@@ -5963,13 +5963,13 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        int SetGood(
+        HResult SetGood(
             [In, MarshalAs(UnmanagedType.Interface)] IMFNetCredential pCred,
             [In, MarshalAs(UnmanagedType.Bool)] bool fGood
             );
 
         [PreserveSig]
-        int SetUserOptions(
+        HResult SetUserOptions(
             [In, MarshalAs(UnmanagedType.Interface)] IMFNetCredential pCred,
             [In] MFNetCredentialOptions dwOptionsFlags
             );
@@ -5981,28 +5981,28 @@ namespace MediaFoundation
     public interface IMFNetProxyLocator
     {
         [PreserveSig]
-        int FindFirstProxy(
+        HResult FindFirstProxy(
             [In, MarshalAs(UnmanagedType.LPWStr)] string pszHost,
             [In, MarshalAs(UnmanagedType.LPWStr)] string pszUrl,
             [In, MarshalAs(UnmanagedType.Bool)] bool fReserved
             );
 
         [PreserveSig]
-        int FindNextProxy();
+        HResult FindNextProxy();
 
         [PreserveSig]
-        int RegisterProxyResult(
-            int hrOp
+        HResult RegisterProxyResult(
+            HResult hrOp
             );
 
         [PreserveSig]
-        int GetCurrentProxy(
+        HResult GetCurrentProxy(
             [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pszStr,
             [In, Out] MFInt pcchStr
             );
 
         [PreserveSig]
-        int Clone(
+        HResult Clone(
             out IMFNetProxyLocator ppProxyLocator
             );
     }
@@ -6013,7 +6013,7 @@ namespace MediaFoundation
     public interface IMFRemoteDesktopPlugin
     {
         [PreserveSig]
-        int UpdateTopology(
+        HResult UpdateTopology(
             IMFTopology pTopology
             );
     }
@@ -6024,35 +6024,35 @@ namespace MediaFoundation
     public interface IMFNetCredential
     {
         [PreserveSig]
-        int SetUser(
+        HResult SetUser(
             [In, MarshalAs(UnmanagedType.LPArray)] byte[] pbData,
             [In] int cbData,
             [In, MarshalAs(UnmanagedType.Bool)] bool fDataIsEncrypted
             );
 
         [PreserveSig]
-        int SetPassword(
+        HResult SetPassword(
             [In, MarshalAs(UnmanagedType.LPArray)] byte[] pbData,
             [In] int cbData,
             [In, MarshalAs(UnmanagedType.Bool)] bool fDataIsEncrypted
             );
 
         [PreserveSig]
-        int GetUser(
+        HResult GetUser(
             [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] pbData,
             [In, Out] MFInt pcbData,
             [In, MarshalAs(UnmanagedType.Bool)] bool fEncryptData
             );
 
         [PreserveSig]
-        int GetPassword(
+        HResult GetPassword(
             [Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] pbData,
             [In, Out] MFInt pcbData,
             [In, MarshalAs(UnmanagedType.Bool)] bool fEncryptData
             );
 
         [PreserveSig]
-        int LoggedOnUser(
+        HResult LoggedOnUser(
             [MarshalAs(UnmanagedType.Bool)] out bool pfLoggedOnUser
             );
     }
@@ -6063,7 +6063,7 @@ namespace MediaFoundation
     public interface IMFNetProxyLocatorFactory
     {
         [PreserveSig]
-        int CreateProxyLocator(
+        HResult CreateProxyLocator(
             [In, MarshalAs(UnmanagedType.LPWStr)] string pszProtocol,
             out IMFNetProxyLocator ppProxyLocator
             );
@@ -6075,13 +6075,13 @@ namespace MediaFoundation
     public interface IMFPMPHost
     {
         [PreserveSig]
-        int LockProcess();
+        HResult LockProcess();
 
         [PreserveSig]
-        int UnlockProcess();
+        HResult UnlockProcess();
 
         [PreserveSig]
-        int CreateObjectByCLSID(
+        HResult CreateObjectByCLSID(
             [MarshalAs(UnmanagedType.LPStruct)] Guid clsid,
             IStream pStream,
             [MarshalAs(UnmanagedType.LPStruct)] Guid riid,
@@ -6095,20 +6095,20 @@ namespace MediaFoundation
     public interface IMFNetCredentialManager
     {
         [PreserveSig]
-        int BeginGetCredentials(
+        HResult BeginGetCredentials(
             [In] MFNetCredentialManagerGetParam pParam,
             [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
             [In, MarshalAs(UnmanagedType.IUnknown)] object pState
             );
 
         [PreserveSig]
-        int EndGetCredentials(
+        HResult EndGetCredentials(
             [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncResult pResult,
             [MarshalAs(UnmanagedType.Interface)] out IMFNetCredential ppCred
             );
 
         [PreserveSig]
-        int SetGood(
+        HResult SetGood(
             [In, MarshalAs(UnmanagedType.Interface)] IMFNetCredential pCred,
             [In, MarshalAs(UnmanagedType.Bool)] bool fGood
             );
@@ -6120,7 +6120,7 @@ namespace MediaFoundation
     public interface IMFMediaSinkPreroll
     {
         [PreserveSig]
-        int NotifyPreroll(
+        HResult NotifyPreroll(
             long hnsUpcomingStartTime
             );
     }
@@ -6131,22 +6131,22 @@ namespace MediaFoundation
     public interface IMFSaveJob
     {
         [PreserveSig]
-        int BeginSave(
+        HResult BeginSave(
             [In] IMFByteStream pStream,
             [In] IMFAsyncCallback pCallback,
             [In, MarshalAs(UnmanagedType.IUnknown)] object pState
             );
 
         [PreserveSig]
-        int EndSave(
+        HResult EndSave(
             [In] IMFAsyncResult pResult
             );
 
         [PreserveSig]
-        int CancelSave();
+        HResult CancelSave();
 
         [PreserveSig]
-        int GetProgress(
+        HResult GetProgress(
             out int pdwPercentComplete
             );
     }
@@ -6157,30 +6157,30 @@ namespace MediaFoundation
     public interface IMFAudioStreamVolume
     {
         [PreserveSig]
-        int GetChannelCount(
+        HResult GetChannelCount(
             out int pdwCount
             );
 
         [PreserveSig]
-        int SetChannelVolume(
+        HResult SetChannelVolume(
             int dwIndex,
             float fLevel
             );
 
         [PreserveSig]
-        int GetChannelVolume(
+        HResult GetChannelVolume(
             int dwIndex,
             out float pfLevel
             );
 
         [PreserveSig]
-        int SetAllVolumes(
+        HResult SetAllVolumes(
             int dwCount,
             [In, MarshalAs(UnmanagedType.LPArray)] float[] pfVolumes
             );
 
         [PreserveSig]
-        int GetAllVolumes(
+        HResult GetAllVolumes(
             int dwCount,
             [Out, MarshalAs(UnmanagedType.LPArray)] float[] pfVolumes
             );
@@ -6192,32 +6192,32 @@ namespace MediaFoundation
     public interface IMFAudioPolicy
     {
         [PreserveSig]
-        int SetGroupingParam(
+        HResult SetGroupingParam(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid rguidClass
             );
 
         [PreserveSig]
-        int GetGroupingParam(
+        HResult GetGroupingParam(
             out Guid pguidClass
             );
 
         [PreserveSig]
-        int SetDisplayName(
+        HResult SetDisplayName(
             [In, MarshalAs(UnmanagedType.LPWStr)] string pszName
             );
 
         [PreserveSig]
-        int GetDisplayName(
+        HResult GetDisplayName(
             [MarshalAs(UnmanagedType.LPWStr)] out string pszName
             );
 
         [PreserveSig]
-        int SetIconPath(
+        HResult SetIconPath(
             [In, MarshalAs(UnmanagedType.LPWStr)] string pszPath
             );
 
         [PreserveSig]
-        int GetIconPath(
+        HResult GetIconPath(
             [MarshalAs(UnmanagedType.LPWStr)] out string pszPath
             );
     }
@@ -6228,17 +6228,17 @@ namespace MediaFoundation
     public interface IMFByteStreamBuffering
     {
         [PreserveSig]
-        int SetBufferingParams(
+        HResult SetBufferingParams(
             [In] MFByteStreamBufferingParams pParams
             );
 
         [PreserveSig]
-        int EnableBuffering(
+        HResult EnableBuffering(
             [MarshalAs(UnmanagedType.Bool)] bool fEnable
             );
 
         [PreserveSig]
-        int StopBuffering();
+        HResult StopBuffering();
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -6247,7 +6247,7 @@ namespace MediaFoundation
     public interface IMFSchemeHandler
     {
         [PreserveSig]
-        int BeginCreateObject(
+        HResult BeginCreateObject(
             [In, MarshalAs(UnmanagedType.LPWStr)] string pwszURL,
             [In] MFResolution dwFlags,
             IPropertyStore pProps,
@@ -6257,14 +6257,14 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        int EndCreateObject(
+        HResult EndCreateObject(
             IMFAsyncResult pResult,
             out MFObjectType pObjectType,
             [MarshalAs(UnmanagedType.IUnknown)] out object ppObject
             );
 
         [PreserveSig]
-        int CancelObjectCreation(
+        HResult CancelObjectCreation(
             [MarshalAs(UnmanagedType.IUnknown)] object pIUnknownCancelCookie
             );
     }
@@ -6275,42 +6275,42 @@ namespace MediaFoundation
     public interface IMFWorkQueueServices
     {
         [PreserveSig]
-        int BeginRegisterTopologyWorkQueuesWithMMCSS(
+        HResult BeginRegisterTopologyWorkQueuesWithMMCSS(
             [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
             [In, MarshalAs(UnmanagedType.IUnknown)] object pState
             );
 
         [PreserveSig]
-        int EndRegisterTopologyWorkQueuesWithMMCSS(
+        HResult EndRegisterTopologyWorkQueuesWithMMCSS(
             [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncResult pResult
             );
 
         [PreserveSig]
-        int BeginUnregisterTopologyWorkQueuesWithMMCSS(
+        HResult BeginUnregisterTopologyWorkQueuesWithMMCSS(
             [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
             [In, MarshalAs(UnmanagedType.IUnknown)] object pState
             );
 
         [PreserveSig]
-        int EndUnregisterTopologyWorkQueuesWithMMCSS(
+        HResult EndUnregisterTopologyWorkQueuesWithMMCSS(
             [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncResult pResult
             );
 
         [PreserveSig]
-        int GetTopologyWorkQueueMMCSSClass(
+        HResult GetTopologyWorkQueueMMCSSClass(
             [In] MFAsyncCallbackQueue dwTopologyWorkQueueId,
             [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszClass,
             [In, Out] ref int pcchClass
             );
 
         [PreserveSig]
-        int GetTopologyWorkQueueMMCSSTaskId(
+        HResult GetTopologyWorkQueueMMCSSTaskId(
             [In] MFAsyncCallbackQueue dwTopologyWorkQueueId,
             out int pdwTaskId
             );
 
         [PreserveSig]
-        int BeginRegisterPlatformWorkQueueWithMMCSS(
+        HResult BeginRegisterPlatformWorkQueueWithMMCSS(
             [In] MFAsyncCallbackQueue dwPlatformWorkQueue,
             [In, MarshalAs(UnmanagedType.LPWStr)] string wszClass,
             [In] int dwTaskId,
@@ -6319,32 +6319,32 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        int EndRegisterPlatformWorkQueueWithMMCSS(
+        HResult EndRegisterPlatformWorkQueueWithMMCSS(
             IMFAsyncResult pResult,
             out int pdwTaskId
             );
 
         [PreserveSig]
-        int BeginUnregisterPlatformWorkQueueWithMMCSS(
+        HResult BeginUnregisterPlatformWorkQueueWithMMCSS(
             [In] MFAsyncCallbackQueue dwPlatformWorkQueue,
             [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
             [MarshalAs(UnmanagedType.IUnknown)] object pState
             );
 
         [PreserveSig]
-        int EndUnregisterPlatformWorkQueueWithMMCSS(
+        HResult EndUnregisterPlatformWorkQueueWithMMCSS(
             IMFAsyncResult pResult
             );
 
         [PreserveSig]
-        int GetPlaftormWorkQueueMMCSSClass(
+        HResult GetPlaftormWorkQueueMMCSSClass(
             [In] MFAsyncCallbackQueue dwPlatformWorkQueueId,
             [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszClass,
             [In, Out] ref int pcchClass
             );
 
         [PreserveSig]
-        int GetPlatformWorkQueueMMCSSTaskId(
+        HResult GetPlatformWorkQueueMMCSSTaskId(
             [In] MFAsyncCallbackQueue dwPlatformWorkQueueId,
             out int pdwTaskId
             );
@@ -6356,13 +6356,13 @@ namespace MediaFoundation
     public interface IMFObjectReferenceStream
     {
         [PreserveSig]
-        int SaveReference(
+        HResult SaveReference(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
             [In, MarshalAs(UnmanagedType.IUnknown)] object pUnk
             );
 
         [PreserveSig]
-        int LoadReference(
+        HResult LoadReference(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
             [MarshalAs(UnmanagedType.Interface)] out object ppv
             );
@@ -6374,16 +6374,16 @@ namespace MediaFoundation
     public interface IMFRealTimeClient
     {
         [PreserveSig]
-        int RegisterThreads(
+        HResult RegisterThreads(
             [In] int dwTaskIndex,
             [In, MarshalAs(UnmanagedType.LPWStr)] string wszClass
             );
 
         [PreserveSig]
-        int UnregisterThreads();
+        HResult UnregisterThreads();
 
         [PreserveSig]
-        int SetWorkQueue(
+        HResult SetWorkQueue(
             [In] MFAsyncCallbackQueue dwWorkQueueId
             );
     }
@@ -6394,37 +6394,37 @@ namespace MediaFoundation
     public interface IMFQualityManager
     {
         [PreserveSig]
-        int NotifyTopology(
+        HResult NotifyTopology(
             IMFTopology pTopology
             );
 
         [PreserveSig]
-        int NotifyPresentationClock(
+        HResult NotifyPresentationClock(
             IMFPresentationClock pClock
             );
 
         [PreserveSig]
-        int NotifyProcessInput(
+        HResult NotifyProcessInput(
             IMFTopologyNode pNode,
             int lInputIndex,
             IMFSample pSample
             );
 
         [PreserveSig]
-        int NotifyProcessOutput(
+        HResult NotifyProcessOutput(
             IMFTopologyNode pNode,
             int lOutputIndex,
             IMFSample pSample
             );
 
         [PreserveSig]
-        int NotifyQualityEvent(
+        HResult NotifyQualityEvent(
             [In, MarshalAs(UnmanagedType.IUnknown)] object pObject,
             IMFMediaEvent pEvent
             );
 
         [PreserveSig]
-        int Shutdown();
+        HResult Shutdown();
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -6433,18 +6433,18 @@ namespace MediaFoundation
     public interface IMFNetSchemeHandlerConfig
     {
         [PreserveSig]
-        int GetNumberOfSupportedProtocols(
+        HResult GetNumberOfSupportedProtocols(
             out int pcProtocols
             );
 
         [PreserveSig]
-        int GetSupportedProtocolType(
+        HResult GetSupportedProtocolType(
             [In] int nProtocolIndex,
             out MFNetSourceProtocolType pnProtocolType
             );
 
         [PreserveSig]
-        int ResetProtocolRolloverSettings();
+        HResult ResetProtocolRolloverSettings();
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -6453,22 +6453,22 @@ namespace MediaFoundation
     public interface IMFSAMIStyle
     {
         [PreserveSig]
-        int GetStyleCount(
+        HResult GetStyleCount(
             out int pdwCount
             );
 
         [PreserveSig]
-        int GetStyles(
+        HResult GetStyles(
             [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant pPropVarStyleArray
             );
 
         [PreserveSig]
-        int SetSelectedStyle(
+        HResult SetSelectedStyle(
             [In, MarshalAs(UnmanagedType.LPWStr)] string pwszStyle
             );
 
         [PreserveSig]
-        int GetSelectedStyle(
+        HResult GetSelectedStyle(
             [MarshalAs(UnmanagedType.LPWStr)] out string ppwszStyle
             );
     }
@@ -6479,7 +6479,7 @@ namespace MediaFoundation
     public interface IMFPMPClient
     {
         [PreserveSig]
-        int SetPMPHost(
+        HResult SetPMPHost(
             IMFPMPHost pPMPHost
             );
     }
@@ -6490,7 +6490,7 @@ namespace MediaFoundation
     public interface IMFTopologyNodeAttributeEditor
     {
         [PreserveSig]
-        int UpdateNodeAttributes(
+        HResult UpdateNodeAttributes(
             [In] long TopoId,
             [In] int cUpdates,
             [In, MarshalAs(UnmanagedType.LPArray)] MFTopoNodeAttributeUpdate[] pUpdates
@@ -6503,7 +6503,7 @@ namespace MediaFoundation
     public interface IMFTopoLoader
     {
         [PreserveSig]
-        int Load(
+        HResult Load(
             [In, MarshalAs(UnmanagedType.Interface)] IMFTopology pInputTopo,
             [MarshalAs(UnmanagedType.Interface)] out IMFTopology ppOutputTopo,
             [In, MarshalAs(UnmanagedType.Interface)] IMFTopology pCurrentTopo
@@ -6516,13 +6516,13 @@ namespace MediaFoundation
     public interface IMFNetResourceFilter
     {
         [PreserveSig]
-        int OnRedirect(
+        HResult OnRedirect(
             [In, MarshalAs(UnmanagedType.LPWStr)] string pszUrl,
             [MarshalAs(UnmanagedType.VariantBool)] out bool pvbCancel
         );
 
         [PreserveSig]
-        int OnSendingRequest(
+        HResult OnSendingRequest(
             [In, MarshalAs(UnmanagedType.LPWStr)] string pszUrl
         );
     }
@@ -6535,23 +6535,23 @@ namespace MediaFoundation
         #region IMFByteStreamCacheControl methods
 
         [PreserveSig]
-        new int StopBackgroundTransfer();
+        new HResult StopBackgroundTransfer();
 
         #endregion
 
         [PreserveSig]
-        int GetByteRanges(
+        HResult GetByteRanges(
             out int pcRanges,
             [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 0)] out MF_BYTE_STREAM_CACHE_RANGE[] ppRanges
         );
 
         [PreserveSig]
-        int SetCacheLimit(
+        HResult SetCacheLimit(
             long qwBytes
         );
 
         [PreserveSig]
-        int IsBackgroundTransferActive(
+        HResult IsBackgroundTransferActive(
             [Out, MarshalAs(UnmanagedType.Bool)] out bool pfActive
         );
     }
@@ -6564,42 +6564,42 @@ namespace MediaFoundation
         #region IMFWorkQueueServices methods
 
         [PreserveSig]
-        new int BeginRegisterTopologyWorkQueuesWithMMCSS(
+        new HResult BeginRegisterTopologyWorkQueuesWithMMCSS(
             [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
             [In, MarshalAs(UnmanagedType.IUnknown)] object pState
         );
 
         [PreserveSig]
-        new int EndRegisterTopologyWorkQueuesWithMMCSS(
+        new HResult EndRegisterTopologyWorkQueuesWithMMCSS(
             [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncResult pResult
         );
 
         [PreserveSig]
-        new int BeginUnregisterTopologyWorkQueuesWithMMCSS(
+        new HResult BeginUnregisterTopologyWorkQueuesWithMMCSS(
             [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
             [In, MarshalAs(UnmanagedType.IUnknown)] object pState
         );
 
         [PreserveSig]
-        new int EndUnregisterTopologyWorkQueuesWithMMCSS(
+        new HResult EndUnregisterTopologyWorkQueuesWithMMCSS(
             [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncResult pResult
         );
 
         [PreserveSig]
-        new int GetTopologyWorkQueueMMCSSClass(
+        new HResult GetTopologyWorkQueueMMCSSClass(
             [In] MFAsyncCallbackQueue dwTopologyWorkQueueId,
             [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszClass,
             [In, Out] ref int pcchClass
         );
 
         [PreserveSig]
-        new int GetTopologyWorkQueueMMCSSTaskId(
+        new HResult GetTopologyWorkQueueMMCSSTaskId(
             [In] MFAsyncCallbackQueue dwTopologyWorkQueueId,
             out int pdwTaskId
         );
 
         [PreserveSig]
-        new int BeginRegisterPlatformWorkQueueWithMMCSS(
+        new HResult BeginRegisterPlatformWorkQueueWithMMCSS(
             [In] MFAsyncCallbackQueue dwPlatformWorkQueue,
             [In, MarshalAs(UnmanagedType.LPWStr)] string wszClass,
             [In] int dwTaskId,
@@ -6608,32 +6608,32 @@ namespace MediaFoundation
         );
 
         [PreserveSig]
-        new int EndRegisterPlatformWorkQueueWithMMCSS(
+        new HResult EndRegisterPlatformWorkQueueWithMMCSS(
             IMFAsyncResult pResult,
             out int pdwTaskId
         );
 
         [PreserveSig]
-        new int BeginUnregisterPlatformWorkQueueWithMMCSS(
+        new HResult BeginUnregisterPlatformWorkQueueWithMMCSS(
             [In] MFAsyncCallbackQueue dwPlatformWorkQueue,
             [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
             [MarshalAs(UnmanagedType.IUnknown)] object pState
         );
 
         [PreserveSig]
-        new int EndUnregisterPlatformWorkQueueWithMMCSS(
+        new HResult EndUnregisterPlatformWorkQueueWithMMCSS(
             IMFAsyncResult pResult
         );
 
         [PreserveSig]
-        new int GetPlaftormWorkQueueMMCSSClass(
+        new HResult GetPlaftormWorkQueueMMCSSClass(
             [In] MFAsyncCallbackQueue dwPlatformWorkQueueId,
             [Out, MarshalAs(UnmanagedType.LPWStr)] StringBuilder pwszClass,
             [In, Out] ref int pcchClass
         );
 
         [PreserveSig]
-        new int GetPlatformWorkQueueMMCSSTaskId(
+        new HResult GetPlatformWorkQueueMMCSSTaskId(
             [In] MFAsyncCallbackQueue dwPlatformWorkQueueId,
             out int pdwTaskId
         );
@@ -6641,13 +6641,13 @@ namespace MediaFoundation
         #endregion
 
         [PreserveSig]
-        int GetTopologyWorkQueueMMCSSPriority(
+        HResult GetTopologyWorkQueueMMCSSPriority(
             int dwTopologyWorkQueueId,
             out int plPriority
         );
 
         [PreserveSig]
-        int BeginRegisterPlatformWorkQueueWithMMCSSEx(
+        HResult BeginRegisterPlatformWorkQueueWithMMCSSEx(
             int dwPlatformWorkQueue,
             [Out, MarshalAs(UnmanagedType.LPWStr)] string wszClass,
             int dwTaskId,
@@ -6657,7 +6657,7 @@ namespace MediaFoundation
         );
 
         [PreserveSig]
-        int GetPlatformWorkQueueMMCSSPriority(
+        HResult GetPlatformWorkQueueMMCSSPriority(
             int dwPlatformWorkQueueId,
             out int plPriority
         );
@@ -6669,17 +6669,17 @@ namespace MediaFoundation
     public interface IMFRealTimeClientEx
     {
         [PreserveSig]
-        int RegisterThreadsEx(
+        HResult RegisterThreadsEx(
             ref int pdwTaskIndex,
             [In, MarshalAs(UnmanagedType.LPWStr)] string wszClassName,
             int lBasePriority
         );
 
         [PreserveSig]
-        int UnregisterThreads();
+        HResult UnregisterThreads();
 
         [PreserveSig]
-        int SetWorkQueueEx(
+        HResult SetWorkQueueEx(
             int dwMultithreadedWorkQueueId,
             int lWorkItemBasePriority
         );
@@ -6691,32 +6691,32 @@ namespace MediaFoundation
     public interface IMFVideoProcessorControl
     {
         [PreserveSig]
-        int SetBorderColor(
+        HResult SetBorderColor(
             MFARGB pBorderColor
         );
 
         [PreserveSig]
-        int SetSourceRectangle(
+        HResult SetSourceRectangle(
             MFRect pSrcRect
         );
 
         [PreserveSig]
-        int SetDestinationRectangle(
+        HResult SetDestinationRectangle(
             MFRect pDstRect
         );
 
         [PreserveSig]
-        int SetMirror(
+        HResult SetMirror(
             MF_VIDEO_PROCESSOR_MIRROR eMirror
         );
 
         [PreserveSig]
-        int SetRotation(
+        HResult SetRotation(
             MF_VIDEO_PROCESSOR_ROTATION eRotation
         );
 
         [PreserveSig]
-        int SetConstrictionSize(
+        HResult SetConstrictionSize(
             [In] MFSize pConstrictionSize
         );
     }
@@ -6729,28 +6729,28 @@ namespace MediaFoundation
         #region IMFVideoSampleAllocator methods
 
         [PreserveSig]
-        new int SetDirectXManager(
+        new HResult SetDirectXManager(
             [In, MarshalAs(UnmanagedType.IUnknown)] object pManager
         );
 
         [PreserveSig]
-        new int UninitializeSampleAllocator();
+        new HResult UninitializeSampleAllocator();
 
         [PreserveSig]
-        new int InitializeSampleAllocator(
+        new HResult InitializeSampleAllocator(
             [In] int cRequestedFrames,
             [In, MarshalAs(UnmanagedType.Interface)] IMFMediaType pMediaType
         );
 
         [PreserveSig]
-        new int AllocateSample(
+        new HResult AllocateSample(
             [MarshalAs(UnmanagedType.Interface)] out IMFSample ppSample
         );
 
         #endregion
 
         [PreserveSig]
-        int InitializeSampleAllocatorEx(
+        HResult InitializeSampleAllocatorEx(
             int cInitialSamples,
             int cMaximumSamples,
             IMFAttributes pAttributes,
@@ -6764,26 +6764,25 @@ namespace MediaFoundation
     public interface IMFSimpleAudioVolume
     {
         [PreserveSig]
-        int SetMasterVolume(
+        HResult SetMasterVolume(
             [In] float fLevel
             );
 
         [PreserveSig]
-        int GetMasterVolume(
+        HResult GetMasterVolume(
             out float pfLevel
             );
 
         [PreserveSig]
-        int SetMute(
+        HResult SetMute(
             [In, MarshalAs(UnmanagedType.Bool)] bool bMute
             );
 
         [PreserveSig]
-        int GetMute(
+        HResult GetMute(
             [MarshalAs(UnmanagedType.Bool)] out bool pbMute
             );
     }
 
     #endregion
-
 }

@@ -19,7 +19,6 @@ using MediaFoundation.Misc;
 
 namespace MediaFoundation
 {
-
     #region Interfaces
 
 #if ALLOW_UNTESTED_INTERFACES
@@ -30,7 +29,7 @@ namespace MediaFoundation
     public interface IAdvancedMediaCaptureInitializationSettings
     {
         [PreserveSig]
-        int SetDirectxDeviceManager(
+        HResult SetDirectxDeviceManager(
             IMFDXGIDeviceManager value
             );
     }
@@ -41,17 +40,17 @@ namespace MediaFoundation
     public interface IAdvancedMediaCaptureSettings
     {
         [PreserveSig]
-        int GetDirectxDeviceManager(
+        HResult GetDirectxDeviceManager(
             out IMFDXGIDeviceManager value
             );
 
         [PreserveSig]
-        int SetDirectCompositionVisual(
+        HResult SetDirectCompositionVisual(
             [MarshalAs(UnmanagedType.IUnknown)] object value
             );
 
         [PreserveSig]
-        int UpdateVideo(
+        HResult UpdateVideo(
              [In] MfFloat pSrcNormalizedTop,
              [In] MfFloat pSrcNormalizedBottom,
              [In] MfFloat pSrcNormalizedRight,
@@ -67,7 +66,7 @@ namespace MediaFoundation
     public interface IAdvancedMediaCapture
     {
         [PreserveSig]
-        int GetAdvancedMediaCaptureSettings(
+        HResult GetAdvancedMediaCaptureSettings(
             out IAdvancedMediaCaptureSettings value
             );
     }
@@ -75,5 +74,4 @@ namespace MediaFoundation
 #endif
 
     #endregion
-
 }

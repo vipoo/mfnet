@@ -42,8 +42,6 @@ b) The BSD License (see BSDL.txt)
 // still have to use the work-arounds.
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Runtime.InteropServices;
 using System.Security;
 
@@ -61,7 +59,7 @@ namespace MediaFoundation.Alt
     public interface IMFTopologyServiceLookupAlt
     {
         [PreserveSig]
-        int LookupService(
+        HResult LookupService(
             [In] MFServiceLookupType type,
             [In] int dwIndex,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidService,
@@ -77,12 +75,12 @@ namespace MediaFoundation.Alt
     public interface IMFTopologyServiceLookupClientAlt
     {
         [PreserveSig]
-        int InitServicePointers(
+        HResult InitServicePointers(
             IntPtr pLookup
             );
 
         [PreserveSig]
-        int ReleaseServicePointers();
+        HResult ReleaseServicePointers();
     }
 
     #endregion
@@ -109,7 +107,7 @@ namespace MediaFoundation.Alt
     public interface IMFGetServiceAlt
     {
         [PreserveSig]
-        int GetService(
+        HResult GetService(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidService,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
             out IntPtr ppvObject
@@ -125,45 +123,45 @@ namespace MediaFoundation.Alt
     public interface IMFSourceReaderAsync
     {
         [PreserveSig]
-        int GetStreamSelection(
+        HResult GetStreamSelection(
             int dwStreamIndex,
             [MarshalAs(UnmanagedType.Bool)] out bool pfSelected
         );
 
         [PreserveSig]
-        int SetStreamSelection(
+        HResult SetStreamSelection(
             int dwStreamIndex,
             [MarshalAs(UnmanagedType.Bool)] bool fSelected
         );
 
         [PreserveSig]
-        int GetNativeMediaType(
+        HResult GetNativeMediaType(
             int dwStreamIndex,
             int dwMediaTypeIndex,
             out IMFMediaType ppMediaType
         );
 
         [PreserveSig]
-        int GetCurrentMediaType(
+        HResult GetCurrentMediaType(
             int dwStreamIndex,
             out IMFMediaType ppMediaType
         );
 
         [PreserveSig]
-        int SetCurrentMediaType(
+        HResult SetCurrentMediaType(
             int dwStreamIndex,
             [In, Out] MFInt pdwReserved,
             IMFMediaType pMediaType
         );
 
         [PreserveSig]
-        int SetCurrentPosition(
+        HResult SetCurrentPosition(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidTimeFormat,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant varPosition
         );
 
         [PreserveSig]
-        int ReadSample(
+        HResult ReadSample(
             int dwStreamIndex,
             MF_SOURCE_READER_CONTROL_FLAG dwControlFlags,
             IntPtr pdwActualStreamIndex,
@@ -173,12 +171,12 @@ namespace MediaFoundation.Alt
         );
 
         [PreserveSig]
-        int Flush(
+        HResult Flush(
             int dwStreamIndex
         );
 
         [PreserveSig]
-        int GetServiceForStream(
+        HResult GetServiceForStream(
             int dwStreamIndex,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidService,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
@@ -186,7 +184,7 @@ namespace MediaFoundation.Alt
         );
 
         [PreserveSig]
-        int GetPresentationAttribute(
+        HResult GetPresentationAttribute(
             int dwStreamIndex,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidAttribute,
             [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant pvarAttribute
@@ -200,7 +198,7 @@ namespace MediaFoundation.Alt
     public class MFExternAlt
     {
         [DllImport("MFPlat.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
-        public static extern int MFCreateEventQueue(
+        public static extern HResult MFCreateEventQueue(
             out IMFMediaEventQueueAlt ppMediaEventQueue
         );
     }
@@ -211,30 +209,30 @@ namespace MediaFoundation.Alt
     public interface IMFMediaEventGeneratorAlt
     {
         [PreserveSig]
-        int GetEvent(
+        HResult GetEvent(
             [In] MFEventFlag dwFlags,
             [MarshalAs(UnmanagedType.Interface)] out IMFMediaEvent ppEvent
             );
 
         [PreserveSig]
-        int BeginGetEvent(
+        HResult BeginGetEvent(
             //[In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
             IntPtr pCallback,
             [In, MarshalAs(UnmanagedType.IUnknown)] object o
             );
 
         [PreserveSig]
-        int EndGetEvent(
+        HResult EndGetEvent(
             //IMFAsyncResult pResult,
             IntPtr pResult,
             out IMFMediaEvent ppEvent
             );
 
         [PreserveSig]
-        int QueueEvent(
+        HResult QueueEvent(
             [In] MediaEventType met,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidExtendedType,
-            [In] int hrStatus,
+            [In] HResult hrStatus,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant pvValue
             );
     }
@@ -247,47 +245,47 @@ namespace MediaFoundation.Alt
         #region IMFMediaEventGeneratorAlt methods
 
         [PreserveSig]
-        new int GetEvent(
+        new HResult GetEvent(
             [In] MFEventFlag dwFlags,
             [MarshalAs(UnmanagedType.Interface)] out IMFMediaEvent ppEvent
             );
 
         [PreserveSig]
-        new int BeginGetEvent(
+        new HResult BeginGetEvent(
             //[In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
             IntPtr pCallback,
             [In, MarshalAs(UnmanagedType.IUnknown)] object o
             );
 
         [PreserveSig]
-        new int EndGetEvent(
+        new HResult EndGetEvent(
             //IMFAsyncResult pResult,
             IntPtr pResult,
             out IMFMediaEvent ppEvent
             );
 
         [PreserveSig]
-        new int QueueEvent(
+        new HResult QueueEvent(
             [In] MediaEventType met,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidExtendedType,
-            [In] int hrStatus,
+            [In] HResult hrStatus,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant pvValue
             );
 
         #endregion
 
         [PreserveSig]
-        int GetMediaSource(
+        HResult GetMediaSource(
             [MarshalAs(UnmanagedType.Interface)] out IMFMediaSource ppMediaSource
             );
 
         [PreserveSig]
-        int GetStreamDescriptor(
+        HResult GetStreamDescriptor(
             [MarshalAs(UnmanagedType.Interface)] out IMFStreamDescriptor ppStreamDescriptor
             );
 
         [PreserveSig]
-        int RequestSample(
+        HResult RequestSample(
             [In, MarshalAs(UnmanagedType.IUnknown)] object pToken
             );
     }
@@ -298,48 +296,48 @@ namespace MediaFoundation.Alt
     public interface IMFMediaEventQueueAlt
     {
         [PreserveSig]
-        int GetEvent(
+        HResult GetEvent(
             [In] MFEventFlag dwFlags,
             [MarshalAs(UnmanagedType.Interface)] out IMFMediaEvent ppEvent
             );
 
         [PreserveSig]
-        int BeginGetEvent(
+        HResult BeginGetEvent(
             IntPtr pCallBack,
             //[In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
             [In, MarshalAs(UnmanagedType.IUnknown)] object pUnkState
             );
 
         [PreserveSig]
-        int EndGetEvent(
+        HResult EndGetEvent(
             IntPtr p1,
             //[In, MarshalAs(UnmanagedType.Interface)] IMFAsyncResult pResult,
             [MarshalAs(UnmanagedType.Interface)] out IMFMediaEvent ppEvent
             );
 
         [PreserveSig]
-        int QueueEvent(
+        HResult QueueEvent(
             [In, MarshalAs(UnmanagedType.Interface)] IMFMediaEvent pEvent
             );
 
         [PreserveSig]
-        int QueueEventParamVar(
+        HResult QueueEventParamVar(
             [In] MediaEventType met,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidExtendedType,
-            [In, MarshalAs(UnmanagedType.Error)] int hrStatus,
+            [In, MarshalAs(UnmanagedType.Error)] HResult hrStatus,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant pvValue
             );
 
         [PreserveSig]
-        int QueueEventParamUnk(
+        HResult QueueEventParamUnk(
             [In] MediaEventType met,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidExtendedType,
-            [In, MarshalAs(UnmanagedType.Error)] int hrStatus,
+            [In, MarshalAs(UnmanagedType.Error)] HResult hrStatus,
             [In, MarshalAs(UnmanagedType.IUnknown)] object pUnk
             );
 
         [PreserveSig]
-        int Shutdown();
+        HResult Shutdown();
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -350,60 +348,60 @@ namespace MediaFoundation.Alt
         #region IMFMediaEventGeneratorAlt methods
 
         [PreserveSig]
-        new int GetEvent(
+        new HResult GetEvent(
             [In] MFEventFlag dwFlags,
             [MarshalAs(UnmanagedType.Interface)] out IMFMediaEvent ppEvent
             );
 
         [PreserveSig]
-        new int BeginGetEvent(
+        new HResult BeginGetEvent(
             //[In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
             IntPtr pCallback,
             [In, MarshalAs(UnmanagedType.IUnknown)] object o
             );
 
         [PreserveSig]
-        new int EndGetEvent(
+        new HResult EndGetEvent(
             //IMFAsyncResult pResult,
             IntPtr pResult,
             out IMFMediaEvent ppEvent
             );
 
         [PreserveSig]
-        new int QueueEvent(
+        new HResult QueueEvent(
             [In] MediaEventType met,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidExtendedType,
-            [In] int hrStatus,
+            [In] HResult hrStatus,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant pvValue
             );
 
         #endregion
 
         [PreserveSig]
-        int GetCharacteristics(
+        HResult GetCharacteristics(
             out MFMediaSourceCharacteristics pdwCharacteristics
             );
 
         [PreserveSig]
-        int CreatePresentationDescriptor(
+        HResult CreatePresentationDescriptor(
             out IMFPresentationDescriptor ppPresentationDescriptor
             );
 
         [PreserveSig]
-        int Start(
+        HResult Start(
             [In, MarshalAs(UnmanagedType.Interface)] IMFPresentationDescriptor pPresentationDescriptor,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid pguidTimeFormat,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant pvarStartPosition
             );
 
         [PreserveSig]
-        int Stop();
+        HResult Stop();
 
         [PreserveSig]
-        int Pause();
+        HResult Pause();
 
         [PreserveSig]
-        int Shutdown();
+        HResult Shutdown();
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -414,64 +412,64 @@ namespace MediaFoundation.Alt
         #region IMFMediaEventGeneratorAlt methods
 
         [PreserveSig]
-        new int GetEvent(
+        new HResult GetEvent(
             [In] MFEventFlag dwFlags,
             [MarshalAs(UnmanagedType.Interface)] out IMFMediaEvent ppEvent
             );
 
         [PreserveSig]
-        new int BeginGetEvent(
+        new HResult BeginGetEvent(
             //[In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
             IntPtr pCallback,
             [In, MarshalAs(UnmanagedType.IUnknown)] object o
             );
 
         [PreserveSig]
-        new int EndGetEvent(
+        new HResult EndGetEvent(
             //IMFAsyncResult pResult,
             IntPtr pResult,
             out IMFMediaEvent ppEvent
             );
 
         [PreserveSig]
-        new int QueueEvent(
+        new HResult QueueEvent(
             [In] MediaEventType met,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidExtendedType,
-            [In] int hrStatus,
+            [In] HResult hrStatus,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant pvValue
             );
 
         #endregion
 
         [PreserveSig]
-        int GetMediaSink(
+        HResult GetMediaSink(
             [MarshalAs(UnmanagedType.Interface)] out IMFMediaSinkAlt ppMediaSink
             );
 
         [PreserveSig]
-        int GetIdentifier(
+        HResult GetIdentifier(
             out int pdwIdentifier
             );
 
         [PreserveSig]
-        int GetMediaTypeHandler(
+        HResult GetMediaTypeHandler(
             [MarshalAs(UnmanagedType.Interface)] out IMFMediaTypeHandler ppHandler
             );
 
         [PreserveSig]
-        int ProcessSample(
+        HResult ProcessSample(
             [In, MarshalAs(UnmanagedType.Interface)] IMFSample pSample
             );
 
         [PreserveSig]
-        int PlaceMarker(
+        HResult PlaceMarker(
             [In] MFStreamSinkMarkerType eMarkerType,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant pvarMarkerValue,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant pvarContextValue
             );
 
         [PreserveSig]
-        int Flush();
+        HResult Flush();
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -480,51 +478,51 @@ namespace MediaFoundation.Alt
     public interface IMFMediaSinkAlt
     {
         [PreserveSig]
-        int GetCharacteristics(
+        HResult GetCharacteristics(
             out MFMediaSinkCharacteristics pdwCharacteristics
             );
 
         [PreserveSig]
-        int AddStreamSink(
+        HResult AddStreamSink(
             [In] int dwStreamSinkIdentifier,
             [In, MarshalAs(UnmanagedType.Interface)] IMFMediaType pMediaType,
             [MarshalAs(UnmanagedType.Interface)] out IMFStreamSinkAlt ppStreamSink
             );
 
         [PreserveSig]
-        int RemoveStreamSink(
+        HResult RemoveStreamSink(
             [In] int dwStreamSinkIdentifier
             );
 
         [PreserveSig]
-        int GetStreamSinkCount(
+        HResult GetStreamSinkCount(
             out int pcStreamSinkCount
             );
 
         [PreserveSig]
-        int GetStreamSinkByIndex(
+        HResult GetStreamSinkByIndex(
             [In] int dwIndex,
             [MarshalAs(UnmanagedType.Interface)] out IMFStreamSinkAlt ppStreamSink
             );
 
         [PreserveSig]
-        int GetStreamSinkById(
+        HResult GetStreamSinkById(
             [In] int dwStreamSinkIdentifier,
             [MarshalAs(UnmanagedType.Interface)] out IMFStreamSinkAlt ppStreamSink
             );
 
         [PreserveSig]
-        int SetPresentationClock(
+        HResult SetPresentationClock(
             [In, MarshalAs(UnmanagedType.Interface)] IMFPresentationClock pPresentationClock
             );
 
         [PreserveSig]
-        int GetPresentationClock(
+        HResult GetPresentationClock(
             [MarshalAs(UnmanagedType.Interface)] out IMFPresentationClock ppPresentationClock
             );
 
         [PreserveSig]
-        int Shutdown();
+        HResult Shutdown();
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -535,66 +533,65 @@ namespace MediaFoundation.Alt
         #region IMFMediaSinkAlt methods
 
         [PreserveSig]
-        new int GetCharacteristics(
+        new HResult GetCharacteristics(
             out MFMediaSinkCharacteristics pdwCharacteristics
             );
 
         [PreserveSig]
-        new int AddStreamSink(
+        new HResult AddStreamSink(
             [In] int dwStreamSinkIdentifier,
             [In, MarshalAs(UnmanagedType.Interface)] IMFMediaType pMediaType,
             [MarshalAs(UnmanagedType.Interface)] out IMFStreamSinkAlt ppStreamSink
             );
 
         [PreserveSig]
-        new int RemoveStreamSink(
+        new HResult RemoveStreamSink(
             [In] int dwStreamSinkIdentifier
             );
 
         [PreserveSig]
-        new int GetStreamSinkCount(
+        new HResult GetStreamSinkCount(
             out int pcStreamSinkCount
             );
 
         [PreserveSig]
-        new int GetStreamSinkByIndex(
+        new HResult GetStreamSinkByIndex(
             [In] int dwIndex,
             [MarshalAs(UnmanagedType.Interface)] out IMFStreamSinkAlt ppStreamSink
             );
 
         [PreserveSig]
-        new int GetStreamSinkById(
+        new HResult GetStreamSinkById(
             [In] int dwStreamSinkIdentifier,
             [MarshalAs(UnmanagedType.Interface)] out IMFStreamSinkAlt ppStreamSink
             );
 
         [PreserveSig]
-        new int SetPresentationClock(
+        new HResult SetPresentationClock(
             [In, MarshalAs(UnmanagedType.Interface)] IMFPresentationClock pPresentationClock
             );
 
         [PreserveSig]
-        new int GetPresentationClock(
+        new HResult GetPresentationClock(
             [MarshalAs(UnmanagedType.Interface)] out IMFPresentationClock ppPresentationClock
             );
 
         [PreserveSig]
-        new int Shutdown();
+        new HResult Shutdown();
 
         #endregion
 
         [PreserveSig]
-        int BeginFinalize(
+        HResult BeginFinalize(
             [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncCallback pCallback,
             [In, MarshalAs(UnmanagedType.IUnknown)] object pUnkState
             );
 
         [PreserveSig]
-        int EndFinalize(
+        HResult EndFinalize(
             [In, MarshalAs(UnmanagedType.Interface)] IMFAsyncResult pResult
             );
     }
 
     #endregion
-
 }

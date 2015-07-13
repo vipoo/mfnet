@@ -13,9 +13,7 @@ b) The BSD License (see BSDL.txt)
 */
 
 using System;
-using System.Text;
 using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
 
 using MediaFoundation.Misc;
 using MediaFoundation.EVR;
@@ -81,7 +79,7 @@ namespace MediaFoundation
     public interface IMFSharingEngineClassFactory
     {
         [PreserveSig]
-        int CreateInstance(
+        HResult CreateInstance(
             MF_MEDIA_ENGINE_CREATEFLAGS dwFlags,
             IMFAttributes pAttr,
             [MarshalAs(UnmanagedType.IUnknown)] out object ppEngine
@@ -96,27 +94,27 @@ namespace MediaFoundation
         #region IMFMediaEngine methods
 
         [PreserveSig]
-        new int GetError(
+        new HResult GetError(
             out IMFMediaError ppError
             );
 
         [PreserveSig]
-        new int SetErrorCode(
+        new HResult SetErrorCode(
             MF_MEDIA_ENGINE_ERR error
             );
 
         [PreserveSig]
-        new int SetSourceElements(
+        new HResult SetSourceElements(
             IMFMediaEngineSrcElements pSrcElements
             );
 
         [PreserveSig]
-        new int SetSource(
+        new HResult SetSource(
             [MarshalAs(UnmanagedType.BStr)] string pUrl
             );
 
         [PreserveSig]
-        new int GetCurrentSource(
+        new HResult GetCurrentSource(
             [MarshalAs(UnmanagedType.BStr)] out string ppUrl
             );
 
@@ -127,20 +125,20 @@ namespace MediaFoundation
         new MF_MEDIA_ENGINE_PRELOAD GetPreload();
 
         [PreserveSig]
-        new int SetPreload(
+        new HResult SetPreload(
             MF_MEDIA_ENGINE_PRELOAD Preload
             );
 
         [PreserveSig]
-        new int GetBuffered(
+        new HResult GetBuffered(
             out IMFMediaTimeRange ppBuffered
             );
 
         [PreserveSig]
-        new int Load();
+        new HResult Load();
 
         [PreserveSig]
-        new int CanPlayType(
+        new HResult CanPlayType(
             [MarshalAs(UnmanagedType.BStr)] string type,
             out MF_MEDIA_ENGINE_CANPLAY pAnswer
             );
@@ -155,7 +153,7 @@ namespace MediaFoundation
         new double GetCurrentTime();
 
         [PreserveSig]
-        new int SetCurrentTime(
+        new HResult SetCurrentTime(
             double seekTime
             );
 
@@ -172,7 +170,7 @@ namespace MediaFoundation
         new double GetDefaultPlaybackRate();
 
         [PreserveSig]
-        new int SetDefaultPlaybackRate(
+        new HResult SetDefaultPlaybackRate(
             double Rate
             );
 
@@ -180,17 +178,17 @@ namespace MediaFoundation
         new double GetPlaybackRate();
 
         [PreserveSig]
-        new int SetPlaybackRate(
+        new HResult SetPlaybackRate(
             double Rate
             );
 
         [PreserveSig]
-        new int GetPlayed(
+        new HResult GetPlayed(
             out IMFMediaTimeRange ppPlayed
             );
 
         [PreserveSig]
-        new int GetSeekable(
+        new HResult GetSeekable(
             out IMFMediaTimeRange ppSeekable
             );
 
@@ -201,7 +199,7 @@ namespace MediaFoundation
         new bool GetAutoPlay();
 
         [PreserveSig]
-        new int SetAutoPlay(
+        new HResult SetAutoPlay(
             [MarshalAs(UnmanagedType.Bool)] bool AutoPlay
             );
 
@@ -209,21 +207,21 @@ namespace MediaFoundation
         new bool GetLoop();
 
         [PreserveSig]
-        new int SetLoop(
+        new HResult SetLoop(
             [MarshalAs(UnmanagedType.Bool)] bool Loop
             );
 
         [PreserveSig]
-        new int Play();
+        new HResult Play();
 
         [PreserveSig]
-        new int Pause();
+        new HResult Pause();
 
         [return: MarshalAs(UnmanagedType.Bool)]
         new bool GetMuted();
 
         [PreserveSig]
-        new int SetMuted(
+        new HResult SetMuted(
             [MarshalAs(UnmanagedType.Bool)] bool Muted
             );
 
@@ -231,7 +229,7 @@ namespace MediaFoundation
         new double GetVolume();
 
         [PreserveSig]
-        new int SetVolume(
+        new HResult SetVolume(
             double Volume
             );
 
@@ -242,22 +240,22 @@ namespace MediaFoundation
         new bool HasAudio();
 
         [PreserveSig]
-        new int GetNativeVideoSize(
+        new HResult GetNativeVideoSize(
             out int cx,
             out int cy
             );
 
         [PreserveSig]
-        new int GetVideoAspectRatio(
+        new HResult GetVideoAspectRatio(
             out int cx,
             out int cy
             );
 
         [PreserveSig]
-        new int Shutdown();
+        new HResult Shutdown();
 
         [PreserveSig]
-        new int TransferVideoFrame(
+        new HResult TransferVideoFrame(
             [In, MarshalAs(UnmanagedType.IUnknown)] object pDstSurf,
             [In] MFVideoNormalizedRect pSrc,
             [In] MFRect pDst,
@@ -265,14 +263,14 @@ namespace MediaFoundation
             );
 
         [PreserveSig]
-        new int OnVideoStreamTick(
+        new HResult OnVideoStreamTick(
             out long pPts
             );
 
         #endregion
 
         [PreserveSig]
-        int GetDevice(
+        HResult GetDevice(
             out DEVICE_INFO pDevice
             );
     }
@@ -283,7 +281,7 @@ namespace MediaFoundation
     public interface IMFMediaSharingEngineClassFactory
     {
         [PreserveSig]
-        int CreateInstance(
+        HResult CreateInstance(
             int dwFlags,
             IMFAttributes pAttr,
             out IMFMediaSharingEngine ppEngine
@@ -296,17 +294,17 @@ namespace MediaFoundation
     public interface IMFImageSharingEngine
     {
         [PreserveSig]
-        int SetSource(
+        HResult SetSource(
             [MarshalAs(UnmanagedType.IUnknown)] object pStream
             );
 
         [PreserveSig]
-        int GetDevice(
+        HResult GetDevice(
             out DEVICE_INFO pDevice
             );
 
         [PreserveSig]
-        int Shutdown();
+        HResult Shutdown();
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -315,7 +313,7 @@ namespace MediaFoundation
     public interface IMFImageSharingEngineClassFactory
     {
         [PreserveSig]
-        int CreateInstanceFromUDN(
+        HResult CreateInstanceFromUDN(
             [MarshalAs(UnmanagedType.BStr)]
             string pUniqueDeviceName,
             out IMFImageSharingEngine ppEngine
@@ -328,12 +326,12 @@ namespace MediaFoundation
     public interface IPlayToControl
     {
         [PreserveSig]
-        int Connect(
+        HResult Connect(
             IMFSharingEngineClassFactory pFactory
             );
 
         [PreserveSig]
-        int Disconnect();
+        HResult Disconnect();
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -342,7 +340,7 @@ namespace MediaFoundation
     public interface IPlayToSourceClassFactory
     {
         [PreserveSig]
-        int CreateInstance(
+        HResult CreateInstance(
             PLAYTO_SOURCE_CREATEFLAGS dwFlags,
             IPlayToControl pControl,
             [MarshalAs(UnmanagedType.IUnknown)] out object ppSource
@@ -357,17 +355,17 @@ namespace MediaFoundation
         #region IPlayToControl methods
 
         [PreserveSig]
-        new int Connect(
+        new HResult Connect(
             IMFSharingEngineClassFactory pFactory
             );
 
         [PreserveSig]
-        new int Disconnect();
+        new HResult Disconnect();
 
         #endregion
 
         [PreserveSig]
-        int GetCapabilities(
+        HResult GetCapabilities(
             out PLAYTO_SOURCE_CREATEFLAGS pCapabilities
             );
     }

@@ -26,7 +26,7 @@ namespace MediaFoundation.OPM
     public class OPMExtern
     {
         [DllImport("Dxva2.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
-        public static extern int OPMGetVideoOutputsFromHMONITOR(
+        public static extern HResult OPMGetVideoOutputsFromHMONITOR(
             IntPtr hMonitor,
             OPM_VIDEO_OUTPUT_SEMANTICS vos,
             out int pulNumVideoOutputs,
@@ -34,7 +34,7 @@ namespace MediaFoundation.OPM
             );
 
         [DllImport("Dxva2.dll", ExactSpelling = true), SuppressUnmanagedCodeSecurity]
-        public static extern int OPMGetVideoOutputsFromIDirect3DDevice9Object(
+        public static extern HResult OPMGetVideoOutputsFromIDirect3DDevice9Object(
             [MarshalAs(UnmanagedType.IUnknown)] object pDirect3DDevice9, // IDirect3DDevice9
             OPM_VIDEO_OUTPUT_SEMANTICS vos,
             out int pulNumVideoOutputs,
@@ -386,27 +386,27 @@ namespace MediaFoundation.OPM
     public interface IOPMVideoOutput
     {
         [PreserveSig]
-        int StartInitialization(
+        HResult StartInitialization(
             out OPM_RANDOM_NUMBER prnRandomNumber,
             out IntPtr ppbCertificate,
             out  int pulCertificateLength);
 
         [PreserveSig]
-        int FinishInitialization(
+        HResult FinishInitialization(
             OPM_ENCRYPTED_INITIALIZATION_PARAMETERS pParameters);
 
         [PreserveSig]
-        int GetInformation(
+        HResult GetInformation(
             OPM_GET_INFO_PARAMETERS pParameters,
             out OPM_REQUESTED_INFORMATION pRequestedInformation);
 
         [PreserveSig]
-        int COPPCompatibleGetInformation(
+        HResult COPPCompatibleGetInformation(
             OPM_COPP_COMPATIBLE_GET_INFO_PARAMETERS pParameters,
             out OPM_REQUESTED_INFORMATION pRequestedInformation);
 
         [PreserveSig]
-        int Configure(
+        HResult Configure(
             OPM_CONFIGURE_PARAMETERS pParameters,
             int ulAdditionalParametersSize,
             IntPtr pbAdditionalParameters);

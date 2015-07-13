@@ -13,15 +13,10 @@ b) The BSD License (see BSDL.txt)
 */
 
 using System;
-using System.Text;
 using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
 using System.Security;
 
 using MediaFoundation.Misc;
-using System.Drawing;
-
-using MediaFoundation.EVR;
 using MediaFoundation.Transform;
 
 namespace MediaFoundation.ReadWrite
@@ -123,14 +118,14 @@ namespace MediaFoundation.ReadWrite
     public interface IMFSinkWriterEncoderConfig
     {
         [PreserveSig]
-        int SetTargetMediaType(
+        HResult SetTargetMediaType(
             int dwStreamIndex,
             IMFMediaType pTargetMediaType,
             IMFAttributes pEncodingParameters
             );
 
         [PreserveSig]
-        int PlaceEncodingParameters(
+        HResult PlaceEncodingParameters(
             int dwStreamIndex,
             IMFAttributes pEncodingParameters
             );
@@ -144,8 +139,8 @@ namespace MediaFoundation.ReadWrite
         #region IMFSourceReaderCallback
 
         [PreserveSig]
-        new int OnReadSample(
-            int hrStatus,
+        new HResult OnReadSample(
+            HResult hrStatus,
             int dwStreamIndex,
             MF_SOURCE_READER_FLAG dwStreamFlags,
             long llTimestamp,
@@ -153,12 +148,12 @@ namespace MediaFoundation.ReadWrite
         );
 
         [PreserveSig]
-        new int OnFlush(
+        new HResult OnFlush(
             int dwStreamIndex
         );
 
         [PreserveSig]
-        new int OnEvent(
+        new HResult OnEvent(
             int dwStreamIndex,
             IMFMediaEvent pEvent
         );
@@ -166,12 +161,12 @@ namespace MediaFoundation.ReadWrite
         #endregion
 
         [PreserveSig]
-        int OnTransformChange();
+        HResult OnTransformChange();
 
         [PreserveSig]
-        int OnStreamError(
+        HResult OnStreamError(
             int dwStreamIndex,
-            int hrStatus);
+            HResult hrStatus);
     }
 
     [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
@@ -183,12 +178,12 @@ namespace MediaFoundation.ReadWrite
         #region IMFSinkWriterCallback
 
         [PreserveSig]
-        new int OnFinalize(
-            int hrStatus
+        new HResult OnFinalize(
+            HResult hrStatus
         );
 
         [PreserveSig]
-        new int OnMarker(
+        new HResult OnMarker(
             int dwStreamIndex,
             IntPtr pvContext
         );
@@ -196,12 +191,12 @@ namespace MediaFoundation.ReadWrite
         #endregion
 
         [PreserveSig]
-        int OnTransformChange();
+        HResult OnTransformChange();
 
         [PreserveSig]
-        int OnStreamError(
+        HResult OnStreamError(
             int dwStreamIndex,
-            int hrStatus);
+            HResult hrStatus);
 
     }
 
@@ -213,54 +208,54 @@ namespace MediaFoundation.ReadWrite
     public interface IMFSinkWriter
     {
         [PreserveSig]
-        int AddStream(
+        HResult AddStream(
             IMFMediaType pTargetMediaType,
             out int pdwStreamIndex
         );
 
         [PreserveSig]
-        int SetInputMediaType(
+        HResult SetInputMediaType(
             int dwStreamIndex,
             IMFMediaType pInputMediaType,
             IMFAttributes pEncodingParameters
         );
 
         [PreserveSig]
-        int BeginWriting();
+        HResult BeginWriting();
 
         [PreserveSig]
-        int WriteSample(
+        HResult WriteSample(
             int dwStreamIndex,
             IMFSample pSample
         );
 
         [PreserveSig]
-        int SendStreamTick(
+        HResult SendStreamTick(
             int dwStreamIndex,
             long llTimestamp
         );
 
         [PreserveSig]
-        int PlaceMarker(
+        HResult PlaceMarker(
             int dwStreamIndex,
             IntPtr pvContext
         );
 
         [PreserveSig]
-        int NotifyEndOfSegment(
+        HResult NotifyEndOfSegment(
             int dwStreamIndex
         );
 
         [PreserveSig]
-        int Flush(
+        HResult Flush(
             int dwStreamIndex
         );
 
         [PreserveSig]
-        int Finalize_();
+        HResult Finalize_();
 
         [PreserveSig]
-        int GetServiceForStream(
+        HResult GetServiceForStream(
             int dwStreamIndex,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidService,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
@@ -268,7 +263,7 @@ namespace MediaFoundation.ReadWrite
         );
 
         [PreserveSig]
-        int GetStatistics(
+        HResult GetStatistics(
             int dwStreamIndex,
             out MF_SINK_WRITER_STATISTICS pStats
         );
@@ -280,12 +275,12 @@ namespace MediaFoundation.ReadWrite
     public interface IMFSinkWriterCallback
     {
         [PreserveSig]
-        int OnFinalize(
-            int hrStatus
+        HResult OnFinalize(
+            HResult hrStatus
         );
 
         [PreserveSig]
-        int OnMarker(
+        HResult OnMarker(
             int dwStreamIndex,
             IntPtr pvContext
         );
@@ -297,7 +292,7 @@ namespace MediaFoundation.ReadWrite
     public interface IMFReadWriteClassFactory
     {
         [PreserveSig]
-        int CreateInstanceFromURL(
+        HResult CreateInstanceFromURL(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid clsid,
             [In, MarshalAs(UnmanagedType.LPWStr)] string pwszURL,
             IMFAttributes pAttributes,
@@ -306,7 +301,7 @@ namespace MediaFoundation.ReadWrite
         );
 
         [PreserveSig]
-        int CreateInstanceFromObject(
+        HResult CreateInstanceFromObject(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid clsid,
             [MarshalAs(UnmanagedType.IUnknown)] object punkObject,
             IMFAttributes pAttributes,
@@ -321,45 +316,45 @@ namespace MediaFoundation.ReadWrite
     public interface IMFSourceReader
     {
         [PreserveSig]
-        int GetStreamSelection(
+        HResult GetStreamSelection(
             int dwStreamIndex,
             [MarshalAs(UnmanagedType.Bool)] out bool pfSelected
         );
 
         [PreserveSig]
-        int SetStreamSelection(
+        HResult SetStreamSelection(
             int dwStreamIndex,
             [MarshalAs(UnmanagedType.Bool)] bool fSelected
         );
 
         [PreserveSig]
-        int GetNativeMediaType(
+        HResult GetNativeMediaType(
             int dwStreamIndex,
             int dwMediaTypeIndex,
             out IMFMediaType ppMediaType
         );
 
         [PreserveSig]
-        int GetCurrentMediaType(
+        HResult GetCurrentMediaType(
             int dwStreamIndex,
             out IMFMediaType ppMediaType
         );
 
         [PreserveSig]
-        int SetCurrentMediaType(
+        HResult SetCurrentMediaType(
             int dwStreamIndex,
             [In, Out] MFInt pdwReserved,
             IMFMediaType pMediaType
         );
 
         [PreserveSig]
-        int SetCurrentPosition(
+        HResult SetCurrentPosition(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidTimeFormat,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant varPosition
         );
 
         [PreserveSig]
-        int ReadSample(
+        HResult ReadSample(
             int dwStreamIndex,
             MF_SOURCE_READER_CONTROL_FLAG dwControlFlags,
             out int pdwActualStreamIndex,
@@ -369,12 +364,12 @@ namespace MediaFoundation.ReadWrite
         );
 
         [PreserveSig]
-        int Flush(
+        HResult Flush(
             int dwStreamIndex
         );
 
         [PreserveSig]
-        int GetServiceForStream(
+        HResult GetServiceForStream(
             int dwStreamIndex,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidService,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
@@ -382,7 +377,7 @@ namespace MediaFoundation.ReadWrite
         );
 
         [PreserveSig]
-        int GetPresentationAttribute(
+        HResult GetPresentationAttribute(
             int dwStreamIndex,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidAttribute,
             [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant pvarAttribute
@@ -395,8 +390,8 @@ namespace MediaFoundation.ReadWrite
     public interface IMFSourceReaderCallback
     {
         [PreserveSig]
-        int OnReadSample(
-            int hrStatus,
+        HResult OnReadSample(
+            HResult hrStatus,
             int dwStreamIndex,
             MF_SOURCE_READER_FLAG dwStreamFlags,
             long llTimestamp,
@@ -404,12 +399,12 @@ namespace MediaFoundation.ReadWrite
         );
 
         [PreserveSig]
-        int OnFlush(
+        HResult OnFlush(
             int dwStreamIndex
         );
 
         [PreserveSig]
-        int OnEvent(
+        HResult OnEvent(
             int dwStreamIndex,
             IMFMediaEvent pEvent
         );
@@ -423,45 +418,45 @@ namespace MediaFoundation.ReadWrite
         #region IMFSourceReader Methods
 
         [PreserveSig]
-        new int GetStreamSelection(
+        new HResult GetStreamSelection(
             int dwStreamIndex,
             [MarshalAs(UnmanagedType.Bool)] out bool pfSelected
         );
 
         [PreserveSig]
-        new int SetStreamSelection(
+        new HResult SetStreamSelection(
             int dwStreamIndex,
             [MarshalAs(UnmanagedType.Bool)] bool fSelected
         );
 
         [PreserveSig]
-        new int GetNativeMediaType(
+        new HResult GetNativeMediaType(
             int dwStreamIndex,
             int dwMediaTypeIndex,
             out IMFMediaType ppMediaType
         );
 
         [PreserveSig]
-        new int GetCurrentMediaType(
+        new HResult GetCurrentMediaType(
             int dwStreamIndex,
             out IMFMediaType ppMediaType
         );
 
         [PreserveSig]
-        new int SetCurrentMediaType(
+        new HResult SetCurrentMediaType(
             int dwStreamIndex,
             [In, Out] MFInt pdwReserved,
             IMFMediaType pMediaType
         );
 
         [PreserveSig]
-        new int SetCurrentPosition(
+        new HResult SetCurrentPosition(
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidTimeFormat,
             [In, MarshalAs(UnmanagedType.LPStruct)] ConstPropVariant varPosition
         );
 
         [PreserveSig]
-        new int ReadSample(
+        new HResult ReadSample(
             int dwStreamIndex,
             MF_SOURCE_READER_CONTROL_FLAG dwControlFlags,
             out int pdwActualStreamIndex,
@@ -471,12 +466,12 @@ namespace MediaFoundation.ReadWrite
         );
 
         [PreserveSig]
-        new int Flush(
+        new HResult Flush(
             int dwStreamIndex
         );
 
         [PreserveSig]
-        new int GetServiceForStream(
+        new HResult GetServiceForStream(
             int dwStreamIndex,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidService,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
@@ -484,7 +479,7 @@ namespace MediaFoundation.ReadWrite
         );
 
         [PreserveSig]
-        new int GetPresentationAttribute(
+        new HResult GetPresentationAttribute(
             int dwStreamIndex,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidAttribute,
             [In, Out, MarshalAs(UnmanagedType.CustomMarshaler, MarshalTypeRef = typeof(PVMarshaler))] PropVariant pvarAttribute
@@ -493,22 +488,22 @@ namespace MediaFoundation.ReadWrite
         #endregion
 
         [PreserveSig]
-        int SetNativeMediaType(
+        HResult SetNativeMediaType(
             int dwStreamIndex,
             IMFMediaType pMediaType,
             out MF_SOURCE_READER_FLAG pdwStreamFlags);
 
         [PreserveSig]
-        int AddTransformForStream(
+        HResult AddTransformForStream(
             int dwStreamIndex,
             [MarshalAs(UnmanagedType.IUnknown)] object pTransformOrActivate);
 
         [PreserveSig]
-        int RemoveAllTransformsForStream(
+        HResult RemoveAllTransformsForStream(
             int dwStreamIndex);
 
         [PreserveSig]
-        int GetTransformForStream(
+        HResult GetTransformForStream(
             int dwStreamIndex,
             int dwTransformIndex,
             out Guid pGuidCategory,
@@ -523,54 +518,54 @@ namespace MediaFoundation.ReadWrite
         #region IMFSinkWriter methods
 
         [PreserveSig]
-        new int AddStream(
+        new HResult AddStream(
             IMFMediaType pTargetMediaType,
             out int pdwStreamIndex
         );
 
         [PreserveSig]
-        new int SetInputMediaType(
+        new HResult SetInputMediaType(
             int dwStreamIndex,
             IMFMediaType pInputMediaType,
             IMFAttributes pEncodingParameters
         );
 
         [PreserveSig]
-        new int BeginWriting();
+        new HResult BeginWriting();
 
         [PreserveSig]
-        new int WriteSample(
+        new HResult WriteSample(
             int dwStreamIndex,
             IMFSample pSample
         );
 
         [PreserveSig]
-        new int SendStreamTick(
+        new HResult SendStreamTick(
             int dwStreamIndex,
             long llTimestamp
         );
 
         [PreserveSig]
-        new int PlaceMarker(
+        new HResult PlaceMarker(
             int dwStreamIndex,
             IntPtr pvContext
         );
 
         [PreserveSig]
-        new int NotifyEndOfSegment(
+        new HResult NotifyEndOfSegment(
             int dwStreamIndex
         );
 
         [PreserveSig]
-        new int Flush(
+        new HResult Flush(
             int dwStreamIndex
         );
 
         [PreserveSig]
-        new int Finalize_();
+        new HResult Finalize_();
 
         [PreserveSig]
-        new int GetServiceForStream(
+        new HResult GetServiceForStream(
             int dwStreamIndex,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidService,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
@@ -578,7 +573,7 @@ namespace MediaFoundation.ReadWrite
         );
 
         [PreserveSig]
-        new int GetStatistics(
+        new HResult GetStatistics(
             int dwStreamIndex,
             out MF_SINK_WRITER_STATISTICS pStats
         );
@@ -586,7 +581,7 @@ namespace MediaFoundation.ReadWrite
         #endregion
 
         [PreserveSig]
-        int GetTransformForStream(
+        HResult GetTransformForStream(
             int dwStreamIndex,
             int dwTransformIndex,
             out Guid pGuidCategory,
