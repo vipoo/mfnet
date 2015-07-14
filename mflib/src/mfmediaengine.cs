@@ -1336,7 +1336,7 @@ namespace MediaFoundation
     {
         [PreserveSig]
         HResult GetData(
-            out byte[] data,
+            out IntPtr data,
             out int length
             );
     }
@@ -1379,7 +1379,7 @@ namespace MediaFoundation
         HResult AddDataCue(
             double start,
             double duration,
-            byte[] data,
+            [MarshalAs(UnmanagedType.LPArray)] byte[] data,
             int dataSize,
             out IMFTimedTextCue cue
             );

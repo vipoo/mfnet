@@ -3391,7 +3391,7 @@ namespace MediaFoundation
 
         [PreserveSig]
         HResult EnableHardwareEffects(
-            [In, MarshalAs(UnmanagedType.Bool)]bool fEnabled
+            [In, MarshalAs(UnmanagedType.Bool)] bool fEnabled
             );
 
         [PreserveSig]
