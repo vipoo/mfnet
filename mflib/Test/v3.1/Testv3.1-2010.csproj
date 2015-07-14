@@ -58,10 +58,22 @@
     <Compile Include="IMFMediaSourceExtensionNotifyTest.cs" />
     <Compile Include="IMFMediaSourceExtensionTest.cs" />
     <Compile Include="IMFMediaStreamSourceSampleRequestTest.cs" />
+    <Compile Include="IMFSinkWriterCallback2Test.cs" />
     <Compile Include="IMFSinkWriterEncoderConfigTest.cs" />
     <Compile Include="IMFSourceBufferListTest.cs" />
     <Compile Include="IMFSourceBufferNotifyTest.cs" />
     <Compile Include="IMFSourceBufferTest.cs" />
+    <Compile Include="IMFSourceReaderCallback2Test.cs" />
+    <Compile Include="IMFTimedTextBinaryTest.cs" />
+    <Compile Include="IMFTimedTextCueListTest.cs" />
+    <Compile Include="IMFTimedTextCueTest.cs" />
+    <Compile Include="IMFTimedTextFormattedTextTest.cs" />
+    <Compile Include="IMFTimedTextNotifyTest.cs" />
+    <Compile Include="IMFTimedTextTest.cs" />
+    <Compile Include="IMFTimedTextTrackListTest.cs" />
+    <Compile Include="IMFTimedTextTrackTest.cs" />
+    <Compile Include="IMFVideoProcessorControl2Test.cs" />
+    <Compile Include="IMFVideoSampleAllocatorNotifyExTest.cs" />
     <Compile Include="IPlayToControlWithCapabilitiesTest.cs" />
     <Compile Include="RunTests.cs" />
   </ItemGroup>

@@ -9,12 +9,17 @@ namespace Testv31
 {
     static public class Program
     {
+        public static readonly string File1 = @"C:\SourceForge\mflib\Test\Media\AspectRatio4x3.wmv";
+
+        public static readonly string Timed1 = @"C:\SourceForge\mflib\Test\Media\timed.xml";
+        public static readonly string Timed2 = @"C:\SourceForge\mflib\Test\Media\junk.xml";
+
         [MTAThread]
         static void Main(string[] args)
         {
             try
             {
-                int hr;
+                HResult hr;
 
                 // Check for Windows 8
                 Debug.Assert(Environment.OSVersion.Version.Major > 6 || (Environment.OSVersion.Version.Major == 6 && Environment.OSVersion.Version.Minor >= 3));
@@ -97,6 +102,41 @@ namespace Testv31
                 //IPlayToControlWithCapabilitiesTest t59 = new IPlayToControlWithCapabilitiesTest();
                 //t59.DoTests();
 
+                //IMFSinkWriterCallback2Test t60 = new IMFSinkWriterCallback2Test();
+                //t60.Dotests();
+
+                //IMFSourceReaderCallback2Test t62 = new IMFSourceReaderCallback2Test();
+                //t62.Dotests();
+
+                //IMFTimedTextTest t63 = new IMFTimedTextTest();
+                //t63.Dotests();
+
+                //IMFTimedTextBinaryTest t64 = new IMFTimedTextBinaryTest();
+                //t64.Dotests();
+
+                //IMFTimedTextCueTest t65 = new IMFTimedTextCueTest();
+                //t65.Dotests();
+
+                //IMFTimedTextCueListTest t66 = new IMFTimedTextCueListTest();
+                //t66.Dotests();
+
+                //IMFTimedTextFormattedTextTest t67 = new IMFTimedTextFormattedTextTest();
+                //t67.Dotests();
+
+                //IMFTimedTextTrackTest t68 = new IMFTimedTextTrackTest();
+                //t68.Dotests();
+
+                //IMFTimedTextNotifyTest t69 = new IMFTimedTextNotifyTest();
+                //t69.Dotests();
+
+                //IMFTimedTextTrackListTest t70 = new IMFTimedTextTrackListTest();
+                //t70.Dotests();
+
+                //IMFVideoProcessorControl2Test t71 = new IMFVideoProcessorControl2Test();
+                //t71.Dotests();
+
+                //IMFVideoSampleAllocatorNotifyExTest t72 = new IMFVideoSampleAllocatorNotifyExTest();
+                //t72.DoTests();
             }
             catch (Exception e)
             {
