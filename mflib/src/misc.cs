@@ -14,6 +14,7 @@ b) The BSD License (see BSDL.txt)
 
 using System;
 using System.Runtime.InteropServices;
+using System.IO;
 
 namespace MediaFoundation.Misc
 {
@@ -25,7 +26,7 @@ namespace MediaFoundation.Misc
         public VideoInfoHeader hdr;
         public int dwStartTimeCode;
         public int cbSequenceHeader;
-        public byte [] bSequenceHeader;
+        public byte[] bSequenceHeader;
     }
 
     [UnmanagedName("AMINTERLACE_*"), Flags]
@@ -96,11 +97,39 @@ namespace MediaFoundation.Misc
     }
 
     [UnmanagedName("MFVideoSrcContentHintFlags")]
-    public enum  MFVideoSrcContentHintFlags
+    public enum MFVideoSrcContentHintFlags
     {
-        None  = 0,
-        F16x9  = 1,
+        None = 0,
+        F16x9 = 1,
         F235_1 = 2
+    }
+
+    [Flags, UnmanagedName("STGC")]
+    public enum STGC
+    {
+        Default = 0,
+        Overwrite = 1,
+        OnlyIfCurrent = 2,
+        DangerouslyCommitMerelyToDiskCache = 4,
+        Consolidate = 8
+    }
+
+    [UnmanagedName("STATFLAG")]
+    public enum STATFLAG
+    {
+        Default = 0,
+        NoName = 1,
+        NoOpen = 2
+    }
+
+    [UnmanagedName("STGTY")]
+    public enum STGTY
+    {
+        None = 0,
+        Storage = 1,
+        Stream = 2,
+        LockBytes = 3,
+        Property = 4
     }
 
     [UnmanagedName("MT_CUSTOM_VIDEO_PRIMARIES"), StructLayout(LayoutKind.Sequential)]
@@ -181,6 +210,22 @@ namespace MediaFoundation.Misc
         }
     }
 
+    [StructLayout(LayoutKind.Sequential, Pack = 4), UnmanagedName("STATSTG")]
+    public struct STATSTG
+    {
+        public IntPtr pwcsName;
+        public STGTY type;
+        public long cbSize;
+        public long mtime;
+        public long ctime;
+        public long atime;
+        public int grfMode;
+        public int grfLocksSupported;
+        public Guid clsid;
+        public int grfStateBits;
+        public int reserved;
+    }
+
     #endregion
 
     #region Generic Interfaces
@@ -241,6 +286,112 @@ namespace MediaFoundation.Misc
 
         [PreserveSig]
         HResult Commit();
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("0000000c-0000-0000-C000-000000000046")]
+    public interface ISequentialStream
+    {
+        [PreserveSig]
+        HResult Read(
+            [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] buffer,
+            [In] int bytesCount,
+            [In] IntPtr bytesRead
+            );
+
+        [PreserveSig]
+        HResult Write(
+            [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] buffer,
+            [In] int bytesCount,
+            [In] IntPtr bytesWritten
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown),
+    Guid("0c733a30-2a1c-11ce-ade5-00aa0044773d")]
+    public interface IStream : ISequentialStream
+    {
+        #region ISequentialStream Methods
+
+        [PreserveSig]
+        new HResult Read(
+            [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] buffer,
+            [In] int bytesCount,
+            [In] IntPtr bytesRead
+            );
+
+        [PreserveSig]
+        new HResult Write(
+            [In, Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] byte[] buffer,
+            [In] int bytesCount,
+            [In] IntPtr bytesWritten
+            );
+
+        #endregion
+
+        [PreserveSig]
+        HResult Seek(
+            [In] long offset,
+            [In] SeekOrigin origin,
+            [In] IntPtr newPosition
+            );
+
+        [PreserveSig]
+        HResult SetSize(
+            [In] long newSize
+            );
+
+        [PreserveSig]
+        HResult CopyTo(
+            [In] IStream otherStream,
+            [In] long bytesCount,
+            [In] IntPtr bytesRead,
+            [In] IntPtr bytesWritten
+            );
+
+        [PreserveSig]
+        HResult Commit(
+            [In] STGC commitFlags
+            );
+
+        [PreserveSig]
+        HResult Revert();
+
+        [PreserveSig]
+        HResult LockRegion(
+            [In] long offset,
+            [In] long bytesCount,
+            [In] int lockType
+            );
+
+        [PreserveSig]
+        HResult UnlockRegion(
+            [In] long offset,
+            [In] long bytesCount,
+            [In] int lockType
+            );
+
+        [PreserveSig]
+        HResult Stat(
+            [Out] out STATSTG statstg,
+            [In] STATFLAG statFlag
+            );
+
+        [PreserveSig]
+        HResult Clone(
+            [Out] out IStream clonedStream
+            );
+    }
+
+    [ComImport, System.Security.SuppressUnmanagedCodeSecurity,
+    Guid("0000010c-0000-0000-C000-000000000046"),
+    InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    public interface IPersist
+    {
+        [PreserveSig]
+        HResult GetClassID(out Guid pClassID);
     }
 
     #endregion

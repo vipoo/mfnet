@@ -15,7 +15,6 @@ b) The BSD License (see BSDL.txt)
 using System;
 using System.Collections;
 using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
 using System.Security;
 
 using MediaFoundation.Misc;
