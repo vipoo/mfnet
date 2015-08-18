@@ -32,7 +32,7 @@ namespace MFT_WriteTextAsync
     {
         #region Overrides
 
-        override protected int OnCheckInputType(IMFMediaType pmt)
+        override protected HResult OnCheckInputType(IMFMediaType pmt)
         {
             // We only check to see if the type is valid as an input type.  We
             // do NOT check if it is consistent with the current output type.
@@ -41,7 +41,7 @@ namespace MFT_WriteTextAsync
             // caught and handled if/when the type actually gets set (see 
             // MySetInput).
 
-            int hr;
+            HResult hr;
 
             hr = CheckMediaType(pmt, MFMediaType.Video, m_MediaSubtypes);
 
@@ -65,7 +65,7 @@ namespace MFT_WriteTextAsync
         }
         override protected void OnProcessSample(IMFSample pInputSample, bool Discontinuity, int InputMessageNumber)
         {
-            int hr = S_Ok;
+            MFError throwonhr;
 
             IMFMediaBuffer pInput;
 
@@ -76,8 +76,7 @@ namespace MFT_WriteTextAsync
             // multiple buffers, you might be able to get (slightly) better
             // performance processing each buffer in turn rather than forcing
             // a new, full-sized buffer to get created.
-            hr = pInputSample.ConvertToContiguousBuffer(out pInput);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = pInputSample.ConvertToContiguousBuffer(out pInput);
 
             try
             {
@@ -99,14 +98,14 @@ namespace MFT_WriteTextAsync
             }
         }
 
-        override protected int OnEnumInputTypes(int dwTypeIndex, out IMFMediaType pInputType)
+        override protected HResult OnEnumInputTypes(int dwTypeIndex, out IMFMediaType pInputType)
         {
             return CreatePartialType(dwTypeIndex, MFMediaType.Video, m_MediaSubtypes, out pInputType);
         }
 
         override protected void OnSetInputType()
         {
-            int hr = S_Ok;
+            MFError throwonhr;
 
             m_imageWidthInPixels = 0;
             m_imageHeightInPixels = 0;
@@ -118,11 +117,9 @@ namespace MFT_WriteTextAsync
             // type can be null to clear
             if (pmt != null)
             {
-                hr = MFExtern.MFGetAttributeSize(pmt, MFAttributesClsid.MF_MT_FRAME_SIZE, out m_imageWidthInPixels, out m_imageHeightInPixels);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = MFExtern.MFGetAttributeSize(pmt, MFAttributesClsid.MF_MT_FRAME_SIZE, out m_imageWidthInPixels, out m_imageHeightInPixels);
 
-                hr = pmt.GetUINT32(MFAttributesClsid.MF_MT_DEFAULT_STRIDE, out m_lStrideIfContiguous);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = pmt.GetUINT32(MFAttributesClsid.MF_MT_DEFAULT_STRIDE, out m_lStrideIfContiguous);
 
                 // Calculate the image size (not including padding)
                 m_cbImageSize = m_imageHeightInPixels * m_lStrideIfContiguous;
@@ -221,7 +218,7 @@ namespace MFT_WriteTextAsync
         [ComRegisterFunctionAttribute]
         static private void DllRegisterServer(Type t)
         {
-            int hr = MFExtern.MFTRegister(
+            HResult hr = MFExtern.MFTRegister(
                 t.GUID,
                 MFTransformCategory.MFT_CATEGORY_VIDEO_EFFECT,
                 t.Name,
@@ -238,7 +235,7 @@ namespace MFT_WriteTextAsync
         [ComUnregisterFunctionAttribute]
         static private void DllUnregisterServer(Type t)
         {
-            int hr = MFExtern.MFTUnregister(t.GUID);
+            HResult hr = MFExtern.MFTUnregister(t.GUID);
 
             // In Windows 7, MFTUnregister reports an error even if it succeeds:
             // https://social.msdn.microsoft.com/forums/windowsdesktop/en-us/7d3dc70f-8eae-4ad0-ad90-6c596cf78c80
@@ -306,20 +303,18 @@ namespace MFT_WriteTextAsync
 
         private void Lockit(IMFMediaBuffer pOut, out IMF2DBuffer pOut2D, out int lDestStride, out IntPtr pDest)
         {
-            int hr;
+            MFError throwonhr;
 
             pOut2D = pOut as IMF2DBuffer;
             if (pOut2D != null)
             {
-                hr = pOut2D.Lock2D(out pDest, out lDestStride);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = pOut2D.Lock2D(out pDest, out lDestStride);
             }
             else
             {
                 int ml;
                 int cb;
-                hr = pOut.Lock(out pDest, out ml, out cb);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = pOut.Lock(out pDest, out ml, out cb);
                 lDestStride = m_lStrideIfContiguous;
             }
         }
@@ -328,17 +323,16 @@ namespace MFT_WriteTextAsync
         {
             if (pSrc != IntPtr.Zero)
             {
-                int hr;
+                MFError throwonhr;
 
                 if (pIn2D != null)
                 {
-                    hr = pIn2D.Unlock2D();
+                    throwonhr = pIn2D.Unlock2D();
                 }
                 else
                 {
-                    hr = pIn.Unlock();
+                    throwonhr = pIn.Unlock();
                 }
-                MFError.ThrowExceptionForHR(hr);
             }
         }
 

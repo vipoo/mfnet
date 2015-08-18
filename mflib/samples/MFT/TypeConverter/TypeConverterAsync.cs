@@ -44,7 +44,7 @@ namespace TypeConverter
     {
         #region Overrides
 
-        override protected int OnCheckInputType(IMFMediaType pmt)
+        override protected HResult OnCheckInputType(IMFMediaType pmt)
         {
             // We only check to see if the type is valid as an input type.  We
             // do NOT check if it is consistent with the current output type.
@@ -53,7 +53,7 @@ namespace TypeConverter
             // caught and handled if/when the type actually gets set (see 
             // MySetInput).
 
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             hr = OnCheckMediaType(pmt, m_MediaSubtypesIn);
 
@@ -76,7 +76,7 @@ namespace TypeConverter
         }
         protected override void OnProcessSample(IMFSample pInputSample, bool Discontinuity, int InputMessageNumber)
         {
-            int hr = S_Ok;
+            MFError throwonhr;
 
             // While we accept types that *might* be interlaced, if we actually receive
             // an interlaced sample, reject it.
@@ -85,11 +85,11 @@ namespace TypeConverter
                 int ix;
 
                 // Returns a bool: true = interlaced, false = progressive
-                hr = pInputSample.GetUINT32(MFAttributesClsid.MFSampleExtension_Interlaced, out ix);
+                HResult hr = pInputSample.GetUINT32(MFAttributesClsid.MFSampleExtension_Interlaced, out ix);
 
                 // Can be S_False.
-                if (hr != S_Ok || ix != 0)
-                    throw new COMException("Interlaced", E_Fail);
+                if (hr != HResult.S_OK || ix != 0)
+                    throw new COMException("Interlaced", (int)HResult.E_FAIL);
             }
 
             IMFMediaBuffer pInput = null;
@@ -100,8 +100,7 @@ namespace TypeConverter
             // multiple buffers, you might be able to get (slightly) better
             // performance processing each buffer in turn rather than forcing
             // a new, full-sized buffer to get created.
-            hr = pInputSample.ConvertToContiguousBuffer(out pInput);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = pInputSample.ConvertToContiguousBuffer(out pInput);
 
             try
             {
@@ -111,8 +110,7 @@ namespace TypeConverter
                 // Set the Discontinuity flag on the sample that's going to OutputSample.
                 HandleDiscontinuity(Discontinuity, pOutSample);
 
-                hr = pOutSample.ConvertToContiguousBuffer(out pOutput);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = pOutSample.ConvertToContiguousBuffer(out pOutput);
 
                 // Process it.
                 DoWork(pInput, pOutput);
@@ -138,14 +136,14 @@ namespace TypeConverter
             }
         }
 
-        override protected int OnEnumInputTypes(int dwTypeIndex, out IMFMediaType pInputType)
+        override protected HResult OnEnumInputTypes(int dwTypeIndex, out IMFMediaType pInputType)
         {
             return CreatePartialType(dwTypeIndex, MFMediaType.Video, m_MediaSubtypesIn, out pInputType);
         }
 
         override protected void OnSetInputType()
         {
-            int hr = S_Ok;
+            MFError throwonhr;
 
             m_imageWidthInPixels = 0;
             m_imageHeightInPixels = 0;
@@ -160,8 +158,7 @@ namespace TypeConverter
             {
                 TraceAttributes(pmt);
 
-                hr = MFExtern.MFGetAttributeSize(pmt, MFAttributesClsid.MF_MT_FRAME_SIZE, out m_imageWidthInPixels, out m_imageHeightInPixels);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = MFExtern.MFGetAttributeSize(pmt, MFAttributesClsid.MF_MT_FRAME_SIZE, out m_imageWidthInPixels, out m_imageHeightInPixels);
 
                 // Calculate the image size (not including padding)
                 m_StrideOut = m_imageWidthInPixels * 4;
@@ -205,17 +202,12 @@ namespace TypeConverter
         /// <returns>An output type generated from the input type.</returns>
         protected override IMFMediaType CreateOutputFromInput()
         {
-            int hr;
+            MFError throwonhr;
             IMFMediaType pOutputType = CloneMediaType(InputType);
 
-            hr = pOutputType.SetGUID(MFAttributesClsid.MF_MT_SUBTYPE, m_MediaSubtypesOut[0]);
-            MFError.ThrowExceptionForHR(hr);
-
-            hr = pOutputType.SetUINT32(MFAttributesClsid.MF_MT_DEFAULT_STRIDE, m_StrideOut);
-            MFError.ThrowExceptionForHR(hr);
-
-            hr = pOutputType.SetUINT32(MFAttributesClsid.MF_MT_SAMPLE_SIZE, m_cbImageSizeOutput);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = pOutputType.SetGUID(MFAttributesClsid.MF_MT_SUBTYPE, m_MediaSubtypesOut[0]);
+            throwonhr = pOutputType.SetUINT32(MFAttributesClsid.MF_MT_DEFAULT_STRIDE, m_StrideOut);
+            throwonhr = pOutputType.SetUINT32(MFAttributesClsid.MF_MT_SAMPLE_SIZE, m_cbImageSizeOutput);
 
             return pOutputType;
         }
@@ -248,50 +240,41 @@ namespace TypeConverter
 
         private void DuplicateSample(IMFSample pInSample, out IMFSample pOutSample)
         {
-            int hr;
+            MFError throwonhr;
             int flags;
             long lTime;
 
-            hr = MFExtern.MFCreateSample(out pOutSample);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = MFExtern.MFCreateSample(out pOutSample);
+            throwonhr = pInSample.CopyAllItems(pOutSample);
 
-            hr = pInSample.CopyAllItems(pOutSample);
-            MFError.ThrowExceptionForHR(hr);
-
-            hr = pInSample.GetSampleDuration(out lTime);
+            HResult hr = pInSample.GetSampleDuration(out lTime);
             if (Succeeded(hr))
             {
-                hr = pOutSample.SetSampleDuration(lTime);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = pOutSample.SetSampleDuration(lTime);
             }
 
             hr = pInSample.GetSampleTime(out lTime);
             if (Succeeded(hr))
             {
-                hr = pOutSample.SetSampleTime(lTime);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = pOutSample.SetSampleTime(lTime);
             }
 
             hr = pInSample.GetSampleFlags(out flags);
             if (Succeeded(hr))
             {
-                hr = pOutSample.SetSampleFlags(flags);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = pOutSample.SetSampleFlags(flags);
             }
 
             IMFMediaBuffer mb;
 
-            hr = MFExtern.MFCreateMemoryBuffer(m_imageHeightInPixels * m_imageWidthInPixels * 4, out mb);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = MFExtern.MFCreateMemoryBuffer(m_imageHeightInPixels * m_imageWidthInPixels * 4, out mb);
 
             try
             {
                 // Set the data size on the output buffer.
-                hr = mb.SetCurrentLength(m_cbImageSizeOutput);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = mb.SetCurrentLength(m_cbImageSizeOutput);
 
-                hr = pOutSample.AddBuffer(mb);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = pOutSample.AddBuffer(mb);
             }
             finally
             {
@@ -306,18 +289,18 @@ namespace TypeConverter
         /// <returns>S_Ok or MF_E_INVALIDTYPE.</returns>
         /// <remarks>Since both input and output types must be
         /// the same, they both call this routine.</remarks>
-        private int OnCheckMediaType(IMFMediaType pmt, Guid[] gType)
+        private HResult OnCheckMediaType(IMFMediaType pmt, Guid[] gType)
         {
-            int hr;
+            HResult hr = HResult.S_OK;
 
             hr = CheckMediaType(pmt, MFMediaType.Video, gType);
             if (Succeeded(hr))
             {
+                MFError throwonhr;
                 int interlace;
 
                 // Video must be progressive frames.
-                hr = pmt.GetUINT32(MFAttributesClsid.MF_MT_INTERLACE_MODE, out interlace);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = pmt.GetUINT32(MFAttributesClsid.MF_MT_INTERLACE_MODE, out interlace);
 
                 MFVideoInterlaceMode im = (MFVideoInterlaceMode)interlace;
 
@@ -333,7 +316,7 @@ namespace TypeConverter
                     }
                     else
                     {
-                        hr = MFError.MF_E_INVALIDTYPE;
+                        hr = HResult.MF_E_INVALIDTYPE;
                     }
                 }
             }
@@ -348,8 +331,6 @@ namespace TypeConverter
         // to the transform routine.
         private void DoWork(IMFMediaBuffer pIn, IMFMediaBuffer pOut)
         {
-            int hr;
-
             IntPtr pSrc = IntPtr.Zero;
             int lSrcStride = 0;
             IMF2DBuffer pIn2D = null;
@@ -362,8 +343,7 @@ namespace TypeConverter
                 IntPtr pDest;
                 int mlo;
                 int cb;
-                hr = pOut.Lock(out pDest, out mlo, out cb);
-                MFError.ThrowExceptionForHR(hr);
+                MFError throwonhr = pOut.Lock(out pDest, out mlo, out cb);
 
                 try
                 {
@@ -384,21 +364,19 @@ namespace TypeConverter
 
         private void Lockit(IMFMediaBuffer pOut, out IMF2DBuffer pOut2D, out int lDestStride, out IntPtr pDest)
         {
-            int hr;
+            MFError throwonhr;
 
             pOut2D = pOut as IMF2DBuffer;
             if (pOut2D != null)
             {
-                hr = pOut2D.Lock2D(out pDest, out lDestStride);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = pOut2D.Lock2D(out pDest, out lDestStride);
             }
             else
             {
                 int ml;
                 int cb;
 
-                hr = pOut.Lock(out pDest, out ml, out cb);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = pOut.Lock(out pDest, out ml, out cb);
 
                 lDestStride = m_StrideIn;
             }
@@ -408,17 +386,16 @@ namespace TypeConverter
         {
             if (pSrc != IntPtr.Zero)
             {
-                int hr;
+                MFError throwonhr;
 
                 if (pIn2D != null)
                 {
-                    hr = pIn2D.Unlock2D();
+                    throwonhr = pIn2D.Unlock2D();
                 }
                 else
                 {
-                    hr = pIn.Unlock();
+                    throwonhr = pIn.Unlock();
                 }
-                MFError.ThrowExceptionForHR(hr);
             }
         }
 

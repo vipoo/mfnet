@@ -57,8 +57,7 @@ class CPlayer : COMBase, IMFAsyncCallback
 
         m_hCloseEvent = new AutoResetEvent(false);
 
-        int hr = MFExtern.MFStartup(0x10070, MFStartup.Full);
-        MFError.ThrowExceptionForHR(hr);
+        MFError throwonhr = MFExtern.MFStartup(0x10070, MFStartup.Full);
     }
 
 #if DEBUG
@@ -71,7 +70,7 @@ class CPlayer : COMBase, IMFAsyncCallback
 
     #region Public methods
 
-    public int OpenURL(string sURL)
+    public HResult OpenURL(string sURL)
     {
         TRACE("CPlayer::OpenURL");
         TRACE("URL = " + sURL);
@@ -82,7 +81,7 @@ class CPlayer : COMBase, IMFAsyncCallback
         // 4. Queue the topology [asynchronous]
         // 5. Start playback [asynchronous - does not happen in this method.]
 
-        int hr = S_Ok;
+        HResult hr = HResult.S_OK;
         try
         {
             IMFTopology pTopology = null;
@@ -97,8 +96,7 @@ class CPlayer : COMBase, IMFAsyncCallback
             CreateTopologyFromSource(out pTopology);
 
             // Set the topology on the media session.
-            hr = m_pSession.SetTopology(0, pTopology);
-            MFError.ThrowExceptionForHR(hr);
+            MFError throwonhr = m_pSession.SetTopology(0, pTopology);
 
             // Set our state to "open pending"
             m_state = PlayerState.OpenPending;
@@ -111,7 +109,7 @@ class CPlayer : COMBase, IMFAsyncCallback
         }
         catch (Exception ce)
         {
-            hr = Marshal.GetHRForException(ce);
+            hr = (HResult)Marshal.GetHRForException(ce);
             NotifyError(hr);
             m_state = PlayerState.Ready;
         }
@@ -136,7 +134,7 @@ class CPlayer : COMBase, IMFAsyncCallback
 
         if (m_VideoNode != null)
         {
-            int hr;
+            HResult hr;
 
             object o;
             hr = m_VideoNode.GetObject(out o);
@@ -157,20 +155,20 @@ class CPlayer : COMBase, IMFAsyncCallback
         return ia;
     }
 
-    public int Play()
+    public HResult Play()
     {
         TRACE("CPlayer::Play");
 
         if (m_state != PlayerState.Paused)
         {
-            return E_Fail;
+            return HResult.E_FAIL;
         }
         if (m_pSession == null || m_pSource == null)
         {
-            return E_Unexpected;
+            return HResult.E_UNEXPECTED;
         }
 
-        int hr = S_Ok;
+        HResult hr = HResult.S_OK;
 
         try
         {
@@ -181,50 +179,49 @@ class CPlayer : COMBase, IMFAsyncCallback
         }
         catch (Exception ce)
         {
-            hr = Marshal.GetHRForException(ce);
+            hr = (HResult)Marshal.GetHRForException(ce);
             NotifyError(hr);
         }
 
         return hr;
     }
 
-    public int Pause()
+    public HResult Pause()
     {
         TRACE("CPlayer::Pause");
 
         if (m_state != PlayerState.Started)
         {
-            return E_Fail;
+            return HResult.E_FAIL;
         }
         if (m_pSession == null || m_pSource == null)
         {
-            return E_Unexpected;
+            return HResult.E_UNEXPECTED;
         }
 
-        int hr = S_Ok;
+        HResult hr = HResult.S_OK;
 
         try
         {
-            hr = m_pSession.Pause();
-            MFError.ThrowExceptionForHR(hr);
+            MFError throwonhr = m_pSession.Pause();
 
             m_state = PlayerState.PausePending;
             NotifyState();
         }
         catch (Exception ce)
         {
-            hr = Marshal.GetHRForException(ce);
+            hr = (HResult)Marshal.GetHRForException(ce);
             NotifyError(hr);
         }
 
         return hr;
     }
 
-    public int Shutdown()
+    public HResult Shutdown()
     {
         TRACE("CPlayer::ShutDown");
 
-        int hr = S_Ok;
+        HResult hr = HResult.S_OK;
 
         try
         {
@@ -234,8 +231,7 @@ class CPlayer : COMBase, IMFAsyncCallback
                 CloseSession();
 
                 // Shutdown the Media Foundation platform
-                hr = MFExtern.MFShutdown();
-                MFError.ThrowExceptionForHR(hr);
+                MFError throwonhr = MFExtern.MFShutdown();
 
                 m_hCloseEvent.Close();
                 m_hCloseEvent = null;
@@ -243,7 +239,7 @@ class CPlayer : COMBase, IMFAsyncCallback
         }
         catch (Exception ce)
         {
-            hr = Marshal.GetHRForException(ce);
+            hr = (HResult)Marshal.GetHRForException(ce);
         }
 
         return hr;
@@ -258,9 +254,9 @@ class CPlayer : COMBase, IMFAsyncCallback
         }
     }
 
-    public int ResizeVideo(short width, short height)
+    public HResult ResizeVideo(short width, short height)
     {
-        int hr = S_Ok;
+        HResult hr = HResult.S_OK;
         TRACE(string.Format("ResizeVideo: {0}x{1}", width, height));
 
         if (m_pVideoDisplay != null)
@@ -279,12 +275,11 @@ class CPlayer : COMBase, IMFAsyncCallback
                 rcDest.right = width;
                 rcDest.bottom = height;
 
-                hr = m_pVideoDisplay.SetVideoPosition(nRect, rcDest);
-                MFError.ThrowExceptionForHR(hr);
+                MFError throwonhr = m_pVideoDisplay.SetVideoPosition(nRect, rcDest);
             }
             catch (Exception ce)
             {
-                hr = Marshal.GetHRForException(ce);
+                hr = (HResult)Marshal.GetHRForException(ce);
             }
         }
 
@@ -305,37 +300,36 @@ class CPlayer : COMBase, IMFAsyncCallback
 
     #region IMFAsyncCallback Members
 
-    int IMFAsyncCallback.GetParameters(out MFASync pdwFlags, out MFAsyncCallbackQueue pdwQueue)
+    HResult IMFAsyncCallback.GetParameters(out MFASync pdwFlags, out MFAsyncCallbackQueue pdwQueue)
     {
         pdwFlags = MFASync.FastIOProcessingCallback;
         pdwQueue = MFAsyncCallbackQueue.Standard;
         //throw new COMException("IMFAsyncCallback.GetParameters not implemented in Player", E_NotImplemented);
 
-        return S_Ok;
+        return HResult.S_OK;
     }
 
-    int IMFAsyncCallback.Invoke(IMFAsyncResult pResult)
+    HResult IMFAsyncCallback.Invoke(IMFAsyncResult pResult)
     {
-        int hr;
+        HResult hr = HResult.S_OK;
         IMFMediaEvent pEvent = null;
         MediaEventType meType = MediaEventType.MEUnknown;  // Event type
-        int hrStatus = 0;           // Event status
+        HResult hrStatus = 0;           // Event status
         MFTopoStatus TopoStatus = MFTopoStatus.Invalid; // Used with MESessionTopologyStatus event.
 
         try
         {
+            MFError throwonhr;
+
             // Get the event from the event queue.
-            hr = m_pSession.EndGetEvent(pResult, out pEvent);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = m_pSession.EndGetEvent(pResult, out pEvent);
 
             // Get the event type.
-            hr = pEvent.GetType(out meType);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = pEvent.GetType(out meType);
 
             // Get the event status. If the operation that triggered the event did
             // not succeed, the status is a failure code.
-            hr = pEvent.GetStatus(out hrStatus);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = pEvent.GetStatus(out hrStatus);
 
             TRACE(string.Format("Media event: " + meType.ToString()));
 
@@ -348,8 +342,7 @@ class CPlayer : COMBase, IMFAsyncCallback
                     case MediaEventType.MESessionTopologyStatus:
                         // Get the status code.
                         int i;
-                        hr = pEvent.GetUINT32(MFAttributesClsid.MF_EVENT_TOPOLOGY_STATUS, out i);
-                        MFError.ThrowExceptionForHR(hr);
+                        throwonhr = pEvent.GetUINT32(MFAttributesClsid.MF_EVENT_TOPOLOGY_STATUS, out i);
                         TopoStatus = (MFTopoStatus)i;
                         switch (TopoStatus)
                         {
@@ -391,12 +384,11 @@ class CPlayer : COMBase, IMFAsyncCallback
             if (meType != MediaEventType.MESessionClosed)
             {
                 hr = m_pSession.BeginGetEvent(this, null);
-                MFError.ThrowExceptionForHR(hr);
             }
 
             SafeRelease(pEvent);
         }
-        return S_Ok;
+        return hr;
     }
 
     #endregion
@@ -408,13 +400,13 @@ class CPlayer : COMBase, IMFAsyncCallback
     {
         NotifyState(0);
     }
-    protected void NotifyState(int hr)
+    protected void NotifyState(HResult hr)
     {
-        PostMessage(m_hwndVideo, WM_APP_NOTIFY, new IntPtr((int)m_state), new IntPtr(hr));
+        PostMessage(m_hwndVideo, WM_APP_NOTIFY, new IntPtr((int)m_state), new IntPtr((int)hr));
     }
 
     // NotifyState: Notifies the application when an error occurs.
-    protected void NotifyError(int hr)
+    protected void NotifyError(HResult hr)
     {
         TRACE("NotifyError: 0x" + hr.ToString("X"));
         m_state = PlayerState.Ready;
@@ -427,17 +419,17 @@ class CPlayer : COMBase, IMFAsyncCallback
         CloseSession();
 
         // Create the media session.
-        int hr = MFExtern.MFCreateMediaSession(null, out m_pSession);
-        MFError.ThrowExceptionForHR(hr);
+        MFError throwonhr;
+        throwonhr = MFExtern.MFCreateMediaSession(null, out m_pSession);
 
         // Start pulling events from the media session
-        hr = m_pSession.BeginGetEvent(this, null);
-        MFError.ThrowExceptionForHR(hr);
+        throwonhr = m_pSession.BeginGetEvent(this, null);
     }
 
     protected void CloseSession()
     {
-        int hr;
+        MFError throwonhr;
+
         if (m_pVideoDisplay != null)
         {
             Marshal.ReleaseComObject(m_pVideoDisplay);
@@ -446,8 +438,7 @@ class CPlayer : COMBase, IMFAsyncCallback
 
         if (m_pSession != null)
         {
-            hr = m_pSession.Close();
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = m_pSession.Close();
 
             // Wait for the close operation to complete
             bool res = m_hCloseEvent.WaitOne(5000, true);
@@ -462,8 +453,7 @@ class CPlayer : COMBase, IMFAsyncCallback
         // 1. Shut down the media source
         if (m_pSource != null)
         {
-            hr = m_pSource.Shutdown();
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = m_pSource.Shutdown();
             SafeRelease(m_pSource);
             m_pSource = null;
         }
@@ -471,8 +461,7 @@ class CPlayer : COMBase, IMFAsyncCallback
         // 2. Shut down the media session. (Synchronous operation, no events.)
         if (m_pSession != null)
         {
-            hr = m_pSession.Shutdown();
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = m_pSession.Shutdown();
             Marshal.ReleaseComObject(m_pSession);
             m_pSession = null;
         }
@@ -486,8 +475,7 @@ class CPlayer : COMBase, IMFAsyncCallback
 
         Debug.Assert(m_pSession != null);
 
-        int hr = m_pSession.Start(Guid.Empty, new PropVariant());
-        MFError.ThrowExceptionForHR(hr);
+        MFError throwonhr = m_pSession.Start(Guid.Empty, new PropVariant());
     }
 
     protected void CreateMediaSource(string sURL)
@@ -498,22 +486,21 @@ class CPlayer : COMBase, IMFAsyncCallback
         object pSource;
 
         // Create the source resolver.
-        int hr = MFExtern.MFCreateSourceResolver(out pSourceResolver);
-        MFError.ThrowExceptionForHR(hr);
+        MFError throwonhr;
+        throwonhr = MFExtern.MFCreateSourceResolver(out pSourceResolver);
 
         try
         {
             // Use the source resolver to create the media source.
             MFObjectType ObjectType = MFObjectType.Invalid;
 
-            hr = pSourceResolver.CreateObjectFromURL(
+            throwonhr = pSourceResolver.CreateObjectFromURL(
                     sURL,                       // URL of the source.
                     MFResolution.MediaSource,   // Create a source object.
                     null,                       // Optional property store.
                     out ObjectType,             // Receives the created object type.
                     out pSource                 // Receives a pointer to the media source.
                 );
-            MFError.ThrowExceptionForHR(hr);
 
             // Get the IMFMediaSource interface from the media source.
             m_pSource = (IMFMediaSource)pSource;
@@ -535,24 +522,20 @@ class CPlayer : COMBase, IMFAsyncCallback
         IMFTopology pTopology = null;
         IMFPresentationDescriptor pSourcePD = null;
         int cSourceStreams = 0;
-        int hr;
+        MFError throwonhr;
 
         try
         {
             // Create a new topology.
-            hr = MFExtern.MFCreateTopology(out pTopology);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = MFExtern.MFCreateTopology(out pTopology);
 
-            hr = pTopology.SetUINT32(MFAttributesClsid.MF_TOPOLOGY_DXVA_MODE, (int)MFTOPOLOGY_DXVA_MODE.Full);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = pTopology.SetUINT32(MFAttributesClsid.MF_TOPOLOGY_DXVA_MODE, (int)MFTOPOLOGY_DXVA_MODE.Full);
 
             // Create the presentation descriptor for the media source.
-            hr = m_pSource.CreatePresentationDescriptor(out pSourcePD);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = m_pSource.CreatePresentationDescriptor(out pSourcePD);
 
             // Get the number of streams in the media source.
-            hr = pSourcePD.GetStreamDescriptorCount(out cSourceStreams);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = pSourcePD.GetStreamDescriptorCount(out cSourceStreams);
 
             TRACE(string.Format("Stream count: {0}", cSourceStreams));
 
@@ -585,26 +568,22 @@ class CPlayer : COMBase, IMFAsyncCallback
     {
         Debug.Assert(m_pSource != null);
 
-        int hr;
+        MFError throwonhr;
         IMFTopologyNode pNode = null;
 
         try
         {
             // Create the source-stream node.
-            hr = MFExtern.MFCreateTopologyNode(MFTopologyType.SourcestreamNode, out pNode);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = MFExtern.MFCreateTopologyNode(MFTopologyType.SourcestreamNode, out pNode);
 
             // Set attribute: Pointer to the media source.
-            hr = pNode.SetUnknown(MFAttributesClsid.MF_TOPONODE_SOURCE, m_pSource);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = pNode.SetUnknown(MFAttributesClsid.MF_TOPONODE_SOURCE, m_pSource);
 
             // Set attribute: Pointer to the presentation descriptor.
-            hr = pNode.SetUnknown(MFAttributesClsid.MF_TOPONODE_PRESENTATION_DESCRIPTOR, pSourcePD);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = pNode.SetUnknown(MFAttributesClsid.MF_TOPONODE_PRESENTATION_DESCRIPTOR, pSourcePD);
 
             // Set attribute: Pointer to the stream descriptor.
-            hr = pNode.SetUnknown(MFAttributesClsid.MF_TOPONODE_STREAM_DESCRIPTOR, pSourceSD);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = pNode.SetUnknown(MFAttributesClsid.MF_TOPONODE_STREAM_DESCRIPTOR, pSourceSD);
 
             // Return the IMFTopologyNode pointer to the caller.
             ppNode = pNode;
@@ -627,59 +606,47 @@ class CPlayer : COMBase, IMFAsyncCallback
         IMFActivate pRendererActivate = null;
 
         Guid guidMajorType = Guid.Empty;
-        int hr = S_Ok;
+        MFError throwonhr;
 
         // Get the stream ID.
         int streamID = 0;
 
         try
         {
-            try
-            {
-                hr = pSourceSD.GetStreamIdentifier(out streamID); // Just for debugging, ignore any failures.
-                MFError.ThrowExceptionForHR(hr);
-            }
-            catch
-            {
-                TRACE("IMFStreamDescriptor::GetStreamIdentifier" + hr.ToString());
-            }
+#if DEBUG
+            pSourceSD.GetStreamIdentifier(out streamID); // Just for debugging, ignore any failures.
+#endif
 
             // Get the media type handler for the stream.
-            hr = pSourceSD.GetMediaTypeHandler(out pHandler);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = pSourceSD.GetMediaTypeHandler(out pHandler);
 
             // Get the major media type.
-            hr = pHandler.GetMajorType(out guidMajorType);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = pHandler.GetMajorType(out guidMajorType);
 
             // Create a downstream node.
-            hr = MFExtern.MFCreateTopologyNode(MFTopologyType.OutputNode, out pNode);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = MFExtern.MFCreateTopologyNode(MFTopologyType.OutputNode, out pNode);
 
             // Create an IMFActivate object for the renderer, based on the media type.
             if (MFMediaType.Audio == guidMajorType)
             {
                 // Create the audio renderer.
                 TRACE(string.Format("Stream {0}: audio stream", streamID));
-                hr = MFExtern.MFCreateAudioRendererActivate(out pRendererActivate);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = MFExtern.MFCreateAudioRendererActivate(out pRendererActivate);
             }
             else if (MFMediaType.Video == guidMajorType)
             {
                 // Create the video renderer.
                 TRACE(string.Format("Stream {0}: video stream", streamID));
-                hr = MFExtern.MFCreateVideoRendererActivate(m_hwndVideo, out pRendererActivate);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = MFExtern.MFCreateVideoRendererActivate(m_hwndVideo, out pRendererActivate);
             }
             else
             {
                 TRACE(string.Format("Stream {0}: Unknown format", streamID));
-                throw new COMException("Unknown format", E_Fail);
+                throw new COMException("Unknown format", (int)HResult.E_FAIL);
             }
 
             // Set the IActivate object on the output node.
-            hr = pNode.SetObject(pRendererActivate);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = pNode.SetObject(pRendererActivate);
 
             // Return the IMFTopologyNode pointer to the caller.
             ppNode = pNode;
@@ -701,7 +668,7 @@ class CPlayer : COMBase, IMFAsyncCallback
     // Media event handlers
     protected void OnTopologyReady(IMFMediaEvent pEvent)
     {
-        int hr;
+        MFError throwonhr;
         object o;
         TRACE("CPlayer::OnTopologyReady");
 
@@ -714,13 +681,12 @@ class CPlayer : COMBase, IMFAsyncCallback
 
         try
         {
-            hr = MFExtern.MFGetService(
+            throwonhr = MFExtern.MFGetService(
                 m_pSession,
                 MFServices.MR_VIDEO_RENDER_SERVICE,
                 typeof(IMFVideoDisplayControl).GUID,
                 out o
                 );
-            MFError.ThrowExceptionForHR(hr);
 
             m_pVideoDisplay = o as IMFVideoDisplayControl;
         }
@@ -735,7 +701,7 @@ class CPlayer : COMBase, IMFAsyncCallback
         }
         catch (Exception ce)
         {
-            hr = Marshal.GetHRForException(ce);
+            HResult hr = (HResult)Marshal.GetHRForException(ce);
             NotifyError(hr);
         }
 
@@ -817,13 +783,12 @@ class CPlayer : COMBase, IMFAsyncCallback
         IMFStreamDescriptor pSourceSD = null;
         IMFTopologyNode pSourceNode = null;
 
-        int hr;
+        MFError throwonhr;
         Guid majorType;
         bool fSelected = false;
 
         // Get the stream descriptor for this stream.
-        hr = pSourcePD.GetStreamDescriptorByIndex(iStream, out fSelected, out pSourceSD);
-        MFError.ThrowExceptionForHR(hr);
+        throwonhr = pSourcePD.GetStreamDescriptorByIndex(iStream, out fSelected, out pSourceSD);
 
         // First check if the stream is selected by default. If not, ignore it.
         // More sophisticated applications can change the default selections.
@@ -835,8 +800,7 @@ class CPlayer : COMBase, IMFAsyncCallback
                 CreateSourceStreamNode(pSource, pSourcePD, pSourceSD, out pSourceNode);
 
                 // Add the source node to the topology.
-                hr = pTopology.AddNode(pSourceNode);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = pTopology.AddNode(pSourceNode);
 
                 // Get the major media type for the stream.
                 GetStreamType(pSourceSD, out majorType);
@@ -884,23 +848,19 @@ class CPlayer : COMBase, IMFAsyncCallback
         out IMFTopologyNode ppNode
         )
     {
-        int hr;
+        MFError throwonhr;
 
         // Create the source-stream node. 
-        hr = MFExtern.MFCreateTopologyNode(MFTopologyType.SourcestreamNode, out ppNode);
-        MFError.ThrowExceptionForHR(hr);
+        throwonhr = MFExtern.MFCreateTopologyNode(MFTopologyType.SourcestreamNode, out ppNode);
 
         // Set attribute: Pointer to the media source.
-        hr = ppNode.SetUnknown(MFAttributesClsid.MF_TOPONODE_SOURCE, pSource);
-        MFError.ThrowExceptionForHR(hr);
+        throwonhr = ppNode.SetUnknown(MFAttributesClsid.MF_TOPONODE_SOURCE, pSource);
 
         // Set attribute: Pointer to the presentation descriptor.
-        hr = ppNode.SetUnknown(MFAttributesClsid.MF_TOPONODE_PRESENTATION_DESCRIPTOR, pSourcePD);
-        MFError.ThrowExceptionForHR(hr);
+        throwonhr = ppNode.SetUnknown(MFAttributesClsid.MF_TOPONODE_PRESENTATION_DESCRIPTOR, pSourcePD);
 
         // Set attribute: Pointer to the stream descriptor.
-        hr = ppNode.SetUnknown(MFAttributesClsid.MF_TOPONODE_STREAM_DESCRIPTOR, pSourceSD);
-        MFError.ThrowExceptionForHR(hr);
+        throwonhr = ppNode.SetUnknown(MFAttributesClsid.MF_TOPONODE_STREAM_DESCRIPTOR, pSourceSD);
     }
 
 
@@ -930,22 +890,19 @@ class CPlayer : COMBase, IMFAsyncCallback
         IMFActivate pRendererActivate = null;
 
         // Create a downstream node.
-        int hr = MFExtern.MFCreateTopologyNode(MFTopologyType.OutputNode, out pOutputNode);
-        MFError.ThrowExceptionForHR(hr);
+        MFError throwonhr;
+        throwonhr = MFExtern.MFCreateTopologyNode(MFTopologyType.OutputNode, out pOutputNode);
 
         try
         {
             // Create an IMFActivate object for the video renderer.
-            hr = MFExtern.MFCreateVideoRendererActivate(hVideoWindow, out pRendererActivate);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = MFExtern.MFCreateVideoRendererActivate(hVideoWindow, out pRendererActivate);
 
             // Set the IActivate object on the output node.
-            hr = pOutputNode.SetObject(pRendererActivate);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = pOutputNode.SetObject(pRendererActivate);
 
             // Add the output node to the topology.
-            hr = pTopology.AddNode(pOutputNode);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = pTopology.AddNode(pOutputNode);
 
             // Connect the source to the output.
             ConnectSourceToOutput(pTopology, pSourceNode, pOutputNode, clsidTransform);
@@ -980,22 +937,19 @@ class CPlayer : COMBase, IMFAsyncCallback
         IMFActivate pRendererActivate = null;
 
         // Create a downstream node.
-        int hr = MFExtern.MFCreateTopologyNode(MFTopologyType.OutputNode, out pOutputNode);
-        MFError.ThrowExceptionForHR(hr);
+        MFError throwonhr;
+        throwonhr = MFExtern.MFCreateTopologyNode(MFTopologyType.OutputNode, out pOutputNode);
 
         try
         {
             // Create an IMFActivate object for the audio renderer.
-            hr = MFExtern.MFCreateAudioRendererActivate(out pRendererActivate);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = MFExtern.MFCreateAudioRendererActivate(out pRendererActivate);
 
             // Set the IActivate object on the output node.
-            hr = pOutputNode.SetObject(pRendererActivate);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = pOutputNode.SetObject(pRendererActivate);
 
             // Add the output node to the topology.
-            hr = pTopology.AddNode(pOutputNode);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = pTopology.AddNode(pOutputNode);
             ConnectSourceToOutput(pTopology, pSourceNode, pOutputNode, clsidTransform);
         }
         finally
@@ -1024,22 +978,20 @@ class CPlayer : COMBase, IMFAsyncCallback
         Guid clsidTransform
         )
     {
-        int hr;
+        MFError throwonhr;
 
         if (clsidTransform == Guid.Empty)
         {
             // There is no effect specified, so connect the source node
             // directly to the output node.
-            hr = pSourceNode.ConnectOutput(0, pOutputNode, 0);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = pSourceNode.ConnectOutput(0, pOutputNode, 0);
         }
         else
         {
             IMFTopologyNode pTransformNode = null;
 
             // Create a transform node.
-            hr = MFExtern.MFCreateTopologyNode(MFTopologyType.TransformNode, out pTransformNode);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = MFExtern.MFCreateTopologyNode(MFTopologyType.TransformNode, out pTransformNode);
 
             if (clsidTransform == m_VideoEffect)
             {
@@ -1053,20 +1005,16 @@ class CPlayer : COMBase, IMFAsyncCallback
             try
             {
                 // Set the CLSID of the transform.
-                hr = pTransformNode.SetGUID(MFAttributesClsid.MF_TOPONODE_TRANSFORM_OBJECTID, clsidTransform);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = pTransformNode.SetGUID(MFAttributesClsid.MF_TOPONODE_TRANSFORM_OBJECTID, clsidTransform);
 
                 // Add the transform node to the topology.
-                hr = pTopology.AddNode(pTransformNode);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = pTopology.AddNode(pTransformNode);
 
                 // Connect the source node to the transform node.
-                hr = pSourceNode.ConnectOutput(0, pTransformNode, 0);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = pSourceNode.ConnectOutput(0, pTransformNode, 0);
 
                 // Connect the transform node to the output node.
-                hr = pTransformNode.ConnectOutput(0, pOutputNode, 0);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = pTransformNode.ConnectOutput(0, pOutputNode, 0);
             }
             finally
             {
@@ -1088,21 +1036,19 @@ class CPlayer : COMBase, IMFAsyncCallback
 
     void GetStreamType(IMFStreamDescriptor pSourceSD, out Guid pMajorType)
     {
-        int hr;
+        MFError throwonhr;
         Debug.Assert(pSourceSD != null);
         //Debug.Assert(pMajorType != null);
 
         IMFMediaTypeHandler pHandler;
 
         // Get the media type handler for the stream.
-        hr = pSourceSD.GetMediaTypeHandler(out pHandler);
-        MFError.ThrowExceptionForHR(hr);
+        throwonhr = pSourceSD.GetMediaTypeHandler(out pHandler);
 
         try
         {
             // Get the major media type.
-            hr = pHandler.GetMajorType(out pMajorType);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = pHandler.GetMajorType(out pMajorType);
         }
         finally
         {

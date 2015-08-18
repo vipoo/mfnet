@@ -35,7 +35,7 @@ namespace MFT_AudioDelayAsync
     {
         #region Overrides
 
-        override protected int OnCheckInputType(IMFMediaType pmt)
+        override protected HResult OnCheckInputType(IMFMediaType pmt)
         {
             // We only check to see if the type is valid as an input type.  We
             // do NOT check if it is consistent with the current output type.
@@ -44,7 +44,7 @@ namespace MFT_AudioDelayAsync
             // caught and handled if/when the type actually gets set (see 
             // MySetInput).
 
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             hr = ValidatePCMAudioType(pmt);
 
@@ -66,7 +66,7 @@ namespace MFT_AudioDelayAsync
         }
         override protected void OnProcessSample(IMFSample pInputSample, bool Discontinuity, int InputMessageNumber)
         {
-            int hr = S_Ok;
+            MFError throwonhr;
 
             // Set the Discontinuity flag on the sample that's going to OutputSample.
             HandleDiscontinuity(Discontinuity, pInputSample);
@@ -80,14 +80,12 @@ namespace MFT_AudioDelayAsync
             IMFMediaBuffer pInputBuffer;
             // Convert to a single contiguous buffer.
             // NOTE: This does not cause a copy unless there are multiple buffers
-            hr = pInputSample.ConvertToContiguousBuffer(out pInputBuffer);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = pInputSample.ConvertToContiguousBuffer(out pInputBuffer);
 
             try
             {
                 // Lock the input buffer.
-                hr = pInputBuffer.Lock(out pbInputData, out cb, out cbInputLength);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = pInputBuffer.Lock(out pbInputData, out cb, out cbInputLength);
 
                 // Round to the next lowest multiple of nBlockAlign.
                 cbBytesProcessed = cbInputLength - (cbInputLength % m_Alignment);
@@ -96,8 +94,7 @@ namespace MFT_AudioDelayAsync
                 ProcessAudio(pbInputData, pbInputData, cbBytesProcessed / m_Alignment);
 
                 // Set the data length on the output buffer.
-                hr = pInputBuffer.SetCurrentLength(cbBytesProcessed);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = pInputBuffer.SetCurrentLength(cbBytesProcessed);
 
                 long hnsTime = 0;
 
@@ -128,7 +125,7 @@ namespace MFT_AudioDelayAsync
             }
         }
 
-        override protected int OnEnumInputTypes(int dwTypeIndex, out IMFMediaType pInputType)
+        override protected HResult OnEnumInputTypes(int dwTypeIndex, out IMFMediaType pInputType)
         {
             return CreatePartialType(dwTypeIndex, MFMediaType.Audio, m_MediaSubtypes, out pInputType);
         }
@@ -248,11 +245,10 @@ namespace MFT_AudioDelayAsync
 
             // Add some attributes to the MFTs attribute list.
             IMFAttributes ia = Attributes;
-            int hr = ia.SetUINT32(MF_AUDIODELAY_WET_DRY_MIX, DEFAULT_WET_DRY_MIX);
-            MFError.ThrowExceptionForHR(hr);
+            MFError throwonhr;
 
-            hr = ia.SetUINT32(MF_AUDIODELAY_DELAY_LENGTH, DEFAULT_DELAY);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = ia.SetUINT32(MF_AUDIODELAY_WET_DRY_MIX, DEFAULT_WET_DRY_MIX);
+            throwonhr = ia.SetUINT32(MF_AUDIODELAY_DELAY_LENGTH, DEFAULT_DELAY);
 
             m_Alignment = 0;
             m_AvgBytesPerSec = 0;
@@ -272,7 +268,7 @@ namespace MFT_AudioDelayAsync
         [ComRegisterFunctionAttribute]
         static private void DllRegisterServer(Type t)
         {
-            int hr = MFExtern.MFTRegister(
+            HResult hr = MFExtern.MFTRegister(
                 t.GUID,
                 MFTransformCategory.MFT_CATEGORY_AUDIO_EFFECT,
                 t.Name,
@@ -289,7 +285,7 @@ namespace MFT_AudioDelayAsync
         [ComUnregisterFunctionAttribute]
         static private void DllUnregisterServer(Type t)
         {
-            int hr = MFExtern.MFTUnregister(t.GUID);
+            HResult hr = MFExtern.MFTUnregister(t.GUID);
 
             // In Windows 7, MFTUnregister reports an error even if it succeeds:
             // https://social.msdn.microsoft.com/forums/windowsdesktop/en-us/7d3dc70f-8eae-4ad0-ad90-6c596cf78c80
@@ -314,7 +310,7 @@ namespace MFT_AudioDelayAsync
         {
             IMFMediaBuffer pOutputBuffer = null;
 
-            int hr = S_Ok;
+            MFError throwonhr;
             IntPtr pbOutputData = IntPtr.Zero;   // Pointer to the memory in the output buffer.
             int cbOutputLength = 0;     // Size of the output buffer.
             int cbBytesProcessed = 0;   // How much data we processed.
@@ -322,21 +318,16 @@ namespace MFT_AudioDelayAsync
             IMFSample pOutSample = null;
 
             // Allocate an output buffer.
-            hr = MFExtern.MFCreateMemoryBuffer(m_cbTailSamples, out pOutputBuffer);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = MFExtern.MFCreateMemoryBuffer(m_cbTailSamples, out pOutputBuffer);
 
             try
             {
-                hr = MFExtern.MFCreateSample(out pOutSample);
-                MFError.ThrowExceptionForHR(hr);
-
-                hr = pOutSample.AddBuffer(pOutputBuffer);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = MFExtern.MFCreateSample(out pOutSample);
+                throwonhr = pOutSample.AddBuffer(pOutputBuffer);
 
                 // Lock the output buffer.
                 int cb;
-                hr = pOutputBuffer.Lock(out pbOutputData, out cbOutputLength, out cb);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = pOutputBuffer.Lock(out pbOutputData, out cbOutputLength, out cb);
 
                 // Calculate how many audio samples we can process.
                 cbBytesProcessed = Math.Min(m_cbTailSamples, cbOutputLength);
@@ -351,19 +342,15 @@ namespace MFT_AudioDelayAsync
                 ProcessAudio(pbOutputData, pbOutputData, cbBytesProcessed / m_Alignment);
 
                 // Set the data length on the output buffer.
-                hr = pOutputBuffer.SetCurrentLength(cbBytesProcessed);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = pOutputBuffer.SetCurrentLength(cbBytesProcessed);
 
                 if (m_rtTimestamp >= 0)
                 {
                     long hnsDuration = (cbBytesProcessed / m_AvgBytesPerSec) * UNITS;
 
                     // Set the time stamp and duration on the output sample.
-                    hr = pOutSample.SetSampleTime(m_rtTimestamp);
-                    MFError.ThrowExceptionForHR(hr);
-
-                    hr = pOutSample.SetSampleDuration(hnsDuration);
-                    MFError.ThrowExceptionForHR(hr);
+                    throwonhr = pOutSample.SetSampleTime(m_rtTimestamp);
+                    throwonhr = pOutSample.SetSampleDuration(hnsDuration);
                 }
 
                 // Done.
@@ -554,9 +541,9 @@ namespace MFT_AudioDelayAsync
         /// <summary>Validate a PCM audio media type.</summary>
         /// <param name="pmt">The audio type to validate.</param>
         /// <returns>S_Ok if valid, else MF_E_INVALIDMEDIATYPE.</returns>
-        int ValidatePCMAudioType(IMFMediaType pmt)
+        HResult ValidatePCMAudioType(IMFMediaType pmt)
         {
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             hr = CheckMediaType(pmt, MFMediaType.Audio, m_MediaSubtypes);
             if (Succeeded(hr))
@@ -571,20 +558,13 @@ namespace MFT_AudioDelayAsync
                 int nBlockAlign = 0;
                 int wBitsPerSample = 0;
 
-                hr = pmt.GetUINT32(MFAttributesClsid.MF_MT_AUDIO_NUM_CHANNELS, out nChannels);
-                MFError.ThrowExceptionForHR(hr);
+                MFError throwonhr;
 
-                hr = pmt.GetUINT32(MFAttributesClsid.MF_MT_AUDIO_SAMPLES_PER_SECOND, out nSamplesPerSec);
-                MFError.ThrowExceptionForHR(hr);
-
-                hr = pmt.GetUINT32(MFAttributesClsid.MF_MT_AUDIO_AVG_BYTES_PER_SECOND, out nAvgBytesPerSec);
-                MFError.ThrowExceptionForHR(hr);
-
-                hr = pmt.GetUINT32(MFAttributesClsid.MF_MT_AUDIO_BLOCK_ALIGNMENT, out nBlockAlign);
-                MFError.ThrowExceptionForHR(hr);
-
-                hr = pmt.GetUINT32(MFAttributesClsid.MF_MT_AUDIO_BITS_PER_SAMPLE, out wBitsPerSample);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = pmt.GetUINT32(MFAttributesClsid.MF_MT_AUDIO_NUM_CHANNELS, out nChannels);
+                throwonhr = pmt.GetUINT32(MFAttributesClsid.MF_MT_AUDIO_SAMPLES_PER_SECOND, out nSamplesPerSec);
+                throwonhr = pmt.GetUINT32(MFAttributesClsid.MF_MT_AUDIO_AVG_BYTES_PER_SECOND, out nAvgBytesPerSec);
+                throwonhr = pmt.GetUINT32(MFAttributesClsid.MF_MT_AUDIO_BLOCK_ALIGNMENT, out nBlockAlign);
+                throwonhr = pmt.GetUINT32(MFAttributesClsid.MF_MT_AUDIO_BITS_PER_SAMPLE, out wBitsPerSample);
 
                 // Validate the values.
  
@@ -596,11 +576,11 @@ namespace MFT_AudioDelayAsync
                     (nAvgBytesPerSec == nSamplesPerSec * nBlockAlign)
                    )
                 {
-                    hr = S_Ok;
+                    hr = HResult.S_OK;
                 }
                 else
                 {
-                    hr = MFError.MF_E_INVALIDMEDIATYPE;
+                    hr = HResult.MF_E_INVALIDMEDIATYPE;
                 }
             }
 

@@ -31,7 +31,7 @@ namespace MF_BasicPlayback
                 case WM_APP_NOTIFY:
                     if (m.LParam != IntPtr.Zero)
                     {
-                        NotifyError("An error occurred.", (int)m.LParam);
+                        NotifyError("An error occurred.", (HResult)m.LParam);
                     }
                     else
                     {
@@ -54,7 +54,7 @@ namespace MF_BasicPlayback
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            int hr = 0;
+            HResult hr = 0;
 
             openFileDialog1.Filter = "Windows Media|*.wmv;*.wma;*.asf;*.mov|Wave|*.wav|MP3|*.mp3|All files|*.*";
 
@@ -99,7 +99,7 @@ namespace MF_BasicPlayback
 
         private void openUrlToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            int hr;
+            HResult hr;
 
             fmURL f = new fmURL();
 
@@ -224,7 +224,7 @@ namespace MF_BasicPlayback
                         {
                             Guid ClsidRotate = new Guid("AC776FB5-858F-4891-A5DC-FD01E79B5AD6");
                             int i;
-                            int hr;
+                            HResult hr;
                             hr = ia.GetUINT32(ClsidRotate, out i);
                             if (hr >= 0)
                             {
@@ -308,11 +308,12 @@ namespace MF_BasicPlayback
             }
         }
 
-        void NotifyError(string sErrorMessage, int hrErr)
+        void NotifyError(string sErrorMessage, HResult hrErr)
         {
             string s;
+            const int REGDB_E_CLASSNOTREG = unchecked((int)0x80040154);
 
-            if (hrErr != unchecked((int)0x80040154))
+            if (hrErr != (HResult)REGDB_E_CLASSNOTREG)
             {
                 s = string.Format("{0} (HRESULT = 0x{1:x} {2})", sErrorMessage, hrErr, MFError.GetErrorText(hrErr));
             }

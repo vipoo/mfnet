@@ -40,14 +40,14 @@ namespace FrameCounterSamples
     {
         #region Overrides
 
-        override protected int OnCheckInputType(IMFMediaType pmt)
+        override protected HResult OnCheckInputType(IMFMediaType pmt)
         {
-            int hr;
+            HResult hr;
 
             // Accept any input type.
             if (OutputType == null)
             {
-                hr = S_Ok;
+                hr = HResult.S_OK;
             }
             else
             {
@@ -67,17 +67,16 @@ namespace FrameCounterSamples
             pStreamInfo.cbSize = 0;
             pStreamInfo.dwFlags = MFTOutputStreamInfoFlags.ProvidesSamples;
         }
-        protected override int OnProcessOutput(ref MFTOutputDataBuffer pOutputSamples)
+        protected override HResult OnProcessOutput(ref MFTOutputDataBuffer pOutputSamples)
         {
-            int hr;
+            HResult hr = HResult.S_OK;
 
             if (pOutputSamples.pSample == IntPtr.Zero)
             {
                 // Synchronous MFTs don't (by default) have an IMFAttributes.
                 // So I'm putting the sample number on the actual sample, just
                 // to have some place to put it.
-                hr = InputSample.SetUINT32(m_SampleCountGuid, m_iSampleCount);
-                MFError.ThrowExceptionForHR(hr);
+                MFError throwonhr = InputSample.SetUINT32(m_SampleCountGuid, m_iSampleCount);
 
                 m_iSampleCount++;
 
@@ -89,13 +88,13 @@ namespace FrameCounterSamples
             }
             else
             {
-                hr = E_InvalidArgument;
+                hr = HResult.E_INVALIDARG;
             }
 
             return hr;
         }
 
-        protected override int OnEnumInputTypes(int dwTypeIndex, out IMFMediaType pInputType)
+        protected override HResult OnEnumInputTypes(int dwTypeIndex, out IMFMediaType pInputType)
         {
             // I'd like to skip implementing this, but while some clients 
             // don't require it (PlaybackFX), some do (MEPlayer/IMFMediaEngine).  
@@ -139,7 +138,7 @@ namespace FrameCounterSamples
     {
         #region Overrides
 
-        override protected int OnCheckInputType(IMFMediaType pmt)
+        override protected HResult OnCheckInputType(IMFMediaType pmt)
         {
             // We only check to see if the type is valid as an input type.  We
             // do NOT check if it is consistent with the current output type.
@@ -148,7 +147,7 @@ namespace FrameCounterSamples
             // caught and handled if/when the type actually gets set (see 
             // MySetInput).
 
-            return S_Ok;
+            return HResult.S_OK;
         }
         override protected void OnGetInputStreamInfo(ref MFTInputStreamInfo pStreamInfo)
         {
@@ -167,8 +166,7 @@ namespace FrameCounterSamples
             // could happen here if m_ThreadCount > 1.  If I really
             // needed to support multiple threads here, I would
             // probably copy the m_Slims.Wait() logic from OutputSample.
-            int hr = Attributes.SetUINT32(m_SampleCountGuid, m_iSampleCount);
-            MFError.ThrowExceptionForHR(hr);
+            MFError throwonhr = Attributes.SetUINT32(m_SampleCountGuid, m_iSampleCount);
 
             m_iSampleCount++;
 
@@ -176,7 +174,7 @@ namespace FrameCounterSamples
             OutputSample(pInputSample, InputMessageNumber);
         }
 
-        protected override int OnEnumInputTypes(int dwTypeIndex, out IMFMediaType ppType)
+        protected override HResult OnEnumInputTypes(int dwTypeIndex, out IMFMediaType ppType)
         {
             // I'd like to skip implementing this, but while some clients 
             // don't require it (PlaybackFX), some do (MEPlayer/IMFMediaEngine).  
@@ -214,8 +212,7 @@ namespace FrameCounterSamples
         {
             Trace("FrameCounterAsync Constructor");
 
-            int hr = Attributes.SetUINT32(m_SampleCountGuid, 0);
-            MFError.ThrowExceptionForHR(hr);
+            MFError throwonhr = Attributes.SetUINT32(m_SampleCountGuid, 0);
         }
     }
 }

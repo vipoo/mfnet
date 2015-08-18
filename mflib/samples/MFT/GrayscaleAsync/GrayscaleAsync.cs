@@ -48,7 +48,7 @@ namespace MFT_GrayscaleAsync
     {
         #region Overrides
 
-        override protected int OnCheckInputType(IMFMediaType pmt)
+        override protected HResult OnCheckInputType(IMFMediaType pmt)
         {
             // We only check to see if the type is valid as an input type.  We
             // do NOT check if it is consistent with the current output type.
@@ -57,7 +57,7 @@ namespace MFT_GrayscaleAsync
             // caught and handled if/when the type actually gets set (see 
             // MySetInput).
 
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             hr = OnCheckMediaType(pmt);
 
@@ -81,7 +81,7 @@ namespace MFT_GrayscaleAsync
         }
         override protected void OnProcessSample(IMFSample pInputSample, bool Discontinuity, int InputMessageNumber)
         {
-            int hr = S_Ok;
+            MFError throwonhr;
 
             IMFMediaBuffer pInput;
 
@@ -92,8 +92,7 @@ namespace MFT_GrayscaleAsync
                 int ix;
 
                 // Returns a bool: true = interlaced, false = progressive
-                hr = pInputSample.GetUINT32(MFAttributesClsid.MFSampleExtension_Interlaced, out ix);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = pInputSample.GetUINT32(MFAttributesClsid.MFSampleExtension_Interlaced, out ix);
 
                 if (ix != 0)
                 {
@@ -109,8 +108,7 @@ namespace MFT_GrayscaleAsync
             // multiple buffers, you might be able to get (slightly) better
             // performance processing each buffer in turn rather than forcing
             // a new, full-sized buffer to get created.
-            hr = pInputSample.ConvertToContiguousBuffer(out pInput);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = pInputSample.ConvertToContiguousBuffer(out pInput);
 
             try
             {
@@ -130,14 +128,14 @@ namespace MFT_GrayscaleAsync
             }
         }
 
-        override protected int OnEnumInputTypes(int dwTypeIndex, out IMFMediaType pInputType)
+        override protected HResult OnEnumInputTypes(int dwTypeIndex, out IMFMediaType pInputType)
         {
             return CreatePartialType(dwTypeIndex, MFMediaType.Video, m_MediaSubtypes, out pInputType);
         }
 
         override protected void OnSetInputType()
         {
-            int hr = S_Ok;
+            MFError throwonhr;
 
             m_imageWidthInPixels = 0;
             m_imageHeightInPixels = 0;
@@ -154,11 +152,9 @@ namespace MFT_GrayscaleAsync
             {
                 Guid subtype;
 
-                hr = pmt.GetGUID(MFAttributesClsid.MF_MT_SUBTYPE, out subtype);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = pmt.GetGUID(MFAttributesClsid.MF_MT_SUBTYPE, out subtype);
 
-                hr = MFExtern.MFGetAttributeSize(pmt, MFAttributesClsid.MF_MT_FRAME_SIZE, out m_imageWidthInPixels, out m_imageHeightInPixels);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = MFExtern.MFGetAttributeSize(pmt, MFAttributesClsid.MF_MT_FRAME_SIZE, out m_imageWidthInPixels, out m_imageHeightInPixels);
 
                 m_videoFOURCC = new FourCC(subtype);
 
@@ -179,7 +175,7 @@ namespace MFT_GrayscaleAsync
                 }
                 else
                 {
-                    throw new COMException("Unrecognized type", E_Unexpected);
+                    throw new COMException("Unrecognized type", (int)HResult.E_UNEXPECTED);
                 }
 
                 // Calculate the image size (not including padding)
@@ -266,7 +262,7 @@ namespace MFT_GrayscaleAsync
         [ComRegisterFunctionAttribute]
         static private void DllRegisterServer(Type t)
         {
-            int hr = MFExtern.MFTRegister(
+            HResult hr = MFExtern.MFTRegister(
                 t.GUID,
                 MFTransformCategory.MFT_CATEGORY_VIDEO_EFFECT,
                 t.Name,
@@ -283,7 +279,7 @@ namespace MFT_GrayscaleAsync
         [ComUnregisterFunctionAttribute]
         static private void DllUnregisterServer(Type t)
         {
-            int hr = MFExtern.MFTUnregister(t.GUID);
+            HResult hr = MFExtern.MFTUnregister(t.GUID);
 
             // In Windows 7, MFTUnregister reports an error even if it succeeds:
             // https://social.msdn.microsoft.com/forums/windowsdesktop/en-us/7d3dc70f-8eae-4ad0-ad90-6c596cf78c80
@@ -299,9 +295,9 @@ namespace MFT_GrayscaleAsync
         /// </summary>
         /// <param name="pmt">The media type to validate.</param>
         /// <returns>S_Ok or MF_E_INVALIDTYPE.</returns>
-        private int OnCheckMediaType(IMFMediaType pmt)
+        private HResult OnCheckMediaType(IMFMediaType pmt)
         {
-            int hr;
+            HResult hr;
 
             // Check the Major and Subtype
             hr = CheckMediaType(pmt, MFMediaType.Video, m_MediaSubtypes);
@@ -312,8 +308,7 @@ namespace MFT_GrayscaleAsync
                 // Video must be progressive frames.
                 m_MightBeInterlaced = false;
 
-                hr = pmt.GetUINT32(MFAttributesClsid.MF_MT_INTERLACE_MODE, out interlace);
-                MFError.ThrowExceptionForHR(hr);
+                MFError throwonhr = pmt.GetUINT32(MFAttributesClsid.MF_MT_INTERLACE_MODE, out interlace);
 
                 MFVideoInterlaceMode im = (MFVideoInterlaceMode)interlace;
 
@@ -323,7 +318,7 @@ namespace MFT_GrayscaleAsync
                     // If the type MIGHT be interlaced, we'll accept it.
                     if (im != MFVideoInterlaceMode.MixedInterlaceOrProgressive)
                     {
-                        hr = MFError.MF_E_INVALIDTYPE;
+                        hr = HResult.MF_E_INVALIDTYPE;
                     }
                     else
                     {
@@ -354,7 +349,7 @@ namespace MFT_GrayscaleAsync
                 if ((width > int.MaxValue / 2) ||
                     (width * 2 > int.MaxValue / height))
                 {
-                    throw new COMException("Bad size", E_InvalidArgument);
+                    throw new COMException("Bad size", (int)HResult.E_INVALIDARG);
                 }
 
                 // 16 bpp
@@ -366,7 +361,7 @@ namespace MFT_GrayscaleAsync
                 if ((height / 2 > int.MaxValue - height) ||
                     ((height + height / 2) > int.MaxValue / width))
                 {
-                    throw new COMException("Bad size", E_InvalidArgument);
+                    throw new COMException("Bad size", (int)HResult.E_INVALIDARG);
                 }
 
                 // 12 bpp
@@ -374,7 +369,7 @@ namespace MFT_GrayscaleAsync
             }
             else
             {
-                throw new COMException("Unrecognized type", E_Fail);
+                throw new COMException("Unrecognized type", (int)HResult.E_FAIL);
             }
 
             return pcbImage;
@@ -401,12 +396,11 @@ namespace MFT_GrayscaleAsync
                 }
                 else
                 {
-                    throw new COMException("Transform type not set", E_Unexpected);
+                    throw new COMException("Transform type not set", (int)HResult.E_UNEXPECTED);
                 }
 
                 // Set the data size on the output buffer.
-                int hr = pIn.SetCurrentLength(m_cbImageSize);
-                MFError.ThrowExceptionForHR(hr);
+                MFError throwonhr = pIn.SetCurrentLength(m_cbImageSize);
             }
             finally
             {
@@ -416,20 +410,18 @@ namespace MFT_GrayscaleAsync
 
         private void Lockit(IMFMediaBuffer pOut, out IMF2DBuffer pOut2D, out int lDestStride, out IntPtr pDest)
         {
-            int hr;
+            MFError throwonhr;
 
             pOut2D = pOut as IMF2DBuffer;
             if (pOut2D != null)
             {
-                hr = pOut2D.Lock2D(out pDest, out lDestStride);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = pOut2D.Lock2D(out pDest, out lDestStride);
             }
             else
             {
                 int ml;
                 int cb;
-                hr = pOut.Lock(out pDest, out ml, out cb);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = pOut.Lock(out pDest, out ml, out cb);
                 lDestStride = m_lStrideIfContiguous;
             }
         }
@@ -438,17 +430,16 @@ namespace MFT_GrayscaleAsync
         {
             if (pSrc != IntPtr.Zero)
             {
-                int hr;
+                MFError throwonhr;
 
                 if (pIn2D != null)
                 {
-                    hr = pIn2D.Unlock2D();
+                    throwonhr = pIn2D.Unlock2D();
                 }
                 else
                 {
-                    hr = pIn.Unlock();
+                    throwonhr = pIn.Unlock();
                 }
-                MFError.ThrowExceptionForHR(hr);
             }
         }
 

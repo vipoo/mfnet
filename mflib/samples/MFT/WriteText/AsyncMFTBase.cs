@@ -60,7 +60,7 @@ namespace MediaFoundation.Transform
     public interface IPersist
     {
         [PreserveSig]
-        int GetClassID(out Guid pClassID);
+        HResult GetClassID(out Guid pClassID);
     }
 
     abstract public class AsyncMFTBase : COMBase, IMFTransform, IMFMediaEventGenerator, IMFShutdown, IPersist, ICustomQueryInterface
@@ -182,7 +182,7 @@ namespace MediaFoundation.Transform
         /// <remarks>For async MFTs, you should NOT check to see if a 
         /// proposed input type is compatible with the currently-set output 
         /// type, just whether the specified type is a valid input type.</remarks>
-        abstract protected int OnCheckInputType(IMFMediaType pmt);
+        abstract protected HResult OnCheckInputType(IMFMediaType pmt);
         /// <summary>
         /// Return settings to describe input stream
         /// (see IMFTransform::GetInputStreamInfo).
@@ -228,9 +228,9 @@ namespace MediaFoundation.Transform
         /// type must exactly equal the value returned from the virtual
         /// CreateOutputFromInput.  Override as  necessary.
         /// </remarks>
-        virtual protected int OnCheckOutputType(IMFMediaType pmt)
+        virtual protected HResult OnCheckOutputType(IMFMediaType pmt)
         {
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             // If the input type is set, see if they match.
             if (m_pInputType != null)
@@ -249,7 +249,7 @@ namespace MediaFoundation.Transform
             else
             {
                 // Input type is not set.
-                hr = MFError.MF_E_TRANSFORM_TYPE_NOT_SET;
+                hr = HResult.MF_E_TRANSFORM_TYPE_NOT_SET;
             }
 
             return hr;
@@ -282,10 +282,10 @@ namespace MediaFoundation.Transform
         /// <remarks>This method is virtual since it is (sort of) optional.
         /// For example, if a client *knows* what types the MFT supports, it can
         /// just set it.  Not all clients support MFTs that won't enum types.</remarks>
-        virtual protected int OnEnumInputTypes(int dwTypeIndex, out IMFMediaType pInputType)
+        virtual protected HResult OnEnumInputTypes(int dwTypeIndex, out IMFMediaType pInputType)
         {
             pInputType = null;
-            return E_NotImplemented;
+            return HResult.E_NOTIMPL;
         }
 
         /// <summary>
@@ -297,9 +297,9 @@ namespace MediaFoundation.Transform
         /// <remarks>By default, assume the input type must be set first, and 
         /// that the output type is the single entry returned from the virtual 
         /// CreateOutputFromInput.  Override as needed.</remarks>
-        virtual protected int OnEnumOutputTypes(int dwTypeIndex, out IMFMediaType pOutputType)
+        virtual protected HResult OnEnumOutputTypes(int dwTypeIndex, out IMFMediaType pOutputType)
         {
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             // If the input type is specified, the output type must be the same.
             if (m_pInputType != null)
@@ -312,13 +312,13 @@ namespace MediaFoundation.Transform
                 else
                 {
                     pOutputType = null;
-                    hr = MFError.MF_E_NO_MORE_TYPES;
+                    hr = HResult.MF_E_NO_MORE_TYPES;
                 }
             }
             else
             {
                 pOutputType = null;
-                hr = MFError.MF_E_TRANSFORM_TYPE_NOT_SET;
+                hr = HResult.MF_E_TRANSFORM_TYPE_NOT_SET;
             }
 
             return hr;
@@ -415,22 +415,16 @@ namespace MediaFoundation.Transform
             m_FormatEvent = new SemaphoreSlim(0, m_ThreadCount);
 
             // Build the IMFAttributes to use for IMFTransform::GetAttributes.
-            int hr = MFExtern.MFCreateAttributes(out m_pAttributes, 3);
-            MFError.ThrowExceptionForHR(hr);
+            MFError throwonhr;
 
-            hr = m_pAttributes.SetUINT32(MFAttributesClsid.MF_TRANSFORM_ASYNC, 1);
-            MFError.ThrowExceptionForHR(hr);
-
-            hr = m_pAttributes.SetUINT32(MFAttributesClsid.MF_TRANSFORM_ASYNC_UNLOCK, 0);
-            MFError.ThrowExceptionForHR(hr);
-
-            hr = m_pAttributes.SetUINT32(MFAttributesClsid.MFT_SUPPORT_DYNAMIC_FORMAT_CHANGE, 1);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = MFExtern.MFCreateAttributes(out m_pAttributes, 3);
+            throwonhr = m_pAttributes.SetUINT32(MFAttributesClsid.MF_TRANSFORM_ASYNC, 1);
+            throwonhr = m_pAttributes.SetUINT32(MFAttributesClsid.MF_TRANSFORM_ASYNC_UNLOCK, 0);
+            throwonhr = m_pAttributes.SetUINT32(MFAttributesClsid.MFT_SUPPORT_DYNAMIC_FORMAT_CHANGE, 1);
 
             // Used for IMFMediaEventGenerator support.  All 
             // METransformNeedInput, METransformHaveOutput, etc go thru here.
-            hr = MFExtern.MFCreateEventQueue(out m_events);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = MFExtern.MFCreateEventQueue(out m_events);
 
             // Start the processing threads.
             for (int x = 0; x < iThreads; x++)
@@ -457,14 +451,14 @@ namespace MediaFoundation.Transform
 
         #region IMFTransform methods
 
-        public int GetStreamLimits(
+        public HResult GetStreamLimits(
             MFInt pdwInputMinimum,
             MFInt pdwInputMaximum,
             MFInt pdwOutputMinimum,
             MFInt pdwOutputMaximum
         )
         {
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             try
             {
@@ -498,18 +492,18 @@ namespace MediaFoundation.Transform
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
             }
 
             return CheckReturn(hr);
         }
 
-        public int GetStreamCount(
+        public HResult GetStreamCount(
             MFInt pcInputStreams,
             MFInt pcOutputStreams
         )
         {
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             try
             {
@@ -534,20 +528,20 @@ namespace MediaFoundation.Transform
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
             }
 
             return hr; // CheckReturn(hr);
         }
 
-        public int GetStreamIDs(
+        public HResult GetStreamIDs(
             int dwInputIDArraySize,
             int[] pdwInputIDs,
             int dwOutputIDArraySize,
             int[] pdwOutputIDs
         )
         {
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             try
             {
@@ -562,18 +556,18 @@ namespace MediaFoundation.Transform
                     // Since our stream counts are fixed, we don't need
                     // to implement this method.  As a result, our input
                     // and output streams are always #0.
-                    hr = E_NotImplemented;
+                    hr = HResult.E_NOTIMPL;
                 }
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
             }
 
             return hr; // CheckReturn(hr);
         }
 
-        public int GetInputStreamInfo(
+        public HResult GetInputStreamInfo(
             int dwInputStreamID,
             out MFTInputStreamInfo pStreamInfo
         )
@@ -581,7 +575,7 @@ namespace MediaFoundation.Transform
             // Overwrites everything with zeros.
             pStreamInfo = new MFTInputStreamInfo();
 
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             try
             {
@@ -599,13 +593,13 @@ namespace MediaFoundation.Transform
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
             }
 
             return CheckReturn(hr);
         }
 
-        public int GetOutputStreamInfo(
+        public HResult GetOutputStreamInfo(
             int dwOutputStreamID,
             out MFTOutputStreamInfo pStreamInfo
         )
@@ -613,7 +607,7 @@ namespace MediaFoundation.Transform
             // Overwrites everything with zeros.
             pStreamInfo = new MFTOutputStreamInfo();
 
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             try
             {
@@ -631,19 +625,19 @@ namespace MediaFoundation.Transform
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
             }
 
             return CheckReturn(hr);
         }
 
-        public int GetAttributes(
+        public HResult GetAttributes(
             out IMFAttributes pAttributes
         )
         {
             pAttributes = null;
 
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             try
             {
@@ -662,20 +656,20 @@ namespace MediaFoundation.Transform
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
             }
 
             return hr; // CheckReturn(hr);
         }
 
-        public int GetInputStreamAttributes(
+        public HResult GetInputStreamAttributes(
             int dwInputStreamID,
             out IMFAttributes pAttributes
         )
         {
             pAttributes = null;
 
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             try
             {
@@ -686,25 +680,25 @@ namespace MediaFoundation.Transform
 
                 lock (m_TransformLockObject)
                 {
-                    hr = E_NotImplemented;
+                    hr = HResult.E_NOTIMPL;
                 }
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
             }
 
             return hr; // CheckReturn(hr);
         }
 
-        public int GetOutputStreamAttributes(
+        public HResult GetOutputStreamAttributes(
             int dwOutputStreamID,
             out IMFAttributes pAttributes
         )
         {
             pAttributes = null;
 
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             try
             {
@@ -715,22 +709,22 @@ namespace MediaFoundation.Transform
 
                 lock (m_TransformLockObject)
                 {
-                    hr = E_NotImplemented;
+                    hr = HResult.E_NOTIMPL;
                 }
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
             }
 
             return hr; // CheckReturn(hr);
         }
 
-        public int DeleteInputStream(
+        public HResult DeleteInputStream(
             int dwStreamID
         )
         {
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             try
             {
@@ -742,23 +736,23 @@ namespace MediaFoundation.Transform
                 lock (m_TransformLockObject)
                 {
                     // Removing streams not supported.
-                    hr = E_NotImplemented;
+                    hr = HResult.E_NOTIMPL;
                 }
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
             }
 
             return CheckReturn(hr);
         }
 
-        public int AddInputStreams(
+        public HResult AddInputStreams(
             int cStreams,
             int[] adwStreamIDs
         )
         {
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             try
             {
@@ -769,18 +763,18 @@ namespace MediaFoundation.Transform
                 lock (m_TransformLockObject)
                 {
                     // Adding streams not supported.
-                    hr = E_NotImplemented;
+                    hr = HResult.E_NOTIMPL;
                 }
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
             }
 
             return CheckReturn(hr);
         }
 
-        public int GetInputAvailableType(
+        public HResult GetInputAvailableType(
             int dwInputStreamID,
             int dwTypeIndex, // 0-based
             out IMFMediaType ppType
@@ -788,7 +782,7 @@ namespace MediaFoundation.Transform
         {
             ppType = null;
 
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             try
             {
@@ -810,13 +804,13 @@ namespace MediaFoundation.Transform
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
             }
 
             return CheckReturn(hr);
         }
 
-        public int GetOutputAvailableType(
+        public HResult GetOutputAvailableType(
             int dwOutputStreamID,
             int dwTypeIndex, // 0-based
             out IMFMediaType ppType
@@ -824,7 +818,7 @@ namespace MediaFoundation.Transform
         {
             ppType = null;
 
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             try
             {
@@ -843,19 +837,19 @@ namespace MediaFoundation.Transform
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
             }
 
             return CheckReturn(hr);
         }
 
-        public int SetInputType(
+        public HResult SetInputType(
             int dwInputStreamID,
             IMFMediaType pType,
             MFTSetTypeFlags dwFlags
         )
         {
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             try
             {
@@ -881,7 +875,7 @@ namespace MediaFoundation.Transform
                         if (m_StreamIsActive)
                         {
                             // Can't set input type to null while actively streaming.
-                            hr = MFError.MF_E_INVALIDMEDIATYPE;
+                            hr = HResult.MF_E_INVALIDMEDIATYPE;
                         }
                     }
                     if (Succeeded(hr))
@@ -916,7 +910,7 @@ namespace MediaFoundation.Transform
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
             }
             //finally
             {
@@ -929,13 +923,13 @@ namespace MediaFoundation.Transform
             return CheckReturn(hr);
         }
 
-        public int SetOutputType(
+        public HResult SetOutputType(
             int dwOutputStreamID,
             IMFMediaType pType,
             MFTSetTypeFlags dwFlags
         )
         {
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             try
             {
@@ -977,7 +971,7 @@ namespace MediaFoundation.Transform
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
             }
             //finally
             {
@@ -990,14 +984,14 @@ namespace MediaFoundation.Transform
             return CheckReturn(hr);
         }
 
-        public int GetInputCurrentType(
+        public HResult GetInputCurrentType(
             int dwInputStreamID,
             out IMFMediaType ppType
         )
         {
             ppType = null;
 
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             try
             {
@@ -1015,26 +1009,26 @@ namespace MediaFoundation.Transform
                     else
                     {
                         // Type is not set
-                        hr = MFError.MF_E_TRANSFORM_TYPE_NOT_SET;
+                        hr = HResult.MF_E_TRANSFORM_TYPE_NOT_SET;
                     }
                 }
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
             }
 
             return CheckReturn(hr);
         }
 
-        public int GetOutputCurrentType(
+        public HResult GetOutputCurrentType(
             int dwOutputStreamID,
             out IMFMediaType ppType
         )
         {
             ppType = null;
 
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             try
             {
@@ -1058,26 +1052,26 @@ namespace MediaFoundation.Transform
                     else
                     {
                         // No output type set
-                        hr = MFError.MF_E_TRANSFORM_TYPE_NOT_SET;
+                        hr = HResult.MF_E_TRANSFORM_TYPE_NOT_SET;
                     }
                 }
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
             }
 
             return CheckReturn(hr);
         }
 
-        public int GetInputStatus(
+        public HResult GetInputStatus(
             int dwInputStreamID,
             out MFTInputStatusFlags pdwFlags
         )
         {
             pdwFlags = MFTInputStatusFlags.None;
 
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             try
             {
@@ -1096,19 +1090,19 @@ namespace MediaFoundation.Transform
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
             }
 
             return CheckReturn(hr);
         }
 
-        public int GetOutputStatus(
+        public HResult GetOutputStatus(
             out MFTOutputStatusFlags pdwFlags
         )
         {
             pdwFlags = MFTOutputStatusFlags.None;
 
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             try
             {
@@ -1126,18 +1120,18 @@ namespace MediaFoundation.Transform
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
             }
 
             return CheckReturn(hr);
         }
 
-        public int SetOutputBounds(
+        public HResult SetOutputBounds(
             long hnsLowerBound,
             long hnsUpperBound
         )
         {
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             try
             {
@@ -1148,23 +1142,23 @@ namespace MediaFoundation.Transform
                 lock (m_TransformLockObject)
                 {
                     // Output bounds not supported
-                    hr = E_NotImplemented;
+                    hr = HResult.E_NOTIMPL;
                 }
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
             }
 
             return CheckReturn(hr);
         }
 
-        public int ProcessEvent(
+        public HResult ProcessEvent(
             int dwInputStreamID,
             IMFMediaEvent pEvent
         )
         {
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             try
             {
@@ -1175,12 +1169,12 @@ namespace MediaFoundation.Transform
                 lock (m_TransformLockObject)
                 {
                     // Events not supported.
-                    hr = E_NotImplemented;
+                    hr = HResult.E_NOTIMPL;
                 }
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
             }
             //finally
             {
@@ -1193,12 +1187,12 @@ namespace MediaFoundation.Transform
             return CheckReturn(hr);
         }
 
-        public int ProcessMessage(
+        public HResult ProcessMessage(
             MFTMessageType eMessage,
             IntPtr ulParam
         )
         {
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             try
             {
@@ -1284,7 +1278,7 @@ namespace MediaFoundation.Transform
                             // The pipeline should never send this message unless the MFT
                             // has the MF_SA_D3D_AWARE attribute set to TRUE. However, if we
                             // do get this message, it's invalid and we don't implement it.
-                            hr = E_NotImplemented;
+                            hr = HResult.E_NOTIMPL;
                             break;
 
                         default:
@@ -1292,26 +1286,26 @@ namespace MediaFoundation.Transform
                             Debug.Fail("Unknown message type: " + eMessage.ToString());
 #endif
                             // The spec doesn't say to do this, but I do it anyway.
-                            hr = S_False;
+                            hr = HResult.S_FALSE;
                             break;
                     }
                 }
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
             }
 
             return CheckReturn(hr);
         }
 
-        public int ProcessInput(
+        public HResult ProcessInput(
             int dwInputStreamID,
             IMFSample pSample,
             int dwFlags
         )
         {
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             try
             {
@@ -1325,13 +1319,13 @@ namespace MediaFoundation.Transform
                     if (dwFlags != 0)
                     {
                         // Invalid flags
-                        hr = E_InvalidArgument;
+                        hr = HResult.E_INVALIDARG;
                     }
                 }
                 else
                 {
                     // No input sample provided
-                    hr = E_Pointer;
+                    hr = HResult.E_POINTER;
                 }
 
                 if (Succeeded(hr))
@@ -1350,7 +1344,7 @@ namespace MediaFoundation.Transform
                             }
                             else
                             {
-                                hr = MFError.MF_E_NOTACCEPTING;
+                                hr = HResult.MF_E_NOTACCEPTING;
                             }
                         }
                     }
@@ -1358,13 +1352,13 @@ namespace MediaFoundation.Transform
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
             }
 
             return CheckReturn(hr);
         }
 
-        public int ProcessOutput(
+        public HResult ProcessOutput(
             MFTProcessOutputFlags dwFlags,
             int cOutputBufferCount,
             MFTOutputDataBuffer[] pOutputSamples, // one per stream
@@ -1373,7 +1367,7 @@ namespace MediaFoundation.Transform
         {
             pdwStatus = ProcessOutputStatus.None;
 
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             try
             {
@@ -1385,12 +1379,12 @@ namespace MediaFoundation.Transform
 
                 if (dwFlags != MFTProcessOutputFlags.None || cOutputBufferCount != 1)
                 {
-                    hr = E_InvalidArgument;
+                    hr = HResult.E_INVALIDARG;
                 }
 
                 if (Succeeded(hr) && pOutputSamples == null)
                 {
-                    hr = E_Pointer;
+                    hr = HResult.E_POINTER;
                 }
 
                 // pOutputSamples[0].pSample may be null or not depending
@@ -1412,7 +1406,7 @@ namespace MediaFoundation.Transform
                             }
                             else
                             {
-                                hr = E_Unexpected;
+                                hr = HResult.E_UNEXPECTED;
                             }
                         }
                     }
@@ -1420,7 +1414,7 @@ namespace MediaFoundation.Transform
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
             }
 
             return CheckReturn(hr);
@@ -1434,9 +1428,9 @@ namespace MediaFoundation.Transform
         // When we want to send an event back to the client, we just call
         // m_events.QueueEvent, and let m_events handle the plumbing.
 
-        public int BeginGetEvent(IMFAsyncCallback pCallback, object o)
+        public HResult BeginGetEvent(IMFAsyncCallback pCallback, object o)
         {
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             try
             {
@@ -1444,7 +1438,7 @@ namespace MediaFoundation.Transform
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
             }
             //finally
             {
@@ -1457,10 +1451,10 @@ namespace MediaFoundation.Transform
             return CheckReturn(hr);
         }
 
-        public int EndGetEvent(IMFAsyncResult pResult, out IMFMediaEvent ppEvent)
+        public HResult EndGetEvent(IMFAsyncResult pResult, out IMFMediaEvent ppEvent)
         {
             ppEvent = null;
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             try
             {
@@ -1468,7 +1462,7 @@ namespace MediaFoundation.Transform
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
             }
             //finally
             {
@@ -1481,11 +1475,11 @@ namespace MediaFoundation.Transform
             return CheckReturn(hr);
         }
 
-        public int GetEvent(MFEventFlag dwFlags, out IMFMediaEvent ppEvent)
+        public HResult GetEvent(MFEventFlag dwFlags, out IMFMediaEvent ppEvent)
         {
             ppEvent = null;
 
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             try
             {
@@ -1493,27 +1487,27 @@ namespace MediaFoundation.Transform
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
             }
 
             return CheckReturn(hr);
         }
 
-        public int QueueEvent(MediaEventType met, Guid guidExtendedType, int hrStatus, ConstPropVariant pvValue)
+        public HResult QueueEvent(MediaEventType met, Guid guidExtendedType, HResult hrStatus, ConstPropVariant pvValue)
         {
             IMFMediaEvent pEvent;
-            int hr = S_Ok;
+            MFError throwonhr;
+            HResult hr = HResult.S_OK;
 
             try
             {
-                hr = MFExtern.MFCreateMediaEvent(met, Guid.Empty, S_Ok, null, out pEvent);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = MFExtern.MFCreateMediaEvent(met, Guid.Empty, HResult.S_OK, null, out pEvent);
 
                 MyQueueEvent(pEvent);
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
             }
 
             return CheckReturn(hr);
@@ -1523,9 +1517,9 @@ namespace MediaFoundation.Transform
 
         #region IMFShutdown methods
 
-        public int GetShutdownStatus(out MFShutdownStatus pStatus)
+        public HResult GetShutdownStatus(out MFShutdownStatus pStatus)
         {
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
             pStatus = 0; // Have to set it to something
 
             try
@@ -1542,21 +1536,21 @@ namespace MediaFoundation.Transform
                     }
                     else
                     {
-                        hr = MFError.MF_E_INVALIDREQUEST;
+                        hr = HResult.MF_E_INVALIDREQUEST;
                     }
                 }
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
             }
 
             return CheckReturn(hr);
         }
 
-        public int Shutdown()
+        public HResult Shutdown()
         {
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             try
             {
@@ -1566,7 +1560,7 @@ namespace MediaFoundation.Transform
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
             }
 
             return CheckReturn(hr);
@@ -1576,10 +1570,10 @@ namespace MediaFoundation.Transform
 
         #region IPersist methods
 
-        public int GetClassID(out Guid pClassID)
+        public HResult GetClassID(out Guid pClassID)
         {
             pClassID = this.GetType().GUID;
-            return S_Ok;
+            return HResult.S_OK;
         }
 
         #endregion
@@ -1616,9 +1610,9 @@ namespace MediaFoundation.Transform
         /// </summary>
         /// <param name="pOutputSamples">The struct into which the output sample is written.</param>
         /// <returns>S_Ok or error.</returns>
-        private int MyProcessOutput(ref MFTOutputDataBuffer pOutputSamples)
+        private HResult MyProcessOutput(ref MFTOutputDataBuffer pOutputSamples)
         {
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             if (pOutputSamples.pSample == IntPtr.Zero)
             {
@@ -1659,12 +1653,12 @@ namespace MediaFoundation.Transform
                     // Note: OnSetOutputType can reset the output type.
                     OnSetOutputType();
 
-                    hr = MFError.MF_E_TRANSFORM_STREAM_CHANGE;
+                    hr = HResult.MF_E_TRANSFORM_STREAM_CHANGE;
                 }
             }
             else
             {
-                hr = E_InvalidArgument;
+                hr = HResult.E_INVALIDARG;
             }
 
             return hr;
@@ -1728,7 +1722,7 @@ namespace MediaFoundation.Transform
         {
             if (dwStreamID != 0)
             {
-                MFError.ThrowExceptionForHR(MFError.MF_E_INVALIDSTREAMNUMBER);
+                throw new MFException(HResult.MF_E_INVALIDSTREAMNUMBER);
             }
         }
 
@@ -1736,12 +1730,12 @@ namespace MediaFoundation.Transform
         /// Ensure both input and output media types are set.
         /// </summary>
         /// <returns>S_Ok or MFError.MF_E_TRANSFORM_TYPE_NOT_SET.</returns>
-        private int AllTypesSet()
+        private HResult AllTypesSet()
         {
             if (m_pInputType == null || m_pOutputType == null)
-                return MFError.MF_E_TRANSFORM_TYPE_NOT_SET;
+                return HResult.MF_E_TRANSFORM_TYPE_NOT_SET;
 
-            return S_Ok;
+            return HResult.S_OK;
         }
 
         /// <summary>
@@ -1753,10 +1747,10 @@ namespace MediaFoundation.Transform
         /// All the public interface methods use this to wrap their returns,
         /// which is helpful during debugging.
         /// </remarks>
-        private static int CheckReturn(int hr)
+        private static HResult CheckReturn(HResult hr)
         {
 #if DEBUG
-            if (hr != S_Ok)
+            if (hr != HResult.S_OK)
             {
                 StackTrace st = new StackTrace();
                 StackFrame sf = st.GetFrame(1);
@@ -1935,7 +1929,7 @@ namespace MediaFoundation.Transform
                 {
                     int iVal;
 
-                    int hr = m_pAttributes.GetUINT32(MFAttributesClsid.MF_TRANSFORM_ASYNC_UNLOCK, out iVal);
+                    HResult hr = m_pAttributes.GetUINT32(MFAttributesClsid.MF_TRANSFORM_ASYNC_UNLOCK, out iVal);
                     if (Succeeded(hr) && iVal != 0)
                     {
                         Trace("Unlocked!");
@@ -1943,13 +1937,13 @@ namespace MediaFoundation.Transform
                     }
                     else
                     {
-                        MFError.ThrowExceptionForHR(MFError.MF_E_TRANSFORM_ASYNC_LOCKED);
+                        throw new MFException(HResult.MF_E_TRANSFORM_ASYNC_LOCKED);
                     }
                 }
             }
             else
             {
-                MFError.ThrowExceptionForHR(MFError.MF_E_SHUTDOWN);
+                throw new MFException(HResult.MF_E_SHUTDOWN);
             }
         }
 
@@ -1958,10 +1952,9 @@ namespace MediaFoundation.Transform
         /// </summary>
         private void SendSampleReady()
         {
-            int hr;
+            MFError throwonhr;
 
-            hr = QueueEvent(MediaEventType.METransformHaveOutput, Guid.Empty, S_Ok, null);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = QueueEvent(MediaEventType.METransformHaveOutput, Guid.Empty, HResult.S_OK, null);
         }
 
         /// <summary>
@@ -1972,14 +1965,11 @@ namespace MediaFoundation.Transform
         /// to populate MF_EVENT_MFT_INPUT_STREAM_ID and queue the message.</remarks>
         private void SendStreamEvent(MediaEventType met)
         {
-            int hr;
+            MFError throwonhr;
             IMFMediaEvent pEvent;
 
-            hr = MFExtern.MFCreateMediaEvent(met, Guid.Empty, S_Ok, null, out pEvent);
-            MFError.ThrowExceptionForHR(hr);
-
-            hr = pEvent.SetUINT32(MFAttributesClsid.MF_EVENT_MFT_INPUT_STREAM_ID, 0);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = MFExtern.MFCreateMediaEvent(met, Guid.Empty, HResult.S_OK, null, out pEvent);
+            throwonhr = pEvent.SetUINT32(MFAttributesClsid.MF_EVENT_MFT_INPUT_STREAM_ID, 0);
 
             MyQueueEvent(pEvent);
 
@@ -2020,14 +2010,12 @@ namespace MediaFoundation.Transform
         private void SendMarker(IntPtr ulParam)
         {
             IMFMediaEvent pEvent;
-            int hr;
+            MFError throwonhr;
 
-            hr = MFExtern.MFCreateMediaEvent(MediaEventType.METransformMarker, Guid.Empty, S_Ok, null, out pEvent);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = MFExtern.MFCreateMediaEvent(MediaEventType.METransformMarker, Guid.Empty, HResult.S_OK, null, out pEvent);
 
             // Send back the parameter they provided.
-            hr = pEvent.SetUINT64(MFAttributesClsid.MF_EVENT_MFT_CONTEXT, ulParam.ToInt64());
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = pEvent.SetUINT64(MFAttributesClsid.MF_EVENT_MFT_CONTEXT, ulParam.ToInt64());
 
             MyQueueEvent(pEvent);
             //SafeRelease(pEvent);
@@ -2039,10 +2027,9 @@ namespace MediaFoundation.Transform
         /// <param name="pEvent"></param>
         private void MyQueueEvent(IMFMediaEvent pEvent)
         {
-            int hr = S_Ok;
+            MFError throwonhr;
 
-            hr = m_events.QueueEvent(pEvent);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = m_events.QueueEvent(pEvent);
         }
 
         #endregion
@@ -2058,8 +2045,7 @@ namespace MediaFoundation.Transform
         {
             if (Discontinuity)
             {
-                int hr = pSample.SetUINT32(MFAttributesClsid.MFSampleExtension_Discontinuity, 1);
-                MFError.ThrowExceptionForHR(hr);
+                MFError throwonhr = pSample.SetUINT32(MFAttributesClsid.MFSampleExtension_Discontinuity, 1);
             }
         }
 
@@ -2083,16 +2069,16 @@ namespace MediaFoundation.Transform
         /// <returns>S_Ok if identical, else MF_E_INVALIDTYPE.</returns>
         /// <remarks>Note that MF defines 'identical' in a unique way.  See 
         /// docs for IMFMediaType::IsEqual.</remarks>
-        protected static int IsIdentical(IMFMediaType a, IMFMediaType b)
+        protected static HResult IsIdentical(IMFMediaType a, IMFMediaType b)
         {
             // Otherwise, proposed input must be identical to output.
             MFMediaEqual flags;
-            int hr = a.IsEqual(b, out flags);
+            HResult hr = a.IsEqual(b, out flags);
 
             // IsEqual can return S_FALSE. Treat this as failure.
-            if (hr != S_Ok)
+            if (hr != HResult.S_OK)
             {
-                hr = MFError.MF_E_INVALIDTYPE;
+                hr = HResult.MF_E_INVALIDTYPE;
             }
 
             return hr;
@@ -2105,35 +2091,34 @@ namespace MediaFoundation.Transform
         /// <param name="gMajorType">MajorType to check for.</param>
         /// <param name="gSubtypes">List of SubTypes to check against.</param>
         /// <returns>S_Ok if match, else MF_E_INVALIDTYPE.</returns>
-        protected static int CheckMediaType(IMFMediaType pmt, Guid gMajorType, Guid[] gSubTypes)
+        protected static HResult CheckMediaType(IMFMediaType pmt, Guid gMajorType, Guid[] gSubTypes)
         {
             Guid major_type;
 
-            int hr = pmt.GetMajorType(out major_type);
-            MFError.ThrowExceptionForHR(hr);
+            MFError throwonhr = pmt.GetMajorType(out major_type);
+            HResult hr = HResult.S_OK;
 
             if (major_type == gMajorType)
             {
                 Guid subtype;
 
                 // Get the subtype GUID.
-                hr = pmt.GetGUID(MFAttributesClsid.MF_MT_SUBTYPE, out subtype);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = pmt.GetGUID(MFAttributesClsid.MF_MT_SUBTYPE, out subtype);
 
                 // Look for the subtype in our list of accepted types.
-                hr = MFError.MF_E_INVALIDTYPE;
+                hr = HResult.MF_E_INVALIDTYPE;
                 for (int i = 0; i < gSubTypes.Length; i++)
                 {
                     if (subtype == gSubTypes[i])
                     {
-                        hr = S_Ok;
+                        hr = HResult.S_OK;
                         break;
                     }
                 }
             }
             else
             {
-                hr = MFError.MF_E_INVALIDTYPE;
+                hr = HResult.MF_E_INVALIDTYPE;
             }
 
             return hr;
@@ -2147,25 +2132,21 @@ namespace MediaFoundation.Transform
         /// <param name="gSubTypes">Array of subtypes.</param>
         /// <param name="ppmt">Newly created media type.</param>
         /// <returns>S_Ok if valid index, else MF_E_NO_MORE_TYPES.</returns>
-        protected static int CreatePartialType(int dwTypeIndex, Guid gMajorType, Guid[] gSubTypes, out IMFMediaType ppmt)
+        protected static HResult CreatePartialType(int dwTypeIndex, Guid gMajorType, Guid[] gSubTypes, out IMFMediaType ppmt)
         {
-            int hr;
+            HResult hr = HResult.S_OK;
+            MFError throwonhr;
 
             if (dwTypeIndex < gSubTypes.Length)
             {
-                hr = MFExtern.MFCreateMediaType(out ppmt);
-                MFError.ThrowExceptionForHR(hr);
-
-                hr = ppmt.SetGUID(MFAttributesClsid.MF_MT_MAJOR_TYPE, gMajorType);
-                MFError.ThrowExceptionForHR(hr);
-
-                hr = ppmt.SetGUID(MFAttributesClsid.MF_MT_SUBTYPE, gSubTypes[dwTypeIndex]);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = MFExtern.MFCreateMediaType(out ppmt);
+                throwonhr = ppmt.SetGUID(MFAttributesClsid.MF_MT_MAJOR_TYPE, gMajorType);
+                throwonhr = ppmt.SetGUID(MFAttributesClsid.MF_MT_SUBTYPE, gSubTypes[dwTypeIndex]);
             }
             else
             {
                 ppmt = null;
-                hr = MFError.MF_E_NO_MORE_TYPES;
+                hr = HResult.MF_E_NO_MORE_TYPES;
             }
 
             return hr;
@@ -2213,16 +2194,13 @@ namespace MediaFoundation.Transform
         /// <returns>Duplicate IMFMediaType or null.</returns>
         protected static IMFMediaType CloneMediaType(IMFMediaType inType)
         {
-            int hr = S_Ok;
+            MFError throwonhr;
             IMFMediaType outType = null;
 
             if (inType != null)
             {
-                hr = MFExtern.MFCreateMediaType(out outType);
-                MFError.ThrowExceptionForHR(hr);
-
-                hr = inType.CopyAllItems(outType);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = MFExtern.MFCreateMediaType(out outType);
+                throwonhr = inType.CopyAllItems(outType);
             }
 
             return outType;

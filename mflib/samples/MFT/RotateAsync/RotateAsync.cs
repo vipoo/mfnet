@@ -41,7 +41,7 @@ namespace MFT_RotateAsync
     {
         #region Overrides
 
-        override protected int OnCheckInputType(IMFMediaType pmt)
+        override protected HResult OnCheckInputType(IMFMediaType pmt)
         {
             // We only check to see if the type is valid as an input type.  We
             // do NOT check if it is consistent with the current output type.
@@ -50,7 +50,7 @@ namespace MFT_RotateAsync
             // caught and handled if/when the type actually gets set (see 
             // MySetInput).
 
-            int hr;
+            HResult hr;
 
             hr = OnCheckMediaType(pmt);
 
@@ -74,7 +74,7 @@ namespace MFT_RotateAsync
         }
         override protected void OnProcessSample(IMFSample pInputSample, bool Discontinuity, int InputMessageNumber)
         {
-            int hr = S_Ok;
+            MFError throwonhr;
 
             IMFMediaBuffer pInput;
 
@@ -85,8 +85,7 @@ namespace MFT_RotateAsync
                 int ix;
 
                 // Returns a bool: true = interlaced, false = progressive
-                hr = pInputSample.GetUINT32(MFAttributesClsid.MFSampleExtension_Interlaced, out ix);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = pInputSample.GetUINT32(MFAttributesClsid.MFSampleExtension_Interlaced, out ix);
 
                 if (ix != 0)
                 {
@@ -114,8 +113,7 @@ namespace MFT_RotateAsync
             // multiple buffers, you might be able to get (slightly) better
             // performance processing each buffer in turn rather than forcing
             // a new, full-sized buffer to get created.
-            hr = pInputSample.ConvertToContiguousBuffer(out pInput);
-            MFError.ThrowExceptionForHR(hr);
+            throwonhr = pInputSample.ConvertToContiguousBuffer(out pInput);
 
             try
             {
@@ -135,14 +133,14 @@ namespace MFT_RotateAsync
             }
         }
 
-        override protected int OnEnumInputTypes(int dwTypeIndex, out IMFMediaType pInputType)
+        override protected HResult OnEnumInputTypes(int dwTypeIndex, out IMFMediaType pInputType)
         {
             return CreatePartialType(dwTypeIndex, MFMediaType.Video, m_MediaSubtypes, out pInputType);
         }
 
         override protected void OnSetInputType()
         {
-            int hr = S_Ok;
+            MFError throwonhr;
 
             m_imageWidthInPixels = 0;
             m_imageHeightInPixels = 0;
@@ -156,11 +154,9 @@ namespace MFT_RotateAsync
             {
                 TraceAttributes(pmt);
 
-                hr = MFExtern.MFGetAttributeSize(pmt, MFAttributesClsid.MF_MT_FRAME_SIZE, out m_imageWidthInPixels, out m_imageHeightInPixels);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = MFExtern.MFGetAttributeSize(pmt, MFAttributesClsid.MF_MT_FRAME_SIZE, out m_imageWidthInPixels, out m_imageHeightInPixels);
 
-                hr = pmt.GetUINT32(MFAttributesClsid.MF_MT_DEFAULT_STRIDE, out m_lInputStride);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = pmt.GetUINT32(MFAttributesClsid.MF_MT_DEFAULT_STRIDE, out m_lInputStride);
 
                 // Calculate the image size (not including padding)
                 m_cbImageSize = m_imageHeightInPixels * m_lInputStride;
@@ -209,15 +205,13 @@ namespace MFT_RotateAsync
 
             if (m_WasOdd)
             {
-                int hr;
+                MFError throwonhr;
                 int h, w;
 
                 // Intentionally backward
-                hr = MFExtern.MFGetAttributeSize(inType, MFAttributesClsid.MF_MT_FRAME_SIZE, out h, out w);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = MFExtern.MFGetAttributeSize(inType, MFAttributesClsid.MF_MT_FRAME_SIZE, out h, out w);
 
-                hr = MFExtern.MFSetAttributeSize(pOutputType, MFAttributesClsid.MF_MT_FRAME_SIZE, w, h);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = MFExtern.MFSetAttributeSize(pOutputType, MFAttributesClsid.MF_MT_FRAME_SIZE, w, h);
 
                 MFVideoArea a = GetArea(inType, MFAttributesClsid.MF_MT_GEOMETRIC_APERTURE);
                 if (a != null)
@@ -235,8 +229,7 @@ namespace MFT_RotateAsync
                     SetArea(pOutputType, MFAttributesClsid.MF_MT_MINIMUM_DISPLAY_APERTURE, a);
                 }
 
-                hr = pOutputType.SetUINT32(MFAttributesClsid.MF_MT_DEFAULT_STRIDE, w * bpp);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = pOutputType.SetUINT32(MFAttributesClsid.MF_MT_DEFAULT_STRIDE, w * bpp);
             }
 
             return pOutputType;
@@ -273,8 +266,7 @@ namespace MFT_RotateAsync
             const int DefaultRotate = 5;
             m_WasOdd = (DefaultRotate & 1) == 1;
 
-            int hr = Attributes.SetUINT32(ClsidRotate, DefaultRotate);
-            MFError.ThrowExceptionForHR(hr);
+            MFError throwonhr = Attributes.SetUINT32(ClsidRotate, DefaultRotate);
         }
 
 #if DEBUG
@@ -289,7 +281,7 @@ namespace MFT_RotateAsync
         [ComRegisterFunctionAttribute]
         static private void DllRegisterServer(Type t)
         {
-            int hr = MFExtern.MFTRegister(
+            HResult hr = MFExtern.MFTRegister(
                 t.GUID,
                 MFTransformCategory.MFT_CATEGORY_VIDEO_EFFECT,
                 t.Name,
@@ -306,7 +298,7 @@ namespace MFT_RotateAsync
         [ComUnregisterFunctionAttribute]
         static private void DllUnregisterServer(Type t)
         {
-            int hr = MFExtern.MFTUnregister(t.GUID);
+            HResult hr = MFExtern.MFTUnregister(t.GUID);
 
             // In Windows 7, MFTUnregister reports an error even if it succeeds:
             // https://social.msdn.microsoft.com/forums/windowsdesktop/en-us/7d3dc70f-8eae-4ad0-ad90-6c596cf78c80
@@ -321,8 +313,8 @@ namespace MFT_RotateAsync
         {
             PropVariant pv = new PropVariant();
 
-            int hr = ia.GetItem(g, pv);
-            if (hr == MFError.MF_E_ATTRIBUTENOTFOUND)
+            HResult hr = ia.GetItem(g, pv);
+            if (hr == HResult.MF_E_ATTRIBUTENOTFOUND)
                 return null;
 
             MFError.ThrowExceptionForHR(hr);
@@ -334,8 +326,7 @@ namespace MFT_RotateAsync
         {
             PropVariant pv = new PropVariant(a);
 
-            int hr = ia.SetItem(g, pv);
-            MFError.ThrowExceptionForHR(hr);
+            MFError throwonhr = ia.SetItem(g, pv);
         }
 
         /// <summary>
@@ -343,9 +334,9 @@ namespace MFT_RotateAsync
         /// </summary>
         /// <param name="pmt">The media type to validate.</param>
         /// <returns>S_Ok or MF_E_INVALIDTYPE.</returns>
-        private int OnCheckMediaType(IMFMediaType pmt)
+        private HResult OnCheckMediaType(IMFMediaType pmt)
         {
-            int hr;
+            HResult hr = HResult.S_OK;
 
             // Check the Major type and subtype
             hr = CheckMediaType(pmt, MFMediaType.Video, m_MediaSubtypes);
@@ -355,8 +346,7 @@ namespace MFT_RotateAsync
 
                 m_MightBeInterlaced = false;
 
-                hr = pmt.GetUINT32(MFAttributesClsid.MF_MT_INTERLACE_MODE, out interlace);
-                MFError.ThrowExceptionForHR(hr);
+                MFError throwonhr = pmt.GetUINT32(MFAttributesClsid.MF_MT_INTERLACE_MODE, out interlace);
 
                 MFVideoInterlaceMode im = (MFVideoInterlaceMode)interlace;
 
@@ -366,7 +356,7 @@ namespace MFT_RotateAsync
                     // If the type MIGHT be interlaced, we'll accept it.
                     if (im != MFVideoInterlaceMode.MixedInterlaceOrProgressive)
                     {
-                        hr = MFError.MF_E_INVALIDTYPE;
+                        hr = HResult.MF_E_INVALIDTYPE;
                     }
                     else
                     {
@@ -425,20 +415,18 @@ namespace MFT_RotateAsync
 
         private void Lockit(IMFMediaBuffer pOut, out IMF2DBuffer pOut2D, out int lDestStride, out IntPtr pDest)
         {
-            int hr;
+            MFError throwonhr;
 
             pOut2D = pOut as IMF2DBuffer;
             if (pOut2D != null)
             {
-                hr = pOut2D.Lock2D(out pDest, out lDestStride);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = pOut2D.Lock2D(out pDest, out lDestStride);
             }
             else
             {
                 int ml;
                 int cb;
-                hr = pOut.Lock(out pDest, out ml, out cb);
-                MFError.ThrowExceptionForHR(hr);
+                throwonhr = pOut.Lock(out pDest, out ml, out cb);
                 lDestStride = m_lInputStride;
             }
         }
@@ -447,17 +435,16 @@ namespace MFT_RotateAsync
         {
             if (pSrc != IntPtr.Zero)
             {
-                int hr;
+                MFError throwonhr;
 
                 if (pIn2D != null)
                 {
-                    hr = pIn2D.Unlock2D();
+                    throwonhr = pIn2D.Unlock2D();
                 }
                 else
                 {
-                    hr = pIn.Unlock();
+                    throwonhr = pIn.Unlock();
                 }
-                MFError.ThrowExceptionForHR(hr);
             }
         }
 
