@@ -172,7 +172,7 @@ namespace MF_BasicPlayback
             {
                 // Open the file with the playback object.
                 //openFileDialog1.FileName = "C:\\sourceforge\\mflib\\Test\\Media\\Welcome.wavx";
-                hr = g_pPlayer.OpenURL(openFileDialog1.FileName);
+                hr = (int)g_pPlayer.OpenURL(openFileDialog1.FileName);
 
                 if (hr >= 0)
                 {
@@ -218,7 +218,7 @@ namespace MF_BasicPlayback
             if (f.ShowDialog(this) == DialogResult.OK)
             {
                 // Open the file with the playback object.
-                hr = g_pPlayer.OpenURL(f.tbURL.Text);
+                hr = (int)g_pPlayer.OpenURL(f.tbURL.Text);
 
                 if (hr >= 0)
                 {
