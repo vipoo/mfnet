@@ -225,19 +225,19 @@ namespace EVRPresenter
 
         #region IMFVideoDeviceID Members
 
-        public int GetDeviceID(out Guid pDeviceID)
+        public HResult GetDeviceID(out Guid pDeviceID)
         {
             // Make sure we *never* leave this entry point with an exception
             try
             {
                 m_pD3DPresentEngine.GetDeviceID(out pDeviceID);
 
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
                 pDeviceID = Guid.Empty;
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
@@ -245,7 +245,7 @@ namespace EVRPresenter
 
         #region IMFVideoPresenter Members
 
-        public int GetCurrentMediaType(out IMFVideoMediaType ppMediaType)
+        public HResult GetCurrentMediaType(out IMFVideoMediaType ppMediaType)
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -256,7 +256,7 @@ namespace EVRPresenter
 
                     if (m_pMediaType == null)
                     {
-                        throw new COMException("IMFVideoPresenter.GetCurrentMediaType", MFError.MF_E_NOT_INITIALIZED);
+                        throw new COMException("IMFVideoPresenter.GetCurrentMediaType", (int)HResult.MF_E_NOT_INITIALIZED);
                     }
 
                     // The function returns an IMFVideoMediaType pointer, and we store our media
@@ -265,16 +265,16 @@ namespace EVRPresenter
                     ppMediaType = (IMFVideoMediaType)m_pMediaType;
                 }
 
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
                 ppMediaType = null;
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        int IMFVideoPresenter.OnClockPause(long hnsSystemTime)
+        HResult IMFVideoPresenter.OnClockPause(long hnsSystemTime)
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -283,11 +283,11 @@ namespace EVRPresenter
             }
             catch (Exception e)
             {
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        int IMFVideoPresenter.OnClockRestart(long hnsSystemTime)
+        HResult IMFVideoPresenter.OnClockRestart(long hnsSystemTime)
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -296,11 +296,11 @@ namespace EVRPresenter
             }
             catch (Exception e)
             {
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        int IMFVideoPresenter.OnClockSetRate(long hnsSystemTime, float flRate)
+        HResult IMFVideoPresenter.OnClockSetRate(long hnsSystemTime, float flRate)
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -309,11 +309,11 @@ namespace EVRPresenter
             }
             catch (Exception e)
             {
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        int IMFVideoPresenter.OnClockStart(long hnsSystemTime, long llClockStartOffset)
+        HResult IMFVideoPresenter.OnClockStart(long hnsSystemTime, long llClockStartOffset)
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -322,11 +322,11 @@ namespace EVRPresenter
             }
             catch (Exception e)
             {
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        int IMFVideoPresenter.OnClockStop(long hnsSystemTime)
+        HResult IMFVideoPresenter.OnClockStop(long hnsSystemTime)
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -335,11 +335,11 @@ namespace EVRPresenter
             }
             catch (Exception e)
             {
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        int IMFVideoPresenter.ProcessMessage(MFVPMessageType eMessage, IntPtr ulParam)
+        HResult IMFVideoPresenter.ProcessMessage(MFVPMessageType eMessage, IntPtr ulParam)
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -396,15 +396,15 @@ namespace EVRPresenter
                             break;
 
                         default:
-                            throw new COMException("ProcessMessage", E_InvalidArgument); // Unknown message. (This case should never occur.)
+                            throw new COMException("ProcessMessage", (int)HResult.E_UNEXPECTED); // Unknown message. (This case should never occur.)
                     }
                 }
 
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
@@ -412,7 +412,7 @@ namespace EVRPresenter
 
         #region IMFClockStateSink Members
 
-        public int OnClockPause(long hnsSystemTime)
+        public HResult OnClockPause(long hnsSystemTime)
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -428,15 +428,15 @@ namespace EVRPresenter
                     m_RenderState = RenderState.Paused;
                 }
 
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        public int OnClockRestart(long hnsSystemTime)
+        public HResult OnClockRestart(long hnsSystemTime)
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -460,15 +460,15 @@ namespace EVRPresenter
                     ProcessOutputLoop();
                 }
 
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        public int OnClockSetRate(long hnsSystemTime, float flRate)
+        public HResult OnClockSetRate(long hnsSystemTime, float flRate)
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -497,15 +497,15 @@ namespace EVRPresenter
                     m_scheduler.SetClockRate(flRate);
                 }
 
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        public int OnClockStart(long hnsSystemTime, long llClockStartOffset)
+        public HResult OnClockStart(long hnsSystemTime, long llClockStartOffset)
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -544,15 +544,15 @@ namespace EVRPresenter
                     ProcessOutputLoop();
                 }
 
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        public int OnClockStop(long hnsSystemTime)
+        public HResult OnClockStop(long hnsSystemTime)
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -576,11 +576,11 @@ namespace EVRPresenter
                     }
                 }
 
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
@@ -588,7 +588,7 @@ namespace EVRPresenter
 
         #region IMFRateSupport Members
 
-        public int GetFastestRate(MFRateDirection eDirection, bool fThin, out float pflRate)
+        public HResult GetFastestRate(MFRateDirection eDirection, bool fThin, out float pflRate)
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -611,16 +611,16 @@ namespace EVRPresenter
                     pflRate = fMaxRate;
                 }
 
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
                 pflRate = 0;
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        public int GetSlowestRate(MFRateDirection eDirection, bool fThin, out float pflRate)
+        public HResult GetSlowestRate(MFRateDirection eDirection, bool fThin, out float pflRate)
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -633,16 +633,16 @@ namespace EVRPresenter
                     pflRate = 0;
                 }
 
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
                 pflRate = 0;
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        public int IsRateSupported(bool fThin, float flRate, MfFloat pflNearestSupportedRate)
+        public HResult IsRateSupported(bool fThin, float flRate, MfFloat pflNearestSupportedRate)
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -669,7 +669,7 @@ namespace EVRPresenter
                         }
 
                         // The (absolute) requested rate exceeds the maximum rate.
-                        throw new COMException("IsRateSupported", MFError.MF_E_UNSUPPORTED_RATE);
+                        throw new COMException("IsRateSupported", (int)HResult.MF_E_UNSUPPORTED_RATE);
                     }
 
                     // Return the nearest supported rate.
@@ -679,11 +679,11 @@ namespace EVRPresenter
                     }
                 }
 
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
@@ -691,18 +691,17 @@ namespace EVRPresenter
 
         #region IMFGetServiceAlt Members
 
-        public int GetService(Guid guidService, Guid riid, out IntPtr ppvObject)
+        public HResult GetService(Guid guidService, Guid riid, out IntPtr ppvObject)
         {
             // Make sure we *never* leave this entry point with an exception
             try
             {
                 ppvObject = IntPtr.Zero;
-                int hr = 0;
 
                 // The only service GUID that we support is MR_VIDEO_RENDER_SERVICE.
                 if (guidService != MFServices.MR_VIDEO_RENDER_SERVICE)
                 {
-                    throw new COMException("EVRCustomPresenter::GetService", MFError.MF_E_UNSUPPORTED_SERVICE);
+                    throw new COMException("EVRCustomPresenter::GetService", (int)HResult.MF_E_UNSUPPORTED_SERVICE);
                 }
 
                 bool bAgain = false;
@@ -715,8 +714,9 @@ namespace EVRPresenter
                     IntPtr ip = Marshal.GetIUnknownForObject(o);
                     Marshal.Release(ip);
 
-                    hr = Marshal.QueryInterface(ip, ref riid, out ppvObject);
-                    DsError.ThrowExceptionForHR(hr);
+                    int hr2;
+                    hr2 = Marshal.QueryInterface(ip, ref riid, out ppvObject);
+                    DsError.ThrowExceptionForHR(hr2);
                 }
                 catch
                 {
@@ -730,11 +730,12 @@ namespace EVRPresenter
 
                     try
                     {
-                        hr = Marshal.QueryInterface(ipThis, ref riid, out ppvObject);
+                        int hr2;
+                        hr2 = Marshal.QueryInterface(ipThis, ref riid, out ppvObject);
 
-                        if (hr < 0)
+                        if (hr2 < 0)
                         {
-                            Marshal.ThrowExceptionForHR(hr);
+                            Marshal.ThrowExceptionForHR(hr2);
                         }
                     }
                     finally
@@ -743,12 +744,12 @@ namespace EVRPresenter
                     }
 
                 }
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
                 ppvObject = IntPtr.Zero;
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
@@ -757,14 +758,14 @@ namespace EVRPresenter
         #region IMFTopologyServiceLookupClient Members
 
         //public void InitServicePointers(IMFTopologyServiceLookup pLookup)
-        public int InitServicePointers(IntPtr p1Lookup)
+        public HResult InitServicePointers(IntPtr p1Lookup)
         {
             // Make sure we *never* leave this entry point with an exception
             try
             {
                 TRACE(("InitServicePointers"));
 
-                int hr;
+                HResult hr;
                 int dwObjectCount = 0;
                 IMFTopologyServiceLookup pLookup = null;
                 IHack h1 = (IHack)new Hack();
@@ -780,7 +781,7 @@ namespace EVRPresenter
                         // Do not allow initializing when playing or paused.
                         if (IsActive())
                         {
-                            throw new COMException("EVRCustomPresenter::InitServicePointers", MFError.MF_E_INVALIDREQUEST);
+                            throw new COMException("EVRCustomPresenter::InitServicePointers", (int)HResult.MF_E_INVALIDREQUEST);
                         }
 
                         SafeRelease(m_pClock); m_pClock = null;
@@ -854,15 +855,15 @@ namespace EVRPresenter
                 {
                     SafeRelease(h1);
                 }
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        public int ReleaseServicePointers()
+        public HResult ReleaseServicePointers()
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -889,11 +890,11 @@ namespace EVRPresenter
                 SafeRelease(m_h2); m_h2 = null;
                 m_pMediaEventSink = null; // SafeRelease(m_pMediaEventSink);
 
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
@@ -901,7 +902,7 @@ namespace EVRPresenter
 
         #region IMFVideoDisplayControl Members
 
-        public int GetAspectRatioMode(out MFVideoAspectRatioMode pdwAspectRatioMode)
+        public HResult GetAspectRatioMode(out MFVideoAspectRatioMode pdwAspectRatioMode)
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -911,11 +912,11 @@ namespace EVRPresenter
             catch (Exception e)
             {
                 pdwAspectRatioMode = MFVideoAspectRatioMode.None;
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        public int GetBorderColor(out int pClr)
+        public HResult GetBorderColor(out int pClr)
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -925,11 +926,11 @@ namespace EVRPresenter
             catch (Exception e)
             {
                 pClr = 0;
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        public int GetCurrentImage(MediaFoundation.Misc.BitmapInfoHeader pBih, out IntPtr pDib, out int pcbDib, out long pTimeStamp)
+        public HResult GetCurrentImage(MediaFoundation.Misc.BitmapInfoHeader pBih, out IntPtr pDib, out int pcbDib, out long pTimeStamp)
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -941,11 +942,11 @@ namespace EVRPresenter
                 pTimeStamp = 0;
                 pDib = IntPtr.Zero;
                 pcbDib = 0;
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        public int GetFullscreen(out bool pfFullscreen)
+        public HResult GetFullscreen(out bool pfFullscreen)
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -955,11 +956,11 @@ namespace EVRPresenter
             catch (Exception e)
             {
                 pfFullscreen = false;
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        public int GetIdealVideoSize(MFSize a, MFSize b)
+        public HResult GetIdealVideoSize(MFSize a, MFSize b)
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -968,11 +969,11 @@ namespace EVRPresenter
             }
             catch (Exception e)
             {
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        public int GetNativeVideoSize(MFSize pszVideo, MFSize pszARVideo)
+        public HResult GetNativeVideoSize(MFSize pszVideo, MFSize pszARVideo)
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -981,11 +982,11 @@ namespace EVRPresenter
             }
             catch (Exception e)
             {
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        public int GetRenderingPrefs(out MFVideoRenderPrefs pdwRenderFlags)
+        public HResult GetRenderingPrefs(out MFVideoRenderPrefs pdwRenderFlags)
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -995,11 +996,11 @@ namespace EVRPresenter
             catch (Exception e)
             {
                 pdwRenderFlags = MFVideoRenderPrefs.None;
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        public int SetAspectRatioMode(MFVideoAspectRatioMode dwAspectRatioMode)
+        public HResult SetAspectRatioMode(MFVideoAspectRatioMode dwAspectRatioMode)
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -1008,11 +1009,11 @@ namespace EVRPresenter
             }
             catch (Exception e)
             {
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        public int SetBorderColor(int Clr)
+        public HResult SetBorderColor(int Clr)
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -1021,11 +1022,11 @@ namespace EVRPresenter
             }
             catch (Exception e)
             {
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        public int SetFullscreen(bool fFullscreen)
+        public HResult SetFullscreen(bool fFullscreen)
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -1034,11 +1035,11 @@ namespace EVRPresenter
             }
             catch (Exception e)
             {
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        public int SetRenderingPrefs(MFVideoRenderPrefs dwRenderFlags)
+        public HResult SetRenderingPrefs(MFVideoRenderPrefs dwRenderFlags)
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -1047,11 +1048,11 @@ namespace EVRPresenter
             }
             catch (Exception e)
             {
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        public int SetVideoPosition(MFVideoNormalizedRect pnrcSource, MFRect prcDest)
+        public HResult SetVideoPosition(MFVideoNormalizedRect pnrcSource, MFRect prcDest)
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -1064,7 +1065,7 @@ namespace EVRPresenter
                     // One parameter can be NULL, but not both.
                     if (pnrcSource == null && prcDest == null)
                     {
-                        throw new COMException("EVRCustomPresenter::SetVideoPosition", E_Pointer);
+                        throw new COMException("EVRCustomPresenter::SetVideoPosition", (int)HResult.E_POINTER);
                     }
 
                     // Validate the rectangles.
@@ -1074,14 +1075,14 @@ namespace EVRPresenter
                         if ((pnrcSource.left > pnrcSource.right) ||
                             (pnrcSource.top > pnrcSource.bottom))
                         {
-                            throw new COMException("Bad source", E_InvalidArgument);
+                            throw new COMException("Bad source", (int)HResult.E_INVALIDARG);
                         }
 
                         // The source rectangle has range (0..1)
                         if ((pnrcSource.left < 0) || (pnrcSource.right > 1) ||
                             (pnrcSource.top < 0) || (pnrcSource.bottom > 1))
                         {
-                            throw new COMException("source has invalid values", E_InvalidArgument);
+                            throw new COMException("source has invalid values", (int)HResult.E_INVALIDARG);
                         }
                     }
 
@@ -1091,7 +1092,7 @@ namespace EVRPresenter
                         if ((prcDest.left > prcDest.right) ||
                             (prcDest.top > prcDest.bottom))
                         {
-                            throw new COMException("bad destination", E_InvalidArgument);
+                            throw new COMException("bad destination", (int)HResult.E_INVALIDARG);
                         }
                     }
 
@@ -1125,7 +1126,7 @@ namespace EVRPresenter
                                 }
                                 catch (COMException e)
                                 {
-                                    if (e.ErrorCode == MFError.MF_E_TRANSFORM_TYPE_NOT_SET)
+                                    if ((HResult)e.ErrorCode == HResult.MF_E_TRANSFORM_TYPE_NOT_SET)
                                     {
                                         // This error means that the mixer is not ready for the media type.
                                         // Not a failure case -- the EVR will notify us when we need to set
@@ -1144,15 +1145,15 @@ namespace EVRPresenter
                     }
                 }
 
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        public int SetVideoWindow(IntPtr hwndVideo)
+        public HResult SetVideoWindow(IntPtr hwndVideo)
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -1161,7 +1162,7 @@ namespace EVRPresenter
                 {
                     if (!IsWindow(hwndVideo))
                     {
-                        throw new COMException("Invalid window handle", E_InvalidArgument);
+                        throw new COMException("Invalid window handle", (int)HResult.E_INVALIDARG);
                     }
 
                     IntPtr oldHwnd = m_pD3DPresentEngine.GetVideoWindow();
@@ -1177,15 +1178,15 @@ namespace EVRPresenter
                     }
                 }
 
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        public int GetVideoPosition(MFVideoNormalizedRect pnrcSource, MFRect prcDest)
+        public HResult GetVideoPosition(MFVideoNormalizedRect pnrcSource, MFRect prcDest)
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -1194,22 +1195,22 @@ namespace EVRPresenter
                 {
                     if (pnrcSource == null || prcDest == null)
                     {
-                        throw new COMException("EVRCustomPresenter::GetVideoPosition", E_Pointer);
+                        throw new COMException("EVRCustomPresenter::GetVideoPosition", (int)HResult.E_POINTER);
                     }
 
                     pnrcSource.CopyFrom(m_nrcSource);
                     prcDest.CopyFrom(m_pD3DPresentEngine.GetDestinationRect());
                 }
 
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        public int GetVideoWindow(out IntPtr phwndVideo)
+        public HResult GetVideoWindow(out IntPtr phwndVideo)
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -1220,16 +1221,16 @@ namespace EVRPresenter
                     phwndVideo = m_pD3DPresentEngine.GetVideoWindow();
                 }
 
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
                 phwndVideo = IntPtr.Zero;
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        public int RepaintVideo()
+        public HResult RepaintVideo()
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -1246,11 +1247,11 @@ namespace EVRPresenter
                     }
                 }
 
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
@@ -1258,7 +1259,7 @@ namespace EVRPresenter
 
         #region IMFAsyncCallback Members
 
-        public int GetParameters(out MFASync pdwFlags, out MFAsyncCallbackQueue pdwQueue)
+        public HResult GetParameters(out MFASync pdwFlags, out MFAsyncCallbackQueue pdwQueue)
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -1269,11 +1270,11 @@ namespace EVRPresenter
             {
                 pdwQueue = MFAsyncCallbackQueue.Undefined;
                 pdwFlags = MFASync.None;
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        public int Invoke(IMFAsyncResult pAsyncResult)
+        public HResult Invoke(IMFAsyncResult pAsyncResult)
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -1287,11 +1288,11 @@ namespace EVRPresenter
                     SafeRelease(pAsyncResult);
                 }
 
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
@@ -1305,7 +1306,7 @@ namespace EVRPresenter
             try
             {
                 pcFrames = m_iDiscarded;
-                return S_Ok;
+                return 0;
             }
             catch (Exception e)
             {
@@ -1320,7 +1321,7 @@ namespace EVRPresenter
             try
             {
                 pcFramesDrawn = m_pD3DPresentEngine.GetFrames();
-                return S_Ok;
+                return 0;
             }
             catch (Exception e)
             {
@@ -1335,7 +1336,7 @@ namespace EVRPresenter
             try
             {
                 piAvgFrameRate = 0;
-                return E_NotImplemented;
+                return (int)HResult.E_NOTIMPL;
             }
             catch (Exception e)
             {
@@ -1350,7 +1351,7 @@ namespace EVRPresenter
             try
             {
                 iJitter = 0;
-                return E_NotImplemented;
+                return (int)HResult.E_NOTIMPL;
             }
             catch (Exception e)
             {
@@ -1365,7 +1366,7 @@ namespace EVRPresenter
             try
             {
                 piAvg = 0;
-                return E_NotImplemented;
+                return (int)HResult.E_NOTIMPL;
             }
             catch (Exception e)
             {
@@ -1380,7 +1381,7 @@ namespace EVRPresenter
             try
             {
                 piDev = 0;
-                return E_NotImplemented;
+                return (int)HResult.E_NOTIMPL;
             }
             catch (Exception e)
             {
@@ -1414,7 +1415,7 @@ namespace EVRPresenter
 
                 try
                 {
-                    int hr = a.GetUINT32(guidKey, out unRet);
+                    HResult hr = a.GetUINT32(guidKey, out unRet);
                     MFError.ThrowExceptionForHR(hr);
                 }
                 catch
@@ -1437,7 +1438,7 @@ namespace EVRPresenter
         {
             if (m_RenderState == RenderState.Shutdown)
             {
-                throw new COMException("CheckShutdown", MFError.MF_E_SHUTDOWN);
+                throw new COMException("CheckShutdown", (int)HResult.MF_E_SHUTDOWN);
             }
         }
 
@@ -1489,7 +1490,7 @@ namespace EVRPresenter
         // Mixer operations
         protected void ConfigureMixer(IMFTransform pMixer)
         {
-            int hr;
+            HResult hr;
             Guid deviceID = Guid.Empty;
             Guid myDeviceId;
 
@@ -1505,7 +1506,7 @@ namespace EVRPresenter
 
                 if (deviceID != myDeviceId)
                 {
-                    throw new COMException("ConfigureMixer", MFError.MF_E_INVALIDREQUEST);
+                    throw new COMException("ConfigureMixer", (int)HResult.MF_E_INVALIDREQUEST);
                 }
 
                 // Set the zoom rectangle (ie, the source clipping rectangle).
@@ -1648,7 +1649,7 @@ namespace EVRPresenter
         protected void SetMediaType(IMFMediaType pMediaType)
         {
             // Note: pMediaType can be NULL (to clear the type)
-            int hr;
+            HResult hr;
 
             // Clearing the media type is allowed in any state (including shutdown).
             if (pMediaType == null)
@@ -1745,7 +1746,7 @@ namespace EVRPresenter
                 pProposed.IsCompressedFormat(out bCompressed);
                 if (bCompressed)
                 {
-                    throw new COMException("Compressed formats not supported", MFError.MF_E_INVALIDMEDIATYPE);
+                    throw new COMException("Compressed formats not supported", (int)HResult.MF_E_INVALIDMEDIATYPE);
                 }
 
                 // Validate the format.
@@ -1760,7 +1761,7 @@ namespace EVRPresenter
                 pProposed.GetInterlaceMode(out InterlaceMode);
                 if (InterlaceMode != MFVideoInterlaceMode.Progressive)
                 {
-                    throw new COMException("Interlaced formats not supported", MFError.MF_E_INVALIDMEDIATYPE);
+                    throw new COMException("Interlaced formats not supported", (int)HResult.MF_E_INVALIDMEDIATYPE);
                 }
 
                 pProposed.GetFrameDimensions(out width, out height);
@@ -1826,7 +1827,7 @@ namespace EVRPresenter
         {
             TRACE(("RenegotiateMediaType"));
 
-            int hr;
+            HResult hr;
             bool bFoundMediaType = false;
 
             IMFMediaType pMixerType = null;
@@ -1835,7 +1836,7 @@ namespace EVRPresenter
 
             if (m_pMixer == null)
             {
-                throw new COMException("RenegotiateMediaType", MFError.MF_E_INVALIDREQUEST);
+                throw new COMException("RenegotiateMediaType", (int)HResult.MF_E_INVALIDREQUEST);
             }
 
             try
@@ -1908,7 +1909,7 @@ namespace EVRPresenter
             if (m_pMediaType == null)
             {
                 // We don't have a valid media type yet.
-                throw new COMException("We don't have a valid media type yet", MFError.MF_E_TRANSFORM_TYPE_NOT_SET);
+                throw new COMException("We don't have a valid media type yet", (int)HResult.MF_E_TRANSFORM_TYPE_NOT_SET);
             }
             else
             {
@@ -1956,15 +1957,15 @@ namespace EVRPresenter
         // Managing samples
         protected void ProcessOutputLoop()
         {
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             // Process as many samples as possible.
-            while (hr == S_Ok)
+            while (hr == HResult.S_OK)
             {
                 // If the mixer doesn't have a new input sample, break from the loop.
                 if (!m_bSampleNotify)
                 {
-                    hr = MFError.MF_E_TRANSFORM_NEED_MORE_INPUT;
+                    hr = HResult.MF_E_TRANSFORM_NEED_MORE_INPUT;
                     break;
                 }
 
@@ -1975,7 +1976,7 @@ namespace EVRPresenter
                 // If so, we break out of the loop.
             }
 
-            if (hr == MFError.MF_E_TRANSFORM_NEED_MORE_INPUT)
+            if (hr == HResult.MF_E_TRANSFORM_NEED_MORE_INPUT)
             {
                 // The mixer has run out of input data. Check if we're at the end of the stream.
                 CheckEndOfStream();
@@ -1991,11 +1992,11 @@ namespace EVRPresenter
             }
         }
 
-        protected int ProcessOutput()
+        protected HResult ProcessOutput()
         {
             Debug.Assert(m_bSampleNotify || m_bRepaint);  // See note above.
 
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
             ProcessOutputStatus dwStatus = 0;
             long mixerStartTime = 0, mixerEndTime = 0;
             long systemTime = 0;
@@ -2013,13 +2014,13 @@ namespace EVRPresenter
                  m_bPrerolled                               // At least one sample has been presented.
                  )
             {
-                return S_False;
+                return HResult.S_FALSE;
             }
 
             // Make sure we have a pointer to the mixer.
             if (m_pMixer == null)
             {
-                return MFError.MF_E_INVALIDREQUEST;
+                return HResult.MF_E_INVALIDREQUEST;
             }
 
             if (!m_bRepaint)
@@ -2031,7 +2032,7 @@ namespace EVRPresenter
                 if ((osf & MFTOutputStatusFlags.SampleReady) == 0)
                 {
                     m_bSampleNotify = false;
-                    return S_Ok;
+                    return HResult.S_OK;
                 }
             }
 
@@ -2042,7 +2043,7 @@ namespace EVRPresenter
 
                 if (pSample == null)
                 {
-                    return S_False; // No free samples. We'll try again when a sample is released.
+                    return HResult.S_FALSE; // No free samples. We'll try again when a sample is released.
                 }
 
                 // (If the following assertion fires, it means we are not managing the sample pool correctly.)
@@ -2085,7 +2086,7 @@ namespace EVRPresenter
                 }
                 catch (Exception e)
                 {
-                    hr = Marshal.GetHRForException(e);
+                    hr = (HResult)Marshal.GetHRForException(e);
                 }
                 finally
                 {
@@ -2099,17 +2100,17 @@ namespace EVRPresenter
                     m_SamplePool.ReturnSample(pSample);
 
                     // Handle some known error codes from ProcessOutput.
-                    if (hr == MFError.MF_E_TRANSFORM_TYPE_NOT_SET)
+                    if (hr == HResult.MF_E_TRANSFORM_TYPE_NOT_SET)
                     {
                         // The mixer's format is not set. Negotiate a new format.
                         RenegotiateMediaType();
                     }
-                    else if (hr == MFError.MF_E_TRANSFORM_STREAM_CHANGE)
+                    else if (hr == HResult.MF_E_TRANSFORM_STREAM_CHANGE)
                     {
                         // There was a dynamic media type change. Clear our media type.
                         SetMediaType(null);
                     }
-                    else if (hr == MFError.MF_E_TRANSFORM_NEED_MORE_INPUT)
+                    else if (hr == HResult.MF_E_TRANSFORM_NEED_MORE_INPUT)
                     {
                         // The mixer needs more input.
                         // We have to wait for the mixer to get more input.
@@ -2167,7 +2168,7 @@ namespace EVRPresenter
                 //SafeRelease(pSample);
             }
 
-            return S_Ok;
+            return HResult.S_OK;
         }
 
         protected void DeliverSample(IMFSample pSample, bool bRepaint)
@@ -2183,7 +2184,7 @@ namespace EVRPresenter
             bool bPresentNow = ((m_RenderState != RenderState.Started) || IsScrubbing() || bRepaint);
 
             // Check the D3D device state.
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
             try
             {
                 m_pD3DPresentEngine.CheckDeviceState(out state);
@@ -2194,8 +2195,8 @@ namespace EVRPresenter
                 // Notify the EVR that we have failed during streaming. The EVR will notify the
                 // pipeline (ie, it will notify the Filter Graph Manager in DirectShow or the
                 // Media Session in Media Foundation).
-                hr = Marshal.GetHRForException(e);
-                NotifyEvent(EventCode.ErrorAbort, new IntPtr(hr), IntPtr.Zero);
+                hr = (HResult)Marshal.GetHRForException(e);
+                NotifyEvent(EventCode.ErrorAbort, new IntPtr((int)hr), IntPtr.Zero);
                 throw;
             }
 
@@ -2211,7 +2212,7 @@ namespace EVRPresenter
             IMFTrackedSample pTracked = null;
 
             pTracked = (IMFTrackedSample)pSample;
-            int hr = pTracked.SetAllocator(this, null);
+            HResult hr = pTracked.SetAllocator(this, null);
             MFError.ThrowExceptionForHR(hr);
         }
 
@@ -2345,7 +2346,7 @@ namespace EVRPresenter
 
         protected void CompleteFrameStep(IMFSample pSample)
         {
-            int hr;
+            HResult hr;
             long hnsSampleTime = 0;
             long hnsSystemTime = 0;
 
@@ -2409,7 +2410,7 @@ namespace EVRPresenter
             try
             {
                 // Get the sample from the async result object.
-                int hr = pResult.GetStatus();
+                HResult hr = pResult.GetStatus();
                 MFError.ThrowExceptionForHR(hr);
 
                 hr = pResult.GetObject(out pObject);
@@ -2464,10 +2465,10 @@ namespace EVRPresenter
         {
             if (pMixer == null)
             {
-                throw new COMException("SetMixerSourceRect", E_Pointer);
+                throw new COMException("SetMixerSourceRect", (int)HResult.E_POINTER);
             }
 
-            int hr;
+            HResult hr;
             IMFAttributes pAttributes = null;
 
             hr = pMixer.GetAttributes(out pAttributes);
@@ -2486,7 +2487,7 @@ namespace EVRPresenter
             if (((int)fOffsetX + area.Area.Width > width) ||
                  ((int)fOffsetY + area.Area.Height > height))
             {
-                throw new COMException("ValidateVideoArea", MFError.MF_E_INVALIDMEDIATYPE);
+                throw new COMException("ValidateVideoArea", (int)HResult.MF_E_INVALIDMEDIATYPE);
             }
         }
 
@@ -2494,7 +2495,7 @@ namespace EVRPresenter
         {
             if (pSample == null)
             {
-                throw new COMException("SetDesiredSampleTime", E_Pointer);
+                throw new COMException("SetDesiredSampleTime", (int)HResult.E_POINTER);
             }
 
             IMFDesiredSample pDesired = null;
@@ -2511,7 +2512,7 @@ namespace EVRPresenter
         {
             if (pSample == null)
             {
-                throw new COMException("ClearDesiredSampleTime", E_Pointer);
+                throw new COMException("ClearDesiredSampleTime", (int)HResult.E_POINTER);
             }
 
             IMFDesiredSample pDesired = null;
@@ -2524,7 +2525,7 @@ namespace EVRPresenter
             // attributes from the sample.
 
             int counter;
-            int hr;
+            HResult hr;
 
             hr = pSample.GetUINT32(MFSamplePresenter_SampleCounter, out counter);
             MFError.ThrowExceptionForHR(hr);
@@ -2562,10 +2563,10 @@ namespace EVRPresenter
 
             if (pSample == null || pClock == null)
             {
-                throw new COMException("IsSampleTimePassed", E_Pointer);
+                throw new COMException("IsSampleTimePassed", (int)HResult.E_POINTER);
             }
 
-            int hr;
+            HResult hr;
             bool bRet = false;
             long hnsTimeNow = 0;
             long hnsSystemTime = 0;

@@ -43,7 +43,7 @@ namespace EVRPresenter
             {
                 if (!m_bInitialized)
                 {
-                    throw new COMException("SamplePool::GetSample1", MFError.MF_E_NOT_INITIALIZED);
+                    throw new COMException("SamplePool::GetSample1", (int)HResult.MF_E_NOT_INITIALIZED);
                 }
 
                 if (m_VideoSampleQueue.Count == 0)
@@ -71,7 +71,7 @@ namespace EVRPresenter
             {
                 if (!m_bInitialized)
                 {
-                    throw new COMException("SamplePool::ReturnSample", MFError.MF_E_NOT_INITIALIZED);
+                    throw new COMException("SamplePool::ReturnSample", (int)HResult.MF_E_NOT_INITIALIZED);
                 }
 
                 m_VideoSampleQueue.Enqueue(pSample);
@@ -94,7 +94,7 @@ namespace EVRPresenter
             {
                 if (!m_bInitialized)
                 {
-                    throw new COMException("SamplePool::AreSamplesPending", MFError.MF_E_NOT_INITIALIZED);
+                    throw new COMException("SamplePool::AreSamplesPending", (int)HResult.MF_E_NOT_INITIALIZED);
                 }
                 bRet = (m_cPending > 0);
             }
@@ -115,7 +115,7 @@ namespace EVRPresenter
             {
                 if (m_bInitialized)
                 {
-                    throw new COMException("SamplePool::Initialize", MFError.MF_E_INVALIDREQUEST);
+                    throw new COMException("SamplePool::Initialize", (int)HResult.MF_E_INVALIDREQUEST);
                 }
 
                 Debug.Assert(m_VideoSampleQueue.Count == 0);

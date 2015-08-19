@@ -116,7 +116,7 @@ namespace EVRPresenter
             {
                 if (m_pDeviceManager == null)
                 {
-                    throw new COMException("m_pDeviceManager not yet available", MFError.MF_E_UNSUPPORTED_SERVICE);
+                    throw new COMException("m_pDeviceManager not yet available", (int)HResult.MF_E_UNSUPPORTED_SERVICE);
                 }
                 else
                 {
@@ -125,7 +125,7 @@ namespace EVRPresenter
             }
             else
             {
-                throw new COMException("GetService requested unknown interface", MFError.MF_E_UNSUPPORTED_SERVICE);
+                throw new COMException("GetService requested unknown interface", (int)HResult.MF_E_UNSUPPORTED_SERVICE);
             }
         }
         public MFRect GetDestinationRect() { return m_rcDestRect; }
@@ -227,15 +227,15 @@ namespace EVRPresenter
         {
             if (m_hwnd == IntPtr.Zero)
             {
-                throw new COMException("D3DPresentEngine::CreateVideoSamples", MFError.MF_E_INVALIDREQUEST);
+                throw new COMException("D3DPresentEngine::CreateVideoSamples", (int)HResult.MF_E_INVALIDREQUEST);
             }
 
             if (pFormat == null)
             {
-                throw new COMException("D3DPresentEngine::CreateVideoSamples", MFError.MF_E_UNEXPECTED);
+                throw new COMException("D3DPresentEngine::CreateVideoSamples", (int)HResult.MF_E_UNEXPECTED);
             }
 
-            int hr;
+            HResult hr;
             D3DPRESENT_PARAMETERS pp;
 
             IDirect3DSwapChain9 pSwapChain = null;    // Swap chain
@@ -311,38 +311,38 @@ namespace EVRPresenter
             lock (this)
             {
                 // Check the device state. Not every failure code is a critical failure.
-                int hr = m_pDevice.CheckDeviceState(m_hwnd);
+                HResult hr = m_pDevice.CheckDeviceState(m_hwnd);
 
                 pState = DeviceState.DeviceOK;
 
                 switch (hr)
                 {
-                    case S_Ok:
-                    case (int)D3DError.S_PresentOccluded:
-                    case (int)D3DError.S_PresentModeChanged:
+                    case HResult.S_OK:
+                    case (HResult)D3DError.S_PresentOccluded:
+                    case (HResult)D3DError.S_PresentModeChanged:
                         // state is DeviceOK
                         break;
 
-                    case (int)D3DError.DeviceLost:
-                    case (int)D3DError.DeviceHung:
+                    case (HResult)D3DError.DeviceLost:
+                    case (HResult)D3DError.DeviceHung:
                         // Lost/hung device. Destroy the device and create a new one.
                         CreateD3DDevice();
                         pState = DeviceState.DeviceReset;
                         break;
 
-                    case (int)D3DError.DeviceRemoved:
+                    case (HResult)D3DError.DeviceRemoved:
                         // This is a fatal error.
                         pState = DeviceState.DeviceRemoved;
                         break;
 
-                    case E_InvalidArgument:
+                    case HResult.E_INVALIDARG:
                         // CheckDeviceState can return E_INVALIDARG if the window is not valid
                         // We'll assume that the window was destroyed; we'll recreate the device
                         // if the application sets a new window.
                         break;
 
                     default:
-                        throw new COMException("D3DPresentEngine::CheckDeviceState", hr);
+                        throw new COMException("D3DPresentEngine::CheckDeviceState", (int)hr);
                 }
 
             }
@@ -362,7 +362,7 @@ namespace EVRPresenter
 
         public void PresentSample(IMFSample pSample, long llTarget)
         {
-            int hr;
+            HResult hr;
             IMFMediaBuffer pBuffer = null;
             IDirect3DSurface9 pSurface = null;
             IDirect3DSwapChain9 pSwapChain = null;
@@ -411,8 +411,8 @@ namespace EVRPresenter
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
-                if (hr == (int)D3DError.DeviceLost || hr == (int)D3DError.DeviceNotReset || hr == (int)D3DError.DeviceHung)
+                hr = (HResult)Marshal.GetHRForException(e);
+                if (hr == (HResult)D3DError.DeviceLost || hr == (HResult)D3DError.DeviceNotReset || hr == (HResult)D3DError.DeviceHung)
                 {
                     // We failed because the device was lost. Fill the destination rectangle.
                     PaintFrameWithGDI();
@@ -485,7 +485,7 @@ namespace EVRPresenter
             {
                 if ((m_pD3D9 == null) || (m_pDeviceManager == null))
                 {
-                    throw new COMException("D3DPresentEngine::CreateD3DDevice", MFError.MF_E_NOT_INITIALIZED);
+                    throw new COMException("D3DPresentEngine::CreateD3DDevice", (int)HResult.MF_E_NOT_INITIALIZED);
                 }
 
                 hwnd = GetDesktopWindow();
@@ -562,7 +562,7 @@ namespace EVRPresenter
 
         protected void CreateD3DSample(IDirect3DSwapChain9 pSwapChain, out IMFSample ppVideoSample)
         {
-            int hr;
+            HResult hr;
             IDirect3DSurface9 pSurface = null;
 
             // Caller holds the object lock.
@@ -598,7 +598,7 @@ namespace EVRPresenter
         {
             if (m_hwnd == IntPtr.Zero)
             {
-                throw new COMException("D3DPresentEngine::PresentSwapChain", MFError.MF_E_INVALIDREQUEST);
+                throw new COMException("D3DPresentEngine::PresentSwapChain", (int)HResult.MF_E_INVALIDREQUEST);
             }
 
             pSwapChain.Present(null, m_rcDestRect, m_hwnd, null, 0);
@@ -644,7 +644,7 @@ namespace EVRPresenter
 
             if (m_hwnd == IntPtr.Zero)
             {
-                throw new COMException("D3DPresentEngine::GetSwapChainPresentParameters", MFError.MF_E_INVALIDREQUEST);
+                throw new COMException("D3DPresentEngine::GetSwapChainPresentParameters", (int)HResult.MF_E_INVALIDREQUEST);
             }
 
             try
@@ -742,7 +742,7 @@ namespace EVRPresenter
 
             if (puAdapterID == -1)
             {
-                throw new COMException("D3DPresentEngine::FindAdapter", E_Fail);
+                throw new COMException("D3DPresentEngine::FindAdapter", (int)HResult.E_FAIL);
             }
         }
 

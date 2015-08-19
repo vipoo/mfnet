@@ -870,7 +870,7 @@ namespace D3D
         void Junk8();
         void Junk9();
         [PreserveSig]
-        int CheckDeviceState(IntPtr hDestinationWindow);
+        MediaFoundation.HResult CheckDeviceState(IntPtr hDestinationWindow);
         void Junk11();
         void Junk12();
         void Junk13();

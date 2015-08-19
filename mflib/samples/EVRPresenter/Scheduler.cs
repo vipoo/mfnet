@@ -61,7 +61,7 @@ namespace EVRPresenter
         {
             if (pCB == null)
             {
-                throw new COMException("Null D3DPresentEngine", MFError.MF_E_NOT_INITIALIZED);
+                throw new COMException("Null D3DPresentEngine", (int)HResult.MF_E_NOT_INITIALIZED);
             }
 
             m_ScheduledSamples = new Queue(iMaxSamples);
@@ -115,7 +115,7 @@ namespace EVRPresenter
         public void SetFrameRate(MFRatio fps)
         {
             // Convert to a duration.
-            int hr = MFExtern.MFFrameRateToAverageTimePerFrame(fps.Numerator, fps.Denominator, out m_PerFrameInterval);
+            HResult hr = MFExtern.MFFrameRateToAverageTimePerFrame(fps.Numerator, fps.Denominator, out m_PerFrameInterval);
             MFError.ThrowExceptionForHR(hr);
 
             // Calculate 1/4th of this value, because we use it frequently.
@@ -141,7 +141,7 @@ namespace EVRPresenter
         {
             if (m_bSchedulerThread != false)
             {
-                throw new COMException("Scheduler already started", E_Unexpected);
+                throw new COMException("Scheduler already started", (int)HResult.E_UNEXPECTED);
             }
 
             m_pClock = pClock;
@@ -200,7 +200,7 @@ namespace EVRPresenter
         {
             if (m_bSchedulerThread == false)
             {
-                throw new COMException("Scheduler thread not started", MFError.MF_E_NOT_INITIALIZED);
+                throw new COMException("Scheduler thread not started", (int)HResult.MF_E_NOT_INITIALIZED);
             }
 
             if (bPresentNow || (m_pClock == null))
@@ -270,7 +270,7 @@ namespace EVRPresenter
 
         public bool ProcessSample(IMFSample pSample, out int plNextSleep)
         {
-            int hr;
+            HResult hr;
             long hnsPresentationTime = 0;
             long hnsTimeNow = 0;
             long hnsSystemTime = 0;
