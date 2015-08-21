@@ -139,11 +139,11 @@ namespace Playlist
         //      Starts the event queue
         //
         /////////////////////////////////////////////////////////////////////////
-        public int Initialize()
+        public HResult Initialize()
         {
             Debug.WriteLine("\nCPlayer::Initialize");
 
-            int hr = 0;
+            HResult hr = 0;
 
             try
             {
@@ -183,7 +183,7 @@ namespace Playlist
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
             }
 
             //Clean up.
@@ -203,17 +203,17 @@ namespace Playlist
         //      sURL: [in] File URL
         /////////////////////////////////////////////////////////////////////////////////////////
 
-        public int AddToPlaylist(string sURL)
+        public HResult AddToPlaylist(string sURL)
         {
             Debug.WriteLine("\nCPlayer::AddToPlaylist");
 
-            int hr = 0;
+            HResult hr = 0;
 
             try
             {
                 if (sURL == null)
                 {
-                    throw new COMException("Null url", E_Pointer);
+                    throw new COMException("Null url", (int)HResult.E_POINTER);
                 }
 
                 IMFPresentationDescriptor pPresentationDescriptor;
@@ -261,7 +261,7 @@ namespace Playlist
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
             }
 
             return hr;
@@ -275,17 +275,17 @@ namespace Playlist
         //      SegmentID: [in] The segment identifier
         ///////////////////////////////////////////////////////////////////////////////////////////
 
-        public int DeleteSegment(int SegmentID)
+        public HResult DeleteSegment(int SegmentID)
         {
             Debug.WriteLine(string.Format("\nCPlayer::DeleteSegment: {0}", SegmentID));
 
-            int hr = 0;
+            HResult hr = 0;
 
             try
             {
                 if (m_ActiveSegment == SegmentID)
                 {
-                    throw new COMException("Can't delete active segment", E_InvalidArgument);
+                    throw new COMException("Can't delete active segment", (int)HResult.E_INVALIDARG);
                 }
 
                 int SegId = 0;
@@ -318,7 +318,7 @@ namespace Playlist
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
             }
 
             return hr;
@@ -330,11 +330,11 @@ namespace Playlist
         //      Starts the media session with the current topology
         ///////////////////////////////////////////////////////////////////////////////////////////
 
-        public int Play()
+        public HResult Play()
         {
             Debug.WriteLine("\nCPlayer::Play");
 
-            int hr = 0;
+            HResult hr = 0;
 
             try
             {
@@ -346,7 +346,7 @@ namespace Playlist
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
             }
 
             return hr;
@@ -358,11 +358,11 @@ namespace Playlist
         //      Pauses the media session with the current topology
         ///////////////////////////////////////////////////////////////////////////////////////////
 
-        public int Pause()
+        public HResult Pause()
         {
             Debug.WriteLine("\nCPlayer::Pause");
 
-            int hr = 0;
+            HResult hr = 0;
 
             try
             {
@@ -372,7 +372,7 @@ namespace Playlist
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
             }
 
             return hr;
@@ -389,11 +389,11 @@ namespace Playlist
         //      Stops the media session with the current topology
         ///////////////////////////////////////////////////////////////////////////////////////////
 
-        public int Stop()
+        public HResult Stop()
         {
             Debug.WriteLine("CPlayer::Stop");
 
-            int hr = 0;
+            HResult hr = 0;
 
             try
             {
@@ -402,7 +402,7 @@ namespace Playlist
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
             }
 
             return hr;
@@ -416,11 +416,11 @@ namespace Playlist
         //      SegmentID: [in] The segment identifier
         ///////////////////////////////////////////////////////////////////////////////////////////
 
-        public int Skip(int SegmentID)
+        public HResult Skip(int SegmentID)
         {
             Debug.WriteLine("\nCPlayer::Skip");
 
-            int hr = 0;
+            HResult hr = 0;
 
             PropVariant var = new PropVariant();
 
@@ -437,7 +437,7 @@ namespace Playlist
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
             }
             finally
             {
@@ -455,9 +455,9 @@ namespace Playlist
         //      phnsCurrentTime: [out] Playtime of the current segment
         ///////////////////////////////////////////////////////////////////////////////////////////
 
-        public int GetCurrentSegmentTime(out long phnsCurrentTime)
+        public HResult GetCurrentSegmentTime(out long phnsCurrentTime)
         {
-            int hr = 0;
+            HResult hr = 0;
 
             try
             {
@@ -481,7 +481,7 @@ namespace Playlist
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
                 phnsCurrentTime = 0;
             }
 
@@ -499,12 +499,12 @@ namespace Playlist
         //      dwSize: [in] Size of szSegmentURL
         /////////////////////////////////////////////////////////////////////////////////////////
 
-        public int GetSegmentInfo(
+        public HResult GetSegmentInfo(
                             int SegmentID,
                             out long phnsSegmentDuration,
                             out string szSegmentURL)
         {
-            int hr = 0;
+            HResult hr = 0;
 
             try
             {
@@ -512,7 +512,7 @@ namespace Playlist
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
                 phnsSegmentDuration = 0;
                 szSegmentURL = null;
             }
@@ -526,11 +526,11 @@ namespace Playlist
         //      Releases all resources and shuts down Media Foundation
         ///////////////////////////////////////////////////////////////////////////////////////////
 
-        int ShutDown()
+        HResult ShutDown()
         {
             Debug.WriteLine("\nCPlayer::ShutDown");
 
-            int hr = 0;
+            HResult hr = 0;
 
             IMFMediaSource pMediaSource;
 
@@ -569,7 +569,7 @@ namespace Playlist
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
             }
 
             SafeRelease(m_pMediaSession);
@@ -582,12 +582,12 @@ namespace Playlist
 
         #region IMFAsyncCallback methods
 
-        int IMFAsyncCallback.GetParameters(out MFASync pdwFlags, out MFAsyncCallbackQueue pdwQueue)
+        HResult IMFAsyncCallback.GetParameters(out MFASync pdwFlags, out MFAsyncCallbackQueue pdwQueue)
         {
             pdwFlags = MFASync.None;
             pdwQueue = 0;
 
-            return S_Ok;
+            return HResult.S_OK;
         }
 
         //////////////////////////////////////////////////////////////////////////
@@ -600,17 +600,17 @@ namespace Playlist
         //
         /////////////////////////////////////////////////////////////////////////
 
-        int IMFAsyncCallback.Invoke(IMFAsyncResult pAsyncResult)
+        HResult IMFAsyncCallback.Invoke(IMFAsyncResult pAsyncResult)
         {
             MediaEventType eventType = MediaEventType.MEUnknown;
             IMFMediaEvent pEvent;
             PropVariant eventData = null;
             Exception excpt = null;
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             try
             {
-                int eventStatus = 0;             // Event status
+                HResult eventStatus = 0;             // Event status
                 eventData = new PropVariant();                  // Event data
 
                 // Get the event from the event queue.
@@ -815,11 +815,11 @@ namespace Playlist
 
             if (excpt == null)
             {
-                hr = S_Ok;
+                hr = HResult.S_OK;
             }
             else
             {
-                hr = Marshal.GetHRForException(excpt);
+                hr = (HResult)Marshal.GetHRForException(excpt);
             }
 
             return hr;
@@ -835,9 +835,9 @@ namespace Playlist
         //      phnsPresentationTime: [out] presentation time
         ///////////////////////////////////////////////////////////////////////////////////////////
 
-        public int GetPresentationTime(out long phnsPresentationTime)
+        public HResult GetPresentationTime(out long phnsPresentationTime)
         {
-            int hr = 0;
+            HResult hr = 0;
 
             try
             {
@@ -846,7 +846,7 @@ namespace Playlist
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
                 phnsPresentationTime = 0;
             }
 
@@ -883,10 +883,10 @@ namespace Playlist
         {
             if (pPresentationDescriptor == null || pMediaSource == null || pTopology == null)
             {
-                throw new COMException("null pointer", E_Pointer);
+                throw new COMException("null pointer", (int)HResult.E_POINTER);
             }
 
-            int hr;
+            HResult hr;
             IMFStreamDescriptor pStreamDescriptor;
             IMFTopologyNode pSourceNode;
             IMFTopologyNode pOutputNode;
@@ -958,10 +958,10 @@ namespace Playlist
         {
             if (pPresentationDescriptor == null || pMediaSource == null || pStreamDescriptor == null)
             {
-                throw new COMException("null pointer", E_Pointer);
+                throw new COMException("null pointer", (int)HResult.E_POINTER);
             }
 
-            int hr;
+            HResult hr;
             // Create the source-stream node.
             hr = MFExtern.MFCreateTopologyNode(MFTopologyType.SourcestreamNode, out ppSourceNode);
             MFError.ThrowExceptionForHR(hr);
@@ -995,7 +995,7 @@ namespace Playlist
         {
             if (pStreamDescriptor == null)
             {
-                throw new COMException("null pointer", E_Pointer);
+                throw new COMException("null pointer", (int)HResult.E_POINTER);
             }
 
             IMFMediaTypeHandler pHandler;
@@ -1003,7 +1003,7 @@ namespace Playlist
             Guid guidMajorType = Guid.Empty;
 
             // Create a downstream node.
-            int hr = MFExtern.MFCreateTopologyNode(MFTopologyType.OutputNode, out ppOutputNode);
+            HResult hr = MFExtern.MFCreateTopologyNode(MFTopologyType.OutputNode, out ppOutputNode);
             MFError.ThrowExceptionForHR(hr);
 
             // Get the media type handler for the stream.
@@ -1026,7 +1026,7 @@ namespace Playlist
                 else
                 {
                     Debug.WriteLine(("Unsupported stream"));
-                    throw new COMException("Unsupported stream", E_NotImplemented);
+                    throw new COMException("Unsupported stream", (int)HResult.E_NOTIMPL);
                 }
             }
             finally
@@ -1048,7 +1048,7 @@ namespace Playlist
         {
             if (pEvent == null)
             {
-                throw new COMException("null pointer", E_Pointer);
+                throw new COMException("null pointer", (int)HResult.E_POINTER);
             }
 
             if (m_phnsTimePairStart == null)
@@ -1064,7 +1064,7 @@ namespace Playlist
                 m_phnsTimePairEnd.pNextTimePair = null;
             }
 
-            int hr = pEvent.GetUINT64(
+            HResult hr = pEvent.GetUINT64(
                         MFAttributesClsid.MF_EVENT_START_PRESENTATION_TIME,
                         out m_phnsTimePairEnd.hnsStartPresentationTime);
             MFError.ThrowExceptionForHR(hr);
@@ -1092,10 +1092,10 @@ namespace Playlist
 
             if (sURL == null)
             {
-                throw new COMException("null pointer", E_Pointer);
+                throw new COMException("null pointer", (int)HResult.E_POINTER);
             }
 
-            int hr;
+            HResult hr;
             IMFSourceResolver pSourceResolver;
             object pSourceUnk;
 
@@ -1145,13 +1145,13 @@ namespace Playlist
 
             if (pMediaSource == null || pTopology == null)
             {
-                throw new COMException("null pointer", E_Pointer);
+                throw new COMException("null pointer", (int)HResult.E_POINTER);
             }
 
             IMFPresentationDescriptor pPresentationDescriptor;
 
             //Create Presentation Descriptor for the media source
-            int hr = pMediaSource.CreatePresentationDescriptor(out pPresentationDescriptor);
+            HResult hr = pMediaSource.CreatePresentationDescriptor(out pPresentationDescriptor);
             MFError.ThrowExceptionForHR(hr);
 
             try
@@ -1185,12 +1185,12 @@ namespace Playlist
 
             if (sURL == null || pMediaSource == null || pTopology == null)
             {
-                throw new COMException("null pointer", E_Pointer);
+                throw new COMException("null pointer", (int)HResult.E_POINTER);
             }
 
             long hnsSegmentDuration = 0;
             long TopologyID = 0;
-            int hr;
+            HResult hr;
 
             IMFPresentationDescriptor pPresentationDescriptor;
 
@@ -1232,7 +1232,7 @@ namespace Playlist
                              IMFPresentationDescriptor pPresentationDescriptor,
                              out int pSegmentId)
         {
-            int hr;
+            HResult hr;
             IMFMediaSourceTopologyProvider pMediaSourceTopologyProvider;
             IMFTopology pTopology;
 
@@ -1288,7 +1288,7 @@ namespace Playlist
 
             if (sURL == null)
             {
-                throw new COMException("null pointer", E_Pointer);
+                throw new COMException("null pointer", (int)HResult.E_POINTER);
             }
 
             IMFMediaSource pMediaSource;
@@ -1298,7 +1298,7 @@ namespace Playlist
 
             try
             {
-                int hr = MFExtern.MFCreateTopology(out pTopology);
+                HResult hr = MFExtern.MFCreateTopology(out pTopology);
                 MFError.ThrowExceptionForHR(hr);
                 try
                 {

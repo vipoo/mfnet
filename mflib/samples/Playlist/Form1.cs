@@ -152,7 +152,7 @@ namespace Playlist
         //  sErrorMessage: NULL-terminated string containing the error message.
         //  hrErr: HRESULT from the error.
         /////////////////////////////////////////////////////////////////////////
-        private void NotifyError(string szErrorMessage, int hrErr)
+        private void NotifyError(string szErrorMessage, HResult hrErr)
         {
             string szMessage;
 
@@ -219,7 +219,7 @@ namespace Playlist
 
         private void SkipToSegment(int iIndex)
         {
-            int hr;
+            HResult hr;
             int SegmentID;
 
             SegmentID = ((Segment)(lbPlaylist.Items[iIndex])).SegID;
@@ -273,7 +273,7 @@ namespace Playlist
             string szSegmentInfoString;
             string szMessage;
 
-            int hr;
+            HResult hr;
 
             long hnsSegmentDuration;
 
@@ -376,7 +376,7 @@ namespace Playlist
             string szSegmentURL;
 
             long hnsSegmentDuration;
-            int hr;
+            HResult hr;
 
             hr = m_pPlayer.GetSegmentInfo(SegmentID, out hnsSegmentDuration, out szSegmentURL);
 
@@ -455,7 +455,7 @@ namespace Playlist
 
         private void Play_Click(object sender, EventArgs e)
         {
-            int hr = 0;
+            HResult hr = 0;
 
             if (m_pPlayer.GetState() == PlayerState.Playing)
             {
@@ -477,7 +477,7 @@ namespace Playlist
 
         private void Stop_Click(object sender, EventArgs e)
         {
-            int hr = 0;
+            HResult hr = 0;
 
             hr = m_pPlayer.Stop();
             if (hr < 0)
@@ -494,7 +494,7 @@ namespace Playlist
             {
                 foreach (string szUrl in openFileDialog1.FileNames)
                 {
-                    int hr = m_pPlayer.AddToPlaylist(szUrl);
+                    HResult hr = m_pPlayer.AddToPlaylist(szUrl);
 
                     if (hr < 0)
                     {
@@ -507,7 +507,7 @@ namespace Playlist
 
         private void removeFromPlaylistToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            int hr = 0;
+            HResult hr = 0;
             int SegmentID = 0;
             int iIndex = 0;
 
@@ -525,7 +525,7 @@ namespace Playlist
             }
             else
             {
-                NotifyError("Segment not selected.", -1);
+                NotifyError("Segment not selected.", HResult.E_FAIL);
             }
         }
 

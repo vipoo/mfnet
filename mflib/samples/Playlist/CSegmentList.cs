@@ -12,6 +12,7 @@ using System.Text;
 using System.Runtime.InteropServices;
 
 using MediaFoundation.Misc;
+using MediaFoundation;
 
 namespace Playlist
 {
@@ -136,7 +137,7 @@ namespace Playlist
             }
 
             //SegmentID not found
-            throw new COMException("SegmentID not found", E_Fail);
+            throw new COMException("SegmentID not found", (int)HResult.E_FAIL);
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////
