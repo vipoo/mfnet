@@ -81,7 +81,7 @@ namespace WavSourceFilter
 
             if (pStream == null)
             {
-                throw new COMException("invalid IMFByteStream", E_Pointer);
+                throw new COMException("invalid IMFByteStream", (int)HResult.E_POINTER);
             }
             else
             {
@@ -120,7 +120,7 @@ namespace WavSourceFilter
 
         public void MoveToNextChunk()
         {
-            int hr;
+            HResult hr;
 
             // chunk offset is always bigger than container offset,
             // and both are always non-negative.
@@ -134,13 +134,13 @@ namespace WavSourceFilter
             // Are we at the end?
             if ((m_llCurrentChunkOffset - m_llContainerOffset) >= m_dwContainerSize)
             {
-                throw new COMException("At end of chunk", E_Fail);
+                throw new COMException("At end of chunk", (int)HResult.E_FAIL);
             }
 
             // Current chunk offset + size of current chunk
             if (long.MaxValue - m_llCurrentChunkOffset <= ChunkActualSize())
             {
-                throw new COMException("Chunk size error", E_InvalidArgument);
+                throw new COMException("Chunk size error", (int)HResult.E_INVALIDARG);
             }
 
             // Seek to the start of the chunk.
@@ -155,7 +155,7 @@ namespace WavSourceFilter
 
             if (maxChunkSize < ChunkActualSize())
             {
-                throw new COMException("Bad chunk size", E_InvalidArgument);
+                throw new COMException("Bad chunk size", (int)HResult.E_INVALIDARG);
             }
 
             m_dwBytesRemaining = m_chunk.DataSize();
@@ -170,10 +170,10 @@ namespace WavSourceFilter
 
         public void MoveToChunkOffset(int dwOffset)
         {
-            int hr;
+            HResult hr;
             if (dwOffset > m_chunk.DataSize())
             {
-                throw new COMException("End of chunk", E_InvalidArgument);
+                throw new COMException("End of chunk", (int)HResult.E_INVALIDARG);
             }
 
             hr = m_pStream.SetCurrentPosition(m_llCurrentChunkOffset + dwOffset + Marshal.SizeOf(typeof(RIFFCHUNK)));
@@ -189,10 +189,10 @@ namespace WavSourceFilter
 
         public void ReadDataFromChunk(IntPtr pData, int dwLengthInBytes)
         {
-            int hr;
+            HResult hr;
             if (dwLengthInBytes > m_dwBytesRemaining)
             {
-                throw new COMException("End of chunk", E_InvalidArgument);
+                throw new COMException("End of chunk", (int)HResult.E_INVALIDARG);
             }
 
             int cbRead = 0;
@@ -224,7 +224,7 @@ namespace WavSourceFilter
 
             if (!m_chunk.IsList())
             {
-                throw new COMException("not in list", E_Fail);
+                throw new COMException("not in list", (int)HResult.E_FAIL);
             }
 
             ppParser = new CRiffParser(m_pStream, new FourCC("LIST"), m_llCurrentChunkOffset);
@@ -252,25 +252,25 @@ namespace WavSourceFilter
 
         private void ReadRiffHeader()
         {
-            int hr;
+            HResult hr;
             int iRiffSize = Marshal.SizeOf(typeof(RIFFLIST));
 
             // Riff chunks must be WORD aligned
             if (!Utils.IsAligned(m_llContainerOffset, 2))
             {
-                throw new COMException("bad alignment", E_InvalidArgument);
+                throw new COMException("bad alignment", (int)HResult.E_INVALIDARG);
             }
 
             // Offset must be positive.
             if (m_llContainerOffset < 0)
             {
-                throw new COMException("negative offset", E_InvalidArgument);
+                throw new COMException("negative offset", (int)HResult.E_INVALIDARG);
             }
 
             // Offset + the size of header must not overflow.
             if (long.MaxValue - m_llContainerOffset <= iRiffSize)
             {
-                throw new COMException("overflow chunk", E_InvalidArgument);
+                throw new COMException("overflow chunk", (int)HResult.E_INVALIDARG);
             }
 
             RIFFLIST header = new RIFFLIST();
@@ -294,7 +294,7 @@ namespace WavSourceFilter
                 }
                 else
                 {
-                    throw new COMException("read riff failure", E_InvalidArgument);
+                    throw new COMException("read riff failure", (int)HResult.E_INVALIDARG);
                 }
             }
             finally
@@ -305,7 +305,7 @@ namespace WavSourceFilter
             // Make sure the header ID matches what the caller expected.
             if (header.fcc != m_fccID)
             {
-                throw new COMException("bad header id", E_InvalidArgument);
+                throw new COMException("bad header id", (int)HResult.E_INVALIDARG);
             }
 
             // The size given in the RIFF header does not include the 8-byte header.
@@ -330,13 +330,13 @@ namespace WavSourceFilter
 
         private void ReadChunkHeader()
         {
-            int hr;
+            HResult hr;
             int iRiffChunkSize = Marshal.SizeOf(typeof(RIFFCHUNK));
 
             // Offset + the size of header must not overflow.
             if (long.MaxValue - m_llCurrentChunkOffset <= iRiffChunkSize)
             {
-                throw new COMException("overflow chunk", E_InvalidArgument);
+                throw new COMException("overflow chunk", (int)HResult.E_INVALIDARG);
             }
 
             int cbRead;
@@ -353,7 +353,7 @@ namespace WavSourceFilter
                 }
                 else
                 {
-                    throw new COMException("read failure on chunk header", E_InvalidArgument);
+                    throw new COMException("read failure on chunk header", (int)HResult.E_INVALIDARG);
                 }
             }
             finally

@@ -91,7 +91,7 @@ namespace WavSourceFilter
 
         public WavStream(WavSource pSource, CWavRiffParser pRiff, IMFStreamDescriptor pSD)
         {
-            int hr;
+            HResult hr;
             m_pEventQueue = null;
             m_Log = new xLog("WavStream");
 #if false
@@ -124,7 +124,7 @@ namespace WavSourceFilter
 
         #region IMFMediaEventGenerator methods
 
-        public int BeginGetEvent(
+        public HResult BeginGetEvent(
             //IMFAsyncCallback pCallback,
             IntPtr pCallback,
             object punkState
@@ -133,7 +133,7 @@ namespace WavSourceFilter
             // Make sure we *never* leave this entry point with an exception
             try
             {
-                int hr;
+                HResult hr;
                 m_Log.WriteLine("-BeginGetEvent");
 
                 lock (this)
@@ -143,15 +143,15 @@ namespace WavSourceFilter
                     MFError.ThrowExceptionForHR(hr);
                 }
 
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        public int EndGetEvent(
+        public HResult EndGetEvent(
             //IMFAsyncResult pResult, 
             IntPtr pResult,
             out IMFMediaEvent ppEvent
@@ -160,7 +160,7 @@ namespace WavSourceFilter
             // Make sure we *never* leave this entry point with an exception
             try
             {
-                int hr;
+                HResult hr;
                 m_Log.WriteLine("-EndGetEvent");
                 ppEvent = null;
 
@@ -170,21 +170,21 @@ namespace WavSourceFilter
                     hr = m_pEventQueue.EndGetEvent(pResult, out ppEvent);
                     MFError.ThrowExceptionForHR(hr);
                 }
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
                 ppEvent = null;
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        public int GetEvent(MFEventFlag dwFlags, out IMFMediaEvent ppEvent)
+        public HResult GetEvent(MFEventFlag dwFlags, out IMFMediaEvent ppEvent)
         {
             // Make sure we *never* leave this entry point with an exception
             try
             {
-                int hr;
+                HResult hr;
                 m_Log.WriteLine("-GetEvent");
                 ppEvent = null;
 
@@ -200,21 +200,21 @@ namespace WavSourceFilter
                 MFError.ThrowExceptionForHR(hr);
 
                 //not needed SAFE_RELEASE(pQueue);
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
                 ppEvent = null;
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        public int QueueEvent(MediaEventType met, Guid guidExtendedType, int hrStatus, ConstPropVariant pvValue)
+        public HResult QueueEvent(MediaEventType met, Guid guidExtendedType, HResult hrStatus, ConstPropVariant pvValue)
         {
             // Make sure we *never* leave this entry point with an exception
             try
             {
-                int hr;
+                HResult hr;
                 m_Log.WriteLine("-QueueEvent");
 
                 lock (this)
@@ -224,11 +224,11 @@ namespace WavSourceFilter
                     hr = m_pEventQueue.QueueEventParamVar(met, guidExtendedType, hrStatus, pvValue);
                     MFError.ThrowExceptionForHR(hr);
                 }
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
@@ -236,7 +236,7 @@ namespace WavSourceFilter
 
         #region IMFMediaStream methods.
 
-        public int GetMediaSource(out IMFMediaSource ppMediaSource)
+        public HResult GetMediaSource(out IMFMediaSource ppMediaSource)
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -248,22 +248,22 @@ namespace WavSourceFilter
                 {
                     if (m_pSource == null)
                     {
-                        throw new COMException("null WavSource", E_Unexpected);
+                        throw new COMException("null WavSource", (int)HResult.E_UNEXPECTED);
                     }
 
                     CheckShutdown();
                     ppMediaSource = (IMFMediaSource)m_pSource;
                 }
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
                 ppMediaSource = null;
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        public int GetStreamDescriptor(out IMFStreamDescriptor ppStreamDescriptor)
+        public HResult GetStreamDescriptor(out IMFStreamDescriptor ppStreamDescriptor)
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -275,32 +275,32 @@ namespace WavSourceFilter
                 {
                     if (m_pStreamDescriptor == null)
                     {
-                        throw new COMException("null stream descriptor", E_Unexpected);
+                        throw new COMException("null stream descriptor", (int)HResult.E_UNEXPECTED);
                     }
 
                     CheckShutdown();
                     ppStreamDescriptor = m_pStreamDescriptor;
                 }
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
                 ppStreamDescriptor = null;
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        public int RequestSample(object pToken)
+        public HResult RequestSample(object pToken)
         {
             // Make sure we *never* leave this entry point with an exception
             try
             {
-                int hr;
+                HResult hr;
                 m_Log.WriteLine("-RequestSample");
 
                 if (m_pSource == null)
                 {
-                    throw new COMException("null wavsource", E_Unexpected);
+                    throw new COMException("null wavsource", (int)HResult.E_UNEXPECTED);
                 }
 
                 IMFSample pSample = null;  // Sample to deliver.
@@ -314,14 +314,14 @@ namespace WavSourceFilter
                     // Check if we already reached the end of the stream.
                     if (m_EOS)
                     {
-                        throw new COMException("at eos", MFError.MF_E_END_OF_STREAM);
+                        throw new COMException("at eos", (int)HResult.MF_E_END_OF_STREAM);
                     }
 
                     // Check the source is stopped.
                     // GetState does not hold the source's critical section. Safe to call.
                     if (m_pSource.GetState() == WavSource.State.Stopped)
                     {
-                        throw new COMException("stopped", MFError.MF_E_INVALIDREQUEST);
+                        throw new COMException("stopped", (int)HResult.MF_E_INVALIDREQUEST);
                     }
 
                     // If we Succeeded to here, we are able to deliver a sample.
@@ -361,13 +361,13 @@ namespace WavSourceFilter
 
                 if (bReachedEOS)
                 {
-                    m_pSource.QueueEvent(MediaEventType.MEEndOfPresentation, Guid.Empty, S_Ok, null);
+                    m_pSource.QueueEvent(MediaEventType.MEEndOfPresentation, Guid.Empty, HResult.S_OK, null);
                 }
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
@@ -392,7 +392,7 @@ namespace WavSourceFilter
 
                 if (rtNewPosition > duration)
                 {
-                    throw new COMException("past end of stream", E_InvalidArgument);
+                    throw new COMException("past end of stream", (int)HResult.E_INVALIDARG);
                 }
 
                 if (m_rtCurrentPosition != rtNewPosition)
@@ -414,7 +414,7 @@ namespace WavSourceFilter
 
         internal void Shutdown()
         {
-            int hr;
+            HResult hr;
             m_Log.WriteLine("Shutdown");
 
             lock (this)
@@ -452,7 +452,7 @@ namespace WavSourceFilter
                 m_EOS = true;
 
                 // Send the end-of-stream event,
-                QueueEvent(MediaEventType.MEEndOfStream, Guid.Empty, S_Ok, null);
+                QueueEvent(MediaEventType.MEEndOfStream, Guid.Empty, HResult.S_OK, null);
             }
         }
 
@@ -462,13 +462,13 @@ namespace WavSourceFilter
 
             if (m_IsShutdown)
             {
-                throw new COMException("Parser is shut down", MFError.MF_E_SHUTDOWN);
+                throw new COMException("Parser is shut down", (int)HResult.MF_E_SHUTDOWN);
             }
         }
 
         private void CreateAudioSample(out IMFSample ppSample)
         {
-            int hr;
+            HResult hr;
             m_Log.WriteLine("CreateAudioSample");
             ppSample = null;
 
@@ -618,7 +618,7 @@ namespace WavSourceFilter
 
         public WavSource()
         {
-            int hr;
+            HResult hr;
             m_Log = new xLog("WavSource");
             m_state = State.Stopped;
 
@@ -639,12 +639,12 @@ namespace WavSourceFilter
         // 1. Check for shutdown status.
         // 2. Call the event generator helper object.
 
-        public int BeginGetEvent(IMFAsyncCallback pCallback, object punkState)
+        public HResult BeginGetEvent(IMFAsyncCallback pCallback, object punkState)
         {
             // Make sure we *never* leave this entry point with an exception
             try
             {
-                int hr;
+                HResult hr;
                 m_Log.WriteLine("-BeginGetEvent");
 
                 lock (this)
@@ -653,20 +653,20 @@ namespace WavSourceFilter
                     hr = m_pEventQueue.BeginGetEvent(pCallback, punkState);
                     MFError.ThrowExceptionForHR(hr);
                 }
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        public int EndGetEvent(IMFAsyncResult pResult, out IMFMediaEvent ppEvent)
+        public HResult EndGetEvent(IMFAsyncResult pResult, out IMFMediaEvent ppEvent)
         {
             // Make sure we *never* leave this entry point with an exception
             try
             {
-                int hr;
+                HResult hr;
                 m_Log.WriteLine("-EndGetEvent");
                 ppEvent = null;
 
@@ -675,16 +675,16 @@ namespace WavSourceFilter
                     CheckShutdown();
                     hr = m_pEventQueue.EndGetEvent(pResult, out ppEvent);
                 }
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
                 ppEvent = null;
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        public int GetEvent(MFEventFlag dwFlags, out IMFMediaEvent ppEvent)
+        public HResult GetEvent(MFEventFlag dwFlags, out IMFMediaEvent ppEvent)
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -693,7 +693,7 @@ namespace WavSourceFilter
                 //       WavSource lock. This requires some juggling with the
                 //       event queue pointer.
 
-                int hr;
+                HResult hr;
                 m_Log.WriteLine("-GetEvent");
                 ppEvent = null;
 
@@ -710,21 +710,21 @@ namespace WavSourceFilter
                 MFError.ThrowExceptionForHR(hr);
 
                 // not needed SAFE_RELEASE(pQueue);
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
                 ppEvent = null;
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        public int QueueEvent(MediaEventType met, Guid guidExtendedType, int hrStatus, ConstPropVariant pvValue)
+        public HResult QueueEvent(MediaEventType met, Guid guidExtendedType, HResult hrStatus, ConstPropVariant pvValue)
         {
             // Make sure we *never* leave this entry point with an exception
             try
             {
-                int hr;
+                HResult hr;
                 m_Log.WriteLine("-QueueEvent");
 
                 lock (this)
@@ -733,11 +733,11 @@ namespace WavSourceFilter
                     hr = m_pEventQueue.QueueEventParamVar(met, guidExtendedType, hrStatus, pvValue);
                     MFError.ThrowExceptionForHR(hr);
                 }
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
@@ -750,12 +750,12 @@ namespace WavSourceFilter
         // Description: Returns a copy of the default presentation descriptor.
         //-------------------------------------------------------------------
 
-        public int CreatePresentationDescriptor(out IMFPresentationDescriptor ppPresentationDescriptor)
+        public HResult CreatePresentationDescriptor(out IMFPresentationDescriptor ppPresentationDescriptor)
         {
             // Make sure we *never* leave this entry point with an exception
             try
             {
-                int hr;
+                HResult hr;
                 m_Log.WriteLine("-CreatePresentationDescriptor");
                 ppPresentationDescriptor = null;
 
@@ -771,12 +771,12 @@ namespace WavSourceFilter
                     hr = m_pPresentationDescriptor.Clone(out ppPresentationDescriptor);
                     MFError.ThrowExceptionForHR(hr);
                 }
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
                 ppPresentationDescriptor = null;
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
@@ -785,7 +785,7 @@ namespace WavSourceFilter
         // Description: Returns flags the describe the source.
         //-------------------------------------------------------------------
 
-        public int GetCharacteristics(out MFMediaSourceCharacteristics pdwCharacteristics)
+        public HResult GetCharacteristics(out MFMediaSourceCharacteristics pdwCharacteristics)
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -798,12 +798,12 @@ namespace WavSourceFilter
                     CheckShutdown();
                     pdwCharacteristics = MFMediaSourceCharacteristics.CanPause | MFMediaSourceCharacteristics.CanSeek;
                 }
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
                 pdwCharacteristics = MFMediaSourceCharacteristics.None;
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
@@ -812,7 +812,7 @@ namespace WavSourceFilter
         // Description: Switches to running state.
         //-------------------------------------------------------------------
 
-        public int Start(
+        public HResult Start(
            IMFPresentationDescriptor pPresentationDescriptor,
            Guid pguidTimeFormat,
            ConstPropVariant pvarStartPosition
@@ -821,7 +821,7 @@ namespace WavSourceFilter
             // Make sure we *never* leave this entry point with an exception
             try
             {
-                int hr;
+                HResult hr;
                 m_Log.WriteLine("-Start");
 
                 lock (this)
@@ -838,14 +838,14 @@ namespace WavSourceFilter
                     // Start position and presentation descriptor cannot be null.
                     if (pPresentationDescriptor == null) // pvarStartPosition == null || 
                     {
-                        throw new COMException("null presentation descriptor", E_InvalidArgument);
+                        throw new COMException("null presentation descriptor", (int)HResult.E_INVALIDARG);
                     }
 
                     // Check the time format. Must be "reference time" units.
                     if ((pguidTimeFormat != null) && (pguidTimeFormat != Guid.Empty))
                     {
                         // Unrecognized time format GUID.
-                        throw new COMException("unrecognized time format guid", MFError.MF_E_UNSUPPORTED_TIME_FORMAT);
+                        throw new COMException("unrecognized time format guid", (int)HResult.MF_E_UNSUPPORTED_TIME_FORMAT);
                     }
 
                     // Check the start position.
@@ -877,7 +877,7 @@ namespace WavSourceFilter
                     else
                     {
                         // We don't support this time format.
-                        throw new COMException("We don't support this time format", MFError.MF_E_UNSUPPORTED_TIME_FORMAT);
+                        throw new COMException("We don't support this time format", (int)HResult.MF_E_UNSUPPORTED_TIME_FORMAT);
                     }
 
                     // Validate the caller's presentation descriptor.
@@ -898,7 +898,7 @@ namespace WavSourceFilter
                     // (1) Send the source event.
                     if (bIsSeek)
                     {
-                        QueueEvent(MediaEventType.MESourceSeeked, Guid.Empty, S_Ok, var);
+                        QueueEvent(MediaEventType.MESourceSeeked, Guid.Empty, HResult.S_OK, var);
                     }
                     else
                     {
@@ -913,7 +913,7 @@ namespace WavSourceFilter
                         hr = MFExtern.MFCreateMediaEvent(
                             MediaEventType.MESourceStarted,
                             Guid.Empty,
-                            S_Ok,
+                            HResult.S_OK,
                             var,
                             out pEvent
                             );
@@ -938,11 +938,11 @@ namespace WavSourceFilter
                     {
                         if (bIsSeek)
                         {
-                            m_pStream.QueueEvent(MediaEventType.MEStreamSeeked, Guid.Empty, S_Ok, var);
+                            m_pStream.QueueEvent(MediaEventType.MEStreamSeeked, Guid.Empty, HResult.S_OK, var);
                         }
                         else
                         {
-                            m_pStream.QueueEvent(MediaEventType.MEStreamStarted, Guid.Empty, S_Ok, var);
+                            m_pStream.QueueEvent(MediaEventType.MEStreamStarted, Guid.Empty, HResult.S_OK, var);
                         }
                     }
 
@@ -958,11 +958,11 @@ namespace WavSourceFilter
 
                     var.Clear();
                 }
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
@@ -971,7 +971,7 @@ namespace WavSourceFilter
         // Description: Switches to paused state.
         //-------------------------------------------------------------------
 
-        public int Pause()
+        public HResult Pause()
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -985,27 +985,27 @@ namespace WavSourceFilter
                     // Pause is only allowed from started state.
                     if (m_state != State.Started)
                     {
-                        throw new COMException("Not started", MFError.MF_E_INVALID_STATE_TRANSITION);
+                        throw new COMException("Not started", (int)HResult.MF_E_INVALID_STATE_TRANSITION);
                     }
 
                     // Send the appropriate events.
                     if (m_pStream != null)
                     {
-                        m_pStream.QueueEvent(MediaEventType.MEStreamPaused, Guid.Empty, S_Ok, null);
+                        m_pStream.QueueEvent(MediaEventType.MEStreamPaused, Guid.Empty, HResult.S_OK, null);
                     }
 
-                    QueueEvent(MediaEventType.MESourcePaused, Guid.Empty, S_Ok, null);
+                    QueueEvent(MediaEventType.MESourcePaused, Guid.Empty, HResult.S_OK, null);
 
                     // Update our state.
                     m_state = State.Paused;
                 }
 
                 // Nothing else for us to do.
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
@@ -1014,7 +1014,7 @@ namespace WavSourceFilter
         // Description: Switches to stopped state.
         //-------------------------------------------------------------------
 
-        public int Stop()
+        public HResult Stop()
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -1028,19 +1028,19 @@ namespace WavSourceFilter
                     // Queue events.
                     if (m_pStream != null)
                     {
-                        m_pStream.QueueEvent(MediaEventType.MEStreamStopped, Guid.Empty, S_Ok, null);
+                        m_pStream.QueueEvent(MediaEventType.MEStreamStopped, Guid.Empty, HResult.S_OK, null);
                     }
 
-                    QueueEvent(MediaEventType.MESourceStopped, Guid.Empty, S_Ok, null);
+                    QueueEvent(MediaEventType.MESourceStopped, Guid.Empty, HResult.S_OK, null);
 
                     // Update our state.
                     m_state = State.Stopped;
                 }
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
@@ -1053,12 +1053,12 @@ namespace WavSourceFilter
         // method releases the pointer to the stream.
         //-------------------------------------------------------------------
 
-        public int Shutdown()
+        public HResult Shutdown()
         {
             // Make sure we *never* leave this entry point with an exception
             try
             {
-                int hr;
+                HResult hr;
                 m_Log.WriteLine("-Shutdown");
 
                 lock (this)
@@ -1088,11 +1088,11 @@ namespace WavSourceFilter
                     // Set our shutdown flag.
                     m_IsShutdown = true;
                 }
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
@@ -1120,7 +1120,7 @@ namespace WavSourceFilter
                 if (m_pRiff != null)
                 {
                     // The media source has already been opened.
-                    throw new COMException("The media source has already been opened", MFError.MF_E_INVALIDREQUEST);
+                    throw new COMException("The media source has already been opened", (int)HResult.MF_E_INVALIDREQUEST);
                 }
 
                 try
@@ -1196,7 +1196,7 @@ namespace WavSourceFilter
 
         private void CreatePresentationDescriptor()
         {
-            int hr;
+            HResult hr;
             m_Log.WriteLine("CreatePresentationDescriptor");
 
             IMFMediaType pMediaType = null;
@@ -1275,7 +1275,7 @@ namespace WavSourceFilter
 
         private void ValidatePresentationDescriptor(IMFPresentationDescriptor pPD)
         {
-            int hr;
+            HResult hr;
             m_Log.WriteLine("ValidatePresentationDescriptor");
 
             Debug.Assert(pPD != null);
@@ -1294,7 +1294,7 @@ namespace WavSourceFilter
 
             if (cStreamDescriptors != 1)
             {
-                throw new COMException("not just 1 stream", MFError.MF_E_UNSUPPORTED_REPRESENTATION);
+                throw new COMException("not just 1 stream", (int)HResult.MF_E_UNSUPPORTED_REPRESENTATION);
             }
 
             // Get the stream descriptor.
@@ -1305,7 +1305,7 @@ namespace WavSourceFilter
             // is not useful to deselect the only stream.)
             if (!fSelected)
             {
-                throw new COMException("not selected", MFError.MF_E_UNSUPPORTED_REPRESENTATION);
+                throw new COMException("not selected", (int)HResult.MF_E_UNSUPPORTED_REPRESENTATION);
             }
 
             // Get the media type handler, so that we can get the media type.
@@ -1331,12 +1331,12 @@ namespace WavSourceFilter
 
             if ((pFormat == null) || (this.WaveFormat() == null))
             {
-                throw new COMException("bad format or waveformat", MFError.MF_E_INVALIDMEDIATYPE);
+                throw new COMException("bad format or waveformat", (int)HResult.MF_E_INVALIDMEDIATYPE);
             }
 
             if (!pFormat.Equals(WaveFormat()))
             {
-                throw new COMException("wave formats don't match", MFError.MF_E_INVALIDMEDIATYPE);
+                throw new COMException("wave formats don't match", (int)HResult.MF_E_INVALIDMEDIATYPE);
             }
 
             //SAFE_RELEASE(pStreamDescriptor);
@@ -1358,7 +1358,7 @@ namespace WavSourceFilter
 
         private void QueueNewStreamEvent(IMFPresentationDescriptor pPD)
         {
-            int hr;
+            HResult hr;
             Debug.Assert(pPD != null);
 
             m_Log.WriteLine("QueueNewStreamEvent");
@@ -1378,7 +1378,7 @@ namespace WavSourceFilter
                 // The stream already exists, and is still selected.
                 // Send the MEUpdatedStream event.
 
-                QueueEvent(MediaEventType.MEUpdatedStream, Guid.Empty, S_Ok, new PropVariant(m_pStream));
+                QueueEvent(MediaEventType.MEUpdatedStream, Guid.Empty, HResult.S_OK, new PropVariant(m_pStream));
             }
             else
             {
@@ -1390,7 +1390,7 @@ namespace WavSourceFilter
                 Debug.Assert(m_pStream != null);
 
                 // Send the MENewStream event.
-                QueueEvent(MediaEventType.MENewStream, Guid.Empty, S_Ok, new PropVariant(m_pStream));
+                QueueEvent(MediaEventType.MENewStream, Guid.Empty, HResult.S_OK, new PropVariant(m_pStream));
             }
 
             //SAFE_RELEASE(pSD);
@@ -1439,40 +1439,40 @@ namespace WavSourceFilter
 
             if (pWav.wFormatTag != WAVE_FORMAT_PCM)
             {
-                throw new COMException("bad wFormatTag", MFError.MF_E_INVALIDMEDIATYPE);
+                throw new COMException("bad wFormatTag", (int)HResult.MF_E_INVALIDMEDIATYPE);
             }
 
             if (pWav.nChannels != 1 && pWav.nChannels != 2)
             {
-                throw new COMException("bad # channels", MFError.MF_E_INVALIDMEDIATYPE);
+                throw new COMException("bad # channels", (int)HResult.MF_E_INVALIDMEDIATYPE);
             }
 
             if (pWav.wBitsPerSample != 8 && pWav.wBitsPerSample != 16)
             {
-                throw new COMException("bad bitspersample", MFError.MF_E_INVALIDMEDIATYPE);
+                throw new COMException("bad bitspersample", (int)HResult.MF_E_INVALIDMEDIATYPE);
             }
 
             if (pWav.cbSize != 0)
             {
-                throw new COMException("bad cbsize", MFError.MF_E_INVALIDMEDIATYPE);
+                throw new COMException("bad cbsize", (int)HResult.MF_E_INVALIDMEDIATYPE);
             }
 
             // Make sure block alignment was calculated correctly.
             if (pWav.nBlockAlign != pWav.nChannels * (pWav.wBitsPerSample / 8))
             {
-                throw new COMException("bad align", MFError.MF_E_INVALIDMEDIATYPE);
+                throw new COMException("bad align", (int)HResult.MF_E_INVALIDMEDIATYPE);
             }
 
             // Check possible overflow...
             if (pWav.nSamplesPerSec > (int)(int.MaxValue / pWav.nBlockAlign))        // Is (nSamplesPerSec * nBlockAlign > MAXDWORD) ?
             {
-                throw new COMException("overflow", MFError.MF_E_INVALIDMEDIATYPE);
+                throw new COMException("overflow", (int)HResult.MF_E_INVALIDMEDIATYPE);
             }
 
             // Make sure average bytes per second was calculated correctly.
             if (pWav.nAvgBytesPerSec != pWav.nSamplesPerSec * pWav.nBlockAlign)
             {
-                throw new COMException("bad AvgBytesPerSec", MFError.MF_E_INVALIDMEDIATYPE);
+                throw new COMException("bad AvgBytesPerSec", (int)HResult.MF_E_INVALIDMEDIATYPE);
             }
         }
 
@@ -1498,7 +1498,7 @@ namespace WavSourceFilter
 
             if (m_IsShutdown)
             {
-                throw new COMException("Is shut down", MFError.MF_E_SHUTDOWN);
+                throw new COMException("Is shut down", (int)HResult.MF_E_SHUTDOWN);
             }
             else
             {
@@ -1590,7 +1590,7 @@ namespace WavSourceFilter
             // Check the RIFF file type.
             if (ppParser.RiffType() != new FourCC("WAVE"))
             {
-                throw new COMException("not a WAVE file", MFError.MF_E_INVALID_FILE_FORMAT);
+                throw new COMException("not a WAVE file", (int)HResult.MF_E_INVALID_FILE_FORMAT);
             }
         }
 
@@ -1638,7 +1638,7 @@ namespace WavSourceFilter
             // Fail if either of these conditions is not met.
             if (m_pWaveFormat == null || !bFoundData)
             {
-                throw new COMException("no format/data chunk found", MFError.MF_E_INVALID_FILE_FORMAT);
+                throw new COMException("no format/data chunk found", (int)HResult.MF_E_INVALID_FILE_FORMAT);
             }
 
             m_rtDuration = Utils.AudioDurationFromBufferSize(m_pWaveFormat, Chunk().DataSize());
@@ -1667,7 +1667,7 @@ namespace WavSourceFilter
                 // Validate the size
                 if (Chunk().DataSize() < cbMinFormatSize)
                 {
-                    throw new COMException("chunk too small", MFError.MF_E_INVALID_FILE_FORMAT);
+                    throw new COMException("chunk too small", (int)HResult.MF_E_INVALID_FILE_FORMAT);
                 }
 
                 // Allocate a buffer for the WAVEFORMAT structure.

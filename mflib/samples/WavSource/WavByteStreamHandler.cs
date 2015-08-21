@@ -36,7 +36,7 @@ namespace WavSourceFilter
 
         #region IMFByteStreamHandler methods
 
-        public int BeginCreateObject(
+        public HResult BeginCreateObject(
             IMFByteStream pByteStream,
             string pwszURL,
             MFResolution dwFlags,
@@ -49,14 +49,14 @@ namespace WavSourceFilter
             // Make sure we *never* leave this entry point with an exception
             try
             {
-                int hr;
+                HResult hr;
                 m_Log.WriteLine("BeginCreateObject");
 
                 ppIUnknownCancelCookie = null; // We don't return a cancellation cookie.
 
                 if ((pByteStream == null) || (pwszURL == null) || (pCallback == null))
                 {
-                    throw new COMException("bad stream, url, or callback", E_InvalidArgument);
+                    throw new COMException("bad stream, url, or callback", (int)HResult.E_INVALIDARG);
                 }
 
                 IMFAsyncResult pResult = null;
@@ -75,16 +75,16 @@ namespace WavSourceFilter
                 {
                     Marshal.ReleaseComObject(pResult);
                 }
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
                 ppIUnknownCancelCookie = null;
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        public int EndCreateObject(
+        public HResult EndCreateObject(
             IMFAsyncResult pResult,
             out MFObjectType pObjectType,
             out object ppObject
@@ -93,7 +93,7 @@ namespace WavSourceFilter
             // Make sure we *never* leave this entry point with an exception
             try
             {
-                int hr;
+                HResult hr;
 
                 pObjectType = MFObjectType.Invalid;
                 ppObject = null;
@@ -102,7 +102,7 @@ namespace WavSourceFilter
 
                 if (pResult == null)
                 {
-                    throw new COMException("invalid IMFAsyncResult", E_InvalidArgument);
+                    throw new COMException("invalid IMFAsyncResult", (int)HResult.E_INVALIDARG);
                 }
 
                 hr = pResult.GetObject(out ppObject);
@@ -115,32 +115,32 @@ namespace WavSourceFilter
 
                 // unneeded SAFE_RELEASE(pSource);
                 // unneeded SAFE_RELEASE(ppObject);
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
                 ppObject = null;
                 pObjectType = MFObjectType.Invalid;
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        public int CancelObjectCreation(object pIUnknownCancelCookie)
+        public HResult CancelObjectCreation(object pIUnknownCancelCookie)
         {
             // Make sure we *never* leave this entry point with an exception
             try
             {
                 m_Log.WriteLine("CancelObjectCreation");
 
-                throw new COMException("Not implemented", E_NotImplemented);
+                throw new COMException("Not implemented", (int)HResult.E_NOTIMPL);
             }
             catch (Exception e)
             {
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
-        public int GetMaxNumberOfBytesRequiredForResolution(out long pqwBytes)
+        public HResult GetMaxNumberOfBytesRequiredForResolution(out long pqwBytes)
         {
             // Make sure we *never* leave this entry point with an exception
             try
@@ -149,12 +149,12 @@ namespace WavSourceFilter
 
                 // In a canonical PCM .wav file, the start of the 'data' chunk is at byte offset 44.
                 pqwBytes = 44;
-                return S_Ok;
+                return HResult.S_OK;
             }
             catch (Exception e)
             {
                 pqwBytes = 0;
-                return Marshal.GetHRForException(e);
+                return (HResult)Marshal.GetHRForException(e);
             }
         }
 
@@ -197,9 +197,9 @@ namespace WavSourceFilter
         //       illustrated in this sample.
         ///////////////////////////////////////////////////////////////////////
 
-        static public int RegisterByteStreamHandler(Guid guid, string sFileExtension, string sDescription)
+        static public HResult RegisterByteStreamHandler(Guid guid, string sFileExtension, string sDescription)
         {
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             RegistryKey hKey;
             RegistryKey hSubKey;
@@ -219,14 +219,14 @@ namespace WavSourceFilter
             return hr;
         }
 
-        static public int UnregisterByteStreamHandler(Guid guid, string sFileExtension)
+        static public HResult UnregisterByteStreamHandler(Guid guid, string sFileExtension)
         {
             string sKey = string.Format("{0}\\{1}", REGKEY_MF_BYTESTREAM_HANDLERS, sFileExtension);
 
             RegistryKey hKey = Registry.LocalMachine.OpenSubKey(sKey, true);
             hKey.DeleteValue(guid.ToString("B"));
 
-            return S_Ok;
+            return HResult.S_OK;
         }
 
         #endregion
