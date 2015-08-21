@@ -41,7 +41,7 @@ namespace Splitter
 
         public void DoSplit()
         {
-            int hr;
+            HResult hr;
             bool bHasVideo = false;
 
             IMFByteStream pStream = null;
@@ -80,7 +80,7 @@ namespace Splitter
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
                 string s = MFError.GetErrorText(hr);
 
                 if (s == null)
@@ -110,7 +110,7 @@ namespace Splitter
         void OpenFile(string sFileName, out IMFByteStream ppStream)
         {
             // Open a byte stream for the file.
-            int hr = MFExtern.MFCreateFile(MFFileAccessMode.Read, MFFileOpenMode.FailIfNotExist, MFFileFlags.None, sFileName, out ppStream);
+            HResult hr = MFExtern.MFCreateFile(MFFileAccessMode.Read, MFFileOpenMode.FailIfNotExist, MFFileFlags.None, sFileName, out ppStream);
             MFError.ThrowExceptionForHR(hr);
         }
 
@@ -131,7 +131,7 @@ namespace Splitter
             out IMFMediaBuffer ppBuffer   // Receives a pointer to the buffer.
             )
         {
-            int hr;
+            HResult hr;
             IntPtr pData;
             int cbRead;   // Actual amount of data read
             int iMax, iCur;
@@ -180,7 +180,7 @@ namespace Splitter
             out IMFASFContentInfo ppContentInfo
             )
         {
-            int hr;
+            HResult hr;
             long cbHeader = 0;
 
             const int MIN_ASF_HEADER_SIZE = 30;
@@ -228,7 +228,7 @@ namespace Splitter
         void CreateASFSplitter(IMFASFContentInfo pContentInfo, out IMFASFSplitter ppSplitter)
         {
             MFASFSplitterFlags f;
-            int hr;
+            HResult hr;
 
             hr = MFExtern.MFCreateASFSplitter(out ppSplitter);
             MFError.ThrowExceptionForHR(hr);
@@ -264,7 +264,7 @@ namespace Splitter
             short[] wStreamIDs = new short[1];
             Guid streamType;
             bool bFoundVideo = false;
-            int hr;
+            HResult hr;
 
             IMFASFProfile pProfile;
             IMFASFStreamConfig pStream;
@@ -345,7 +345,7 @@ namespace Splitter
             int cBuffers;           // Buffer count
             int cbTotalLength;      // Buffer length
             long hnsTime;            // Time stamp
-            int hr;
+            HResult hr;
 
             IMFMediaBuffer pBuffer;
             IMFSample pSample;
