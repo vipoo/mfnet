@@ -14,6 +14,7 @@ using System;
 using System.Windows.Forms;
 
 using MediaFoundation.Misc;
+using MediaFoundation;
 
 namespace MFCaptureD3D
 {
@@ -52,7 +53,7 @@ namespace MFCaptureD3D
                     break;
 
                 case WM_APP_PREVIEW_ERROR:
-                    NotifyError("An error occurred.", (int)m.WParam);
+                    NotifyError("An error occurred.", (HResult)m.WParam);
                     break;
 
                 case WM_DEVICECHANGE:
@@ -65,7 +66,7 @@ namespace MFCaptureD3D
             }
         }
 
-        private void NotifyError(string sErrorMessage, int hrErr)
+        private void NotifyError(string sErrorMessage, HResult hrErr)
         {
             m_pPreview.CloseDevice();
 
@@ -82,7 +83,7 @@ namespace MFCaptureD3D
                 if (DevSelection.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
                 {
                     // Give this source to the CPlayer object for preview.
-                    int hr = m_pPreview.SetDevice(DevSelection.SelectedCaptureDevice);
+                    HResult hr = m_pPreview.SetDevice(DevSelection.SelectedCaptureDevice);
                     MFError.ThrowExceptionForHR(hr);
                 }
             }

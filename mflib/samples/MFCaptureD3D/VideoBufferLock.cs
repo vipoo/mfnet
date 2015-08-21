@@ -59,14 +59,14 @@ namespace MFCaptureD3D
         // the buffer does not expose IMF2DBuffer. You can calculate the default stride
         // from the media type.
         //-------------------------------------------------------------------
-        public int LockBuffer(
+        public HResult LockBuffer(
             int lDefaultStride,    // Minimum stride (with no padding).
             int dwHeightInPixels,  // Height of the image, in pixels.
             out IntPtr ppbScanLine0,    // Receives a pointer to the start of scan line 0.
             out int plStride          // Receives the actual stride.
             )
         {
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
             ppbScanLine0 = IntPtr.Zero;
             plStride = 0;
 

@@ -163,19 +163,19 @@ namespace MFCaptureD3D
 
         #region Private Methods
 
-        private int TestCooperativeLevel()
+        private HResult TestCooperativeLevel()
         {
             if (m_pDevice == null)
             {
-                return E_Fail;
+                return HResult.E_FAIL;
             }
 
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             // Check the current status of D3D9 device.
             SlimDX.Result r = m_pDevice.TestCooperativeLevel();
 
-            hr = r.Code;
+            hr = (HResult)r.Code;
 
             return hr;
         }
@@ -186,9 +186,9 @@ namespace MFCaptureD3D
         // Set the conversion function for the specified video format.
         //-------------------------------------------------------------------
 
-        private int SetConversionFunction(Guid subtype)
+        private HResult SetConversionFunction(Guid subtype)
         {
-            int hr = MFError.MF_E_INVALIDMEDIATYPE;
+            HResult hr = HResult.MF_E_INVALIDMEDIATYPE;
             m_convertFn = null;
 
             for (int i = 0; i < VideoFormatDefs.Length; i++)
@@ -196,7 +196,7 @@ namespace MFCaptureD3D
                 if (VideoFormatDefs[i].SubType == subtype)
                 {
                     m_convertFn = VideoFormatDefs[i].VideoConvertFunction;
-                    hr = S_Ok;
+                    hr = HResult.S_OK;
                     break;
                 }
             }
@@ -210,9 +210,9 @@ namespace MFCaptureD3D
         // Create Direct3D swap chains.
         //-------------------------------------------------------------------
 
-        private int CreateSwapChains()
+        private HResult CreateSwapChains()
         {
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             PresentParameters pp = new PresentParameters();
 
@@ -266,11 +266,11 @@ namespace MFCaptureD3D
         //
         // Create the Direct3D device.
         //-------------------------------------------------------------------
-        public int CreateDevice(IntPtr hwnd)
+        public HResult CreateDevice(IntPtr hwnd)
         {
             if (m_pDevice != null)
             {
-                return S_Ok;
+                return HResult.S_OK;
             }
 
             PresentParameters[] pp = new PresentParameters[1];
@@ -294,7 +294,7 @@ namespace MFCaptureD3D
             m_hwnd = hwnd;
             m_d3dpp = pp;
 
-            return S_Ok;
+            return HResult.S_OK;
         }
 
         //-------------------------------------------------------------------
@@ -302,9 +302,9 @@ namespace MFCaptureD3D
         //
         // Resets the Direct3D device.
         //-------------------------------------------------------------------
-        public int ResetDevice()
+        public HResult ResetDevice()
         {
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             if (m_pDevice != null)
             {
@@ -377,9 +377,9 @@ namespace MFCaptureD3D
         //
         // Set the video format.
         //-------------------------------------------------------------------
-        public int SetVideoType(IMFMediaType pType)
+        public HResult SetVideoType(IMFMediaType pType)
         {
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
             Guid subtype;
             MFRatio PAR = new MFRatio();
 
@@ -398,7 +398,7 @@ namespace MFCaptureD3D
             //
 
             // Get the frame size.
-            hr = MFGetAttributeSize(pType, MFAttributesClsid.MF_MT_FRAME_SIZE, out m_width, out m_height);
+            hr = MFExtern.MFGetAttributeSize(pType, MFAttributesClsid.MF_MT_FRAME_SIZE, out m_width, out m_height);
             if (Failed(hr)) { goto done; }
 
             // Get the image stride.
@@ -406,7 +406,7 @@ namespace MFCaptureD3D
             if (Failed(hr)) { goto done; }
 
             // Get the pixel aspect ratio. Default: Assume square pixels (1:1)
-            hr = MFGetAttributeRatio(pType, MFAttributesClsid.MF_MT_PIXEL_ASPECT_RATIO, out PAR.Numerator, out PAR.Denominator);
+            hr = MFExtern.MFGetAttributeRatio(pType, MFAttributesClsid.MF_MT_PIXEL_ASPECT_RATIO, out PAR.Numerator, out PAR.Denominator);
 
             if (Succeeded(hr))
             {
@@ -445,14 +445,14 @@ namespace MFCaptureD3D
         //
         // Draw the video frame.
         //-------------------------------------------------------------------
-        public int DrawFrame(IMFMediaBuffer pCaptureDeviceBuffer)
+        public HResult DrawFrame(IMFMediaBuffer pCaptureDeviceBuffer)
         {
             if (m_convertFn == null)
             {
-                return MFError.MF_E_INVALIDREQUEST;
+                return HResult.MF_E_INVALIDREQUEST;
             }
 
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
             IntPtr pbScanline0;
             int lStride = 0;
             Result res;
@@ -462,7 +462,7 @@ namespace MFCaptureD3D
 
             if (m_pDevice == null || m_pSwapChain == null)
             {
-                return S_Ok;
+                return HResult.S_OK;
             }
 
             // Helper object to lock the video buffer.
@@ -507,13 +507,13 @@ namespace MFCaptureD3D
             Rectangle r = new Rectangle(0, 0, m_width, m_height);
 
             res = m_pDevice.StretchRectangle(pSurf, r, pBB, m_rcDest, TextureFilter.Linear);
-            hr = res.Code;
+            hr = (HResult)res.Code;
 
             if (res.IsSuccess)
             {
                 // Present the frame.
                 res = m_pDevice.Present();
-                hr = res.Code;
+                hr = (HResult)res.Code;
             }
 
         done:
@@ -546,16 +546,16 @@ namespace MFCaptureD3D
         //
         // Get a supported output format by index.
         //-------------------------------------------------------------------
-        public int GetFormat(int index, out Guid pSubtype)
+        public HResult GetFormat(int index, out Guid pSubtype)
         {
             if (index < VideoFormatDefs.Length)
             {
                 pSubtype = VideoFormatDefs[index].SubType;
-                return S_Ok;
+                return HResult.S_OK;
             }
 
             pSubtype = Guid.Empty;
-            return MFError.MF_E_NO_MORE_TYPES;
+            return HResult.MF_E_NO_MORE_TYPES;
         }
 
         #endregion
@@ -820,13 +820,13 @@ namespace MFCaptureD3D
         // Gets the default stride for a video frame, assuming no extra padding bytes.
         //
         //-----------------------------------------------------------------------------
-        private static int GetDefaultStride(IMFMediaType pType, out int plStride)
+        private static HResult GetDefaultStride(IMFMediaType pType, out int plStride)
         {
             int lStride = 0;
             plStride = 0;
 
             // Try to get the default stride from the media type.
-            int hr = pType.GetUINT32(MFAttributesClsid.MF_MT_DEFAULT_STRIDE, out lStride);
+            HResult hr = pType.GetUINT32(MFAttributesClsid.MF_MT_DEFAULT_STRIDE, out lStride);
 
             if (Failed(hr))
             {
@@ -840,7 +840,7 @@ namespace MFCaptureD3D
                 hr = pType.GetGUID(MFAttributesClsid.MF_MT_SUBTYPE, out subtype);
                 if (Succeeded(hr))
                 {
-                    hr = MFGetAttributeSize(pType, MFAttributesClsid.MF_MT_FRAME_SIZE, out width, out height);
+                    hr = MFExtern.MFGetAttributeSize(pType, MFAttributesClsid.MF_MT_FRAME_SIZE, out width, out height);
                 }
 
                 if (Succeeded(hr))
@@ -860,35 +860,6 @@ namespace MFCaptureD3D
             if (Succeeded(hr))
             {
                 plStride = lStride;
-            }
-
-            return hr;
-        }
-
-        private static int MFGetAttributeSize(IMFMediaType pType, Guid gAttrib, out int width, out int height)
-        {
-            return MFGetAttribute2UINT32asUINT64(pType, gAttrib, out width, out height);
-        }
-
-        private static int MFGetAttributeRatio(IMFMediaType pType, Guid gAttrib, out int Numerator, out int Denominator)
-        {
-            return MFGetAttribute2UINT32asUINT64(pType, gAttrib, out Numerator, out Denominator);
-        }
-
-        private static int MFGetAttribute2UINT32asUINT64(IMFMediaType pType, Guid GuidKey, out int punHigh32, out int punLow32)
-        {
-            long AttrValue;
-            int hr = pType.GetUINT64(GuidKey, out AttrValue);
-
-            if (Succeeded(hr))
-            {
-                punLow32 = (int)AttrValue;
-                punHigh32 = (int)(AttrValue >> 32);
-            }
-            else
-            {
-                punLow32 = 0;
-                punHigh32 = 0;
             }
 
             return hr;
