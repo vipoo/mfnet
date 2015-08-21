@@ -154,7 +154,7 @@ namespace MFCaptureAlt
             {
                 if (m_FriendlyName == null)
                 {
-                    int hr = 0;
+                    HResult hr = 0;
                     int iSize = 0;
 
                     hr = m_Activator.GetAllocatedString(
@@ -178,7 +178,7 @@ namespace MFCaptureAlt
                 if (m_SymbolicName == null)
                 {
                     int iSize;
-                    int hr = m_Activator.GetAllocatedString(
+                    HResult hr = m_Activator.GetAllocatedString(
                         MFAttributesClsid.MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE_VIDCAP_SYMBOLIC_LINK,
                         out m_SymbolicName,
                         out iSize
@@ -201,7 +201,7 @@ namespace MFCaptureAlt
 
             //////////
 
-            int hr = 0;
+            HResult hr = 0;
             IMFAttributes pAttributes = null;
 
             // Initialize an attribute store. We will use this to

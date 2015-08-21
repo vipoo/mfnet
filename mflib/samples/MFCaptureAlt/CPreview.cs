@@ -72,7 +72,7 @@ namespace MFCaptureAlt
             m_bFirstSample = false;
             m_llBaseTime = 0;
 
-            int hr = MFExtern.MFStartup(0x20070, MFStartup.Lite);
+            HResult hr = MFExtern.MFStartup(0x20070, MFStartup.Lite);
             MFError.ThrowExceptionForHR(hr);
 
             hr = m_draw.CreateDevice(hVideo);
@@ -92,7 +92,7 @@ namespace MFCaptureAlt
         public static void CloseMediaSession()
         {
             // Shutdown the Media Foundation platform
-            int hr = MFExtern.MFShutdown();
+            HResult hr = MFExtern.MFShutdown();
             MFError.ThrowExceptionForHR(hr);
         }
 
@@ -102,9 +102,9 @@ namespace MFCaptureAlt
         // Set up preview for a specified video capture device.
         //-------------------------------------------------------------------
 
-        public int SetDevice(MFDevice pDevice)
+        public HResult SetDevice(MFDevice pDevice)
         {
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             IMFActivate pActivate = pDevice.Activator;
             IMFMediaSource pSource = null;
@@ -226,7 +226,7 @@ namespace MFCaptureAlt
             return hr;
         }
 
-        int ConfigWriter()
+        HResult ConfigWriter()
         {
             const int MF_SOURCE_READER_FIRST_VIDEO_STREAM = unchecked((int)0xfffffffc);
             IMFMediaType pType = null;
@@ -234,7 +234,7 @@ namespace MFCaptureAlt
             m_bFirstSample = true;
             m_llBaseTime = 0;
 
-            int hr = MFExtern.MFCreateSinkWriterFromURL(
+            HResult hr = MFExtern.MFCreateSinkWriterFromURL(
                 OutputFileName,
                 null,
                 null,
@@ -276,13 +276,13 @@ namespace MFCaptureAlt
             return hr;
         }
 
-        int ConfigureEncoder(
+        HResult ConfigureEncoder(
             IMFMediaType pType,
             IMFSinkWriter pWriter,
             out int pdwStreamIndex
             )
         {
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             IMFMediaType pType2 = null;
 
@@ -334,11 +334,11 @@ namespace MFCaptureAlt
             return hr;
         }
 
-        int CopyAttribute(IMFAttributes pSrc, IMFAttributes pDest, Guid key)
+        HResult CopyAttribute(IMFAttributes pSrc, IMFAttributes pDest, Guid key)
         {
             PropVariant var = new PropVariant();
 
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             hr = pSrc.GetItem(key, var);
             if (Succeeded(hr))
@@ -355,7 +355,7 @@ namespace MFCaptureAlt
         //  Releases all resources held by this object.
         //-------------------------------------------------------------------
 
-        public int CloseDevice()
+        public HResult CloseDevice()
         {
             lock (this)
             {
@@ -372,7 +372,7 @@ namespace MFCaptureAlt
                 m_pwszSymbolicLink = null;
             }
 
-            return S_Ok;
+            return HResult.S_OK;
         }
 
         //-------------------------------------------------------------------
@@ -383,9 +383,9 @@ namespace MFCaptureAlt
         //  window changes; e.g., when the application receives WM_SIZE.
         //-------------------------------------------------------------------
 
-        public int ResizeVideo()
+        public HResult ResizeVideo()
         {
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             lock (this)
             {
@@ -415,10 +415,10 @@ namespace MFCaptureAlt
         #region Protected Methods
 
         // NotifyState: Notifies the application when an error occurs.
-        protected void NotifyError(int hr)
+        protected void NotifyError(HResult hr)
         {
             TRACE("NotifyError: 0x" + hr.ToString("X"));
-            PostMessage(m_hwndEvent, WM_APP_PREVIEW_ERROR, new IntPtr(hr), IntPtr.Zero);
+            PostMessage(m_hwndEvent, WM_APP_PREVIEW_ERROR, new IntPtr((int)hr), IntPtr.Zero);
         }
 
         //-------------------------------------------------------------------
@@ -426,9 +426,9 @@ namespace MFCaptureAlt
         //
         // Test a proposed video format.
         //-------------------------------------------------------------------
-        protected int TryMediaType(IMFMediaType pType)
+        protected HResult TryMediaType(IMFMediaType pType)
         {
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             bool bFound = false;
             Guid subtype;
@@ -487,9 +487,9 @@ namespace MFCaptureAlt
         //
         // Called when the IMFMediaSource::ReadSample method completes.
         //-------------------------------------------------------------------
-        public int OnReadSample(int hrStatus, int dwStreamIndex, MF_SOURCE_READER_FLAG dwStreamFlags, long llTimestamp, IMFSample pSample)
+        public HResult OnReadSample(HResult hrStatus, int dwStreamIndex, MF_SOURCE_READER_FLAG dwStreamFlags, long llTimestamp, IMFSample pSample)
         {
-            int hr = hrStatus;
+            HResult hr = hrStatus;
             IMFMediaBuffer pBuffer = null;
 
             lock (this)
@@ -552,14 +552,14 @@ namespace MFCaptureAlt
             return hr;
         }
 
-        public int OnEvent(int dwStreamIndex, IMFMediaEvent pEvent)
+        public HResult OnEvent(int dwStreamIndex, IMFMediaEvent pEvent)
         {
-            return S_Ok;
+            return HResult.S_OK;
         }
 
-        public int OnFlush(int dwStreamIndex)
+        public HResult OnFlush(int dwStreamIndex)
         {
-            return S_Ok;
+            return HResult.S_OK;
         }
 
         #endregion

@@ -14,6 +14,7 @@ using System;
 using System.Windows.Forms;
 
 using MediaFoundation.Misc;
+using MediaFoundation;
 
 namespace MFCaptureAlt
 {
@@ -82,7 +83,7 @@ namespace MFCaptureAlt
                 if (DevSelection.ShowDialog(this) == System.Windows.Forms.DialogResult.OK)
                 {
                     // Give this source to the CPlayer object for preview.
-                    int hr = m_pPreview.SetDevice(DevSelection.SelectedCaptureDevice);
+                    HResult hr = m_pPreview.SetDevice(DevSelection.SelectedCaptureDevice);
                     MFError.ThrowExceptionForHR(hr);
                 }
             }
