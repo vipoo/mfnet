@@ -33,7 +33,7 @@ namespace MFCaptureToFile
         {
             InitializeComponent();
 
-            int hr = 0;
+            HResult hr = 0;
 
             // Set the default output file name
             tbOutputFile.Text = "capture.mp4";
@@ -79,7 +79,7 @@ namespace MFCaptureToFile
                     break;
 
                 case WM_APP_PREVIEW_ERROR:
-                    NotifyError("Error during capture", m.WParam.ToInt32());
+                    NotifyError("Error during capture", (HResult)m.WParam.ToInt32());
                     break;
             }
             base.WndProc(ref m);
@@ -152,7 +152,7 @@ namespace MFCaptureToFile
                 {
                     bool bDeviceLost = false;
                     string sSym = RegisterDeviceNotifications.ParseDeviceSymbolicName(pHdr);
-                    int hr = m_pCapture.CheckDeviceLost(sSym, out bDeviceLost);
+                    HResult hr = m_pCapture.CheckDeviceLost(sSym, out bDeviceLost);
 
                     if (hr < 0 || bDeviceLost)
                     {
@@ -164,7 +164,7 @@ namespace MFCaptureToFile
             }
         }
 
-        private void NotifyError(string sErrorMessage, int hrErr)
+        private void NotifyError(string sErrorMessage, HResult hrErr)
         {
             string sErrMsg = MFError.GetErrorText(hrErr);
             string sMsg = string.Format("{0} (HRESULT = 0x{1:x}:{2})", sErrorMessage, hrErr, sErrMsg);
@@ -189,7 +189,7 @@ namespace MFCaptureToFile
 
             eparams.bitrate = TARGET_BIT_RATE;
 
-            int hr = 0;
+            HResult hr = 0;
 
             IMFActivate pActivate = null;
 
@@ -218,7 +218,7 @@ namespace MFCaptureToFile
 
         private void StopCapture()
         {
-            int hr = 0;
+            HResult hr = 0;
 
             if (m_pCapture != null)
             {
@@ -237,7 +237,7 @@ namespace MFCaptureToFile
             }
         }
 
-        private int GetSelectedDevice(out IMFActivate ppActivate)
+        private HResult GetSelectedDevice(out IMFActivate ppActivate)
         {
             // First get the index of the selected item in the combo box.
             int iListIndex = cbDeviceList.SelectedIndex;
@@ -245,7 +245,7 @@ namespace MFCaptureToFile
             if (iListIndex < 0)
             {
                 ppActivate = null;
-                return -1;
+                return HResult.E_FAIL;
             }
 
             // Parse out the IMFActivate
@@ -255,7 +255,7 @@ namespace MFCaptureToFile
             return 0;
         }
 
-        private int UpdateDeviceList()
+        private HResult UpdateDeviceList()
         {
             // Remove any previous list
             cbDeviceList.Items.Clear();

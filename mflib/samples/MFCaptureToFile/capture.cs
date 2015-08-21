@@ -179,7 +179,7 @@ namespace MFCaptureToFile
             {
                 if (m_FriendlyName == null)
                 {
-                    int hr = 0;
+                    HResult hr = 0;
                     int iSize = 0;
 
                     hr = m_Activator.GetAllocatedString(
@@ -202,7 +202,7 @@ namespace MFCaptureToFile
                 if (m_SymbolicName == null)
                 {
                     int iSize;
-                    int hr = m_Activator.GetAllocatedString(
+                    HResult hr = m_Activator.GetAllocatedString(
                         MFAttributesClsid.MF_DEVSOURCE_ATTRIBUTE_SOURCE_TYPE_VIDCAP_SYMBOLIC_LINK,
                         out m_SymbolicName,
                         out iSize
@@ -225,7 +225,7 @@ namespace MFCaptureToFile
 
             //////////
 
-            int hr = 0;
+            HResult hr = 0;
             IMFAttributes pAttributes = null;
 
             // Initialize an attribute store. We will use this to 
@@ -323,25 +323,25 @@ namespace MFCaptureToFile
 
         #region IMFSourceReaderCallback methods
 
-        public int OnEvent(int a, IMFMediaEvent b)
+        public HResult OnEvent(int a, IMFMediaEvent b)
         {
-            return S_Ok;
+            return HResult.S_OK;
         }
 
-        public int OnFlush(int a)
+        public HResult OnFlush(int a)
         {
-            return S_Ok;
+            return HResult.S_OK;
         }
 
-        public int OnReadSample(
-            int hrStatus,
+        public HResult OnReadSample(
+            HResult hrStatus,
             int dwStreamIndex,
             MF_SOURCE_READER_FLAG dwStreamFlags,
             long llTimeStamp,
             IMFSample pSample      // Can be null
             )
         {
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             try
             {
@@ -349,7 +349,7 @@ namespace MFCaptureToFile
                 {
                     if (!IsCapturing())
                     {
-                        return S_Ok;
+                        return HResult.S_OK;
                     }
 
 
@@ -392,13 +392,13 @@ namespace MFCaptureToFile
                 done:
                     if (Failed(hr))
                     {
-                        PostMessage(m_hwndEvent, m_iMessageID, new IntPtr(hr), IntPtr.Zero);
+                        PostMessage(m_hwndEvent, m_iMessageID, new IntPtr((int)hr), IntPtr.Zero);
                     }
                 }
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
             }
             finally
             {
@@ -410,9 +410,9 @@ namespace MFCaptureToFile
 
         #endregion
 
-        private int OpenMediaSource(IMFMediaSource pSource)
+        private HResult OpenMediaSource(IMFMediaSource pSource)
         {
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             IMFAttributes pAttributes = null;
 
@@ -440,13 +440,13 @@ namespace MFCaptureToFile
             return hr;
         }
 
-        public int StartCapture(
+        public HResult StartCapture(
             IMFActivate pActivate,
             string pwszFileName,
             EncodingParameters param
             )
         {
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             IMFMediaSource pSource = null;
             object pS;
@@ -518,9 +518,9 @@ namespace MFCaptureToFile
             return hr;
         }
 
-        public int EndCaptureSession()
+        public HResult EndCaptureSession()
         {
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             lock (this)
             {
@@ -553,7 +553,7 @@ namespace MFCaptureToFile
             return bIsCapturing;
         }
 
-        public int CheckDeviceLost(string sSym, out bool pbDeviceLost)
+        public HResult CheckDeviceLost(string sSym, out bool pbDeviceLost)
         {
             pbDeviceLost = false;
 
@@ -575,10 +575,10 @@ namespace MFCaptureToFile
 
         done:
 
-            return S_Ok;
+            return HResult.S_OK;
         }
 
-        int ConfigureSourceReader(IMFSourceReaderAsync pReader)
+        HResult ConfigureSourceReader(IMFSourceReaderAsync pReader)
         {
             // The list of acceptable types.
             Guid[] subtypes = { 
@@ -586,7 +586,7 @@ namespace MFCaptureToFile
                 MFMediaType.RGB32, MFMediaType.RGB24, MFMediaType.IYUV
             };
 
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
             bool bUseNativeType = false;
 
             Guid subtype;
@@ -660,14 +660,14 @@ namespace MFCaptureToFile
             return hr;
         }
 
-        int ConfigureEncoder(
+        HResult ConfigureEncoder(
             EncodingParameters eparams,
             IMFMediaType pType,
             IMFSinkWriter pWriter,
             out int pdwStreamIndex
             )
         {
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             IMFMediaType pType2 = null;
 
@@ -719,9 +719,9 @@ namespace MFCaptureToFile
             return hr;
         }
 
-        int ConfigureCapture(EncodingParameters eparam)
+        HResult ConfigureCapture(EncodingParameters eparam)
         {
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
             int sink_stream = 0;
 
             IMFMediaType pType = null;
@@ -775,11 +775,11 @@ namespace MFCaptureToFile
             return hr;
         }
 
-        int CopyAttribute(IMFAttributes pSrc, IMFAttributes pDest, Guid key)
+        HResult CopyAttribute(IMFAttributes pSrc, IMFAttributes pDest, Guid key)
         {
             PropVariant var = new PropVariant();
 
-            int hr = S_Ok;
+            HResult hr = HResult.S_OK;
 
             hr = pSrc.GetItem(key, var);
             if (Succeeded(hr))
