@@ -52,7 +52,7 @@ class CPlayer : COMBase, IMFAsyncCallback
         Debug.Assert(hVideo != IntPtr.Zero);
         Debug.Assert(hEvent != IntPtr.Zero);
 
-        int hr;
+        HResult hr;
 
         m_pSession = null;
         m_pSource = null;
@@ -80,7 +80,7 @@ class CPlayer : COMBase, IMFAsyncCallback
 
     #region Public methods
 
-    public int OpenURL(string sURL)
+    public HResult OpenURL(string sURL)
     {
         TRACE("CPlayer::OpenURL");
         TRACE("URL = " + sURL);
@@ -91,7 +91,7 @@ class CPlayer : COMBase, IMFAsyncCallback
         // 4. Queue the topology [asynchronous]
         // 5. Start playback [asynchronous - does not happen in this method.]
 
-        int hr = S_Ok;
+        HResult hr = HResult.S_OK;
         try
         {
             IMFTopology pTopology = null;
@@ -120,7 +120,7 @@ class CPlayer : COMBase, IMFAsyncCallback
         }
         catch (Exception ce)
         {
-            hr = Marshal.GetHRForException(ce);
+            hr = (HResult)Marshal.GetHRForException(ce);
             NotifyError(hr);
             m_state = PlayerState.Ready;
         }
@@ -128,20 +128,20 @@ class CPlayer : COMBase, IMFAsyncCallback
         return hr;
     }
 
-    public int Play()
+    public HResult Play()
     {
         TRACE("CPlayer::Play");
 
         if (m_state != PlayerState.Paused)
         {
-            return E_Fail;
+            return HResult.E_FAIL;
         }
         if (m_pSession == null || m_pSource == null)
         {
-            return E_Unexpected;
+            return HResult.E_UNEXPECTED;
         }
 
-        int hr = S_Ok;
+        HResult hr = HResult.S_OK;
 
         try
         {
@@ -152,27 +152,27 @@ class CPlayer : COMBase, IMFAsyncCallback
         }
         catch (Exception ce)
         {
-            hr = Marshal.GetHRForException(ce);
+            hr = (HResult)Marshal.GetHRForException(ce);
             NotifyError(hr);
         }
 
         return hr;
     }
 
-    public int Pause()
+    public HResult Pause()
     {
         TRACE("CPlayer::Pause");
 
         if (m_state != PlayerState.Started)
         {
-            return E_Fail;
+            return HResult.E_FAIL;
         }
         if (m_pSession == null || m_pSource == null)
         {
-            return E_Unexpected;
+            return HResult.E_UNEXPECTED;
         }
 
-        int hr = S_Ok;
+        HResult hr = HResult.S_OK;
 
         try
         {
@@ -184,18 +184,18 @@ class CPlayer : COMBase, IMFAsyncCallback
         }
         catch (Exception ce)
         {
-            hr = Marshal.GetHRForException(ce);
+            hr = (HResult)Marshal.GetHRForException(ce);
             NotifyError(hr);
         }
 
         return hr;
     }
 
-    public int Shutdown()
+    public HResult Shutdown()
     {
         TRACE("CPlayer::ShutDown");
 
-        int hr = S_Ok;
+        HResult hr = HResult.S_OK;
 
         try
         {
@@ -220,16 +220,16 @@ class CPlayer : COMBase, IMFAsyncCallback
         }
         catch (Exception ce)
         {
-            hr = Marshal.GetHRForException(ce);
+            hr = (HResult)Marshal.GetHRForException(ce);
         }
 
         return hr;
     }
 
     // Video functionality
-    public int Repaint()
+    public HResult Repaint()
     {
-        int hr = S_Ok;
+        HResult hr = HResult.S_OK;
 
         if (m_pVideoDisplay != null)
         {
@@ -240,16 +240,16 @@ class CPlayer : COMBase, IMFAsyncCallback
             }
             catch (Exception ce)
             {
-                hr = Marshal.GetHRForException(ce);
+                hr = (HResult)Marshal.GetHRForException(ce);
             }
         }
 
         return hr;
     }
 
-    public int ResizeVideo(short width, short height)
+    public HResult ResizeVideo(short width, short height)
     {
-        int hr = S_Ok;
+        HResult hr = HResult.S_OK;
         TRACE(string.Format("ResizeVideo: {0}x{1}", width, height));
 
         if (m_pVideoDisplay != null)
@@ -273,7 +273,7 @@ class CPlayer : COMBase, IMFAsyncCallback
             }
             catch (Exception ce)
             {
-                hr = Marshal.GetHRForException(ce);
+                hr = (HResult)Marshal.GetHRForException(ce);
             }
         }
 
@@ -296,15 +296,15 @@ class CPlayer : COMBase, IMFAsyncCallback
     //
     //  This is a helper object for handling IMFContentEnabler operations.
     /////////////////////////////////////////////////////////////////////////
-    public int GetContentProtectionManager(out ContentProtectionManager ppManager)
+    public HResult GetContentProtectionManager(out ContentProtectionManager ppManager)
     {
-        int hr;
+        HResult hr;
 
         ppManager = m_pContentProtectionManager;
 
         if (m_pContentProtectionManager == null)
         {
-            hr = unchecked((int)0x80004005); // Session wasn't created yet. No helper object;
+            hr = unchecked((HResult)0x80004005); // Session wasn't created yet. No helper object;
         }
         else
         {
@@ -318,7 +318,7 @@ class CPlayer : COMBase, IMFAsyncCallback
 
     #region IMFAsyncCallback Members
 
-    int IMFAsyncCallback.GetParameters(out MFASync pdwFlags, out MFAsyncCallbackQueue pdwQueue)
+    HResult IMFAsyncCallback.GetParameters(out MFASync pdwFlags, out MFAsyncCallbackQueue pdwQueue)
     {
         // Make sure we *never* leave this entry point with an exception
         try
@@ -326,25 +326,25 @@ class CPlayer : COMBase, IMFAsyncCallback
             pdwFlags = MFASync.FastIOProcessingCallback;
             pdwQueue = MFAsyncCallbackQueue.Standard;
             //throw new COMException("IMFAsyncCallback.GetParameters not implemented in Player", E_NotImplemented);
-            return S_Ok;
+            return HResult.S_OK;
         }
         catch (Exception e)
         {
             pdwQueue = MFAsyncCallbackQueue.Undefined;
             pdwFlags = MFASync.None;
-            return Marshal.GetHRForException(e);
+            return (HResult)Marshal.GetHRForException(e);
         }
     }
 
-    int IMFAsyncCallback.Invoke(IMFAsyncResult pResult)
+    HResult IMFAsyncCallback.Invoke(IMFAsyncResult pResult)
     {
         // Make sure we *never* leave this entry point with an exception
         try
         {
-            int hr;
+            HResult hr;
             IMFMediaEvent pEvent = null;
             MediaEventType meType = MediaEventType.MEUnknown;  // Event type
-            int hrStatus = 0;           // Event status
+            HResult hrStatus = 0;           // Event status
             MFTopoStatus TopoStatus = MFTopoStatus.Invalid; // Used with MESessionTopologyStatus event.
 
             try
@@ -425,11 +425,11 @@ class CPlayer : COMBase, IMFAsyncCallback
 
                 SafeRelease(pEvent);
             }
-            return S_Ok;
+            return HResult.S_OK;
         }
         catch (Exception e)
         {
-            return Marshal.GetHRForException(e);
+            return (HResult)Marshal.GetHRForException(e);
         }
     }
 
@@ -444,18 +444,18 @@ class CPlayer : COMBase, IMFAsyncCallback
     }
 
     // NotifyState: Notifies the application when an error occurs.
-    protected void NotifyError(int hr)
+    protected void NotifyError(HResult hr)
     {
         TRACE("NotifyError: 0x" + hr.ToString("X"));
         m_state = PlayerState.Ready;
-        PostMessage(m_hwndEvent, WM_APP_ERROR, new IntPtr(hr), IntPtr.Zero);
+        PostMessage(m_hwndEvent, WM_APP_ERROR, new IntPtr((int)hr), IntPtr.Zero);
     }
 
     protected void CreateSession()
     {
         TRACE("CPlayer::CreateSession");
 
-        int hr;
+        HResult hr;
         IMFAttributes pAttributes;
         IMFActivate pEnablerActivate;
 
@@ -518,7 +518,7 @@ class CPlayer : COMBase, IMFAsyncCallback
             m_pVideoDisplay = null;
         }
 
-        int hr;
+        HResult hr;
 
         if (m_pSession != null)
         {
@@ -560,7 +560,7 @@ class CPlayer : COMBase, IMFAsyncCallback
 
         Debug.Assert(m_pSession != null);
 
-        int hr;
+        HResult hr;
 
         hr = m_pSession.Start(Guid.Empty, new PropVariant());
         MFError.ThrowExceptionForHR(hr);
@@ -570,7 +570,7 @@ class CPlayer : COMBase, IMFAsyncCallback
     {
         TRACE("CPlayer::CreateMediaSource");
 
-        int hr;
+        HResult hr;
         IMFSourceResolver pSourceResolver;
         object pSource;
 
@@ -609,7 +609,7 @@ class CPlayer : COMBase, IMFAsyncCallback
         Debug.Assert(m_pSession != null);
         Debug.Assert(m_pSource != null);
 
-        int hr;
+        HResult hr;
         IMFTopology pTopology = null;
         IMFPresentationDescriptor pSourcePD = null;
         int cSourceStreams = 0;
@@ -661,7 +661,7 @@ class CPlayer : COMBase, IMFAsyncCallback
 
         Debug.Assert(pTopology != null);
 
-        int hr;
+        HResult hr;
         IMFStreamDescriptor pSourceSD = null;
         IMFTopologyNode pSourceNode = null;
         IMFTopologyNode pOutputNode = null;
@@ -712,7 +712,7 @@ class CPlayer : COMBase, IMFAsyncCallback
     {
         Debug.Assert(m_pSource != null);
 
-        int hr;
+        HResult hr;
         IMFTopologyNode pNode = null;
 
         try
@@ -754,7 +754,7 @@ class CPlayer : COMBase, IMFAsyncCallback
         IMFActivate pRendererActivate = null;
 
         Guid guidMajorType = Guid.Empty;
-        int hr = S_Ok;
+        HResult hr = HResult.S_OK;
 
         // Get the stream ID.
         int streamID = 0;
@@ -801,7 +801,7 @@ class CPlayer : COMBase, IMFAsyncCallback
             else
             {
                 TRACE(string.Format("Stream {0}: Unknown format", streamID));
-                throw new COMException("Unknown format", E_Fail);
+                throw new COMException("Unknown format", (int)HResult.E_FAIL);
             }
 
             // Set the IActivate object on the output node.
@@ -828,7 +828,7 @@ class CPlayer : COMBase, IMFAsyncCallback
     // Media event handlers
     protected void OnTopologyReady(IMFMediaEvent pEvent)
     {
-        int hr;
+        HResult hr;
         object o;
         TRACE("CPlayer::OnTopologyReady");
 
@@ -862,7 +862,7 @@ class CPlayer : COMBase, IMFAsyncCallback
         }
         catch (Exception ce)
         {
-            hr = Marshal.GetHRForException(ce);
+            hr = (HResult)Marshal.GetHRForException(ce);
             NotifyError(hr);
         }
 

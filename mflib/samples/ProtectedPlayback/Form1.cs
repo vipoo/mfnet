@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.Threading;
 
 using MediaFoundation.Misc;
+using MediaFoundation;
 
 namespace MF_ProtectedPlayback
 {
@@ -55,7 +56,7 @@ namespace MF_ProtectedPlayback
                     break;
 
                 case WM_APP_ERROR:
-                    NotifyError(m.HWnd, "An error occurred.", (int)m.WParam);
+                    NotifyError(m.HWnd, "An error occurred.", (HResult)m.WParam);
                     UpdateUI(m.HWnd, CPlayer.PlayerState.Ready);
                     break;
 
@@ -115,12 +116,12 @@ namespace MF_ProtectedPlayback
         {
             ContentProtectionManager pManager;
 
-            int hr = g_pPlayer.GetContentProtectionManager(out pManager);
+            HResult hr = g_pPlayer.GetContentProtectionManager(out pManager);
 
             if (hr >= 0)
             {
                 ContentProtectionManager.Enabler state = pManager.GetState();
-                int hrStatus = pManager.GetStatus();   // Status of the last action.
+                HResult hrStatus = pManager.GetStatus();   // Status of the last action.
 
                 // EnablerState is a defined for this application; it is not a standard
                 // Media Foundation enum. It specifies what action the
@@ -140,7 +141,7 @@ namespace MF_ProtectedPlayback
 
                             // If the status code is NS_E_DRM_LICENSE_NOTACQUIRED,
                             // we need to try non-silent enable.
-                            if (hrStatus == ContentProtectionManager.NS_E_DRM_LICENSE_NOTACQUIRED)
+                            if ((int)hrStatus == ContentProtectionManager.NS_E_DRM_LICENSE_NOTACQUIRED)
                             {
                                 Debug.WriteLine("Silent enabler failed, attempting non-silent.");
                                 pManager.DoEnable(ContentProtectionManager.EnablerFlags.ForceNonSilent); // Try non-silent this time;
@@ -186,7 +187,7 @@ namespace MF_ProtectedPlayback
         {
             ContentProtectionManager pManager;
 
-            int hr = g_pPlayer.GetContentProtectionManager(out pManager);
+            HResult hr = g_pPlayer.GetContentProtectionManager(out pManager);
 
             if (hr >= 0)
             {
@@ -262,7 +263,7 @@ namespace MF_ProtectedPlayback
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            int hr = 0;
+            HResult hr = 0;
 
             openFileDialog1.Filter = "Windows Media|*.wmv;*.wma;*.asf|Wave|*.wav|MP3|*.mp3|All files|*.*";
 
@@ -306,7 +307,7 @@ namespace MF_ProtectedPlayback
             }
         }
 
-        void NotifyError(IntPtr hwnd, string sErrorMessage, int hrErr)
+        void NotifyError(IntPtr hwnd, string sErrorMessage, HResult hrErr)
         {
             string s = string.Format("{0} (HRESULT = 0x{1:x} {2})", sErrorMessage, hrErr, MFError.GetErrorText(hrErr));
 
@@ -315,7 +316,7 @@ namespace MF_ProtectedPlayback
 
         private void openUrlToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            int hr;
+            HResult hr;
 
             fmURL f = new fmURL();
 

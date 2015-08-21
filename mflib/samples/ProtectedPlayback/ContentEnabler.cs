@@ -50,7 +50,7 @@ public class ContentProtectionManager : COMBase, IMFAsyncCallback, IMFContentPro
     #region Members
 
     private Enabler m_state;
-    private int m_hrStatus;         // Status code from the most recent event.
+    private HResult m_hrStatus;         // Status code from the most recent event.
 
     private IntPtr m_hwnd;
 
@@ -93,7 +93,7 @@ public class ContentProtectionManager : COMBase, IMFAsyncCallback, IMFContentPro
     //  Description:  Called by the PMP session to start the enable action.
     /////////////////////////////////////////////////////////////////////////
 
-    public int BeginEnableContent(
+    public HResult BeginEnableContent(
         IMFActivate pEnablerActivate,
         IMFTopology pTopo,
         IMFAsyncCallback pCallback,
@@ -107,10 +107,10 @@ public class ContentProtectionManager : COMBase, IMFAsyncCallback, IMFContentPro
 
             if (m_pEnabler != null)
             {
-                throw new COMException("A previous call is still pending", E_Fail);
+                throw new COMException("A previous call is still pending", (int)HResult.E_FAIL);
             }
 
-            int hr;
+            HResult hr;
 
             // Save so we can create an async result later
             m_pCallback = pCallback;
@@ -126,11 +126,11 @@ public class ContentProtectionManager : COMBase, IMFAsyncCallback, IMFContentPro
             m_state = Enabler.Ready; // Reset the state.
             PostMessage(m_hwnd, WM_APP_CONTENT_ENABLER, IntPtr.Zero, IntPtr.Zero);
 
-            return S_Ok;
+            return HResult.S_OK;
         }
         catch (Exception e)
         {
-            return Marshal.GetHRForException(e);
+            return (HResult)Marshal.GetHRForException(e);
         }
     }
 
@@ -139,7 +139,7 @@ public class ContentProtectionManager : COMBase, IMFAsyncCallback, IMFContentPro
     //  Description:  Completes the enable action.
     /////////////////////////////////////////////////////////////////////////
 
-    public int EndEnableContent(IMFAsyncResult pResult)
+    public HResult EndEnableContent(IMFAsyncResult pResult)
     {
         // Make sure we *never* leave this entry point with an exception
         try
@@ -148,7 +148,7 @@ public class ContentProtectionManager : COMBase, IMFAsyncCallback, IMFContentPro
 
             if (pResult == null)
             {
-                throw new COMException("NULL IMFAsyncResult", E_Pointer);
+                throw new COMException("NULL IMFAsyncResult", (int)HResult.E_POINTER);
             }
 
             // Release interfaces, so that we're ready to accept another call
@@ -167,7 +167,7 @@ public class ContentProtectionManager : COMBase, IMFAsyncCallback, IMFContentPro
         }
         catch (Exception e)
         {
-            return Marshal.GetHRForException(e);
+            return (HResult)Marshal.GetHRForException(e);
         }
     }
 
@@ -175,19 +175,19 @@ public class ContentProtectionManager : COMBase, IMFAsyncCallback, IMFContentPro
 
     #region IMFAsyncCallback methods
 
-    public int GetParameters(out MFASync a, out MFAsyncCallbackQueue b)
+    public HResult GetParameters(out MFASync a, out MFAsyncCallbackQueue b)
     {
         // Make sure we *never* leave this entry point with an exception
         try
         {
             // Implementation of this method is optional.
-            throw new COMException("GetParameters not implemented", COMBase.E_NotImplemented);
+            throw new COMException("GetParameters not implemented", (int)HResult.E_NOTIMPL);
         }
         catch (Exception e)
         {
             a = MFASync.None;
             b = MFAsyncCallbackQueue.Undefined;
-            return Marshal.GetHRForException(e);
+            return (HResult)Marshal.GetHRForException(e);
         }
     }
 
@@ -198,12 +198,12 @@ public class ContentProtectionManager : COMBase, IMFAsyncCallback, IMFContentPro
     //  pAsyncResult: Pointer to the result.
     /////////////////////////////////////////////////////////////////////////
 
-    int IMFAsyncCallback.Invoke(IMFAsyncResult pAsyncResult)
+    HResult IMFAsyncCallback.Invoke(IMFAsyncResult pAsyncResult)
     {
         // Make sure we *never* leave this entry point with an exception
         try
         {
-            int hr;
+            HResult hr;
             IMFMediaEvent pEvent;
             MediaEventType meType = MediaEventType.MEUnknown;  // Event type
             PropVariant varEventData = new PropVariant();	        // Event data
@@ -221,9 +221,9 @@ public class ContentProtectionManager : COMBase, IMFAsyncCallback, IMFContentPro
             hr = pEvent.GetStatus(out m_hrStatus);
             MFError.ThrowExceptionForHR(hr);
 
-            if (m_hrStatus == 862022) // NS_S_DRM_MONITOR_CANCELLED
+            if ((int)m_hrStatus == 862022) // NS_S_DRM_MONITOR_CANCELLED
             {
-                m_hrStatus = MFError.MF_E_OPERATION_CANCELLED;
+                m_hrStatus = HResult.MF_E_OPERATION_CANCELLED;
                 m_state = Enabler.Complete;
             }
 
@@ -256,11 +256,11 @@ public class ContentProtectionManager : COMBase, IMFAsyncCallback, IMFContentPro
             varEventData.Clear();
             SafeRelease(pEvent);
 
-            return S_Ok;
+            return HResult.S_OK;
         }
         catch (Exception e)
         {
-            return Marshal.GetHRForException(e);
+            return (HResult)Marshal.GetHRForException(e);
         }
     }
 
@@ -273,7 +273,7 @@ public class ContentProtectionManager : COMBase, IMFAsyncCallback, IMFContentPro
         return m_state;
     }
 
-    public int GetStatus()
+    public HResult GetStatus()
     {
         return m_hrStatus;
     }
@@ -290,7 +290,7 @@ public class ContentProtectionManager : COMBase, IMFAsyncCallback, IMFContentPro
     {
         Debug.WriteLine(string.Format("ContentProtectionManager::DoEnable (flags ={0})", flags.ToString()));
 
-        int hr;
+        HResult hr;
         bool bAutomatic = false;
         Guid guidEnableType;
 
@@ -342,7 +342,7 @@ public class ContentProtectionManager : COMBase, IMFAsyncCallback, IMFContentPro
         }
         catch (Exception e)
         {
-            m_hrStatus = Marshal.GetHRForException(e);
+            m_hrStatus = (HResult)Marshal.GetHRForException(e);
             throw;
         }
     }
@@ -357,7 +357,7 @@ public class ContentProtectionManager : COMBase, IMFAsyncCallback, IMFContentPro
 
     public void CancelEnable()
     {
-        int hr = 0;
+        HResult hr = 0;
 
         if (m_state != Enabler.Complete)
         {
@@ -368,7 +368,7 @@ public class ContentProtectionManager : COMBase, IMFAsyncCallback, IMFContentPro
             }
             catch (Exception e)
             {
-                hr = Marshal.GetHRForException(e);
+                hr = (HResult)Marshal.GetHRForException(e);
             }
 
             if (hr < 0)
@@ -390,7 +390,7 @@ public class ContentProtectionManager : COMBase, IMFAsyncCallback, IMFContentPro
 
     public void CompleteEnable()
     {
-        int hr;
+        HResult hr;
         m_state = Enabler.Complete;
 
         // m_pCallback can be NULL if the BeginEnableContent was not called.
@@ -426,7 +426,7 @@ public class ContentProtectionManager : COMBase, IMFAsyncCallback, IMFContentPro
         // Trust status for the URL.
         MFURLTrustStatus trustStatus = MFURLTrustStatus.Untrusted;
 
-        int hr;
+        HResult hr;
         string sURL;	            // Enable URL
         int cchURL = 0;             // Size of enable URL in characters.
 
@@ -442,7 +442,7 @@ public class ContentProtectionManager : COMBase, IMFAsyncCallback, IMFContentPro
 
         if (trustStatus != MFURLTrustStatus.Trusted)
         {
-            throw new COMException("The enabler URL is not trusted. Failing.", E_Fail);
+            throw new COMException("The enabler URL is not trusted. Failing.", (int)HResult.E_FAIL);
         }
 
         // Start the thread that monitors the non-silent enable action.
