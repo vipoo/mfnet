@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.Threading;
 
 using MediaFoundation.Misc;
+using MediaFoundation;
 
 namespace MF_BasicPlayback
 {
@@ -55,7 +56,7 @@ namespace MF_BasicPlayback
                     break;
 
                 case WM_APP_ERROR:
-                    NotifyError(m.HWnd, "An error occurred.", (int)m.WParam);
+                    NotifyError(m.HWnd, "An error occurred.", (HResult)m.WParam);
                     UpdateUI(m.HWnd, CPlayer.PlayerState.Ready);
                     break;
 
@@ -158,7 +159,7 @@ namespace MF_BasicPlayback
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            int hr = 0;
+            HResult hr = 0;
 
             openFileDialog1.Filter = "Windows Media|*.wmv;*.wma;*.asf|Wave|*.wav|MP3|*.mp3|All files|*.*";
 
@@ -202,7 +203,7 @@ namespace MF_BasicPlayback
             }
         }
 
-        void NotifyError(IntPtr hwnd, string sErrorMessage, int hrErr)
+        void NotifyError(IntPtr hwnd, string sErrorMessage, HResult hrErr)
         {
             string s = string.Format("{0} (HRESULT = 0x{1:x} {2})", sErrorMessage, hrErr, MFError.GetErrorText(hrErr));
 
@@ -211,7 +212,7 @@ namespace MF_BasicPlayback
 
         private void openUrlToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            int hr;
+            HResult hr;
 
             fmURL f = new fmURL();
 
